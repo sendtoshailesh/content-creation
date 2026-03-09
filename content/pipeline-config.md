@@ -1,0 +1,87 @@
+# Content Pipeline Configuration
+
+> **Edit this file** to configure your content pipeline preferences. All pipeline agents read this config before starting work.
+
+---
+
+## Model Selection
+
+Choose which model to use for content generation. Select your model in the **VS Code Copilot model picker** before running agents.
+
+### Recommended Models by Task
+
+| Task | Recommended | Why |
+|------|-------------|-----|
+| Content Strategy / Planning | Claude Sonnet 4 or o3 | Deep reasoning, nuanced audience analysis |
+| Blog Writing | Claude Sonnet 4 or GPT-4.1 | Strong technical writing, data accuracy |
+| Visual Generation | GPT-4.1 or Claude Sonnet 4 | Reliable code generation for Python renderers |
+| Quality Review | Claude Sonnet 4 | Best at critical analysis and finding gaps |
+| Social Posts (LinkedIn/Twitter) | Claude Sonnet 4 or GPT-4o | Good at concise, punchy copy |
+| Reddit Posts | Claude Sonnet 4 | Natural conversational tone |
+| Video Scripts | Claude Sonnet 4 or GPT-4.1 | Structured output with timing |
+
+### Current Selection
+
+**Preferred model**: _(select in VS Code Copilot picker — agents inherit your selection)_
+
+### Available Models (GitHub Copilot)
+
+Run `/configure-model` to see the latest available models and get recommendations.
+
+**Flagship**: Claude Sonnet 4, Claude Sonnet 4.5, GPT-4.1, GPT-4o, Gemini 2.5 Pro
+**Fast**: Claude Haiku 3.5, GPT-4o mini, GPT-4.1 mini, GPT-4.1 nano
+**Reasoning**: o3, o4-mini, Claude Sonnet 4 (Extended Thinking)
+
+---
+
+## Online References
+
+List URLs below that agents should fetch, analyze, and synthesize during content creation. The pipeline will read these before writing.
+
+### How to Use
+
+1. Add URLs under the appropriate section below
+2. Add a brief note on what to extract from each
+3. Pipeline agents will fetch and analyze these during Steps 1-3
+
+### Reference URLs
+
+<!-- Add your reference URLs below. Format: - [description](URL) -->
+
+**Industry Reports & Benchmarks:**
+- 
+
+**Competitor / Related Articles:**
+- 
+
+**Pricing Pages & Documentation:**
+- 
+
+**Case Studies & Examples:**
+- 
+
+**Research Papers:**
+- 
+
+---
+
+## Output Preferences
+
+### Blog
+- **Target length**: ~3,000 words
+- **Output path**: `content/`
+
+### Social Posts
+- **LinkedIn**: Plain + Unicode formatted versions
+- **X/Twitter**: 10-12 tweet thread + standalone summary
+- **Reddit**: Standard Markdown, target subreddits listed below
+
+### Target Subreddits
+- r/MachineLearning
+- r/ExperiencedDevs
+- r/artificial
+- r/programming
+
+### YouTube
+- **Target duration**: 8-12 minutes
+- **Output path**: `content/youtube-script.md`

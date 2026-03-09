@@ -1,0 +1,25 @@
+flowchart LR
+    subgraph Product
+        P1[Week 1: Define Use Cases]
+        P2[Week 2: Evaluate Fit]
+        P3[Week 3: Pilot Feedback]
+        P4[Week 4: Launch Criteria]
+    end
+
+    subgraph Engineering
+        E1[Week 1: Constraints + Data]
+        E2[Week 2: Benchmarks]
+        E3[Week 3: Routing + Guardrails]
+        E4[Week 4: Monitoring]
+    end
+
+    subgraph Leadership
+        L1[Week 1: Business Goals]
+        L2[Week 2: Cost Envelope]
+        L3[Week 3: Risk Review]
+        L4[Week 4: Go/No-Go]
+    end
+
+    P1 --> P2 --> P3 --> P4
+    E1 --> E2 --> E3 --> E4
+    L1 --> L2 --> L3 --> L4

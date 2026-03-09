@@ -1,0 +1,12 @@
+# Global owners — review required for all PRs
+* @sendtoshailesh
+
+# Agent definitions
+.github/agents/ @sendtoshailesh
+
+# Skills and instructions
+.github/skills/ @sendtoshailesh
+.github/instructions/ @sendtoshailesh
+
+# Scripts
+scripts/ @sendtoshailesh

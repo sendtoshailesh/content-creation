@@ -1,0 +1,19 @@
+flowchart TD
+    A[Product Use Case] --> B[Task Fit]
+    A --> C[Quality Bar]
+    A --> D[Latency Budget]
+    A --> E[Cost Envelope]
+    A --> F[Data Sensitivity]
+    A --> G[Integration Complexity]
+    A --> H[Reliability Requirements]
+
+    B --> I[Model Shortlist]
+    C --> I
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+
+    I --> J[Pilot and Measure]
+    J --> K[Production Decision]

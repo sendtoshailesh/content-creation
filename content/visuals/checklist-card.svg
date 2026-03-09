@@ -1,0 +1,46 @@
+<svg width="640" height="720" viewBox="0 0 640 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}</style>
+    <filter id="shadow" x="-4%" y="-2%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="640" height="720" fill="#f8fafc"/>
+  <!-- card -->
+  <rect x="40" y="30" width="560" height="660" rx="12" fill="#ffffff" filter="url(#shadow)" stroke="#e2e8f0" stroke-width="1"/>
+  <!-- header bar -->
+  <rect x="40" y="30" width="560" height="60" rx="12" fill="#1f6feb"/>
+  <rect x="40" y="70" width="560" height="20" fill="#1f6feb"/>
+  <text x="320" y="68" font-size="18" fill="#ffffff" font-weight="700" text-anchor="middle">Pre-Launch Model Checklist</text>
+  <!-- items -->
+  <rect x="70" y="112" width="22" height="22" rx="4" fill="#0d9488"/>
+  <text x="78" y="129" font-size="14" fill="#ffffff" font-weight="bold">&#x2713;</text>
+  <text x="106" y="129" font-size="15" fill="#1e293b">Task requirements documented with acceptance criteria</text>
+  <rect x="70" y="156" width="22" height="22" rx="4" fill="#0d9488"/>
+  <text x="78" y="173" font-size="14" fill="#ffffff" font-weight="bold">&#x2713;</text>
+  <text x="106" y="173" font-size="15" fill="#1e293b">Candidate models benchmarked on real prompts</text>
+  <rect x="70" y="200" width="22" height="22" rx="4" fill="#0d9488"/>
+  <text x="78" y="217" font-size="14" fill="#ffffff" font-weight="bold">&#x2713;</text>
+  <text x="106" y="217" font-size="15" fill="#1e293b">Cost model built: tokens &#xD7; price &#xD7; volume</text>
+  <rect x="70" y="244" width="22" height="22" rx="4" fill="#0d9488"/>
+  <text x="78" y="261" font-size="14" fill="#ffffff" font-weight="bold">&#x2713;</text>
+  <text x="106" y="261" font-size="15" fill="#1e293b">Latency budget defined per endpoint</text>
+  <rect x="70" y="296" width="22" height="22" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="#ffffff"/>
+  <text x="106" y="313" font-size="15" fill="#1e293b">Eval suite automated with &#x2265; 200 test cases</text>
+  <rect x="70" y="340" width="22" height="22" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="#ffffff"/>
+  <text x="106" y="357" font-size="15" fill="#1e293b">Model router / fallback logic implemented</text>
+  <rect x="70" y="384" width="22" height="22" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="#ffffff"/>
+  <text x="106" y="401" font-size="15" fill="#1e293b">Shadow deployment validated for 48+ hours</text>
+  <rect x="70" y="428" width="22" height="22" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="#ffffff"/>
+  <text x="106" y="445" font-size="15" fill="#1e293b">Monitoring dashboards live (cost, latency, quality)</text>
+  <!-- divider -->
+  <line x1="70" y1="478" x2="570" y2="478" stroke="#e2e8f0" stroke-width="1"/>
+  <!-- footer -->
+  <text x="320" y="510" font-size="13" fill="#64748b" text-anchor="middle">Complete all items before promoting to production.</text>
+  <text x="320" y="535" font-size="13" fill="#64748b" text-anchor="middle">Review weekly with engineering and product leads.</text>
+  <!-- progress bar -->
+  <rect x="70" y="570" width="500" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="70" y="570" width="250" height="12" rx="6" fill="#0d9488"/>
+  <text x="70" y="605" font-size="13" fill="#0d9488" font-weight="600">4 / 8 complete</text>
+  <text x="570" y="605" font-size="13" fill="#64748b" text-anchor="end">50%</text>
+</svg>

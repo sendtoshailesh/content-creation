@@ -1,0 +1,13 @@
+flowchart LR
+    A[Incoming Request] --> B{Task Type}
+    B -->|Extraction/Formatting| C[Lightweight Model]
+    B -->|Drafting/General| D[Mid-tier Model]
+    B -->|Complex Reasoning| E[Frontier Model]
+
+    C --> F[Output Validator]
+    D --> F
+    E --> F
+
+    F --> G{Passes Quality Gate?}
+    G -->|Yes| H[Return to User]
+    G -->|No| I[Escalate / Retry Path]
