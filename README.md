@@ -73,14 +73,19 @@ Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **
 | Step | Agent | What It Does |
 |------|-------|--------------|
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
+| 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
 | 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline |
 | 3 | `@blog-writer` | Long-form blog (~3,000 words) |
 | 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams |
 | 3c | `@quality-reviewer` | Quality audit with fixes |
-| 4 | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts |
+| 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
+| 4a | `@social-strategist` | Cross-platform social distribution strategy |
+| 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts |
 | 5 | `@social-twitter` | Tweet thread + standalone summary |
 | 6 | `@social-reddit` | Markdown Reddit post |
+| 7 | `@brand-guardian` | Brand consistency audit across all content |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
+| 9 | `@content-repurposer` | Newsletter, slide deck, podcast, infographic |
 
 ## Using Individual Agents
 
@@ -91,6 +96,11 @@ You don't have to run the full pipeline. Use any agent directly:
 @social-linkedin Adapt content/my-blog.md for LinkedIn
 @quality-reviewer Review content/my-blog.md
 @visual-renderer Create visuals for content/my-blog.md
+@trend-researcher Research market landscape for [topic]
+@seo-optimizer Optimize content/my-blog.md for search
+@brand-guardian Audit all content for brand consistency
+@social-strategist Create social distribution plan for content/my-blog.md
+@content-repurposer Repurpose content/my-blog.md into newsletter, slides, podcast
 ```
 
 ## Adding Reference URLs
@@ -121,7 +131,7 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 9 specialist agents
+├── agents/                          # 14 specialist agents
 ├── skills/                          # 3 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
 │   ├── unicode-formatting/          #   Bold/italic for social posts
@@ -199,6 +209,10 @@ This will:
 - **Change visual style**: Edit [design tokens](.github/skills/visual-rendering/references/design-tokens.md)
 - **Adjust quality rules**: Edit [`.github/instructions/content-quality.instructions.md`](.github/instructions/content-quality.instructions.md)
 - **Change social formatting**: Edit [`.github/instructions/social-formatting.instructions.md`](.github/instructions/social-formatting.instructions.md)
+
+## Attribution
+
+Five agents in this pipeline are adapted from the [agency-agents](https://github.com/msitarzewski/agency-agents) project (MIT License) — `trend-researcher`, `brand-guardian`, `seo-optimizer`, `social-strategist`, and `content-repurposer`. See individual agent files for source details.
 
 ## Contributing
 
