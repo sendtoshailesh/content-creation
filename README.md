@@ -44,6 +44,30 @@ Open the Copilot Chat panel and select your preferred model from the model picke
 
 The orchestrator will guide you through all 8 steps with quality gates between phases.
 
+## New Content vs. Existing Content
+
+Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **Pipeline Status** section at the top.
+
+| Status | What It Means | What to Do |
+|--------|--------------|------------|
+| `not-started` | No active run | Edit config (references, preferences) → run `@content-pipeline` |
+| `in-progress` | Pipeline is mid-run | Run `@content-pipeline` — it resumes from the last incomplete step |
+| `completed` | All steps done | Review content → run `/archive-content` → then start a new run |
+| `blocked` | A step needs attention | Check the step checklist for details, fix the issue, then resume |
+
+### Starting a New Run
+
+1. Check status in `content/pipeline-config.md`
+2. If previous content exists (`completed` or `in-progress`), run `/archive-content` first
+3. Edit references, model preferences, and output preferences
+4. Run `@content-pipeline Create content about [your topic]`
+
+### Resuming an Incomplete Run
+
+1. Check the step checklist in `content/pipeline-config.md` — checked boxes show what's done
+2. Run `@content-pipeline` — the orchestrator reads the checklist and picks up where it left off
+3. No need to re-specify the topic; it's saved in the status section
+
 ## Pipeline Steps
 
 | Step | Agent | What It Does |

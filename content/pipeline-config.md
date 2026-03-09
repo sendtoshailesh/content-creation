@@ -4,6 +4,40 @@
 
 ---
 
+## Pipeline Status
+
+> **Auto-updated by the pipeline orchestrator.** Check this to see where content creation stands.
+
+| Field | Value |
+|-------|-------|
+| **Status** | `not-started` |
+| **Topic** | _(none)_ |
+| **Started** | _(none)_ |
+| **Current Step** | _(none)_ |
+
+### Step Checklist
+
+- [ ] Step 0: Reference analysis
+- [ ] Steps 1-2: Strategy + outline
+- [ ] Step 3: Blog post
+- [ ] Step 3b: Visual assets
+- [ ] Step 3c: Quality review
+- [ ] Step 4: LinkedIn post
+- [ ] Step 5: X/Twitter thread
+- [ ] Step 6: Reddit post
+- [ ] Step 8: YouTube script
+- [ ] Final review complete
+
+**Status values:** `not-started` | `in-progress` | `completed` | `blocked`
+
+> **What to do:**
+> - If Status is `not-started` → You're clear to start a new run. Edit references/preferences below, then run `@content-pipeline` or `/new-content-pipeline`
+> - If Status is `in-progress` → Content creation is underway. Run `@content-pipeline` to resume from where it left off
+> - If Status is `completed` → All steps done! Review the content, then run `/archive-content` to archive and start fresh
+> - If Status is `blocked` → See Current Step for what needs attention
+
+---
+
 ## Model Selection
 
 Choose which model to use for content generation. Select your model in the **VS Code Copilot model picker** before running agents.

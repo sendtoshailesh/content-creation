@@ -22,6 +22,13 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 
 ## Orchestration Protocol
 
+### Status Check (Always First)
+1. Read `content/pipeline-config.md` — check the **Pipeline Status** section at the top
+2. If Status is `completed`, ask user if they want to archive and start fresh (suggest `/archive-content`)
+3. If Status is `in-progress`, identify the first unchecked step in the Step Checklist and resume from that phase
+4. If Status is `not-started`, set Status to `in-progress`, fill in the **Topic** and **Started** date, then begin Phase 0
+5. Update **Current Step** in the status section as you move through phases
+
 ### Phase 0: Reference Analysis
 1. Read `content/pipeline-config.md` — check for reference URLs under the `## Reference URLs` section
 2. If URLs are listed, use the `reference-analysis` skill to fetch and synthesize them into `content/reference-brief.md`
@@ -51,10 +58,18 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 ### Phase 5: Final Review
 14. Run `quality-reviewer` on all social posts
 15. Produce a summary of all generated files
+16. Update Pipeline Status: set Status to `completed`, check the "Final review complete" box
 
 ## Progress Tracking
 
 Use the todo tool to track pipeline progress. Create a todo list at the start with all steps, and update as each completes.
+
+## Status Updates
+
+After completing each phase, update `content/pipeline-config.md`:
+- Check off the completed steps in the Step Checklist (replace `- [ ]` with `- [x]`)
+- Update **Current Step** to the next step about to begin
+- If a step fails or is blocked, set Status to `blocked` and note the issue in Current Step
 
 ## Quality Gates
 
@@ -86,4 +101,5 @@ content/
 - DO NOT skip quality gates between phases
 - DO NOT proceed to distribution (Phase 4) without quality gate pass
 - ALWAYS track progress with the todo tool
+- ALWAYS read and update Pipeline Status in `content/pipeline-config.md` at start and after each phase
 - ALWAYS confirm with user after Phase 1 before writing content
