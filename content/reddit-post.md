@@ -102,7 +102,7 @@ Eliminated the 312-page temp spill. Sort completed in memory.
 
 ```
 shared_buffers = '4GB'                     -- up from 2GB (25% of 32GB RAM)
-autovacuum_vacuum_cost_delay = '2ms'       -- down from 20ms
+autovacuum_vacuum_cost_delay = '2ms'       -- restored to PG 17 default (was 20ms legacy)
 autovacuum_vacuum_scale_factor = 0.05      -- vacuum at 5% dead tuples, not 20%
 ```
 
@@ -235,7 +235,7 @@ The plan was identical before and after the problem. Only the I/O statistics tol
 
 Here is why this is relevant right now: **PostgreSQL 18 (released 2025) includes BUFFERS output by default in EXPLAIN ANALYZE.** Before PG 18, you had to remember to type `EXPLAIN (ANALYZE, BUFFERS)` every time. Now every developer running `EXPLAIN ANALYZE` will see buffer stats automatically.
 
-If you are on PG 17 or earlier, the fix is simple -- always use `EXPLAIN (ANALYZE, BUFFERS)` instead of plain `EXPLAIN ANALYZE`. The option has existed since PG 8.4 (2009). It just was not the default, so most people never knew it was there.
+If you are on PG 17 or earlier, the fix is simple -- always use `EXPLAIN (ANALYZE, BUFFERS)` instead of plain `EXPLAIN ANALYZE`. The option has existed since PG 9.0 (2010). It just was not the default, so most people never knew it was there.
 
 ### The one-sentence version
 

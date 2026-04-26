@@ -92,7 +92,7 @@ Here is the setup. The customer ran a mid-size e-commerce platform on PostgreSQL
 
 The checkout flow executed a join across `orders`, `order_items`, and `inventory` to validate stock and calculate totals. For months, the p95 latency for this query sat at 50ms. Then it started creeping up. Over two weeks, it drifted to 200ms, then 600ms. Nobody noticed until a flash sale pushed it past 1.2 seconds.
 
-The business impact was immediate. Cart abandonment rose from roughly 70% (the Baymard Institute baseline, based on a meta-analysis of 49 studies) to approximately 82%. Research from Akamai and Gomez suggests each additional second of load time increases abandonment by about 7%, and a 1.15-second increase in checkout latency tracked almost exactly with that benchmark. At the company's revenue run rate, checkout downtime cost roughly $5,600 per minute (consistent with the Gartner industry average for e-commerce).
+The business impact was immediate. Cart abandonment rose from roughly 70% (the Baymard Institute baseline, based on a meta-analysis of 50 studies) to approximately 82%. Research from Akamai and Gomez suggests each additional second of load time increases abandonment by about 7%, and a 1.15-second increase in checkout latency tracked almost exactly with that benchmark. At the company's revenue run rate, checkout downtime cost roughly $5,600 per minute (consistent with the Gartner industry average for e-commerce).
 
 The team's first response was reasonable: they assumed network latency. They deployed PgBouncer to reduce connection overhead. They checked cloud provider status pages. They ran `EXPLAIN ANALYZE` on the checkout query:
 
@@ -255,7 +255,7 @@ We increased `shared_buffers` from 2GB to 4GB (on a 32GB RAM instance, this is w
 ```
 # postgresql.conf changes
 shared_buffers = '4GB'
-autovacuum_vacuum_cost_delay = '2ms'       # down from default 20ms
+autovacuum_vacuum_cost_delay = '2ms'       # restored to PG 17 default (was 20ms from legacy config)
 autovacuum_vacuum_scale_factor = 0.05      # vacuum at 5% dead tuples, not 20%
 ```
 
@@ -281,7 +281,7 @@ Result: `shared hit=3,100, shared read=87` -- a 97.3% hit ratio. `temp written=0
 |---|---|
 | Low shared hit ratio (0.3%) | `VACUUM ANALYZE` + `shared_buffers` 2GB -> 4GB |
 | `temp written` during checkout sort | `work_mem` 256kB -> 16MB via `SET LOCAL` |
-| Autovacuum falling behind inserts | `autovacuum_vacuum_cost_delay` 20ms -> 2ms, scale factor 20% -> 5% |
+| Autovacuum falling behind inserts | `autovacuum_vacuum_cost_delay` restored to 2ms default (was 20ms legacy), scale factor 20% -> 5% |
 
 ## Before and After: The Numbers
 
@@ -304,12 +304,11 @@ The part that sticks with me: one word -- `BUFFERS` -- surfaced the root cause t
 
 ## Which PostgreSQL Versions Support What
 
-Every technique in this post works on PostgreSQL 8.4 and later -- `BUFFERS` has been available since 2009. But the ecosystem around buffer diagnostics has matured significantly with each major release:
+Every technique in this post works on PostgreSQL 9.0 and later -- `BUFFERS` has been available since 2010. But the ecosystem around buffer diagnostics has matured significantly with each major release:
 
 | Version | Year | Feature Added |
 |---------|------|---------------|
-| PG 8.4 | 2009 | `EXPLAIN (BUFFERS)` introduced |
-| PG 9.0 | 2010 | Parenthesized option syntax: `EXPLAIN (ANALYZE, BUFFERS)` |
+| PG 9.0 | 2010 | `EXPLAIN (BUFFERS)` introduced with parenthesized option syntax |
 | PG 9.2 | 2012 | `track_io_timing` adds read/write times in ms |
 | PG 13 | 2020 | Planning buffers reported (reads of pg_class, pg_statistic) |
 | PG 16 | 2023 | `pg_stat_io` view for system-wide I/O statistics |
@@ -323,7 +322,7 @@ If you are on PG 17 or earlier, the fix is simple: always type `EXPLAIN (ANALYZE
 
 PG 19 (upcoming, 2026) further reduces the overhead of `EXPLAIN ANALYZE` itself using RDTSC-based timing, making it practical to run buffer diagnostics on more workloads without worrying about measurement overhead.
 
-![PostgreSQL version timeline: EXPLAIN BUFFERS features from PG 8.4 to PG 19](visuals/pg-version-timeline.png)
+![PostgreSQL version timeline: EXPLAIN BUFFERS features from PG 9.0 to PG 19](visuals/pg-version-timeline.png)
 
 ## Your Next Steps
 
@@ -348,7 +347,7 @@ PG 19 (upcoming, 2026) further reduces the overhead of `EXPLAIN ANALYZE` itself 
 1. **Establish buffer hit ratio baselines per critical query.** Not a global target -- per-query baselines. A checkout query at 95% that drops to 60% is a problem. A reporting query at 15% is normal.
 2. **Monitor temp_blks_written in pg_stat_statements.** Any query with growing `temp_blks_written` is a candidate for `work_mem` tuning or query optimization.
 3. **Review shared_buffers sizing quarterly.** As data grows, your working set grows. The 25% of RAM guideline is a starting point, not a permanent answer.
-4. **Tune autovacuum for high-insert tables.** The defaults (`autovacuum_vacuum_scale_factor = 0.2`, `autovacuum_vacuum_cost_delay = 20ms`) are conservative. For tables with heavy write traffic, lower both values to prevent bloat from outrunning the vacuum daemon.
+4. **Tune autovacuum for high-insert tables.** The defaults (`autovacuum_vacuum_scale_factor = 0.2`, `autovacuum_vacuum_cost_delay = 2ms` since PG 12) are conservative for high-write workloads. For tables with heavy write traffic, lower the scale factor and verify the cost delay has not been overridden by a legacy configuration to prevent bloat from outrunning the vacuum daemon.
 
 ### Long-Term Monitoring
 

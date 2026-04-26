@@ -197,12 +197,12 @@ Three distinct personas will engage with this content at different depths.
 
 **Heading**: *Which PostgreSQL Versions Support What*
 
-- Version timeline table: PG 8.4 (2009) introduced BUFFERS, PG 9.2 added track_io_timing, PG 13 added planning buffers, PG 16 added pg_stat_io, PG 17 added pg_buffercache_evict, PG 18 made BUFFERS default
+- Version timeline table: PG 9.0 (2010) introduced BUFFERS and parenthesized syntax, PG 9.2 added track_io_timing, PG 13 added planning buffers, PG 16 added pg_stat_io, PG 17 added pg_buffercache_evict, PG 18 made BUFFERS default
 - PG 18 inflection point: developers no longer need to remember the flag
 - PG 19 (upcoming, 2026): reduced EXPLAIN ANALYZE timing overhead
 - The case study fixes (VACUUM, work_mem, shared_buffers) work on ALL PostgreSQL versions
 
-`[VISUAL 5: pg-version-timeline.png]` — Horizontal timeline from PG 8.4 through PG 19
+`[VISUAL 5: pg-version-timeline.png]` -- Horizontal timeline from PG 9.0 through PG 19
 
 ---
 
@@ -241,7 +241,7 @@ Three distinct personas will engage with this content at different depths.
 | 2 | buffer-hit-comparison.png | PNG (matplotlib) | Section 4 | Side-by-side bars: before (95% hit, blue) vs. during incident (0.3% hit, red) |
 | 3 | query-plan-tree.png | PNG (matplotlib/SVG) | Section 4 | Query plan tree with buffer annotations at each node |
 | 4 | before-after-metrics.png | PNG (matplotlib) | Section 6 | Horizontal bars comparing before (WARN red) and after (SUCCESS green) |
-| 5 | pg-version-timeline.png | PNG (matplotlib) | Section 7 | Horizontal timeline PG 8.4 through PG 19 with BUFFERS milestones |
+| 5 | pg-version-timeline.png | PNG (matplotlib) | Section 7 | Horizontal timeline PG 9.0 through PG 19 with BUFFERS milestones |
 
 All visuals: 320 DPI, Helvetica Neue, no Unicode glyphs, white background, shared design tokens.
 
@@ -306,7 +306,7 @@ All visuals: 320 DPI, Helvetica Neue, no Unicode glyphs, white background, share
 | Cold cache hit ratio example | 1.5% (13/870) | boringSQL article | High |
 | work_mem spill example | 256kB forced 9.7MB spill | boringSQL article | High |
 | Checkout latency benchmark | < 500ms end-to-end | Industry consensus | Medium |
-| Cart abandonment baseline | ~70% | Baymard Institute (49 studies) | High |
+| Cart abandonment baseline | ~70% | Baymard Institute (50 studies) | High |
 | Abandonment per second of delay | +7% | Akamai/Gomez | Medium |
 | E-commerce downtime cost | $5,600/minute | Gartner | Medium |
 | PG 18 BUFFERS default | Committed, released 2025 | PG 18 release notes | High |

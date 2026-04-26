@@ -358,11 +358,10 @@ def render_pg_version_timeline():
             ha='center', fontsize=14, fontweight='bold', color=TOKENS['TEXT'])
 
     # Main timeline line
-    ax.plot([2008.5, 2027], [0, 0], color=TOKENS['MUTED'], lw=2.5, zorder=1)
+    ax.plot([2009.5, 2027], [0, 0], color=TOKENS['MUTED'], lw=2.5, zorder=1)
 
     milestones = [
-        (2009, "PG 8.4", "EXPLAIN (BUFFERS)\nintroduced", False),
-        (2010, "PG 9.0", "Parenthesized\nsyntax", False),
+        (2010, "PG 9.0", "EXPLAIN (BUFFERS)\nintroduced", False),
         (2012, "PG 9.2", "track_io_timing", False),
         (2020, "PG 13", "Planning\nbuffers", False),
         (2023, "PG 16", "pg_stat_io\nview", False),

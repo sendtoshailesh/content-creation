@@ -81,7 +81,7 @@ Generated: 2026-04-26
 |--------|-------|--------|
 | Amazon revenue per minute (approx.) | ~$830,000/minute (based on ~$435B annual revenue / 525,600 min) | Amazon 2023 annual revenue, calculated |
 | Average e-commerce downtime cost | $5,600/minute (industry average across all sizes) | Gartner widely-cited estimate; approximate, from ~2014 methodology |
-| Cart abandonment rate (baseline) | ~70% average | Baymard Institute, meta-analysis of 49 studies (2024 update) |
+| Cart abandonment rate (baseline) | ~70% average | Baymard Institute, meta-analysis of 50 studies (2024 update) |
 | Additional abandonment per second of load time | +7% per additional second | Various studies cite 1-7%; commonly referenced figure |
 | Slow checkout conversion drop | 1 second delay = ~7% reduction in conversions | Akamai/Gomez study (older but widely cited) |
 
@@ -95,8 +95,7 @@ Generated: 2026-04-26
 
 | Version | Year | Feature | Details |
 |---------|------|---------|---------|
-| PG 8.4 | 2009 | `EXPLAIN (BUFFERS)` introduced | Added buffer usage statistics as an EXPLAIN option; required explicit `BUFFERS` flag |
-| PG 9.0 | 2010 | New EXPLAIN syntax | Parenthesized option syntax: `EXPLAIN (ANALYZE, BUFFERS)` replaced positional syntax |
+| PG 9.0 | 2010 | `EXPLAIN (BUFFERS)` introduced | Added buffer usage statistics and parenthesized option syntax: `EXPLAIN (ANALYZE, BUFFERS)` |
 | PG 9.2 | 2012 | `track_io_timing` | Added I/O timing to BUFFERS output (read/write time in ms) |
 | PG 13 | 2020 | **Planning buffers** | EXPLAIN BUFFERS now reports buffer usage during the planning phase (reads of pg_class, pg_statistic, pg_index) |
 | PG 15 | 2022 | `pg_stat_io` view | New system-wide I/O statistics view (committed in 16 dev cycle, available PG16) |
@@ -182,7 +181,7 @@ This is significant because:
 
 5. **No cost-quantification angle** — Nobody connects buffer cache misses to actual revenue impact in e-commerce terms (checkout latency → cart abandonment → revenue loss).
 
-6. **Version timeline context is absent** — No single resource traces the evolution of BUFFERS across PG versions (8.4 → 13 → 18) to show why now is the inflection point.
+6. **Version timeline context is absent** -- No single resource traces the evolution of BUFFERS across PG versions (9.0 -> 13 -> 18) to show why now is the inflection point.
 
 ---
 

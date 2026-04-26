@@ -165,7 +165,7 @@ COMMIT;
 We bumped `shared_buffers` from 2 gigs to 4 gigs. On a 32-gig instance, that is 12.5% of RAM -- well within the recommended 25% guideline. And we tuned autovacuum to keep pace:
 
 ```
-autovacuum_vacuum_cost_delay = '2ms'    -- down from 20ms
+autovacuum_vacuum_cost_delay = '2ms'    -- restored to PG 17 default (was 20ms legacy)
 autovacuum_vacuum_scale_factor = 0.05   -- vacuum at 5% dead tuples
 ```
 
@@ -197,13 +197,13 @@ One word -- `BUFFERS` -- surfaced the root cause that three days of network debu
 
 ---
 
-### [9:30 - 10:30] Version Compatibility: PG 8.4 Through PG 18
+### [9:30 - 10:30] Version Compatibility: PG 9.0 Through PG 18
 
 **[SLIDE: pg-version-timeline.png]**
 
 **SCRIPT**:
 
-Quick version rundown. `EXPLAIN BUFFERS` has been available since PostgreSQL 8.4 -- that is 2009. So everything I showed you works on basically any PostgreSQL version you are running.
+Quick version rundown. `EXPLAIN BUFFERS` has been available since PostgreSQL 9.0 -- that is 2010. So everything I showed you works on basically any PostgreSQL version you are likely running.
 
 But here are the milestones. PG 9.2 added `track_io_timing` so you get actual read and write times in milliseconds. PG 13 started reporting planning buffers -- reads of `pg_class` and `pg_statistic` during plan creation. PG 16 gave us the `pg_stat_io` view for system-wide I/O statistics. PG 17, which our case study ran on, added `pg_buffercache_evict` for controlled cache benchmarking.
 
@@ -256,7 +256,7 @@ Thanks for watching.
 | 5:00-6:00 | Slide | query-plan-tree.png | EXPLAIN BUFFERS plan tree with I/O stats annotated at each node |
 | 6:15-7:00 | Slide | buffer-hit-comparison.png | Side-by-side bars: before (0.3% hit ratio) vs. expected (95%+) |
 | 8:30-9:30 | Slide | before-after-metrics.png | Horizontal bars comparing before (red) and after (green) across all metrics |
-| 9:30-10:30 | Slide | pg-version-timeline.png | Horizontal timeline PG 8.4 through PG 19 with BUFFERS milestones |
+| 9:30-10:30 | Slide | pg-version-timeline.png | Horizontal timeline PG 9.0 through PG 19 with BUFFERS milestones |
 
 ---
 
@@ -294,7 +294,7 @@ A customer's e-commerce checkout query went from 50ms to 1.2 seconds. The team s
 
 In this video, I walk through the full investigation: what EXPLAIN BUFFERS reveals, how we diagnosed a 0.3% buffer hit ratio, the three targeted fixes (VACUUM, work_mem, shared_buffers), and the result -- 42ms execution time with a 97.3% hit ratio.
 
-Works on PostgreSQL 8.4+. On PG 18, BUFFERS is now included by default.
+Works on PostgreSQL 9.0+. On PG 18, BUFFERS is now included by default.
 
 TIMESTAMPS
 0:00 The 1.2-second checkout incident
@@ -306,7 +306,7 @@ TIMESTAMPS
 7:30 Fix 2: work_mem tuning with SET LOCAL
 8:00 Fix 3: shared_buffers and autovacuum configuration
 9:00 Before/after results: 96.5% latency reduction
-9:30 PostgreSQL version compatibility (PG 8.4 - PG 19)
+9:30 PostgreSQL version compatibility (PG 9.0 - PG 19)
 10:30 4 takeaways and your next step
 
 LINKS
