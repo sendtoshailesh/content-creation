@@ -138,7 +138,7 @@ Limit  (cost=1245.67..1245.68 rows=5 width=24)
             (actual time=1187.430..1187.438 rows=5 loops=1)
         Sort Key: o.created_at DESC
         Sort Method: external merge  Disk: 2500kB
-        Buffers: shared hit=48 read=14950, temp read=312 written=2500
+        Buffers: shared hit=48 read=14950, temp read=312 written=312
         ->  Nested Loop  (cost=1.13..1198.45 rows=1300 width=24)
                          (actual time=0.125..1152.678 rows=1300 loops=1)
               Buffers: shared hit=48 read=14950
@@ -165,7 +165,7 @@ Execution Time: 1192.567 ms
 Three numbers jumped out immediately:
 
 1. **shared hit=50, shared read=15,000** -- a 0.3% buffer hit ratio. This query was reading almost entirely from disk.
-2. **temp written=2,500** on the Sort node -- `work_mem` was too small, forcing a 2,500-page external merge sort to disk.
+2. **temp written=312** on the Sort node -- `work_mem` was too small, forcing a 312-page external merge sort to disk.
 3. **shared written=847** -- the background writer was falling behind, and PostgreSQL was doing synchronous writes during a `SELECT`. That should not happen under normal conditions.
 
 Compare that to the expected baseline: this same query, two months earlier, ran with 95%+ hit ratio, zero temp spills, and executed in under 50ms. The plan was identical. The I/O profile was catastrophically different.
@@ -212,7 +212,7 @@ The orders table had grown from 857 pages to over 15,000 pages. During the promo
 
 The instance had 2GB allocated to `shared_buffers`. That was adequate when the orders table was 857 pages (~6.7MB). At 15,000 pages (~117MB) -- with the index pages, order_items, and inventory tables competing for the same cache -- the working set had outgrown the cache. The checkout query was evicting its own pages faster than it could reuse them.
 
-**The work_mem spill.** The Sort node's `temp written=2,500` revealed a separate problem. The `work_mem` setting had been configured at 256kB (well below the PostgreSQL 17 default of 4MB). The checkout query's `ORDER BY created_at DESC` on 1,300 rows exceeded that limit and spilled to an external merge sort on disk -- adding hundreds of milliseconds on every execution.
+**The work_mem spill.** The Sort node's `temp written=312` revealed a separate problem. The `work_mem` setting had been configured at 256kB (well below the PostgreSQL 17 default of 4MB). The checkout query's `ORDER BY created_at DESC` exceeded that limit and spilled to an external merge sort on disk -- adding unnecessary I/O latency on every execution.
 
 ![EXPLAIN BUFFERS query plan tree with I/O statistics at each node](visuals/query-plan-tree.png)
 
@@ -246,7 +246,7 @@ LIMIT 5;
 COMMIT;
 ```
 
-`SET LOCAL` scopes the change to the current transaction -- no risk to other queries. The 16MB `work_mem` eliminated the 2,500-page temp spill entirely. The sort completed in memory.
+`SET LOCAL` scopes the change to the current transaction -- no risk to other queries. The 16MB `work_mem` eliminated the 312-page temp spill entirely. The sort completed in memory.
 
 **Fix 3 -- Configuration: shared_buffers and autovacuum tuning.**
 
@@ -291,7 +291,7 @@ Here are the measured results, before and after the three fixes:
 |--------|--------|-------|--------|
 | Execution time | 1,192ms | 42ms | 96.5% reduction |
 | Buffer hit ratio | 0.3% | 97.3% | +97 percentage points |
-| Temp pages spilled | 2,500 | 0 | Eliminated |
+| Temp pages spilled | 312 | 0 | Eliminated |
 | Shared pages written (sync) | 847 | 0 | Eliminated |
 | Checkout p95 latency | 1,200ms | 48ms | 96% reduction |
 | Orders table pages | 15,000 | 3,200 | 78.7% reduction |

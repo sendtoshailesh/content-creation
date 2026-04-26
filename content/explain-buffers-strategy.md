@@ -153,7 +153,7 @@ Three distinct personas will engage with this content at different depths.
 - Step 1: `pg_stat_statements` showed `shared_blks_read` grew 30x over two weeks while `shared_blks_hit` stayed flat
 - Step 2: orders table had grown from 857 pages to 15,000+ pages (autovacuum falling behind during promotional inserts)
 - Step 3: 2GB `shared_buffers` was adequate for original table but not for 15,000 pages of hot checkout data
-- Additional: `temp written = 2,500` pages indicated `work_mem` spills from sort on order line items
+- Additional: `temp written = 312` pages indicated `work_mem` spills from sort on order line items
 
 `[VISUAL 2: buffer-hit-comparison.png]` — Bar chart: before (95% hit) vs. during incident (0.3% hit)
 
@@ -166,7 +166,7 @@ Three distinct personas will engage with this content at different depths.
 **Heading**: *Three Changes, One Query*
 
 - Fix 1 (immediate): Manual `VACUUM ANALYZE` on orders table; table shrunk from 15,000 to ~3,200 pages
-- Fix 2 (immediate): `SET LOCAL work_mem = '16MB'` for checkout query session; eliminated 2,500-page temp spill
+- Fix 2 (immediate): `SET LOCAL work_mem = '16MB'` for checkout query session; eliminated 312-page temp spill
 - Fix 3 (configuration): `shared_buffers` from 2GB to 4GB; tuned `autovacuum_vacuum_cost_delay` to prevent future bloat
 
 **Verification**: Re-run `EXPLAIN (ANALYZE, BUFFERS)`: `shared hit = 3,100, shared read = 87` (97.3% hit ratio), `temp written = 0`, execution time: 42ms
@@ -185,7 +185,7 @@ Three distinct personas will engage with this content at different depths.
 
 **Heading**: *Before and After: The Numbers*
 
-- Before/after metrics table: execution time (1,200ms to 42ms), hit ratio (0.3% to 97.3%), temp spill (2,500 to 0 pages), checkout p95 (1,200ms to 48ms)
+- Before/after metrics table: execution time (1,200ms to 42ms), hit ratio (0.3% to 97.3%), temp spill (312 to 0 pages), checkout p95 (1,200ms to 48ms)
 - Cart abandonment recovered to baseline (~70%) within 48 hours
 - Emphasis: one word (`BUFFERS`) surfaced the problem that three days of network debugging missed
 

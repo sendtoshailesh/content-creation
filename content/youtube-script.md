@@ -106,7 +106,7 @@ LIMIT 5;
 
 And look at what came back. Right here at the top: `shared hit=50, shared read=15,000`. Let that sink in. Fifty pages from cache, 15,000 from disk. That is a 0.3% buffer hit ratio. This query was reading almost entirely from disk.
 
-But there is more. Look at the sort node: `temp written=2,500`. The `work_mem` was set to 256 kilobytes, way too small. PostgreSQL was spilling an external merge sort to disk on every single execution.
+But there is more. Look at the sort node: `temp written=312`. The `work_mem` had been set to 256 kilobytes -- well below the default 4 megabytes. PostgreSQL was spilling an external merge sort to disk on every single execution.
 
 And this one: `shared written=847`. The background writer was falling behind, and PostgreSQL was doing synchronous writes during a `SELECT`. That should not happen under normal load.
 
@@ -158,7 +158,7 @@ SET LOCAL work_mem = '16MB';
 COMMIT;
 ```
 
-`SET LOCAL` scopes the change to the current transaction. No risk to other queries. The 16 megabytes eliminated the 2,500-page temp spill entirely. The sort completed in memory.
+`SET LOCAL` scopes the change to the current transaction. No risk to other queries. The 16 megabytes eliminated the temp spill entirely. The sort completed in memory.
 
 **Fix three -- configuration. shared_buffers and autovacuum tuning.**
 
@@ -185,7 +185,7 @@ Then the moment of truth. We re-ran `EXPLAIN (ANALYZE, BUFFERS)` on the checkout
 
 **SCRIPT**:
 
-Let me put the full picture on screen. Execution time: 1,192 milliseconds down to 42. That is a 96.5% reduction. Buffer hit ratio: 0.3% up to 97.3%. Temp pages spilled: 2,500 down to zero. Checkout p95: 1,200 milliseconds down to 48.
+Let me put the full picture on screen. Execution time: 1,192 milliseconds down to 42. That is a 96.5% reduction. Buffer hit ratio: 0.3% up to 97.3%. Temp pages spilled: 312 down to zero. Checkout p95: 1,200 milliseconds down to 48.
 
 Cart abandonment recovered to the baseline -- about 70% -- within 48 hours.
 

@@ -84,6 +84,7 @@ Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **
 | 5 | `@social-twitter` | Tweet thread + standalone summary |
 | 6 | `@social-reddit` | Markdown Reddit post |
 | 7 | `@brand-guardian` | Brand consistency audit across all content |
+| 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
 | 9 | `@content-repurposer` | Newsletter, slide deck, podcast, infographic |
 
@@ -99,6 +100,7 @@ You don't have to run the full pipeline. Use any agent directly:
 @trend-researcher Research market landscape for [topic]
 @seo-optimizer Optimize content/my-blog.md for search
 @brand-guardian Audit all content for brand consistency
+@grounded-content-reviewer Validate content against web sources
 @social-strategist Create social distribution plan for content/my-blog.md
 @content-repurposer Repurpose content/my-blog.md into newsletter, slides, podcast
 ```
@@ -131,7 +133,7 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 14 specialist agents
+├── agents/                          # 15 specialist agents
 ├── skills/                          # 3 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
 │   ├── unicode-formatting/          #   Bold/italic for social posts

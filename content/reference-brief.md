@@ -61,7 +61,7 @@ Generated: 2026-04-26
 - Example schema: 2,000 customers (13 pages), 100,000 orders (857 pages)
 - Cold cache: 1.5% hit ratio; warm cache: approaches 100%
 - work_mem at 256kB forced 9.7MB disk spill for 200K row sort
-- Problematic query example: 50 hits vs 15,000 reads, 847 written, 2,500 temp spill, 156 planning reads
+- Problematic query example: 50 hits vs 15,000 reads, 847 written, temp spill, 156 planning reads
 
 #### Tuning Levers Identified
 

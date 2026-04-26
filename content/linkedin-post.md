@@ -27,14 +27,14 @@ Three days of debugging. The answer was right there in the I/O stats they never 
 The fix was three targeted changes -- zero application code:
 
 1. VACUUM ANALYZE on the bloated orders table (15,000 pages back to 3,200)
-2. work_mem increase from 256kB to 16MB (eliminated a 2,500-page disk spill)
+2. work_mem increase from 256kB to 16MB (eliminated a 312-page disk spill)
 3. shared_buffers from 2GB to 4GB (working set had outgrown the cache)
 
 The results:
 
 Execution time: 1,192ms to 42ms (96.5% reduction)
 Buffer hit ratio: 0.3% to 97.3%
-Temp pages spilled: 2,500 to 0
+Temp pages spilled: 312 to 0
 Cart abandonment: recovered to baseline within 48 hours
 
 Starting with PostgreSQL 18, BUFFERS is included by default in EXPLAIN ANALYZE. Every developer will see I/O stats automatically. If you are on PG 17 or earlier, you have to ask for it.
@@ -81,7 +81,7 @@ Three days of debugging. The answer was in the I/O stats 𝘵𝘩𝘦𝘺 𝘯�
 📊 𝗧𝗵𝗿𝗲𝗲 𝗳𝗶𝘅𝗲𝘀. 𝗭𝗲𝗿𝗼 𝗰𝗼𝗱𝗲 𝗰𝗵𝗮𝗻𝗴𝗲𝘀.
 
 1. 𝗩𝗔𝗖𝗨𝗨𝗠 𝗔𝗡𝗔𝗟𝗬𝗭𝗘 -- bloated table from 15,000 pages back to 3,200
-2. 𝘄𝗼𝗿𝗸_𝗺𝗲𝗺 256kB -> 16MB -- eliminated a 2,500-page disk spill
+2. 𝘄𝗼𝗿𝗸_𝗺𝗲𝗺 256kB -> 16MB -- eliminated a 312-page disk spill
 3. 𝘀𝗵𝗮𝗿𝗲𝗱_𝗯𝘂𝗳𝗳𝗲𝗿𝘀 2GB -> 4GB -- working set had outgrown the cache
 
 ━━━
@@ -90,7 +90,7 @@ Three days of debugging. The answer was in the I/O stats 𝘵𝘩𝘦𝘺 𝘯�
 
 ▸ Execution time: 𝟭,𝟭𝟵𝟮𝗺𝘀 -> 𝟰𝟮𝗺𝘀 (96.5% reduction)
 ▸ Buffer hit ratio: 𝟬.𝟯% -> 𝟵𝟳.𝟯%
-▸ Temp pages spilled: 2,500 -> 𝟬
+▸ Temp pages spilled: 312 -> 𝟬
 ▸ Cart abandonment: recovered to baseline in 48 hours
 
 PostgreSQL 18 now includes BUFFERS by default in EXPLAIN ANALYZE. 𝘌𝘷𝘦𝘳𝘺 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘦𝘳 𝘸𝘪𝘭𝘭 𝘴𝘦𝘦 𝘐/𝘖 𝘴𝘵𝘢𝘵𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘪𝘤𝘢𝘭𝘭𝘺.

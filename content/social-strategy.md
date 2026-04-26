@@ -27,7 +27,7 @@ These elements work standalone across platforms:
 - **The data point**: 0.3% buffer hit ratio on a query that should be 95%+ cached
 - **The contrast**: 50ms to 1.2s -- same query plan, completely different I/O profile
 - **The business math**: 1.15s latency increase x +7% abandonment per second (Akamai/Gomez) = 12-point cart abandonment spike
-- **The before/after table**: execution time 1,192ms to 42ms, hit ratio 0.3% to 97.3%, temp spill 2,500 to 0 pages
+- **The before/after table**: execution time 1,192ms to 42ms, hit ratio 0.3% to 97.3%, temp spill 312 to 0 pages
 - **The one-liner hook**: "They ran EXPLAIN ANALYZE for three days. Then they added one word."
 - **Visual**: buffer hit comparison chart (0.3% vs 97.3%) -- works as a standalone image on any platform
 

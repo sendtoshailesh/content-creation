@@ -230,7 +230,7 @@ def render_query_plan_tree():
 
     # Level 1: Sort
     draw_node(7, 5.8, 4.5, 0.9, "Sort (external merge, Disk: 2,500kB)",
-              "temp read=312, written=2,500", problem=True)
+              "temp read=312, written=312", problem=True)
     connect(7, 7.05, 7, 6.25)
 
     # Level 2: Nested Loop
@@ -266,7 +266,7 @@ def render_query_plan_tree():
                 arrowprops=dict(arrowstyle='->', color=TOKENS['WARN'], lw=1.5))
 
     # Arrow pointing to sort node
-    ax.annotate("work_mem spill\n(256kB default too small)",
+    ax.annotate("work_mem spill\n(256kB config too small)",
                 xy=(10.5, 5.8), xytext=(12.2, 6.8),
                 ha='center', fontsize=8, fontweight='bold',
                 color=TOKENS['WARN'],
@@ -296,7 +296,7 @@ def render_before_after_metrics():
         "Hit ratio (%)",
         "Execution time (ms)",
     ]
-    before_vals = [1200, 2500, 0.3, 1192]
+    before_vals = [1200, 312, 0.3, 1192]
     after_vals = [48, 0, 97.3, 42]
 
     y_pos = np.arange(len(metrics))

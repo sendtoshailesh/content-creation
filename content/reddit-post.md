@@ -41,7 +41,7 @@ Key lines from the output:
 Buffers: shared hit=50 read=15000 written=847
 ...
 Sort Method: external merge  Disk: 2500kB
-Buffers: shared hit=48 read=14950, temp read=312 written=2500
+Buffers: shared hit=48 read=14950, temp read=312 written=312
 ...
 Index Scan using orders_user_id_idx on orders o
   Buffers: shared hit=12 read=14800
@@ -50,7 +50,7 @@ Index Scan using orders_user_id_idx on orders o
 Three immediate red flags:
 
 1. **shared hit=50, shared read=15,000** -- that is a 0.3% buffer hit ratio on what should be a 95%+ cached OLTP query
-2. **temp written=2,500** on the Sort node -- `work_mem` was set to 256kB (well below the PG 17 default of 4MB), forcing a 2,500-page external merge sort to disk
+2. **temp written=312** on the Sort node -- `work_mem` was set to 256kB (well below the PG 17 default of 4MB), forcing a 312-page external merge sort to disk
 3. **shared written=847** -- background writer could not keep up, PostgreSQL was doing synchronous writes during a SELECT
 
 ### Confirming at the workload level
@@ -96,7 +96,7 @@ SET LOCAL work_mem = '16MB';
 COMMIT;
 ```
 
-Eliminated the 2,500-page temp spill. Sort completed in memory.
+Eliminated the 312-page temp spill. Sort completed in memory.
 
 **Fix 3: shared_buffers + autovacuum tuning**
 
@@ -112,7 +112,7 @@ autovacuum_vacuum_scale_factor = 0.05      -- vacuum at 5% dead tuples, not 20%
 |--------|--------|-------|
 | Execution time | 1,192ms | 42ms |
 | Buffer hit ratio | 0.3% | 97.3% |
-| Temp pages spilled | 2,500 | 0 |
+| Temp pages spilled | 312 | 0 |
 | Shared pages written (sync) | 847 | 0 |
 | Orders table pages | 15,000 | 3,200 |
 
@@ -169,7 +169,7 @@ The root cause: table bloat. During a promotional surge, high insert volume had 
 Three configuration changes, no application code:
 
 1. **Manual VACUUM ANALYZE** -- reclaimed dead tuples, table shrank from 15,000 to 3,200 pages
-2. **work_mem tuning** (256kB to 16MB via `SET LOCAL`) -- eliminated a 2,500-page temp spill during sorts
+2. **work_mem tuning** (256kB to 16MB via `SET LOCAL`) -- eliminated a 312-page temp spill during sorts
 3. **shared_buffers resize** (2GB to 4GB) + autovacuum tuning -- cache now fits the working set, vacuum keeps pace with writes
 
 Result: 1,192ms down to 42ms. Buffer hit ratio from 0.3% to 97.3%.

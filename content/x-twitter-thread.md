@@ -143,7 +143,7 @@ Root cause -- three problems compounding:
 
 𝟮. 𝗨𝗻𝗱𝗲𝗿𝘀𝗶𝘇𝗲𝗱 𝘀𝗵𝗮𝗿𝗲𝗱_𝗯𝘂𝗳𝗳𝗲𝗿𝘀: 2GB couldn't hold the bloated working set.
 
-𝟯. 𝘄𝗼𝗿𝗸_𝗺𝗲𝗺 𝘀𝗽𝗶𝗹𝗹: 256kB forced a 2,500-page sort to disk.
+𝟯. 𝘄𝗼𝗿𝗸_𝗺𝗲𝗺 𝘀𝗽𝗶𝗹𝗹: 256kB (custom config) forced a 312-page sort to disk.
 
 ── END COPY ──
 
@@ -173,7 +173,7 @@ Autovacuum had fallen behind during the promo surge. One command, 78.7% table si
 
 𝗙𝗶𝘅 𝟮: SET LOCAL work_mem = '16MB'
 
-Eliminated the 2,500-page temp spill. Sort completed in memory. SET LOCAL scopes it to one transaction -- zero risk to other queries.
+Eliminated the temp spill entirely. Sort completed in memory. SET LOCAL scopes it to one transaction -- zero risk to other queries.
 
 𝗙𝗶𝘅 𝟯: shared_buffers 2GB -> 4GB + aggressive autovacuum tuning.
 
@@ -193,7 +193,7 @@ No application code changes.
 
 ▸ Execution: 1,192ms -> 𝟰𝟮𝗺𝘀 (96.5% faster)
 ▸ Hit ratio: 0.3% -> 𝟵𝟳.𝟯%
-▸ Temp spill: 2,500 pages -> 𝟬
+▸ Temp spill: 312 pages -> 𝟬
 ▸ Sync writes: 847 -> 𝟬
 ▸ Checkout p95: 1,200ms -> 48ms
 
