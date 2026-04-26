@@ -1,145 +1,246 @@
-# Reddit Post — Model Selection Field Guide
+# Reddit Posts -- PostgreSQL EXPLAIN BUFFERS
 
-> Reddit supports native Markdown. Use **bold**, *italic*, headers, and bullet lists.
-> Do NOT use Unicode bold/italic (that's for LinkedIn/Twitter only).
-> Tone: conversational, technically credible, anti-promotional.
-
----
-
-## Suggested Subreddits & Titles
-
-**r/MachineLearning:**
-> [D] We cut inference costs 66% by stopping "just use the best model" — here's our framework
-
-**r/ExperiencedDevs:**
-> We burned $140K in 60 days on AI inference before we figured out model selection is a product decision, not a technical one
-
-**r/artificial:**
-> Why "which AI model is best?" is the wrong question — a field guide for teams shipping AI in production
-
-**r/LocalLLaMA:**
-> How tiered model routing (lightweight + mid + frontier) saved us $27K/month and improved latency 65%
+> Three subreddit-specific posts, each with a different angle.
+> Standard Markdown only. No Unicode bold/italic. No emojis.
 
 ---
 
-## Post Body
+## Post 1: r/PostgreSQL
 
-**TL;DR:** Most teams pick one AI model and use it for everything. That's how you burn $140K in 60 days. The fix: treat model selection as an ongoing product decision, score tasks across 7 dimensions, and build a tiered model portfolio with routing rules. One of my customers went from $41K→$14K/month (−66%) and 5.1s→1.8s latency (−65%) by switching from single-model to tiered routing. Framework, case study, and 30-day playbook below.
-
----
-
-### The mistake I keep seeing
-
-While working with one of my customers, I saw them standardize on a frontier model across their entire product — autocomplete, email drafts, spam classification, the works.
-
-The demos were great. Production was not:
-
-- **4.2s latency** on autocomplete. Users literally typed over the AI suggestions.
-- **$47K/month** inference bill — 3× their projected budget. Most of it was grammar corrections that a $0.15/M-token model could handle.
-- **No fallback.** When their provider had a 40-minute degradation, the entire product went down.
-
-Nothing catastrophically failed. It just became impossible to scale.
-
-And this isn't a one-off. a16z's 2025 AI survey found **over 60% of teams using LLMs in production have switched their primary model at least once**, with a median time-to-switch of 4.5 months. The "pick GPT-4 and forget about it" era is over.
-
-### The mindset shift
-
-Teams that scale AI don't ask "which model is best?" — they ask "which model is best *for this task*?"
-
-That's the difference between model monogamy and a model portfolio. Most products have 4–6 distinct AI task types. Using one model for all of them is like using a chef's knife for everything in the kitchen.
-
-### The 7-dimension framework
-
-Every AI task should be scored across:
-
-1. **Task fit** — classify/extract vs. draft vs. reason vs. generate code. Each has different capability requirements.
-2. **Quality bar** — defined in business terms, not vibes. "Good enough" for internal draft suggestions ≠ "good enough" for customer-facing support.
-3. **Latency budget** — autocomplete needs <300ms, chat needs <2s TTFT, long-form can tolerate 8s. A frontier model averaging 3.8s on a 300ms task isn't "higher quality" — it's a UX regression.
-4. **Cost envelope** — and I mean the *real* cost. Your actual inference bill is typically 1.5–2.5× the sticker price once you factor in verbose system prompts, retry loops, guardrail passes, and RAG context bloat.
-5. **Data sensitivity** — map your data to three zones (public, internal, regulated) and pre-approve providers per zone. This prevents last-minute compliance blockers.
-6. **Integration complexity** — structured output reliability, tool/function calling, streaming, SDK maturity, version pinning. A model that benchmarks well can still be expensive in eng time.
-7. **Operational reliability** — historical uptime, degradation behavior, fallback paths, circuit breakers. Run your eval suite at 2 AM and 2 PM on the same day — if quality variance exceeds 10%, you have a reliability problem.
-
-Miss any one of these and you're rewriting your pipeline within 90 days.
-
-### The tier cheat sheet (2026 pricing)
-
-Approximate per 1M tokens, input/output blended:
-
-| Tier | Models | Cost Range | Best For |
-|---|---|---|---|
-| **Lightweight** | Haiku, Gemini Flash, GPT-4o mini | $0.10–$0.60 | Classification, extraction, triage |
-| **Mid-tier** | Sonnet 3.5, GPT-4o, Gemini Pro | $2–$15 | Drafting, chat, general reasoning |
-| **Frontier** | Opus, o1/o3, Gemini Ultra | $15–$60+ | Complex analysis, multi-step reasoning |
-
-### The case study
-
-One of my customers — a B2B SaaS company — launched an AI copilot for sales teams with three features: meeting summaries, email drafts, and deal-risk analysis. They standardized on Claude 3 Opus for everything.
-
-What broke after 4 weeks:
-
-- Email drafting hit **5.1s p95 latency** during peak hours (Opus throughput limits)
-- Meeting summaries cost **$28K/month** for a feature users rated "nice to have"
-- Deal-risk analysis had unpredictable cost spikes on quarter-end
-
-They applied the framework and shifted to tiered routing:
-
-- **Haiku** → meeting summary extraction
-- **Sonnet 3.5** → email drafts (default), with confidence-based escalation to Opus
-- **Opus** → deal-risk analysis only
-
-Plus: automatic fallback, graceful degradation, and weekly cost-quality review.
-
-**Results after 8 weeks:**
-
-| Metric | Before | After | Change |
-|---|---|---|---|
-| Monthly cost | $41K | $14K | **−66%** |
-| Email draft p95 latency | 5.1s | 1.8s | **−65%** |
-| Meeting summary satisfaction | 3.8/5 | 4.1/5 | +8% |
-| Deal-risk accuracy | 82% | 84% | +2% |
-
-Quality stable or better across the board. The core pattern: **they stopped chasing "best model" and built a model portfolio with explicit routing rules.**
-
-### The 30-day playbook
-
-You can run this with any cross-functional team:
-
-- **Week 1:** Define top 3–5 AI tasks, write quality rubrics (10 test prompts, 1–5 scoring), set latency budgets, define cost ceilings, map data sensitivity zones.
-- **Week 2:** Evaluate 2–4 candidates (not 10+ — that's analysis paralysis). Same prompt set, same rubric, measure quality + p95 latency + cost per 100 requests.
-- **Week 3:** Shadow deploy at 5–10% of real traffic. Monitor user-facing outcomes (completion rates, edit rates), not just API metrics. Keep fallback active.
-- **Week 4:** Finalize task-to-model routing map, assign ownership, document swap triggers, set review cadence (weekly first month, biweekly after).
-
-### The checklist (before you lock any model into production)
-
-If you can't answer "yes" to at least 7 of these, your decision is premature:
-
-- [ ] Task-specific quality thresholds with scoring rubric?
-- [ ] Maximum acceptable latency per interaction pattern?
-- [ ] Cost modeled under baseline, peak, and growth scenarios?
-- [ ] Data handling validated per compliance zone?
-- [ ] Fallback and escalation paths that activate automatically?
-- [ ] Tested with representative prompts AND adversarial edge cases?
-- [ ] Clear ownership for monitoring, tuning, and re-evaluation?
-- [ ] Specific trigger points for model replacement or rerouting?
-
-### The readiness test
-
-If your model strategy has no explicit *downgrade path* (for when you're overspending) and no explicit *escalation path* (for when quality falls short), it's not ready for production scale.
+**Title**: How EXPLAIN (ANALYZE, BUFFERS) solved a checkout latency crisis: 1.2s to 42ms with three changes
 
 ---
 
-I wrote this up as a longer field guide with all the diagrams, comparison matrices, and the full case study breakdown. Happy to share the link if anyone's interested — but mainly curious what frameworks or approaches others are using.
-
-**What's your team running — single model or portfolio? What made you switch (or not)?**
+**TL;DR**: A customer's checkout query regressed from 50ms to 1.2s over two weeks. `EXPLAIN ANALYZE` showed the same plan every time -- same index scan, same nested loop. Adding `BUFFERS` revealed a 0.3% buffer hit ratio (50 shared hits vs 15,000 shared reads). Three changes -- VACUUM ANALYZE, work_mem tuning, shared_buffers resize -- brought it down to 42ms with a 97.3% hit ratio. No application code changes.
 
 ---
 
-## Posting Notes
+I was working with a customer running a mid-size e-commerce platform on PostgreSQL 17 -- about 2 million rows in orders, 500K active users, 32GB RAM instance. Their checkout flow joins `orders`, `order_items`, and `inventory` to validate stock and calculate totals. For months p95 was ~50ms. Then it started creeping up over two weeks until a flash sale pushed it past 1.2 seconds.
 
-- **Tone:** The post is written to feel like a practitioner sharing experience, not a marketer pushing content. The blog link is offered passively ("happy to share if interested") — this performs better on Reddit than a direct link.
-- **If comments ask for the link**, reply with: `https://shailesh0.substack.com/publish/post/190276894`
-- **Engage with comments.** Reddit rewards OPs who respond substantively. Have the framework details fresh so you can answer technical follow-ups.
-- **Best time to post:** Weekdays 9–11 AM EST (peak Reddit traffic for technical subs)
-- **Flair:** Use [D] (Discussion) flair on r/MachineLearning; no flair needed on other subs.
-- **Cross-posting:** Post to one sub first. If it gains traction (>50 upvotes), cross-post to others after 24 hours. Don't spam all subs simultaneously.
+The team ran `EXPLAIN ANALYZE` repeatedly. The plan was identical every time: Index Scan on `orders_user_id_idx`, Nested Loop joins, same estimated rows. So they tuned PgBouncer, added read replicas, opened a ticket with their cloud provider. Three days of debugging, none of it helped.
+
+### What BUFFERS showed
+
+We added one option to the command:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT o.order_id, o.total, i.stock_available
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+JOIN inventory i ON i.product_id = oi.product_id
+WHERE o.user_id = 8421
+  AND o.status = 'pending'
+ORDER BY o.created_at DESC
+LIMIT 5;
+```
+
+Key lines from the output:
+
+```
+Buffers: shared hit=50 read=15000 written=847
+...
+Sort Method: external merge  Disk: 2500kB
+Buffers: shared hit=48 read=14950, temp read=312 written=2500
+...
+Index Scan using orders_user_id_idx on orders o
+  Buffers: shared hit=12 read=14800
+```
+
+Three immediate red flags:
+
+1. **shared hit=50, shared read=15,000** -- that is a 0.3% buffer hit ratio on what should be a 95%+ cached OLTP query
+2. **temp written=2,500** on the Sort node -- `work_mem` was set to 256kB (well below the PG 17 default of 4MB), forcing a 2,500-page external merge sort to disk
+3. **shared written=847** -- background writer could not keep up, PostgreSQL was doing synchronous writes during a SELECT
+
+### Confirming at the workload level
+
+We checked pg_stat_statements to make sure this was not a one-off cold-cache read:
+
+```sql
+SELECT query,
+       calls,
+       shared_blks_hit,
+       shared_blks_read,
+       round(shared_blks_hit::numeric /
+             nullif(shared_blks_hit + shared_blks_read, 0), 4) AS hit_ratio,
+       temp_blks_written
+FROM pg_stat_statements
+WHERE query LIKE '%orders%order_items%inventory%'
+ORDER BY shared_blks_read DESC
+LIMIT 5;
+```
+
+`shared_blks_read` had grown 30x over two weeks while `shared_blks_hit` stayed flat. Consistently reading from disk, execution after execution.
+
+### Root cause
+
+The orders table had bloated from 857 pages to over 15,000 pages. During the promotional event, high insert volume outpaced autovacuum. Dead tuples accumulated, the table bloated, and hot checkout data spread across pages that no longer fit in the 2GB shared_buffers cache. The query was evicting its own pages faster than it could reuse them.
+
+### Three fixes
+
+**Fix 1: Manual VACUUM ANALYZE**
+
+```sql
+VACUUM (VERBOSE, ANALYZE) orders;
+```
+
+Reclaimed dead tuples. Table shrank from 15,000 to ~3,200 pages (still larger than original 857 due to legitimate order growth).
+
+**Fix 2: SET LOCAL work_mem**
+
+```sql
+BEGIN;
+SET LOCAL work_mem = '16MB';
+-- checkout query here
+COMMIT;
+```
+
+Eliminated the 2,500-page temp spill. Sort completed in memory.
+
+**Fix 3: shared_buffers + autovacuum tuning**
+
+```
+shared_buffers = '4GB'                     -- up from 2GB (25% of 32GB RAM)
+autovacuum_vacuum_cost_delay = '2ms'       -- down from 20ms
+autovacuum_vacuum_scale_factor = 0.05      -- vacuum at 5% dead tuples, not 20%
+```
+
+### Before and after
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Execution time | 1,192ms | 42ms |
+| Buffer hit ratio | 0.3% | 97.3% |
+| Temp pages spilled | 2,500 | 0 |
+| Shared pages written (sync) | 847 | 0 |
+| Orders table pages | 15,000 | 3,200 |
+
+### PG 18 note
+
+Starting with PostgreSQL 18, `EXPLAIN ANALYZE` includes BUFFERS output by default. If you are on PG 17 or earlier, get in the habit of typing `EXPLAIN (ANALYZE, BUFFERS)` instead of `EXPLAIN ANALYZE`. The I/O profile is where the real performance story lives -- the plan alone does not tell you if your data is coming from cache or disk.
+
+For ongoing monitoring, `pg_stat_statements` gives you workload-level buffer stats over time, and `auto_explain` with `log_buffers = on` captures EXPLAIN output for any query exceeding a latency threshold.
+
+**Curious what buffer hit ratios others are seeing on their high-traffic OLTP queries. What is your typical baseline, and have you caught a regression through buffer stats before?**
+
+I wrote up the full case study with all the EXPLAIN output, pg_stat_statements queries, and monitoring setup here: [full writeup](https://example.com/postgresql-explain-buffers-case-study?utm_source=reddit&utm_medium=social&utm_campaign=explain-buffers)
+
+---
+
+## Post 2: r/ExperiencedDevs
+
+**Title**: We spent 3 days debugging 'network latency' on a slow query. Adding BUFFERS to EXPLAIN found the real problem in 5 minutes.
+
+---
+
+**TL;DR**: Checkout queries regressed from 50ms to 1.2 seconds over two weeks. The team blamed network latency for three days -- tuned PgBouncer, added read replicas, filed a cloud provider ticket. Adding one word (`BUFFERS`) to `EXPLAIN ANALYZE` revealed the query was reading 15,000 pages from disk with a 0.3% cache hit ratio. Three config-only changes brought it to 42ms. The query plan looked identical the entire time.
+
+---
+
+I want to share a debugging story because I think the failure mode is instructive -- not the PostgreSQL tuning itself, but how the team got stuck for three days chasing the wrong problem.
+
+### The setup
+
+Mid-size e-commerce platform, PostgreSQL 17, ~2M orders, 500K active users. The checkout flow runs a join across orders, order_items, and inventory. For months the p95 was around 50ms. Then it started creeping up. Over about two weeks it drifted to 200ms, then 600ms. Nobody noticed until a flash sale pushed it past 1.2 seconds. Cart abandonment spiked 12 percentage points. Revenue was leaking at roughly $5,600 per minute during checkout degradation.
+
+### Where the investigation went wrong
+
+The team did the reasonable things. They ran `EXPLAIN ANALYZE` on the checkout query. The plan was the same: same Index Scan, same Nested Loop joins, same row estimates. Nothing had changed in the plan. So they concluded the database was fine and looked elsewhere.
+
+They tuned PgBouncer connection pooling. They checked the cloud provider's network health dashboard. They added a read replica. They opened a support ticket. Three days of work, none of it helped, because the hypothesis was wrong -- and they did not have the data to challenge it.
+
+The core mistake: `EXPLAIN ANALYZE` shows you the *plan* and the *timing*, but it does not show you *where the data came from*. A query can have an optimal plan and still be catastrophically slow if every page is being read from disk instead of cache. Without I/O visibility, the team could not distinguish between "the database is doing the right thing slowly" and "the database is doing the wrong thing."
+
+### What actually happened
+
+When we ran `EXPLAIN (ANALYZE, BUFFERS)` -- literally one additional word in the command -- the output included lines like:
+
+```
+Buffers: shared hit=50 read=15000 written=847
+```
+
+50 pages from cache, 15,000 from disk. A 0.3% buffer hit ratio on a query that should be 95%+ cached. The query was doing the right thing (correct plan, correct indexes), but reading almost entirely from disk.
+
+The root cause: table bloat. During a promotional surge, high insert volume had outpaced autovacuum. Dead tuples accumulated, the orders table bloated from ~850 pages to 15,000 pages, and the hot data spread across pages that no longer fit in the buffer cache. The working set had quietly outgrown the allocated memory.
+
+### The fix
+
+Three configuration changes, no application code:
+
+1. **Manual VACUUM ANALYZE** -- reclaimed dead tuples, table shrank from 15,000 to 3,200 pages
+2. **work_mem tuning** (256kB to 16MB via `SET LOCAL`) -- eliminated a 2,500-page temp spill during sorts
+3. **shared_buffers resize** (2GB to 4GB) + autovacuum tuning -- cache now fits the working set, vacuum keeps pace with writes
+
+Result: 1,192ms down to 42ms. Buffer hit ratio from 0.3% to 97.3%.
+
+### The debugging lesson
+
+What I took away from this -- and what I have seen at other customers:
+
+- **EXPLAIN ANALYZE is not enough.** It shows the plan and the timing but hides the I/O. `EXPLAIN (ANALYZE, BUFFERS)` is the command you actually want. (PG 18+ includes BUFFERS by default, so this gap will close over time.)
+- **"Same plan" does not mean "same performance."** The plan was identical before and after the regression. The I/O profile was catastrophically different. If your only diagnostic is the query plan, you will miss this class of problem entirely.
+- **Gradual regressions are harder to catch.** This was not a sudden failure -- it drifted over two weeks. Nobody noticed until a load spike made it obvious. If the team had been monitoring buffer hit ratios via pg_stat_statements, they would have caught the regression when it was a 200ms problem, not a 1.2s emergency.
+- **Teams default to infrastructure explanations.** "Must be the network" is a reasonable first hypothesis, but three days is too long to run with it without counter-evidence. The counter-evidence was one command away.
+
+I am not saying this to criticize the team -- they did reasonable things with the information they had. The problem was that `EXPLAIN ANALYZE` without `BUFFERS` gives you an incomplete picture, and the incomplete picture led to an incorrect hypothesis.
+
+**For teams that do production PostgreSQL troubleshooting: what is your go-to diagnostic sequence when a query regresses but the plan looks unchanged? Curious how others approach this.**
+
+Wrote up the full technical walkthrough with all the SQL and EXPLAIN output here: [full writeup](https://example.com/postgresql-explain-buffers-case-study?utm_source=reddit&utm_medium=social&utm_campaign=explain-buffers)
+
+---
+
+## Post 3: r/programming
+
+**Title**: Most developers have never added BUFFERS to PostgreSQL's EXPLAIN. Here's why you should.
+
+---
+
+**TL;DR**: PostgreSQL's `EXPLAIN ANALYZE` shows you the query plan and timing, but hides where the data actually comes from -- memory or disk. Adding `BUFFERS` reveals the I/O profile: cache hits vs disk reads. In a real case, a checkout query had an identical plan before and after a regression from 50ms to 1.2s. Only the buffer stats showed the problem: 0.3% cache hit ratio. Starting with PostgreSQL 18 (2025), BUFFERS is included by default.
+
+---
+
+If you use PostgreSQL and have ever run `EXPLAIN ANALYZE` on a slow query, you have probably looked at the plan -- Index Scan vs Seq Scan, Nested Loop vs Hash Join -- and tried to figure out where the time goes. That is useful, but it is only half the story.
+
+There is an option most developers never add: `BUFFERS`. It turns EXPLAIN from a plan viewer into an I/O profiler.
+
+### What BUFFERS tells you
+
+When you run `EXPLAIN (ANALYZE, BUFFERS)`, PostgreSQL reports buffer activity at every node in the plan:
+
+- **shared hit** -- pages found in the in-memory cache (fast)
+- **shared read** -- pages read from disk (slow)
+- **temp written** -- pages spilled to disk because an in-memory operation (sort, hash) ran out of memory
+
+The key metric is the **buffer hit ratio**: `shared hit / (shared hit + shared read)`. If your OLTP query is at 95%+, it is well-cached. If it drops to single digits, almost every page access is going to disk, and your query will be slow no matter how good the plan is.
+
+### Why this matters
+
+I was working with a customer whose checkout query regressed from 50ms to 1.2 seconds over two weeks. The team ran `EXPLAIN ANALYZE` repeatedly -- the plan was identical every time. Same index scan, same joins. They spent three days debugging "network latency."
+
+When we added `BUFFERS`, the output showed:
+
+```
+Buffers: shared hit=50 read=15000
+```
+
+50 pages from cache, 15,000 from disk. A 0.3% hit ratio on a query that should be near 100% cached. The database was doing the right thing (correct plan), but the data was not in memory.
+
+The root cause turned out to be table bloat -- autovacuum had not kept up with a surge in writes, the table grew from ~850 pages to 15,000, and the working set no longer fit in the buffer cache. Three config changes (VACUUM, work_mem increase, shared_buffers resize) brought the query to 42ms with a 97.3% hit ratio. No code changes.
+
+The plan was identical before and after the problem. Only the I/O statistics told the real story.
+
+### PostgreSQL 18 changes the default
+
+Here is why this is relevant right now: **PostgreSQL 18 (released 2025) includes BUFFERS output by default in EXPLAIN ANALYZE.** Before PG 18, you had to remember to type `EXPLAIN (ANALYZE, BUFFERS)` every time. Now every developer running `EXPLAIN ANALYZE` will see buffer stats automatically.
+
+If you are on PG 17 or earlier, the fix is simple -- always use `EXPLAIN (ANALYZE, BUFFERS)` instead of plain `EXPLAIN ANALYZE`. The option has existed since PG 8.4 (2009). It just was not the default, so most people never knew it was there.
+
+### The one-sentence version
+
+Your query plan tells you *what* PostgreSQL is doing. The buffer stats tell you *how much I/O it costs*. If you are only looking at the plan, you are flying half-blind.
+
+**Has anyone else run into a situation where the plan looked fine but the query was still slow? Curious what the diagnosis turned out to be.**
+
+Wrote up the full case study with EXPLAIN output, pg_stat_statements queries, and version-by-version feature history here: [full writeup](https://example.com/postgresql-explain-buffers-case-study?utm_source=reddit&utm_medium=social&utm_campaign=explain-buffers)

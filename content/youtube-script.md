@@ -1,339 +1,358 @@
-# YouTube Script — Which AI Model Should You Use, and When?
+# YouTube Script: PostgreSQL EXPLAIN BUFFERS -- How We Cut Checkout Latency 96%
 
-> **Target length:** 10–12 minutes
-> **Tone:** Conversational expert sharing learnings from real customer work
-> **Visual assets:** Use existing PNGs from `content/visuals/` as slides
-> **Pace:** ~150 words/minute spoken
-
----
-
-## THUMBNAIL CONCEPTS
-
-**Option A:** Text: "STOP using ONE model" | Background: tradeoff-2x2.png | Your face with surprised/pointing expression
-**Option B:** Text: "$140K WASTED" | Red arrow down | Cost comparison graphic from case study
-**Option C:** Text: "AI Model Tier List" | 🟢🔵🔴 tier badges | Model logos (Haiku, GPT-4o, Opus)
+> **Target duration**: 10-12 minutes (~1,500-1,800 words spoken)
+> **Format**: On-camera + screen share (terminal/EXPLAIN output) + slides
+> **Pacing**: ~150 words/minute
 
 ---
 
-## TITLE OPTIONS
+## Title Options
 
-1. Which AI Model Should You Actually Use? (A Field Guide)
-2. Stop Using One AI Model for Everything — Here's Why
-3. How One Team Cut AI Costs 66% With This Simple Framework
-4. The AI Model Selection Framework Every Team Needs
-
----
-
-## SCRIPT
+1. **PostgreSQL EXPLAIN BUFFERS: How We Cut Checkout Latency 96%** (primary -- matches blog SEO)
+2. **One Word Fixed Our 1.2-Second Checkout Query | PostgreSQL BUFFERS**
+3. **Stop Ignoring BUFFERS in PostgreSQL EXPLAIN (Real Case Study)**
+4. **Why Your PostgreSQL Queries Are Slow: The EXPLAIN Option Nobody Uses**
 
 ---
 
-### [0:00–0:30] HOOK — Cold Open
+## Full Timed Script
 
-**[ON CAMERA — direct to camera, no intro]**
-
-> While working with one of my customers recently, I watched them burn through $140K in AI inference costs in just 60 days.
->
-> And here's the thing — they didn't pick a bad model. They picked ONE model for everything.
->
-> By the end of this video, you'll have the exact framework I now use with all my customers to build model portfolios instead of model monogamy. And I'll show you a real case study where this cut costs by 66%.
->
-> Let's get into it.
-
-**[SLIDE: title card with video title]**
-
-*(~80 words, ~30 seconds)*
-
----
-
-### [0:30–2:00] THE PROBLEM — Why "Best Model" Fails
-
-**[ON CAMERA → cut to SLIDE: decision-funnel.png]**
-
-> So here's what happened with that customer. They were building an AI writing assistant — autocomplete, email drafts, grammar correction. They chose GPT-4 Turbo for everything. The demos looked incredible. Leadership was thrilled.
->
-> Then real usage hit.
-
-**[SLIDE: bullet points appearing one at a time]**
-
-> First — p95 latency hit 4.2 seconds on autocomplete. Users literally typed over the AI suggestions. That's not "higher quality." That's a UX regression.
->
-> Second — monthly inference cost reached $47K. Three times the projected budget. Most of it was grammar corrections that a 15-cent-per-million-token model could handle.
->
-> Third — when their provider had a 40-minute degradation, the entire product went down. No fallback. Single point of failure.
+### [0:00 - 0:30] Cold Open
 
 **[ON CAMERA]**
 
-> Nothing catastrophically failed. But the product became impossible to scale. And this isn't just one team — a16z's 2025 AI survey found over 60% of teams using LLMs in production have switched their primary model at least once. The "pick GPT-4 and forget about it" era is over.
+**SCRIPT**:
 
-*(~200 words, ~80 seconds)*
+Fifty milliseconds. That is how fast our customer's checkout query ran for months. Then it hit 1.2 seconds. Cart abandonment spiked 12 percentage points. The engineering team spent three days blaming the network, tuning PgBouncer, opening tickets with their cloud provider. None of it worked.
+
+The fix? Adding one word to a SQL command. Let me show you exactly what happened.
+
+**NOTES**: Deliver with urgency. Pause after "1.2 seconds" for emphasis. Hold eye contact on "one word."
+
+*~75 words | 0:30*
 
 ---
 
-### [2:00–2:45] THE MINDSET SHIFT
+### [0:30 - 2:00] Problem Setup
+
+**[ON CAMERA]** -> **[SLIDE: shared-buffers-flow.png]** at 1:15
+
+**SCRIPT**:
+
+Here is the setup. Mid-size e-commerce platform running PostgreSQL 17. About 2 million rows in the orders table, 500,000 active users, hosted on a managed cloud instance with 32 gigs of RAM. The checkout flow joins orders, order items, and inventory to validate stock and calculate totals. Standard stuff.
+
+For months, p95 latency sat at 50 milliseconds. Then it started creeping. Over two weeks, it drifted to 200, then 600 milliseconds. Nobody noticed until a flash sale pushed it past 1.2 seconds.
+
+The team did what most of us would do -- they ran `EXPLAIN ANALYZE`. The plan looked identical every time. Same index scan, same nested loop joins, same estimated rows. Nothing looked wrong.
+
+But here is the thing. `EXPLAIN ANALYZE` shows you the plan. It does not show you where the data is coming from -- memory or disk. Without that information, the I/O problem was completely invisible.
+
+**NOTES**: Slow down on "creeping...200...600." Cut to shared-buffers-flow.png at "where the data is coming from" to set up the concept visually.
+
+*~170 words | 1:08 segment*
+
+---
+
+### [2:00 - 4:00] Concepts: Shared Buffers, Hit Ratio, EXPLAIN BUFFERS
+
+**[SCREEN SHARE: terminal with EXPLAIN output]**
+**[SLIDE: shared-buffers-flow.png]** visible as reference overlay
+
+**SCRIPT**:
+
+Let me break down what PostgreSQL actually reports when you add `BUFFERS` to your `EXPLAIN ANALYZE`. There are four numbers that matter.
+
+**Shared hit** -- pages found in the buffer cache. This is the fast path. No disk I/O, the data was already in memory.
+
+**Shared read** -- pages fetched from disk. Every read adds latency. This is where slow queries hide.
+
+**Shared dirtied** -- pages modified during the query. And yes, even `SELECT` queries can dirty pages. PostgreSQL updates hint bits during reads. That is completely normal.
+
+**Shared written** -- pages synchronously written to disk during execution. If you see this on a `SELECT`, it means the background writer could not keep up. That is a warning sign.
+
+The key formula is the buffer hit ratio: shared hit divided by shared hit plus shared read. So if you have 13 hits out of 870 total accesses, that is a 1.5% hit ratio. Terrible for an OLTP query -- but expected on a cold cache after a restart.
+
+Now, one critical insight. The hit ratio is a diagnostic tool, not a scorecard. There is no universal "good" number. A reporting query scanning a large date range at 10-30% hit ratio -- that is fine. A checkout query dropping from 95% to 40%? Something broke.
+
+There is one more thing to watch: `temp read` and `temp written`. These track when sorts or hash operations exceed `work_mem` and spill to disk. The default `work_mem` is a conservative 4 megabytes. At 256 kilobytes -- which some older configurations use -- a sort on 200,000 rows can force a 9.7-megabyte disk spill.
+
+**NOTES**: Type out the hit ratio formula live in terminal. Pause after each of the four signals. Use the shared-buffers-flow diagram as a picture-in-picture reference during the first half.
+
+*~275 words | 1:50 segment*
+
+---
+
+### [4:00 - 7:00] Investigation: EXPLAIN BUFFERS Output, pg_stat_statements
+
+**[SCREEN SHARE: terminal -- live demo style]**
+**[SLIDE: query-plan-tree.png]** at 5:00
+**[SLIDE: buffer-hit-comparison.png]** at 6:15
+
+**SCRIPT**:
+
+OK, let me show you the actual investigation. We took the team's original `EXPLAIN ANALYZE` and added exactly one option:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT o.order_id, o.total, i.stock_available
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+JOIN inventory i ON i.product_id = oi.product_id
+WHERE o.user_id = 8421
+  AND o.status = 'pending'
+ORDER BY o.created_at DESC
+LIMIT 5;
+```
+
+And look at what came back. Right here at the top: `shared hit=50, shared read=15,000`. Let that sink in. Fifty pages from cache, 15,000 from disk. That is a 0.3% buffer hit ratio. This query was reading almost entirely from disk.
+
+But there is more. Look at the sort node: `temp written=2,500`. The `work_mem` was set to 256 kilobytes, way too small. PostgreSQL was spilling an external merge sort to disk on every single execution.
+
+And this one: `shared written=847`. The background writer was falling behind, and PostgreSQL was doing synchronous writes during a `SELECT`. That should not happen under normal load.
+
+Now I want to zoom into the plan tree. Each node shows its own buffer stats. The index scan on the orders table -- that is where the damage is: `shared hit=12, shared read=14,800`. That is our bottleneck.
+
+So we confirmed this was not a one-off. We checked `pg_stat_statements`:
+
+```sql
+SELECT query, calls, shared_blks_hit, shared_blks_read,
+       round(shared_blks_hit::numeric /
+             nullif(shared_blks_hit + shared_blks_read, 0), 4) AS hit_ratio
+FROM pg_stat_statements
+WHERE query LIKE '%orders%order_items%inventory%'
+ORDER BY shared_blks_read DESC;
+```
+
+`shared_blks_read` had grown 30x over two weeks. `shared_blks_hit` stayed nearly flat. This was not a cold cache problem. The query was consistently reading from disk, execution after execution.
+
+The root cause: during the promotional event, high insert volume outpaced autovacuum. Dead tuples accumulated, the orders table bloated from 857 pages to over 15,000. The working set no longer fit in the 2-gigabyte `shared_buffers`. The checkout query was evicting its own pages faster than it could reuse them.
+
+**NOTES**: Walk through the EXPLAIN output line by line. Highlight the three critical numbers by circling or annotating them on screen. Cut to query-plan-tree.png at the "zoom into the plan tree" transition. Cut to buffer-hit-comparison.png when presenting the 0.3% vs 95% contrast. Keep energy high -- this is the detective reveal.
+
+*~380 words | 2:32 segment*
+
+---
+
+### [7:00 - 9:00] The Fix: VACUUM, work_mem, shared_buffers
+
+**[SCREEN SHARE: terminal]** -> **[SLIDE: before-after-metrics.png]** at 8:30
+
+**SCRIPT**:
+
+Three targeted fixes. No rewrite, no new hardware.
+
+**Fix one -- immediate. Manual VACUUM ANALYZE.**
+
+```sql
+VACUUM (VERBOSE, ANALYZE) orders;
+```
+
+Autovacuum had fallen behind. The manual vacuum reclaimed dead tuples. The orders table shrank from 15,000 pages back to about 3,200 -- still larger than the original 857 because of legitimate growth, but no longer bloated with dead rows.
+
+**Fix two -- immediate. SET LOCAL work_mem for the checkout session.**
+
+```sql
+BEGIN;
+SET LOCAL work_mem = '16MB';
+-- checkout query runs here
+COMMIT;
+```
+
+`SET LOCAL` scopes the change to the current transaction. No risk to other queries. The 16 megabytes eliminated the 2,500-page temp spill entirely. The sort completed in memory.
+
+**Fix three -- configuration. shared_buffers and autovacuum tuning.**
+
+We bumped `shared_buffers` from 2 gigs to 4 gigs. On a 32-gig instance, that is 12.5% of RAM -- well within the recommended 25% guideline. And we tuned autovacuum to keep pace:
+
+```
+autovacuum_vacuum_cost_delay = '2ms'    -- down from 20ms
+autovacuum_vacuum_scale_factor = 0.05   -- vacuum at 5% dead tuples
+```
+
+Then the moment of truth. We re-ran `EXPLAIN (ANALYZE, BUFFERS)` on the checkout query.
+
+`shared hit=3,100, shared read=87`. That is a 97.3% hit ratio. `temp written=0`. Execution time: 42 milliseconds.
+
+**NOTES**: Type each fix live in the terminal. Pause before the verification results for dramatic effect. Deliver "42 milliseconds" slowly with satisfaction. Transition to before-after-metrics.png for the full comparison.
+
+*~250 words | 1:40 segment*
+
+---
+
+### [9:00 - 9:30] Results: Before and After Metrics
+
+**[SLIDE: before-after-metrics.png]**
+
+**SCRIPT**:
+
+Let me put the full picture on screen. Execution time: 1,192 milliseconds down to 42. That is a 96.5% reduction. Buffer hit ratio: 0.3% up to 97.3%. Temp pages spilled: 2,500 down to zero. Checkout p95: 1,200 milliseconds down to 48.
+
+Cart abandonment recovered to the baseline -- about 70% -- within 48 hours.
+
+One word -- `BUFFERS` -- surfaced the root cause that three days of network debugging, PgBouncer tuning, and cloud provider tickets had missed.
+
+**NOTES**: Let the slide do the work. Read the numbers calmly. Emphasize "one word" at the end.
+
+*~90 words | 0:36 segment*
+
+---
+
+### [9:30 - 10:30] Version Compatibility: PG 8.4 Through PG 18
+
+**[SLIDE: pg-version-timeline.png]**
+
+**SCRIPT**:
+
+Quick version rundown. `EXPLAIN BUFFERS` has been available since PostgreSQL 8.4 -- that is 2009. So everything I showed you works on basically any PostgreSQL version you are running.
+
+But here are the milestones. PG 9.2 added `track_io_timing` so you get actual read and write times in milliseconds. PG 13 started reporting planning buffers -- reads of `pg_class` and `pg_statistic` during plan creation. PG 16 gave us the `pg_stat_io` view for system-wide I/O statistics. PG 17, which our case study ran on, added `pg_buffercache_evict` for controlled cache benchmarking.
+
+And the big one: **PostgreSQL 18**, released in 2025, made `BUFFERS` the default in `EXPLAIN ANALYZE`. You no longer need to remember the flag. Every developer sees buffer statistics whether they ask for them or not.
+
+PG 19, coming later this year, reduces EXPLAIN ANALYZE timing overhead itself, making it practical to run buffer diagnostics on more workloads.
+
+**NOTES**: Point to each milestone on the timeline slide. Emphasize PG 18 as the inflection point. Keep pace brisk -- this is informational, not dramatic.
+
+*~175 words | 1:10 segment*
+
+---
+
+### [10:30 - 12:00] Takeaways and CTA
 
 **[ON CAMERA]**
 
-> The teams I see succeeding at AI in production don't ask "which model is best?" They ask "which model is best FOR THIS TASK?"
->
-> That's the fundamental shift — from model monogamy to a model portfolio.
+**SCRIPT**:
 
-**[SLIDE: model-selection-framework.png]**
+Four takeaways.
 
-> Think about it. Most products have 4 to 6 distinct AI task types. Classification, extraction, drafting, complex reasoning, code generation, maybe some multimodal stuff. Using one model for all of them is like using a chef's knife for everything in the kitchen. Technically possible. Practically expensive.
->
-> So how do you actually evaluate which model goes where? I use a 7-dimension framework.
+One: add `BUFFERS` to every `EXPLAIN ANALYZE` you run. If you are on PostgreSQL 18 or later, you already get it. If you are on 17 or earlier, type `EXPLAIN (ANALYZE, BUFFERS)` instead of `EXPLAIN ANALYZE`. Make it muscle memory.
 
-*(~120 words, ~45 seconds)*
+Two: learn the four signals. `hit` is good, `read` is expensive, `dirtied` on SELECTs is normal, `written` on SELECTs is a warning.
 
----
+Three: bridge single-query diagnostics with workload monitoring. `EXPLAIN BUFFERS` shows you one execution. `pg_stat_statements` shows you the trend across all executions. Use both.
 
-### [2:45–5:30] THE 7-DIMENSION FRAMEWORK
+Four: tune autovacuum for your high-write tables. The defaults are conservative. If inserts outpace vacuuming, you get bloat, and bloat kills your cache hit ratio.
 
-**[SLIDE: model-selection-framework.png — keep on screen, highlight each dimension as discussed]**
+Here is what I want you to do right now. Open a terminal, connect to your database, and run `EXPLAIN (ANALYZE, BUFFERS)` on your slowest query. If the hit ratio is below 90% for an OLTP query, you have found your next optimization target. If you see `temp written` on any critical path, that is `work_mem` waiting to be tuned.
 
-> Every AI task in your product should be scored across these 7 dimensions. Let me walk through each one.
+Drop a comment below with what you find. I have seen hit ratios as low as 0.1% in production. I want to hear your stories.
 
-**Dimension 1: Task Fit**
+If this was useful, hit subscribe. I put out PostgreSQL performance content regularly. Link to the full blog post with all the SQL and configuration details is in the description.
 
-> Start with the job, not the model. Classification needs speed and consistency — use a lightweight model. Drafting needs fluency — mid-tier. Complex multi-step reasoning — that's where frontier models earn their price.
+Thanks for watching.
 
-**[SLIDE: task fit table from blog]**
+**NOTES**: Direct address to camera. Count off the four takeaways on fingers. Deliver the CTA with energy -- lean forward slightly. End with a nod and natural pause before cut.
 
-**Dimension 2: Quality Bar**
-
-> Define "good enough" in business terms, not vibes. Customer-facing support responses? Error tolerance near zero. Internal draft suggestions? Minor imprecision is fine if it's fast.
->
-> Pro tip — create a 10-prompt evaluation set per task. Score outputs 1 to 5 across accuracy, completeness, tone, and format. Takes 2 hours. Saves weeks of debate.
-
-**Dimension 3: Latency Budget**
-
-**[SLIDE: latency table]**
-
-> This one catches teams off guard. Autocomplete needs under 300 milliseconds. Chat needs under 2 seconds to first token. And a frontier model averaging 3.8 seconds on a 300ms task isn't "higher quality" — it's a UX regression. Your users feel delay long before your dashboards alert you.
-
-**Dimension 4: Cost Envelope**
-
-**[SLIDE: comparison-matrix.png]**
-
-> Here's what the pricing landscape looks like right now.
->
-> Lightweight models — Haiku, Gemini Flash, GPT-4o mini — 10 cents to 60 cents per million tokens.
-> Mid-tier — Sonnet, GPT-4o, Gemini Pro — $2 to $15.
-> Frontier — Opus, o3, Gemini Ultra — $15 to over $60.
->
-> But here's the thing most teams miss — your REAL cost is typically 1.5 to 2.5x the sticker price. Why? Verbose system prompts, retry loops, guardrail passes that call a second model, and context bloat from RAG. Budget for reality, not demos.
-
-**Dimension 5: Data Sensitivity**
-
-> This one often eliminates options before you even benchmark. Map your data to three zones — public, internal, and regulated. Pre-approve providers for each zone. If user PII enters prompts, check data processing agreements. If you're HIPAA or GDPR, the list gets short fast.
-
-**Dimension 6: Integration Complexity**
-
-> A model that benchmarks well can still be expensive in engineering time. Does it reliably return structured JSON? How's the tool calling? Is streaming solid? Can you pin a specific model version? These things matter more than benchmark scores when you're shipping features.
-
-**Dimension 7: Operational Reliability**
-
-> You're selecting for day-2 operations, not demo day. What does provider degradation look like? Can you route to a backup transparently? Do you have circuit breakers?
->
-> Here's a test most teams skip — run your eval suite at 2 AM and 2 PM on the same day. If quality variance exceeds 10%, you have a reliability problem.
-
-**[ON CAMERA]**
-
-> Miss any one of these seven dimensions and you'll be rewriting your pipeline in 90 days. I've seen it happen.
-
-*(~450 words, ~3 minutes)*
+*~260 words | 1:44 segment*
 
 ---
 
-### [5:30–6:15] TIER CHEAT SHEET
+## Slide Map
 
-**[SLIDE: tradeoff-2x2.png]**
-
-> Let me give you a quick visual. This 2x2 maps quality versus cost across model tiers.
->
-> Top-right — frontier. Maximum capability, maximum cost. Reserve for high-stakes tasks only.
-> Center — mid-tier. The workhorse zone. Best balance for most features.
-> Bottom-left — lightweight. High efficiency, limited ceiling. Perfect for classification, extraction, triage.
-> And bottom-right is the danger zone — low quality AND high cost. That's usually a sign of model misfit or prompt engineering debt.
-
-**[ON CAMERA]**
-
-> The goal isn't to use the cheapest model everywhere. It's to use the RIGHT model for each task. That's the portfolio approach.
-
-*(~120 words, ~45 seconds)*
+| Timestamp | Visual | Filename | Description |
+|-----------|--------|----------|-------------|
+| 1:15-2:00 | Slide | shared-buffers-flow.png | Data path from query through shared buffer cache to disk; hit/read/dirtied/written labeled |
+| 2:00-3:30 | PiP overlay | shared-buffers-flow.png | Reference diagram during buffer concepts explanation |
+| 5:00-6:00 | Slide | query-plan-tree.png | EXPLAIN BUFFERS plan tree with I/O stats annotated at each node |
+| 6:15-7:00 | Slide | buffer-hit-comparison.png | Side-by-side bars: before (0.3% hit ratio) vs. expected (95%+) |
+| 8:30-9:30 | Slide | before-after-metrics.png | Horizontal bars comparing before (red) and after (green) across all metrics |
+| 9:30-10:30 | Slide | pg-version-timeline.png | Horizontal timeline PG 8.4 through PG 19 with BUFFERS milestones |
 
 ---
 
-### [6:15–8:30] CASE STUDY — The Transformation
+## Thumbnail Concepts
 
-**[ON CAMERA]**
+### Option 1: "The One-Word Fix"
 
-> Let me show you what this looks like in practice with a real customer engagement.
+- **Background**: Split screen -- red (left) with "1.2s" and green (right) with "42ms"
+- **Text overlay**: `BUFFERS` in monospace font, centered, large
+- **Subtext**: "96% faster" in bold white
+- **Face**: Surprised/pointing expression (if using creator's face)
 
-**[SLIDE: case-timeline.png]**
+### Option 2: "0.3% Hit Ratio"
 
-> One of my customers — a B2B SaaS company — launched an AI copilot for sales account teams. Three features: meeting summary generation, email drafts, and deal-risk signal analysis. They standardized on Claude 3 Opus for everything.
+- **Background**: Dark terminal screenshot showing EXPLAIN BUFFERS output, slightly blurred
+- **Text overlay**: "0.3%" in large red text, arrow pointing down to "97.3%" in green
+- **Subtext**: "PostgreSQL EXPLAIN BUFFERS" at top
+- **Face**: Optional -- works without face as a data-driven thumbnail
 
-**[SLIDE: "What Broke" — bullet points]**
+### Option 3: "3 Days Debugging the Wrong Thing"
 
-> By week 4, the cracks showed.
->
-> Email drafting hit 5.1 seconds p95 latency during peak hours. Opus throughput limits under load.
-> Meeting summaries were costing $28K a month — for a feature users rated "nice to have."
-> Deal-risk analysis had unpredictable cost spikes on quarter-end.
->
-> The model performed well. The single-model-for-everything strategy was the failure.
-
-**[SLIDE: model-routing-flow.png]**
-
-> We applied the 7-dimension framework and shifted to tiered routing.
->
-> Haiku for meeting summary extraction — fast, cheap, perfectly adequate.
-> Sonnet 3.5 as the default for email drafts, with confidence-based escalation to Opus for complex threads.
-> Opus reserved ONLY for deal-risk analysis.
->
-> Plus — automatic fallback, graceful degradation when a provider is slow, and a weekly cost-quality review.
-
-**[SLIDE: results table — animated reveal]**
-
-> The results after 8 weeks:
->
-> Monthly cost: $41K down to $14K. That's 66% reduction.
-> Email draft latency: 5.1 seconds down to 1.8 seconds. 65% faster.
-> Meeting summary satisfaction went UP — from 3.8 to 4.1 out of 5 — because faster delivery.
-> Deal-risk accuracy actually improved 2 points — because Opus was focused on what it does best instead of being stretched across everything.
-
-**[ON CAMERA — lean in]**
-
-> Same team. Same product. Same users. Just smarter model routing. That's the power of a portfolio approach.
-
-*(~280 words, ~2 minutes)*
+- **Background**: Gradient dark blue/purple
+- **Text overlay**: "3 DAYS" crossed out in red, "5 MINUTES" in green below
+- **Subtext**: "PostgreSQL EXPLAIN BUFFERS" at bottom
+- **Icon**: Network cable crossed out, database checkmark
 
 ---
 
-### [8:30–10:00] THE 30-DAY PLAYBOOK
+## YouTube Description
 
-**[ON CAMERA]**
+```
+PostgreSQL EXPLAIN BUFFERS: How We Cut Checkout Latency 96%
 
-> You can run this yourself in 30 days. Here's the playbook.
+A customer's e-commerce checkout query went from 50ms to 1.2 seconds. The team spent 3 days debugging the network. The real fix? Adding BUFFERS to EXPLAIN ANALYZE.
 
-**[SLIDE: swimlane-30day.png]**
+In this video, I walk through the full investigation: what EXPLAIN BUFFERS reveals, how we diagnosed a 0.3% buffer hit ratio, the three targeted fixes (VACUUM, work_mem, shared_buffers), and the result -- 42ms execution time with a 97.3% hit ratio.
 
-> **Week 1** — define the decision frame. List your top 3 to 5 AI tasks. Write quality rubrics — 10 test prompts, score 1 to 5. Set latency budgets per interaction type. Define cost ceilings. Map data sensitivity zones. Exit with a one-page decision brief that product, engineering, and leadership sign off on.
+Works on PostgreSQL 8.4+. On PG 18, BUFFERS is now included by default.
 
-> **Week 2** — run controlled evaluations. Test 2 to 4 candidates — not 10 plus, that's analysis paralysis. Same prompt set, same rubric, across all candidates. Measure quality, p95 latency, and cost per 100 requests. Put it in a spreadsheet, not Slack threads.
+TIMESTAMPS
+0:00 The 1.2-second checkout incident
+0:30 Problem setup: why EXPLAIN ANALYZE wasn't enough
+2:00 Concepts: shared buffers, hit ratio, temp spills
+4:00 Investigation: EXPLAIN BUFFERS output walkthrough
+5:00 Following the buffer trail with pg_stat_statements
+7:00 Fix 1: VACUUM ANALYZE
+7:30 Fix 2: work_mem tuning with SET LOCAL
+8:00 Fix 3: shared_buffers and autovacuum configuration
+9:00 Before/after results: 96.5% latency reduction
+9:30 PostgreSQL version compatibility (PG 8.4 - PG 19)
+10:30 4 takeaways and your next step
 
-> **Week 3** — pilot with guardrails. Route 5 to 10% of real traffic to the candidate model. Monitor USER-facing outcomes — completion rates, edit rates, satisfaction — not just API metrics. Keep fallback active. Run for at least 5 business days.
+LINKS
+Blog post (full SQL + config): [LINK]
+PostgreSQL EXPLAIN docs: https://www.postgresql.org/docs/current/sql-explain.html
+pg_stat_statements: https://www.postgresql.org/docs/current/pgstatstatements.html
+auto_explain: https://www.postgresql.org/docs/current/auto-explain.html
+boringSQL EXPLAIN BUFFERS reference: https://boringsql.com/posts/explain-buffers/
+pev2 visual EXPLAIN analyzer: https://github.com/dalibo/pev2
 
-> **Week 4** — operationalize. Finalize the task-to-model routing map. Assign ownership — who monitors quality? Who approves swaps? Document the specific trigger points for when you'd re-evaluate. Set review cadence — weekly the first month, biweekly after.
+RESOURCES MENTIONED
+- pg_stat_monitor (Percona): https://github.com/percona/pg_stat_monitor
+- pganalyze: https://pganalyze.com/
 
-*(~200 words, ~80 seconds)*
-
----
-
-### [10:00–10:45] PRE-LAUNCH CHECKLIST
-
-**[SLIDE: checklist-card.png]**
-
-> Before you lock any model into production, run through this checklist. If you can't answer "yes" to at least 7 of these 8, your decision is premature.
-
-**[Read through checklist — each item appears on screen as spoken]**
-
-> One — task-specific quality thresholds with a scoring rubric?
-> Two — maximum acceptable latency per interaction pattern?
-> Three — cost modeled under baseline, peak, AND growth scenarios?
-> Four — data handling validated per compliance zone?
-> Five — fallback and escalation paths that activate automatically?
-> Six — tested with representative prompts AND adversarial edge cases?
-> Seven — clear ownership for monitoring, tuning, and re-evaluation?
-> Eight — specific trigger points for model replacement or rerouting?
-
-*(~120 words, ~45 seconds)*
-
----
-
-### [10:45–11:30] CLOSING + CTA
-
-**[ON CAMERA — direct, confident]**
-
-> Model selection is no longer a one-time technical pick. It's an ongoing product capability — as important as your deployment pipeline or your monitoring stack.
->
-> The teams that win at AI in production share three traits: they treat model choice as a structured, repeatable decision. They build portfolios, not monogamy. And they measure continuously — because the landscape shifts every quarter.
->
-> I wrote a full field guide with all the details — the complete framework, cost benchmarks, the full case study, the 30-day playbook, and the checklist. Link is in the description.
-
-**[Point down / gesture to description]**
-
-> Start with the playbook. Run one focused comparison cycle. Document your first routing strategy. Your second decision will be sharper than your first.
->
-> If this was useful, hit subscribe — I share practical AI engineering content from real customer work, not hype.
->
-> Drop in the comments — are you running single model or portfolio? What made you switch?
-
-**[END CARD: subscribe + link to field guide]**
-
-*(~170 words, ~70 seconds)*
+#PostgreSQL #EXPLAIN #BUFFERS #DatabasePerformance #SQL #QueryOptimization #ECommerce #DevOps #Backend #SoftwareEngineering
+```
 
 ---
 
-## TOTAL RUNTIME
+## YouTube Tags
 
-| Section | Duration | Cumulative |
-|---|---|---|
-| Hook | 0:30 | 0:30 |
-| The Problem | 1:30 | 2:00 |
-| Mindset Shift | 0:45 | 2:45 |
-| 7-Dimension Framework | 2:45 | 5:30 |
-| Tier Cheat Sheet | 0:45 | 6:15 |
-| Case Study | 2:15 | 8:30 |
-| 30-Day Playbook | 1:30 | 10:00 |
-| Pre-Launch Checklist | 0:45 | 10:45 |
-| Closing + CTA | 0:45 | 11:30 |
-
-**Total: ~11:30** (within 10–12 min target)
-
----
-
-## SLIDE MAP — Which Visual Asset Per Section
-
-| Timestamp | Visual | File |
-|---|---|---|
-| 0:30 | Title card | (create in Canva/Figma) |
-| 0:45 | Decision funnel | `visuals/decision-funnel.png` |
-| 2:00 | Selection framework | `visuals/model-selection-framework.png` |
-| 2:45 | Selection framework (keep) | `visuals/model-selection-framework.png` |
-| 3:30 | Latency table | (text overlay or `visuals/comparison-matrix.png`) |
-| 4:00 | Comparison matrix | `visuals/comparison-matrix.png` |
-| 5:30 | Trade-off 2×2 | `visuals/tradeoff-2x2.png` |
-| 6:15 | Case timeline | `visuals/case-timeline.png` |
-| 7:00 | Routing flow | `visuals/model-routing-flow.png` |
-| 7:45 | Results table | (text overlay or extract from blog) |
-| 8:30 | 30-day swimlane | `visuals/swimlane-30day.png` |
-| 10:00 | Checklist card | `visuals/checklist-card.png` |
-| 10:45 | End card | (create in Canva/Figma) |
+1. PostgreSQL EXPLAIN BUFFERS
+2. EXPLAIN ANALYZE BUFFERS
+3. PostgreSQL performance tuning
+4. PostgreSQL slow query
+5. buffer cache hit ratio
+6. shared_buffers tuning
+7. work_mem PostgreSQL
+8. VACUUM ANALYZE PostgreSQL
+9. pg_stat_statements
+10. PostgreSQL 18
+11. database performance
+12. query optimization
+13. e-commerce database
+14. PostgreSQL case study
+15. auto_explain PostgreSQL
 
 ---
 
-## DESCRIPTION BOX (copy-paste ready)
+## Script Statistics
 
-Which AI model should you actually use — and when should you switch?
-
-Most teams pick one AI model and use it for everything. That's how you burn $140K in 60 days. In this video, I share the 7-dimension framework I use with my customers to build model portfolios — matching the right model to each task.
-
-Includes a real case study: one customer cut costs 66% ($41K → $14K/mo) and improved latency 65% by switching from single-model to tiered routing.
-
-📖 Read the full field guide: https://shailesh0.substack.com/publish/post/190276894
-
-⏱️ Timestamps:
-0:00 — The $140K mistake
-0:30 — Why "best model" fails
-2:00 — The mindset shift
-2:45 — 7-Dimension Framework
-5:30 — Tier cheat sheet
-6:15 — Case study (66% cost reduction)
-8:30 — 30-day playbook
-10:00 — Pre-launch checklist
-10:45 — Next steps
-
-#AIEngineering #LLM #ModelSelection #MachineLearning #GenAI #ProductEngineering
+| Metric | Value |
+|--------|-------|
+| Total spoken words | ~1,675 |
+| Estimated runtime | ~11:10 |
+| On-camera segments | 3 (cold open, problem setup, takeaways) |
+| Screen share segments | 3 (concepts, investigation, fixes) |
+| Slide appearances | 6 |
+| Unique PNGs used | 5/5 |

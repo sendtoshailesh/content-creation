@@ -10,23 +10,23 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | `not-started` |
-| **Topic** | _(none)_ |
-| **Started** | _(none)_ |
-| **Current Step** | _(none)_ |
+| **Status** | `completed` |
+| **Topic** | PostgreSQL EXPLAIN BUFFERS — Real-World E-Commerce Performance Case Study |
+| **Started** | 2026-04-26 |
+| **Current Step** | All steps complete |
 
 ### Step Checklist
 
-- [ ] Step 0: Reference analysis
-- [ ] Steps 1-2: Strategy + outline
-- [ ] Step 3: Blog post
-- [ ] Step 3b: Visual assets
-- [ ] Step 3c: Quality review
-- [ ] Step 4: LinkedIn post
-- [ ] Step 5: X/Twitter thread
-- [ ] Step 6: Reddit post
-- [ ] Step 8: YouTube script
-- [ ] Final review complete
+- [x] Step 0: Reference analysis
+- [x] Steps 1-2: Strategy + outline
+- [x] Step 3: Blog post
+- [x] Step 3b: Visual assets
+- [x] Step 3c: Quality review
+- [x] Step 4: LinkedIn post
+- [x] Step 5: X/Twitter thread
+- [x] Step 6: Reddit post
+- [x] Step 8: YouTube script
+- [x] Final review complete
 
 **Status values:** `not-started` | `in-progress` | `completed` | `blocked`
 
@@ -81,6 +81,9 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 ### Reference URLs
 
 <!-- Add your reference URLs below. Format: - [description](URL) -->
+
+**General content:**
+https://boringsql.com/posts/explain-buffers/
 
 **Industry Reports & Benchmarks:**
 - 

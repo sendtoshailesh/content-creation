@@ -1,56 +1,107 @@
-# LinkedIn Post — Model Selection Field Guide
+# LinkedIn Post: PostgreSQL EXPLAIN BUFFERS
+
+> **Topic**: PostgreSQL EXPLAIN BUFFERS case study
+> **Blog**: `content/explain-buffers-blog.md`
+> **Generated**: 2026-04-26
 
 ---
 
-**Recently, while working with one of my customers, I saw their team burn through $140K in AI inference costs in 60 days.**
+## Version 1: Plain Text
 
-Their mistake? Treating model selection as a one-time technical choice instead of an ongoing product decision.
+Our checkout query went from 50ms to 1.2 seconds. Cart abandonment spiked 12 percentage points. Revenue leaked at $5,600 per minute.
 
-They used a frontier model for everything — autocomplete, email drafts, even spam classification. Demos looked incredible. Production was a different story:
+The engineering team spent three days blaming the network.
 
-→ p95 latency hit 4.2 seconds on autocomplete (users typed over suggestions)
-→ Monthly bill ballooned to 3× their projected budget
-→ When the provider had a 40-minute degradation, the entire product went dark
+They ran EXPLAIN ANALYZE repeatedly. Same Index Scan, same Nested Loop join, same estimated rows. Nothing looked wrong. So they tuned PgBouncer, added read replicas, and opened a cloud provider ticket.
 
-Nothing "catastrophically failed." But the product became impossible to scale.
+None of it helped.
 
-Here's what the best teams do differently:
+Then we added one word to the diagnostic command: BUFFERS.
 
-**They don't pick the "best model." They build a model portfolio.**
+EXPLAIN (ANALYZE, BUFFERS) told the entire story in seconds:
 
-This means:
+The query was reading 15,000 pages from disk and hitting only 50 pages in cache. A 0.3% buffer hit ratio on what should have been a 95%+ cached query.
 
-1. **Matching model tier to task type** — lightweight models (Haiku, Gemini Flash) for extraction and triage. Mid-tier (Sonnet, GPT-4o) for drafting. Frontier (Opus, o3) only for high-stakes reasoning.
+Three days of debugging. The answer was right there in the I/O stats they never asked for.
 
-2. **Setting explicit latency budgets** — < 300ms for autocomplete, < 2s for chat, < 15s for deep analysis. A frontier model averaging 3.8s on a 300ms task isn't "higher quality" — it's a UX regression.
+The fix was three targeted changes -- zero application code:
 
-3. **Building cost models that reflect reality** — your real inference cost is typically 1.5–2.5× the base token price once you factor in retries, system prompts, and guardrail passes.
+1. VACUUM ANALYZE on the bloated orders table (15,000 pages back to 3,200)
+2. work_mem increase from 256kB to 16MB (eliminated a 2,500-page disk spill)
+3. shared_buffers from 2GB to 4GB (working set had outgrown the cache)
 
-4. **Designing routing + fallback** — confidence-based escalation between tiers, automatic degradation paths when a provider is slow or down.
+The results:
 
-One of my customers applied this approach and went from $41K/month to $14K/month in inference costs — while improving latency by 65% and keeping quality stable.
+Execution time: 1,192ms to 42ms (96.5% reduction)
+Buffer hit ratio: 0.3% to 97.3%
+Temp pages spilled: 2,500 to 0
+Cart abandonment: recovered to baseline within 48 hours
 
-The era of "just use GPT-4 for everything" is over. The teams building structured model selection systems now will have a genuine competitive advantage by Q3.
+Starting with PostgreSQL 18, BUFFERS is included by default in EXPLAIN ANALYZE. Every developer will see I/O stats automatically. If you are on PG 17 or earlier, you have to ask for it.
 
-I wrote a full field guide covering:
-✦ A 7-dimension selection framework
-✦ Cost benchmarks across model tiers (2026 pricing)
-✦ A real case study with before/after numbers
-✦ A 30-day playbook any cross-functional team can run
-✦ The pitfalls I see teams hit repeatedly
+Run EXPLAIN (ANALYZE, BUFFERS) on your slowest query today. The plan might look fine. The I/O profile might tell a completely different story.
 
-📖 Full guide: [[LINK_TO_BLOG](https://shailesh0.substack.com/publish/post/190276894)]
+Full case study with query plans and pg_stat_statements walkthrough: [link]
 
----
-
-*What's your team's approach to model selection — single model, or portfolio? Curious to hear what's working (and what's not).*
+#PostgreSQL #DatabasePerformance #Engineering #ECommerce #SoftwareEngineering
 
 ---
 
-### Posting notes
+## Version 2: Unicode Formatted (Copy-Paste Ready)
 
-- **Best time to post:** Tuesday–Thursday, 8–10 AM local time
-- **Suggested image:** Attach `visuals/tradeoff-2x2.png` or `visuals/decision-funnel.png` as the post image (high-res 320 DPI, crop to 1200×627 for LinkedIn optimal)
-- **Hashtags (add in first comment, not in post body):** #AIEngineering #GenAI #LLM #ProductManagement #ModelSelection #AIInfrastructure
-- **Character count:** ~1,850 (within LinkedIn's 3,000 character limit)
-- **Engagement hooks:** Opens with a dollar figure and a story. Ends with a direct question to drive comments.
+```
+── START COPY ──
+
+Our checkout query went from 𝟱𝟬𝗺𝘀 to 𝟭.𝟮 𝘀𝗲𝗰𝗼𝗻𝗱𝘀.
+Cart abandonment spiked 𝟭𝟮 percentage points.
+Revenue leaked at $𝟱,𝟲𝟬𝟬 per minute.
+
+The engineering team spent three days blaming the network.
+
+━━━
+
+They ran EXPLAIN ANALYZE repeatedly. Same plan, same estimates, same node types. 𝘕𝘰𝘵𝘩𝘪𝘯𝘨 𝘭𝘰𝘰𝘬𝘦𝘥 𝘸𝘳𝘰𝘯𝘨.
+
+So they tuned PgBouncer, added read replicas, opened a cloud provider ticket. None of it helped.
+
+Then we added 𝗼𝗻𝗲 𝘄𝗼𝗿𝗱 to the diagnostic command: 𝗕𝗨𝗙𝗙𝗘𝗥𝗦.
+
+━━━
+
+⚠️ EXPLAIN (ANALYZE, BUFFERS) told the story in seconds:
+
+▸ 𝟭𝟱,𝟬𝟬𝟬 pages read from disk
+▸ Only 𝟱𝟬 pages found in cache
+▸ A 𝟬.𝟯% buffer hit ratio on a query that should be 𝟵𝟱%+ cached
+
+Three days of debugging. The answer was in the I/O stats 𝘵𝘩𝘦𝘺 𝘯𝘦𝘷𝘦𝘳 𝘢𝘴𝘬𝘦𝘥 𝘧𝘰𝘳.
+
+━━━
+
+📊 𝗧𝗵𝗿𝗲𝗲 𝗳𝗶𝘅𝗲𝘀. 𝗭𝗲𝗿𝗼 𝗰𝗼𝗱𝗲 𝗰𝗵𝗮𝗻𝗴𝗲𝘀.
+
+1. 𝗩𝗔𝗖𝗨𝗨𝗠 𝗔𝗡𝗔𝗟𝗬𝗭𝗘 -- bloated table from 15,000 pages back to 3,200
+2. 𝘄𝗼𝗿𝗸_𝗺𝗲𝗺 256kB -> 16MB -- eliminated a 2,500-page disk spill
+3. 𝘀𝗵𝗮𝗿𝗲𝗱_𝗯𝘂𝗳𝗳𝗲𝗿𝘀 2GB -> 4GB -- working set had outgrown the cache
+
+━━━
+
+🎯 𝗥𝗲𝘀𝘂𝗹𝘁𝘀:
+
+▸ Execution time: 𝟭,𝟭𝟵𝟮𝗺𝘀 -> 𝟰𝟮𝗺𝘀 (96.5% reduction)
+▸ Buffer hit ratio: 𝟬.𝟯% -> 𝟵𝟳.𝟯%
+▸ Temp pages spilled: 2,500 -> 𝟬
+▸ Cart abandonment: recovered to baseline in 48 hours
+
+PostgreSQL 18 now includes BUFFERS by default in EXPLAIN ANALYZE. 𝘌𝘷𝘦𝘳𝘺 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘦𝘳 𝘸𝘪𝘭𝘭 𝘴𝘦𝘦 𝘐/𝘖 𝘴𝘵𝘢𝘵𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘪𝘤𝘢𝘭𝘭𝘺.
+
+If you are on PG 17 or earlier -- 𝗿𝘂𝗻 𝗘𝗫𝗣𝗟𝗔𝗜𝗡 (𝗔𝗡𝗔𝗟𝗬𝗭𝗘, 𝗕𝗨𝗙𝗙𝗘𝗥𝗦) 𝗼𝗻 𝘆𝗼𝘂𝗿 𝘀𝗹𝗼𝘄𝗲𝘀𝘁 𝗾𝘂𝗲𝗿𝘆 𝘁𝗼𝗱𝗮𝘆.
+
+The plan might look fine. The I/O profile might tell a completely different story.
+
+Full case study with query plans and monitoring setup: [link]
+
+#PostgreSQL #DatabasePerformance #Engineering #ECommerce #SoftwareEngineering
+
+── END COPY ──
+```
