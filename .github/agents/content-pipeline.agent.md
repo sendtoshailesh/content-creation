@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full content strategy pipeline. Coordinates all specialist agents in sequence — from clarifying questions through blog, visuals, social posts, and video script. Use for end-to-end content creation runs."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [content-strategist, blog-writer, visual-renderer, quality-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer]
+agents: [content-strategist, blog-writer, visual-renderer, quality-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -24,6 +24,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 7 | `brand-guardian` | Brand consistency audit |
 | 8 | `video-scriptwriter` | YouTube script + slide map |
 | 9 | `content-repurposer` | Newsletter, slides, podcast, infographic |
+| 10 | `web-publisher` | Publish blog to GitHub Pages site |
 
 ## Orchestration Protocol
 
@@ -73,6 +74,12 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 ### Phase 6: Repurposing (Optional)
 21. Ask user if they want derivative content (newsletter, slides, podcast, infographic)
 22. If yes, delegate to `content-repurposer` with blog path → outputs to `content/repurposed/`
+
+### Phase 7: Publish to GitHub Pages
+23. Delegate to `web-publisher` with the blog file path
+24. The agent converts the blog to HTML and saves to `docs/blog/<slug>.html`
+25. The agent links the new post from `docs/index.html` (newest first)
+26. Confirm published URL with user: `https://sendtoshailesh.github.io/content-creation/blog/<slug>.html`
 
 ## Progress Tracking
 

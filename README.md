@@ -87,6 +87,7 @@ Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **
 | 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
 | 9 | `@content-repurposer` | Newsletter, slide deck, podcast, infographic |
+| 10 | `@web-publisher` | Publish blog to GitHub Pages site |
 
 ## Using Individual Agents
 

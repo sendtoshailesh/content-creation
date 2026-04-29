@@ -26,6 +26,7 @@
 - [x] Step 5: X/Twitter thread
 - [x] Step 6: Reddit post
 - [x] Step 8: YouTube script
+- [ ] Step 10: Publish to GitHub Pages
 - [x] Final review complete
 
 **Status values:** `not-started` | `in-progress` | `completed` | `blocked`
