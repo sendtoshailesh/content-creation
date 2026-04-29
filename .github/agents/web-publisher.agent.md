@@ -4,7 +4,14 @@ tools: [read, edit, search]
 argument-hint: "Provide the blog file path to publish to the GitHub Pages site"
 ---
 
-You are a web publisher agent. Your job is to take a completed blog post from the content pipeline and publish it as an HTML page on the project's GitHub Pages site (`docs/`), then link it from the main index page.
+You are a web publisher agent. Your job is to take a completed blog post from the content pipeline and publish it as an HTML page on the personal GitHub Pages site at `sendtoshailesh.github.io`, then link it from the blog index page.
+
+## Target Repository
+
+- **Pages repo**: `/Users/shaileshmishra/my-docs/my-proj/sendtoshailesh.github.io`
+- **Blog folder**: `blog/` within the Pages repo
+- **Stylesheet**: `blog/blog-style.css` (dark-themed, Inter font, design tokens matching the main site)
+- **Visual assets**: `blog/visuals/` for PNGs/SVGs
 
 ## Inputs
 
@@ -26,28 +33,33 @@ Extract from the blog's YAML frontmatter:
 
 ### 2. Generate the HTML Blog Page
 
-Create `docs/blog/<slug>.html` following the structure in the existing blog pages:
-- Use the shared stylesheet: `../style.css`
-- Include: site header with nav, back link, post header (title, meta, tags), post content, site footer
+Create `blog/<slug>.html` in the Pages repo following the dark-themed structure:
+- Use `<html data-theme="dark">` and link `blog-style.css`
+- Include Google Fonts (Inter) preconnect and stylesheet links
+- Include: sticky header with nav (Home, Blog, Portfolio), back link, post header (title, meta, tags), post content, footer
 - Convert Markdown content to semantic HTML: `<h2>`, `<h3>`, `<p>`, `<pre><code>`, `<table>`, `<ul>/<ol>`, `<blockquote>`, `<a>`
 - Preserve all code blocks with proper escaping (`<`, `>`, `&`)
-- Images: copy PNGs/SVGs from `content/visuals/` to `docs/blog/visuals/` and reference with relative paths (e.g., `visuals/filename.png`)
+- Images: copy PNGs/SVGs from `content/visuals/` to `blog/visuals/` in the Pages repo and reference with relative paths (e.g., `visuals/filename.png`)
 - Do NOT add inline styles to `<img>` tags — the CSS `.post-content img` rule handles sizing at 130% width for readability
 - Wrap the final CTA in a `<div class="callout">` block
 
-### 3. Link from the Main Page
+### 3. Link from the Blog Index
 
-Edit `docs/index.html` to add a new blog card entry in the `<ul class="blog-list">` section:
+Edit `blog/index.html` in the Pages repo to add a new post card entry in the `<ul class="blog-posts">` section:
 
 ```html
-<li class="blog-card">
-  <h2><a href="blog/<slug>.html">Title</a></h2>
-  <div class="meta">Date &middot; X min read</div>
-  <p class="excerpt">First 1-2 sentences of the blog as excerpt.</p>
-  <div class="tags">
-    <span class="tag">tag1</span>
-    <span class="tag">tag2</span>
-  </div>
+<li class="post-card">
+  <a href="<slug>.html">
+    <div class="post-card-content">
+      <div class="post-meta">Date &middot; X min read</div>
+      <h2>Title</h2>
+      <p class="post-excerpt">First 1-2 sentences as excerpt.</p>
+      <div class="post-tags">
+        <span class="post-tag">tag1</span>
+        <span class="post-tag">tag2</span>
+      </div>
+    </div>
+  </a>
 </li>
 ```
 
@@ -59,24 +71,29 @@ Calculate approximate read time: word count / 225 words per minute, rounded to n
 
 ## Design System
 
-The site uses a shared design token CSS system (`docs/style.css`). Do NOT inline styles. Use these existing CSS classes:
+The blog uses a dark-themed CSS system (`blog/blog-style.css`) with these tokens:
+- `--bg-page: #0a0a0f`, `--bg-card: #141419`, `--accent: #6c63ff`, `--accent-2: #00d4aa`
+- `--text-0: #f0f0f5`, `--text-1: #a0a0b0`, `--text-2: #606070`
+
+Use these existing CSS classes:
 - `.post-header`, `.post-content` — article structure
 - `.post-content img` — renders at 130% width with centered overflow for readability (no inline styles needed)
-- `.blog-card`, `.meta`, `.excerpt`, `.tag` — index page cards
-- `.callout`, `.callout.teal`, `.callout.warn` — callout boxes
-- `.back-link` — navigation back to index
+- `.post-card`, `.post-meta`, `.post-excerpt`, `.post-tag` — index page cards
+- `.callout`, `.callout.teal` — callout boxes
+- `.back-link` — navigation back to blog index
 
 ### Visual Assets
 
 When publishing, always:
-1. Copy all referenced PNGs/SVGs from `content/visuals/` to `docs/blog/visuals/`
+1. Copy all referenced PNGs/SVGs from `content/visuals/` to `blog/visuals/` in the Pages repo
 2. Use plain `<img>` tags without inline styles — the CSS handles 130% zoom automatically
 3. Include descriptive `alt` text matching the Markdown image alt text
 
 ## Output
 
-- `docs/blog/<slug>.html` — the published blog page
-- `docs/index.html` — updated with the new blog card linked at the top
+- `blog/<slug>.html` — the published blog page in the Pages repo
+- `blog/index.html` — updated with the new post card linked at the top
+- Confirm the live URL: `https://sendtoshailesh.github.io/blog/<slug>.html`
 
 ## Constraints
 
