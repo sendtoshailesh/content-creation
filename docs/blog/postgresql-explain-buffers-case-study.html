@@ -71,6 +71,8 @@
 
       <p>Here is a concrete example from a cold-cache scenario: 13 hits out of 870 total accesses gives you <code>13 / (13 + 857) = 1.5%</code>. Terrible for an OLTP query that runs hundreds of times per second -- but entirely expected for the first execution after a restart.</p>
 
+      <img src="visuals/shared-buffers-flow.png" alt="PostgreSQL shared buffers flow: hit, read, dirtied, and written paths through the buffer cache" style="max-width:100%; height:auto; margin:1.5rem 0; border-radius:6px;">
+
       <h3>Context Over Absolutes</h3>
 
       <p>One critical insight I picked up from Radim Marek's excellent <a href="https://boringsql.com/posts/explain-buffers/">boringSQL article on EXPLAIN BUFFERS</a>: the buffer hit ratio is a diagnostic tool, not a scorecard. There is no universal "good" number.</p>
@@ -180,6 +182,8 @@ Execution Time: 1192.567 ms</code></pre>
 
       <p>Compare that to the expected baseline: this same query, two months earlier, ran with 95%+ hit ratio, zero temp spills, and executed in under 50ms. The plan was identical. The I/O profile was catastrophically different.</p>
 
+      <img src="visuals/buffer-hit-comparison.png" alt="PostgreSQL buffer cache hit ratio comparison: 0.3% before vs 97.3% after tuning" style="max-width:100%; height:auto; margin:1.5rem 0; border-radius:6px;">
+
       <h3>Following the Buffer Trail</h3>
 
       <p>With BUFFERS pointing us at an I/O problem, we followed the trail.</p>
@@ -217,6 +221,8 @@ WHERE relname = 'orders';</code></pre>
       <p>The instance had 2GB allocated to <code>shared_buffers</code>. That was adequate when the orders table was 857 pages (~6.7MB). At 15,000 pages (~117MB) -- with the index pages, order_items, and inventory tables competing for the same cache -- the working set had outgrown the cache. The checkout query was evicting its own pages faster than it could reuse them.</p>
 
       <p><strong>The work_mem spill.</strong> The Sort node's <code>temp written=312</code> revealed a separate problem. The <code>work_mem</code> setting had been configured at 256kB (well below the PostgreSQL 17 default of 4MB). The checkout query's <code>ORDER BY created_at DESC</code> exceeded that limit and spilled to an external merge sort on disk -- adding unnecessary I/O latency on every execution.</p>
+
+      <img src="visuals/query-plan-tree.png" alt="EXPLAIN BUFFERS query plan tree with I/O statistics at each node" style="max-width:100%; height:auto; margin:1.5rem 0; border-radius:6px;">
 
       <h2>Three Changes, One Query</h2>
 
@@ -304,6 +310,8 @@ LIMIT 5;</code></pre>
 
       <p>The part that sticks with me: one word -- <code>BUFFERS</code> -- surfaced the root cause that three days of network debugging, PgBouncer tuning, and cloud provider tickets had missed. The query plan was identical before and after the problem emerged. Only the buffer statistics revealed what had actually changed.</p>
 
+      <img src="visuals/before-after-metrics.png" alt="Before and after PostgreSQL performance metrics showing 96% latency reduction" style="max-width:100%; height:auto; margin:1.5rem 0; border-radius:6px;">
+
       <h2>Which PostgreSQL Versions Support What</h2>
 
       <p>Every technique in this post works on PostgreSQL 9.0 and later -- <code>BUFFERS</code> has been available since 2010. But the ecosystem around buffer diagnostics has matured significantly with each major release:</p>
@@ -324,6 +332,8 @@ LIMIT 5;</code></pre>
       </table>
 
       <p>PostgreSQL 18 is the inflection point. Before PG 18, you had to remember to add <code>BUFFERS</code> every time. Starting with PG 18, <code>EXPLAIN ANALYZE</code> automatically includes buffer statistics. Developers will see hit/read/dirtied/written numbers whether they ask for them or not. This is significant -- it removes the friction that kept most developers from ever seeing their query's I/O profile.</p>
+
+      <img src="visuals/pg-version-timeline.png" alt="PostgreSQL version timeline: EXPLAIN BUFFERS features from PG 9.0 to PG 19" style="max-width:100%; height:auto; margin:1.5rem 0; border-radius:6px;">
 
       <p>If you are on PG 17 or earlier, the fix is simple: always type <code>EXPLAIN (ANALYZE, BUFFERS)</code> instead of <code>EXPLAIN ANALYZE</code>. The VACUUM, <code>work_mem</code>, and <code>shared_buffers</code> tuning levers from this case study work on <strong>all PostgreSQL versions</strong>.</p>
 
