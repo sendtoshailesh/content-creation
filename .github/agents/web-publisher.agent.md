@@ -31,7 +31,8 @@ Create `docs/blog/<slug>.html` following the structure in the existing blog page
 - Include: site header with nav, back link, post header (title, meta, tags), post content, site footer
 - Convert Markdown content to semantic HTML: `<h2>`, `<h3>`, `<p>`, `<pre><code>`, `<table>`, `<ul>/<ol>`, `<blockquote>`, `<a>`
 - Preserve all code blocks with proper escaping (`<`, `>`, `&`)
-- Images: reference relative paths from `docs/blog/` to assets if present
+- Images: copy PNGs/SVGs from `content/visuals/` to `docs/blog/visuals/` and reference with relative paths (e.g., `visuals/filename.png`)
+- Do NOT add inline styles to `<img>` tags — the CSS `.post-content img` rule handles sizing at 130% width for readability
 - Wrap the final CTA in a `<div class="callout">` block
 
 ### 3. Link from the Main Page
@@ -60,9 +61,17 @@ Calculate approximate read time: word count / 225 words per minute, rounded to n
 
 The site uses a shared design token CSS system (`docs/style.css`). Do NOT inline styles. Use these existing CSS classes:
 - `.post-header`, `.post-content` — article structure
+- `.post-content img` — renders at 130% width with centered overflow for readability (no inline styles needed)
 - `.blog-card`, `.meta`, `.excerpt`, `.tag` — index page cards
 - `.callout`, `.callout.teal`, `.callout.warn` — callout boxes
 - `.back-link` — navigation back to index
+
+### Visual Assets
+
+When publishing, always:
+1. Copy all referenced PNGs/SVGs from `content/visuals/` to `docs/blog/visuals/`
+2. Use plain `<img>` tags without inline styles — the CSS handles 130% zoom automatically
+3. Include descriptive `alt` text matching the Markdown image alt text
 
 ## Output
 
