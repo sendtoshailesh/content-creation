@@ -10,6 +10,7 @@ Build a repeatable 8-step content pipeline that takes a single technical topic a
 
 | Step | Task | Agent/Skill | Status |
 |------|------|-------------|--------|
+| 0a | Reference Discovery | `reference-discovery` | ⬜ New |
 | 1 | Clarifying Questions | `content-strategist` | ✅ Done |
 | 2 | Strategy & Outline | `content-strategist` | ✅ Done |
 | 3 | Full Blog Post | `blog-writer` | ✅ Done |
@@ -24,6 +25,29 @@ Build a repeatable 8-step content pipeline that takes a single technical topic a
 ---
 
 ## Completed Steps — Detailed Record
+
+### Step 0a: Reference Discovery (`reference-discovery`)
+
+**Objective:** Search the web for high-quality references and let the user curate which sources feed into the content pipeline.
+
+**Task:**
+- Generate 2-3 targeted search queries per reference category (12-18 total queries)
+- Execute batch search via Azure Bing Web Search API (falls back to Copilot web tool)
+- Present results grouped by category with numbered references (title, URL, snippet, date)
+- User selects/rejects references interactively — supports multiple curation rounds
+- Write accepted references to `content/pipeline-config.md` under the correct category headings
+
+**Search Backend:**
+- Primary: `scripts/bing-search.py` (Azure Bing Web Search API v7)
+- Fallback: Copilot built-in `web` tool
+
+**Categories:** General content, Industry Reports & Benchmarks, Competitor / Related Articles, Pricing Pages & Documentation, Case Studies & Examples, Research Papers
+
+**Output:** Curated reference URLs in `content/pipeline-config.md`
+
+**Trigger:** Run `@reference-discovery [topic]` or `/discover-references` — suggested automatically by the pipeline orchestrator when reference URLs are empty.
+
+---
 
 ### Step 1: Clarifying Questions (`content-strategist`)
 

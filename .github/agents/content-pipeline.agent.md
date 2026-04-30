@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full content strategy pipeline. Coordinates all specialist agents in sequence — from clarifying questions through blog, visuals, social posts, and video script. Use for end-to-end content creation runs."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [content-strategist, blog-writer, visual-renderer, quality-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
+agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -11,6 +11,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 
 | Step | Agent | Output |
 |------|-------|--------|
+| 0a | `reference-discovery` | Curated reference URLs in pipeline config |
 | 0b | `trend-researcher` | Market intelligence + data points |
 | 1-2 | `content-strategist` | Strategy doc + outline |
 | 3 | `blog-writer` | Long-form blog post |
@@ -35,11 +36,15 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 4. If Status is `not-started`, set Status to `in-progress`, fill in the **Topic** and **Started** date, then begin Phase 0
 5. Update **Current Step** in the status section as you move through phases
 
-### Phase 0: Reference Analysis & Research
+### Phase 0: Reference Discovery & Research
 1. Read `content/pipeline-config.md` — check for reference URLs under the `## Reference URLs` section
-2. If URLs are listed, use the `reference-analysis` skill to fetch and synthesize them into `content/reference-brief.md`
-3. Delegate to `trend-researcher` to gather market intelligence, competitive landscape, and data points → `content/trend-research.md`
-4. If no URLs and trend research isn't needed, skip to Phase 1
+2. **If reference categories are mostly empty**, suggest running `reference-discovery` first:
+   - Tell the user: "Reference URLs are empty. Would you like to discover references first? Run `@reference-discovery [topic]` or `/discover-references` to search the web and curate sources."
+   - If the user agrees, delegate to `reference-discovery` with the topic. Wait for it to complete before continuing.
+   - If the user declines, proceed with whatever URLs exist.
+3. If URLs are listed (pre-existing or just added by reference-discovery), use the `reference-analysis` skill to fetch and synthesize them into `content/reference-brief.md`
+4. Delegate to `trend-researcher` to gather market intelligence, competitive landscape, and data points → `content/trend-research.md`
+5. If no URLs and trend research isn't needed, skip to Phase 1
 
 ### Phase 1: Planning (Steps 1-2)
 1. Delegate to `content-strategist` with the user's topic (and reference brief + trend research paths if they exist)

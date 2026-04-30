@@ -4,6 +4,46 @@ Each agent below maps to one or more steps in the pipeline. These definitions ca
 
 ---
 
+## 0. `reference-discovery`
+
+**Role:** Web reference scout. Searches the web for high-quality sources across 6 categories, presents results for interactive curation (select/reject), and writes accepted references into the pipeline config.
+
+**Steps:** 0a (Reference Discovery) — runs before reference analysis
+
+**Inputs:**
+- Topic or search terms from user
+- Existing pipeline topic from `content/pipeline-config.md`
+
+**Outputs:**
+- Curated reference URLs appended to `content/pipeline-config.md` under the correct category headings
+
+**Search Backend:**
+- Primary: Azure Bing Web Search API v7 via `scripts/bing-search.py`
+- Fallback: Copilot built-in `web` tool (when API key not configured or quota exceeded)
+
+**Workflow:**
+1. Generate 2-3 targeted queries per category (12-18 total)
+2. Execute batch search via Bing API (or web tool fallback)
+3. Present results grouped by category with numbered references
+4. User selects/rejects by number — supports multiple curation rounds
+5. Write accepted references to pipeline config
+
+**Categories:**
+- General content
+- Industry Reports & Benchmarks
+- Competitor / Related Articles
+- Pricing Pages & Documentation
+- Case Studies & Examples
+- Research Papers
+
+**Constraints:**
+- Never auto-select — always present for user approval
+- Never modify files other than `pipeline-config.md`
+- Append to existing references, never overwrite
+- Deduplicate against URLs already in config
+
+---
+
 ## 1. `content-strategist`
 
 **Role:** Interviewer + planner. Gathers context and produces a distribution-aware content outline.
