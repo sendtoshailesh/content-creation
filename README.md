@@ -157,7 +157,8 @@ archive/                             # Past content runs (max 3 kept)
 │   └── visuals/
 
 scripts/
-└── archive-content.sh               # Archive + rotate content runs
+├── archive-content.sh               # Archive + rotate content runs
+└── Validate-DocsReadme.ps1          # Validate all docs/ subfolders have README.md
 
 agents-and-skills/
 └── automation-architecture.md       # Detailed architecture documentation

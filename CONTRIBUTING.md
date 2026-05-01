@@ -22,6 +22,7 @@ Thank you for considering contributing! This project automates an 8-step content
    - If modifying an agent: test it in VS Code Copilot Chat
    - If modifying visuals: run the Python renderer and verify output at 320 DPI
    - If modifying scripts: run them locally
+   - If modifying `docs/`: run `pwsh ./scripts/Validate-DocsReadme.ps1` and confirm it exits 0
 5. **Commit** with clear messages:
    ```
    feat: add new agent for podcast script generation

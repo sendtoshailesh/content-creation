@@ -29,6 +29,7 @@ How did you verify this works?
 - [ ] Tested agent in VS Code Copilot Chat
 - [ ] Ran Python renderer and verified visual output
 - [ ] Ran archive script locally
+- [ ] Ran `pwsh ./scripts/Validate-DocsReadme.ps1` and confirmed exit 0 (for docs/ changes)
 - [ ] Reviewed generated Markdown output
 - [ ] N/A (documentation only)
 
