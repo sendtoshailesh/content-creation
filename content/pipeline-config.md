@@ -13,23 +13,31 @@
 | **Status** | `in-progress` |
 | **Topic** | Optimizing Cost While Using AI Code Assistants — Token Efficiency, Context Management & Smart Strategies |
 | **Started** | 2026-05-06 |
-| **Current Step** | Steps 1-2: Strategy + outline |
+| **Current Step** | Step 3: Blog post (Part 1 of 3) |
+| **Series** | `yes (3 parts)` |
+| **Current Part** | Part 1: "The 120x Problem" — Billing change + model routing |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
 - [x] Steps 1-2: Strategy + outline
-- [ ] Step 3: Blog post
+- [x] Step 2b: Scope assessment (single vs. series) → **Series: 3 parts, score 12/14**
+- [ ] Step 2c: Multi-dimensional analysis (persona, practice, WAF pillars) → **4 personas, 11 practices, 3 WAF pillars, score 14/16**
+- [ ] Step 3: Blog post (or Part 1)
 - [ ] Step 3b: Visual assets
 - [ ] Step 3c: Quality review
 - [ ] Step 3d: SEO optimization
 - [ ] Step 4: LinkedIn post
-- [ ] Step 5: X/Twitter thread
-- [ ] Step 6: Reddit post
+- [ ] Step 4c: Social platform selection
+- [ ] Step 5: X/Twitter thread (if selected)
+- [ ] Step 6: Reddit post (if selected)
+- [ ] Step 6b: Reel/Short video (if selected)
 - [ ] Step 7: Brand audit
-- [ ] Step 8: YouTube script
+- [ ] Step 8: YouTube script (if selected)
 - [ ] Step 10: Publish to GitHub Pages
 - [ ] Final review complete
+
+**Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
 **Status values:** `not-started` | `in-progress` | `completed` | `blocked`
 
@@ -123,13 +131,53 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 ## Output Preferences
 
 ### Blog
-- **Target length**: ~3,000 words
+- **Target length**: ~3,000 words per part (if series)
 - **Output path**: `content/`
+
+### Series Configuration
+
+> Auto-populated by scope assessment. Edit manually to override.
+
+| Field | Value |
+|-------|-------|
+| **Is Series** | `pending-assessment` |
+| **Total Parts** | — |
+| **Current Part** | — |
+| **Part 1 Focus** | — |
+| **Publishing Cadence** | — |
+
+### Dimension Analysis
+
+> Auto-populated by multi-dimensional analysis (Step 2c). Edit manually to override.
+
+| Field | Value |
+|-------|-------|
+| **Persona count** | 4 |
+| **Personas** | Senior Developer, Tech Lead, Engineering Manager, Platform Engineer |
+| **Technology practices** | 6 (model routing, prompt caching, context management, context cleanup, token compression, programmatic tool calling) |
+| **Governance practices** | 5 (budget alerting, usage monitoring, team model guidelines, credit forecasting, cost center allocation) |
+| **Total practices** | 11 |
+| **Primary WAF pillars** | Cost Optimization |
+| **Secondary WAF pillars** | Operational Excellence, Performance Efficiency |
+| **Dimension breadth score** | 2/2 |
+
+### Social Platform Selection
+
+> The pipeline always generates LinkedIn. For other platforms, select which to include:
+
+- [x] LinkedIn (always included)
+- [ ] X/Twitter thread
+- [ ] Reddit post
+- [ ] Reel/Short video (60-90 sec)
+- [ ] YouTube long-form script (8-12 min)
+
+> **Note:** Pipeline will ask for confirmation at Step 4c. Pre-check platforms above to skip the prompt.
 
 ### Social Posts
 - **LinkedIn**: Plain + Unicode formatted versions
-- **X/Twitter**: 10-12 tweet thread + standalone summary
-- **Reddit**: Standard Markdown, target subreddits listed below
+- **X/Twitter**: 10-12 tweet thread + standalone summary (if selected)
+- **Reddit**: Standard Markdown, target subreddits listed below (if selected)
+- **Reel/Short video**: 60-90 sec script with screen recording cues + voiceover (if selected)
 
 ### Target Subreddits
 - r/MachineLearning
@@ -142,3 +190,8 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 ### YouTube
 - **Target duration**: 8-12 minutes
 - **Output path**: `content/youtube-script.md`
+
+### Reel/Short Video
+- **Target duration**: 60-90 seconds
+- **Platforms**: Instagram Reels, YouTube Shorts, LinkedIn Video
+- **Output path**: `content/reel-script.md`

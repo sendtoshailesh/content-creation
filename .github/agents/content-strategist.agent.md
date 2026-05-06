@@ -46,12 +46,74 @@ Create a detailed outline with:
 - Visual placement markers: `[VISUAL: description of chart/diagram]`
 - Distribution tags: which sections feed which social posts
 
+### Phase 4: Scope Assessment
+
+After completing the outline, evaluate content comprehensiveness:
+
+1. **Count distinct pillars/subtopics** that each warrant >500 words of deep treatment
+2. **Count unique data points** (benchmarks, case studies, pricing data) that need to be presented
+3. **Assess audience breadth** — how many distinct personas need different depth?
+4. **Estimate realistic word count** for proper coverage of all pillars
+
+**Scoring (0-2 per signal):**
+
+| Signal | Score 0 | Score 1 | Score 2 |
+|--------|---------|---------|---------|
+| Pillar count | 1-2 pillars | 3 pillars | 4+ pillars |
+| Data density | <8 data points | 8-15 data points | 15+ data points |
+| Audience breadth | 1 persona | 2 personas | 3+ personas |
+| Technical depth | Overview level | Moderate detail | Deep how-to per subtopic |
+| Word count pressure | <3,000 words | 3,000-4,000 | >4,000 needed |
+| Visual complexity | 1-3 visuals | 4-5 visuals | 6+ visuals |
+| Distribution fragmentation | Easy to excerpt | Moderate cherry-picking | Heavy fragmentation |
+
+**Total score interpretation (without dimension analysis):**
+- **0-4**: Single post — proceed normally
+- **5-8**: Suggest series — note the option and let user decide
+- **9+**: Recommend series — add a `## Series Plan` section to the strategy
+
+**Total score interpretation (with dimension analysis, 0-16 scale):**
+- **0-5**: Single post — proceed normally
+- **6-10**: Suggest series — note the option and let user decide
+- **11+**: Recommend series — add a `## Series Plan` section to the strategy
+
+If recommending a series, include:
+- Part boundaries (which pillars go in which part)
+- Each part must stand alone with its own hook and CTA
+- Part 1 = problem framing + highest-impact quick-win pillar
+- Publishing cadence recommendation (days between parts)
+
+### Phase 5: Multi-Dimensional Analysis
+
+After scope assessment, analyze the topic across three dimension types using the `multi-dimensional-analysis` skill:
+
+1. **Persona dimensions**: Identify distinct roles (developer, tech lead, engineering manager, platform engineer, etc.) that would consume this content differently. Capture responsibility context, application angle, depth needed, and preferred channels per persona.
+
+2. **Best practice dimensions**: List all distinct practices the topic covers, categorized as:
+   - **Technology practices**: Tools, configurations, code, technical implementation (e.g., model routing, prompt caching, context management)
+   - **Governance practices**: Process, policy, team coordination, organizational controls (e.g., budget alerting, usage monitoring, team model guidelines)
+   - Score each practice by complexity (low/medium/high) and impact (low/medium/high)
+
+3. **Azure WAF pillar dimensions**: Map the topic to the five Azure Well-Architected Framework pillars (Cost Optimization, Operational Excellence, Performance Efficiency, Reliability, Security). For each pillar, assess:
+   - Relevance: `primary` / `secondary` / `tangential` / `none`
+   - Coverage depth: `deep` (800+ words) / `moderate` (200-500 words) / `mention` (1-2 sentences)
+   - Content angle: How the pillar applies to this specific topic
+
+4. **Compute dimension breadth score** (0-2) and feed it back into the scope assessment as the 8th signal. If this changes the total score enough to cross a threshold, update the series recommendation.
+
+5. **If series is recommended**, create:
+   - A `## Dimension × Series Alignment` table mapping dimensions to proposed parts
+   - A `## Dimension × Platform Matrix` mapping personas and practices to social platform emphasis
+
+Append all dimension analysis output to the strategy document as a `## Dimension Analysis` section.
+
 ## Output Format
 
-Save strategy to `content/<topic>-strategy.md` with both the brief and outline.
+Save strategy to `content/<topic>-strategy.md` with the brief, outline, scope assessment, dimension analysis, and (if applicable) series plan.
 
 ## Constraints
 
 - DO NOT write the actual blog — only plan and outline
 - DO NOT skip the clarifying questions phase
+- DO NOT generate separate content per persona or per WAF pillar — dimensions inform structure only
 - ONLY produce strategy and outline artifacts

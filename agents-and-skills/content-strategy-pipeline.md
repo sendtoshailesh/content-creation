@@ -2,7 +2,7 @@
 
 ## Objective
 
-Build a repeatable 8-step content pipeline that takes a single technical topic and produces a full distribution package: long-form blog, social posts (LinkedIn, X/Twitter, Reddit), optional VS Code demo, and YouTube script. Each step is a discrete, automatable task suitable for an agent or skill.
+Build a repeatable content pipeline that takes a single technical topic and produces a full distribution package: long-form blog (single post or multi-part series), social posts (LinkedIn + user-selected platforms), optional reel/short video, and YouTube script. Each step is a discrete, automatable task suitable for an agent or skill.
 
 ---
 
@@ -10,17 +10,36 @@ Build a repeatable 8-step content pipeline that takes a single technical topic a
 
 | Step | Task | Agent/Skill | Status |
 |------|------|-------------|--------|
-| 0a | Reference Discovery | `reference-discovery` | ⬜ New |
-| 1 | Clarifying Questions | `content-strategist` | ✅ Done |
-| 2 | Strategy & Outline | `content-strategist` | ✅ Done |
-| 3 | Full Blog Post | `blog-writer` | ✅ Done |
-| 3b | Visual Generation | `visual-renderer` | ✅ Done |
-| 3c | Quality Overhaul | `quality-reviewer` | ✅ Done |
-| 4 | LinkedIn Post | `social-linkedin` | ✅ Done |
-| 5 | X/Twitter Thread | `social-twitter` | ✅ Done |
-| 6 | Reddit Post | `social-reddit` | ⬜ Next |
-| 7 | VS Code Demo | `demo-builder` | ⬜ Optional |
-| 8 | YouTube Script | `video-scriptwriter` | ⬜ Pending |
+| 0a | Reference Discovery | `reference-discovery` | ✅ Implemented |
+| 0b | Market Intelligence | `trend-researcher` | ✅ Implemented |
+| 1 | Clarifying Questions | `content-strategist` | ✅ Implemented |
+| 2 | Strategy & Outline | `content-strategist` | ✅ Implemented |
+| 2b | Scope Assessment (single vs. series) | `content-scope-assessment` skill | ✅ Implemented |
+| 2c | Multi-Dimensional Analysis (persona, practice, WAF) | `multi-dimensional-analysis` skill | ✅ Implemented |
+| 3 | Full Blog Post (or Part N) | `blog-writer` | ✅ Implemented |
+| 3b | Visual Generation | `visual-renderer` | ✅ Implemented |
+| 3c | Quality Overhaul | `quality-reviewer` | ✅ Implemented |
+| 3d | SEO Optimization | `seo-optimizer` | ✅ Implemented |
+| 4a | Social Distribution Strategy | `social-strategist` | ✅ Implemented |
+| 4b | LinkedIn Post (always) | `social-linkedin` | ✅ Implemented |
+| 4c | Platform Selection | (orchestrator asks user) | ✅ Implemented |
+| 5 | X/Twitter Thread (if selected) | `social-twitter` | ✅ Implemented |
+| 6 | Reddit Post (if selected) | `social-reddit` | ✅ Implemented |
+| 6b | Reel/Short Video (if selected) | `reel-video` | ✅ Implemented |
+| 7 | Brand Audit | `brand-guardian` | ✅ Implemented |
+| 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
+| 9 | Content Repurposing (optional) | `content-repurposer` | ✅ Implemented |
+| 10 | Publish to GitHub Pages | `web-publisher` | ✅ Implemented |
+
+### Skills Inventory
+
+| Skill | Purpose |
+|-------|---------|
+| `content-scope-assessment` | Score topic comprehensiveness (0-16 scale), recommend single post vs. multi-part series |
+| `multi-dimensional-analysis` | Analyze topic across persona, best practice, and Azure WAF pillar dimensions |
+| `reference-analysis` | Fetch and synthesize online reference URLs into a reference brief |
+| `unicode-formatting` | Format text with Unicode Mathematical Bold/Italic for LinkedIn and X/Twitter |
+| `visual-rendering` | Generate PNG (matplotlib), SVG (Python), and Mermaid diagrams |
 
 ---
 
@@ -168,6 +187,35 @@ Build a repeatable 8-step content pipeline that takes a single technical topic a
 
 ## Remaining Steps
 
+### Step 2b: Scope Assessment (`content-scope-assessment` skill)
+
+**Objective:** Determine whether a topic needs a single blog post or a multi-part series.
+
+**Tasks:**
+- Score the strategy/outline against 8 comprehensiveness signals (0-2 each, 0-16 total):
+  Pillar count, data density, audience breadth, technical depth, word count pressure, visual complexity, distribution fragmentation, dimension breadth
+- If score 0-5: single post. If 6-10: suggest series. If 11+: recommend series.
+- When recommending series, use dimension data (personas, WAF pillars) as split-point candidates.
+
+**Output:** Series plan appended to strategy document + pipeline-config.md update.
+
+---
+
+### Step 2c: Multi-Dimensional Analysis (`multi-dimensional-analysis` skill)
+
+**Objective:** Analyze the topic across persona, best practice, and Azure WAF pillar dimensions to inform series structure and social distribution angles.
+
+**Tasks:**
+- **Persona dimensions**: Identify distinct roles (developer, tech lead, eng manager, platform engineer), their responsibility context, application angle, depth needed, and preferred channels.
+- **Best practice dimensions**: List technology practices (tools, code, config) and governance practices (process, policy, team controls); score each by complexity × impact.
+- **Azure WAF pillar dimensions**: Map topic to Cost Optimization, Operational Excellence, Performance Efficiency, Reliability, Security; assess relevance (primary/secondary/tangential/none) and coverage depth (deep/moderate/mention).
+- Compute dimension breadth score (0-2) as 8th signal for scope assessment.
+- If series: create Dimension × Series Alignment and Dimension × Platform Matrix.
+
+**Output:** `## Dimension Analysis` section appended to strategy document.
+
+---
+
 ### Step 6: Reddit Post (`social-reddit`)
 
 **Objective:** Write a Reddit post for r/MachineLearning, r/artificial, or r/ExperiencedDevs.
@@ -184,14 +232,36 @@ Build a repeatable 8-step content pipeline that takes a single technical topic a
 
 ---
 
-### Step 7: VS Code Demo (`demo-builder`) — Optional
+### Step 6b: Reel/Short Video (`reel-video`)
 
-**Objective:** Create a VS Code walkthrough or demo showcasing the model selection framework.
+**Objective:** Create a 60-90 second short-form video script for Instagram Reels, YouTube Shorts, and LinkedIn Video.
 
 **Tasks:**
-- Build a demo project that shows tiered model routing in action.
-- Include configuration files, sample API calls to different model tiers.
-- Create a README with setup instructions.
+- Select from 4 reel formats: "Did You Know?" (data shock), "Before/After" (transformation), "Quick Tutorial" (how-to), "Hot Take" (opinion/news).
+- Produce shot list with timing, visuals, voiceover, and text overlays.
+- Include screen recording notes (which app, settings, actions to perform).
+- Write full voiceover script (word-for-word, timed to shots).
+- Add platform-specific captions and hashtags.
+
+**Constraints:**
+- ONE core message only — ruthlessly cut everything else.
+- Voiceover conversational, NOT corporate.
+- Text overlays: max 6-8 words per screen.
+- 9:16 aspect ratio (1080×1920).
+
+**Output:** `content/reel-script.md`
+
+---
+
+### Step 7: Brand Audit (`brand-guardian`)
+
+**Objective:** Audit all generated content for brand consistency.
+
+**Tasks:**
+- Verify voice/tone consistency across blog, social posts, and video scripts.
+- Check design token compliance in all visual assets.
+- Validate data point consistency (same numbers cited across all content pieces).
+- Confirm formatting conventions per platform (Unicode for LinkedIn/X, Markdown for Reddit).
 
 ---
 

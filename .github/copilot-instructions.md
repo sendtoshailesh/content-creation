@@ -2,7 +2,15 @@
 
 ## Project Purpose
 
-This workspace automates an 8-step content strategy pipeline that takes a technical topic and produces a full distribution package: long-form blog, social posts (LinkedIn, X/Twitter, Reddit), and YouTube script.
+This workspace automates a content strategy pipeline that takes a technical topic and produces a full distribution package: long-form blog (single post or multi-part series), social posts (LinkedIn + user-selected platforms), reel/short video scripts, and YouTube scripts.
+
+### Key Pipeline Features
+
+- **Comprehensiveness detection**: After strategy/outline creation, the pipeline assesses whether a topic is too broad for a single post and recommends a multi-part series when appropriate (based on pillar count, data density, audience breadth, and technical depth)
+- **Multi-dimensional analysis**: Topics are analyzed across three dimension types — persona (developer, tech lead, manager), best practices (technology + governance), and Azure Well-Architected Framework pillars (Cost, Ops Excellence, Performance, Reliability, Security) — to inform series structure and social distribution angles
+- **Multi-part series support**: Topics scoring 11+ on comprehensiveness (0-16 scale) are split into a series where each part runs through the full pipeline independently, with dimension-aligned part boundaries
+- **Social platform selection**: LinkedIn is always generated; other platforms (X/Twitter, Reddit, Reel/Short video, YouTube) are user-selected after LinkedIn
+- **Reel/Short video**: 60-90 second scripts with screen recording cues and voiceover narration for Instagram Reels, YouTube Shorts, and LinkedIn Video
 
 ## Folder Structure
 

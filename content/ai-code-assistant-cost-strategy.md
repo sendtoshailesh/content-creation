@@ -445,3 +445,130 @@ All visuals: 320 DPI, Helvetica Neue, no Unicode glyphs, white background, share
 | Blog post | Not started | Produce from this strategy |
 | Social posts | Not started | After blog completion |
 | YouTube script | Not started | After blog completion |
+
+---
+
+## Scope Assessment (Comprehensiveness Detection)
+
+> Assessed: 2026-05-06 | Skill: `content-scope-assessment`
+
+| Signal | Evidence | Score (0-2) |
+|--------|----------|-------------|
+| Pillar count | 4 distinct optimization pillars + billing explainer + team governance = 6 major topics | 2 |
+| Data density | 20+ unique data points (multipliers, case studies, benchmarks, pricing tiers) | 2 |
+| Audience breadth | 3 personas with different depth needs (senior dev, eng manager, individual) | 2 |
+| Technical depth | Each pillar needs implementation details, code examples, and diagrams | 2 |
+| Word count pressure | Outline estimates 3,300 words compressed; proper how-to per pillar needs 5,000+ | 2 |
+| Visual complexity | 5 PNGs with explanation text (model decision tree, routing flow, savings matrix) | 1 |
+| Distribution fragmentation | Social posts can cover 1-2 pillars max; full coverage impossible in one thread | 1 |
+
+**Total Score: 12/14**
+
+### Recommendation: Multi-Part Series (3 parts)
+
+The topic scores well above the 9-point threshold. A single post would either be too long (5,000+ words) or too shallow (skipping implementation details). Splitting into 3 parts allows each to stand alone with a clear takeaway while building toward the complete playbook.
+
+### Proposed Series Plan
+
+| Part | Title | Focus | Key Data Points | Standalone Value |
+|------|-------|-------|-----------------|------------------|
+| 1 | "The 120x Problem" | Billing change + model routing quick win | June 1 date, multiplier table, 0x models, 68% case study | Reader can immediately switch models and save |
+| 2 | "Less Context = Better Code" | Caching + context management deep dive | 90% caching savings, 85% token reduction, SWEzze 6x compression | Reader implements context hygiene for compound savings |
+| 3 | "The Team Playbook" | Governance + combined strategy + forecasting | Budget controls, team guidelines, 70-90% combined savings, ROI model | Manager can deploy org-wide cost controls |
+
+### Series Rules
+
+- Each part runs through the full pipeline independently (write → visuals → quality → social)
+- Part 1 includes quick-win action items (no dependency on later parts)
+- Parts 2-3 reference Part 1 but never require it
+- Minimum 2 parts, maximum 5 parts (we use 3)
+
+---
+
+## Dimension Analysis
+
+> Assessed: 2026-05-06 | Skill: `multi-dimensional-analysis`
+
+### Persona Dimensions
+
+| Persona | Responsibility Context | Application Angle | Depth | Preferred Channels |
+|---------|----------------------|-------------------|-------|-------------------|
+| Senior Developer / IC | Writes 50-200 prompts/day; owns code quality and velocity | Hands-on: switch models, manage context, adopt caching patterns | deep | Dev blogs, Hacker News, Reddit r/ExperiencedDevs, YouTube |
+| Tech Lead / Staff Engineer | Sets technical direction; defines coding standards and tool policies | Architecture: model routing policy, context management guidelines, evaluate trade-offs | deep | LinkedIn, dev blogs, Reddit r/MachineLearning |
+| Engineering Manager | Manages 5-20 developers; owns team budget and productivity metrics | Governance: budget controls, usage monitoring, team guidelines, credit forecasting | moderate | LinkedIn, YouTube, executive summaries |
+| Platform Engineer / DevOps | Manages org-wide developer tooling configuration and policies | Infrastructure: enforce model defaults, rollout org-wide settings, integrate with CI/CD | moderate | Reddit r/programming, internal docs, dev blogs |
+
+**Persona count**: 4
+
+### Best Practice Dimensions
+
+#### Technology Practices
+
+| Practice | Complexity | Impact | Standalone Value |
+|----------|-----------|--------|------------------|
+| Model routing / selection | Medium | High | Yes — switch default model today for immediate savings |
+| Prompt caching | Low | High | Yes — automatic for repeated system prompts |
+| Context management (file scoping, #file references) | Low | Medium | Yes — close unrelated files, measurable token reduction |
+| Context cleanup / workflow discipline | Low | Medium | Yes — start new threads, prune conversation history |
+| Token compression (SWEzze, Selective Context) | High | Medium | No — requires tooling integration, research-stage |
+| Programmatic tool calling | Medium | Medium | No — requires API-level access, not IDE-level |
+
+#### Governance Practices
+
+| Practice | Complexity | Impact | Standalone Value |
+|----------|-----------|--------|------------------|
+| Budget alerting and caps | Low | High | Yes — configure before June 1 billing change |
+| Usage monitoring (per-developer, per-project) | Medium | High | Yes — identify top consumers and model mix |
+| Team model selection guidelines | Low | Medium | Yes — document which models for which task types |
+| Credit forecasting and ROI modeling | Medium | Medium | No — requires historical usage data |
+| Cost center allocation | High | Medium | No — requires enterprise plan + org structure |
+
+**Practice count**: 6 technology + 5 governance = 11 total
+
+### Azure WAF Pillar Dimensions
+
+| Pillar | Relevance | Coverage Depth | Content Angle |
+|--------|-----------|---------------|---------------|
+| Cost Optimization | Primary | Deep | The entire topic — reducing AI code assistant spend through model routing, caching, context management, and governance |
+| Operational Excellence | Secondary | Moderate | Monitoring usage, team governance processes, establishing model selection guidelines, budget alerting workflows |
+| Performance Efficiency | Secondary | Moderate | Token optimization = faster responses + smaller context windows; model routing matches task complexity to model capability |
+| Reliability | Tangential | Mention | Model fallback patterns when preferred model is unavailable; graceful degradation from premium to free models |
+| Security | Tangential | Mention | Large context windows increase prompt injection surface; sensitive code in conversation history; data leakage in overly broad file inclusion |
+
+**Primary pillars**: 1 (Cost Optimization) | **Secondary pillars**: 2 (Operational Excellence, Performance Efficiency)
+
+### Dimension Breadth Score
+
+| Signal | Evidence | Score (0-2) |
+|--------|----------|-------------|
+| Persona count | 4 personas (developer, tech lead, eng manager, platform engineer) | 2 |
+| Practice count | 11 practices (6 technology + 5 governance) | 2 |
+| WAF pillar spread | 1 primary + 2 secondary = 3 pillars with meaningful relevance | 2 |
+
+**Dimension breadth score**: 2/2
+
+### Updated Scope Assessment (with dimension breadth)
+
+Original score: 12/14 (7 signals) → Adding dimension breadth: **14/16** (8 signals)
+
+Threshold on 0-16 scale: 11+ = recommend series. Score of 14 strongly confirms the 3-part series recommendation.
+
+### Dimension × Series Alignment
+
+| Part | Primary Persona | Key Practices | WAF Pillar Focus |
+|------|----------------|---------------|-----------------|
+| 1 — "The 120x Problem" | Senior Developer | Model routing/selection, context management | Cost Optimization (primary) |
+| 2 — "Less Context = Better Code" | Tech Lead / Staff Engineer | Prompt caching, context cleanup, token compression | Performance Efficiency (secondary), Cost Optimization |
+| 3 — "The Team Playbook" | Engineering Manager | Budget alerting, usage monitoring, team guidelines, credit forecasting | Operational Excellence (secondary), Cost Optimization |
+
+Note: Platform Engineer persona is addressed across Parts 2-3 (tool configuration, org-wide policy enforcement).
+
+### Dimension × Platform Matrix
+
+| Platform | Primary Persona | Angle | Key Practices to Highlight |
+|----------|----------------|-------|---------------------------|
+| LinkedIn | Engineering Manager | Budget impact, team governance, ROI framing | Budget alerting, usage monitoring, credit forecasting |
+| X/Twitter | Senior Developer | Quick-win tactical tips, surprising data points | Model routing (120x spread), 0x free models, context management |
+| Reddit | Tech Lead | Technical deep-dive, implementation trade-offs | Prompt caching, token compression, RouteLLM benchmarks |
+| YouTube | Senior Developer + Tech Lead | Step-by-step demo, visual walkthrough | Model routing demo in VS Code, context management live, savings calculator |
+| Reel/Short | Senior Developer | One shocking stat + one quick action | 120x cost difference, switch to GPT-4.1 today |
