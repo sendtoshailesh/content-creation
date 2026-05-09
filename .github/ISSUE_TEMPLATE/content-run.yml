@@ -1,0 +1,66 @@
+name: "Content Pipeline Run"
+description: "Trigger a full content pipeline run"
+title: "Content: "
+labels: ["content-run"]
+assignees: ["copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Content Pipeline Trigger
+        Fill in the fields below. Assign to @copilot to start.
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: The technical topic to create content about
+      placeholder: "Context engineering for AI code assistants"
+    validations:
+      required: true
+
+  - type: textarea
+    id: angle
+    attributes:
+      label: Content angle / hook
+      description: What makes this unique?
+      placeholder: "Less context = better AI output."
+
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Social platforms (LinkedIn is always generated)
+      options:
+        - label: X/Twitter thread
+        - label: Reddit post
+        - label: Reel/Short video
+        - label: YouTube script
+
+  - type: textarea
+    id: references
+    attributes:
+      label: Reference URLs (one per line with a note)
+      placeholder: |
+        https://www.anthropic.com/engineering/advanced-tool-use - Tool Search
+
+  - type: dropdown
+    id: series
+    attributes:
+      label: Series preference
+      options:
+        - Auto-detect (let scope assessment decide)
+        - Single post only
+        - Multi-part series
+    validations:
+      required: true
+
+  - type: input
+    id: target_audience
+    attributes:
+      label: Primary audience
+      placeholder: "Senior developers using GitHub Copilot daily"
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context

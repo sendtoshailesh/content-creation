@@ -1,0 +1,147 @@
+name: Content Critic Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: ['content/**/*.md', 'content/visuals/**']
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  detect-pipeline-pr:
+    runs-on: ubuntu-latest
+    outputs:
+      is_content_pr: ${{ steps.check.outputs.result }}
+      creation_family: ${{ steps.detect.outputs.family }}
+      platforms: ${{ steps.platforms.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - id: check
+        name: Check if content pipeline PR
+        run: |
+          if [ -f content/pipeline-config.md ] && grep -q "in-progress\|completed" content/pipeline-config.md; then
+            echo "result=true" >> $GITHUB_OUTPUT
+          else
+            echo "result=false" >> $GITHUB_OUTPUT
+          fi
+
+      - id: detect
+        name: Detect creation model family
+        run: |
+          family="unknown"
+          if [ -f content/pipeline-config.md ]; then
+            raw=$(grep -i "Creation model family" content/pipeline-config.md | tail -1 | sed 's/.*|[^|]*|//' | tr -d ' |')
+            if [ -n "$raw" ] && [ "$raw" != "_" ] && [ "$raw" != "—" ]; then
+              family="$raw"
+            fi
+          fi
+          echo "family=$family" >> $GITHUB_OUTPUT
+          echo "Detected creation family: $family"
+
+      - id: platforms
+        name: Read platform selection
+        run: |
+          platforms="linkedin"
+          if [ -f content/pipeline-config.md ]; then
+            grep -q "\[x\].*X/Twitter" content/pipeline-config.md && platforms="$platforms,twitter"
+            grep -q "\[x\].*Reddit" content/pipeline-config.md && platforms="$platforms,reddit"
+            grep -q "\[x\].*Reel" content/pipeline-config.md && platforms="$platforms,reel"
+            grep -q "\[x\].*YouTube" content/pipeline-config.md && platforms="$platforms,youtube"
+          fi
+          echo "list=$platforms" >> $GITHUB_OUTPUT
+          echo "Platforms: $platforms"
+
+  cross-model-critic:
+    needs: detect-pipeline-pr
+    if: needs.detect-pipeline-pr.outputs.is_content_pr == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.MODELS_PAT }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Select critic model (different family)
+        id: critic
+        run: |
+          CREATION="${{ needs.detect-pipeline-pr.outputs.creation_family }}"
+          echo "Creation family: $CREATION"
+          if [ "$CREATION" = "anthropic" ] || [ "$CREATION" = "unknown" ]; then
+            echo "model=openai/gpt-4.1" >> $GITHUB_OUTPUT
+            echo "family=openai" >> $GITHUB_OUTPUT
+          elif [ "$CREATION" = "openai" ]; then
+            echo "model=anthropic/claude-sonnet-4" >> $GITHUB_OUTPUT
+            echo "family=anthropic" >> $GITHUB_OUTPUT
+          elif [ "$CREATION" = "google" ]; then
+            echo "model=openai/gpt-4.1" >> $GITHUB_OUTPUT
+            echo "family=openai" >> $GITHUB_OUTPUT
+          else
+            echo "model=openai/gpt-4.1" >> $GITHUB_OUTPUT
+            echo "family=openai" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run cross-model critic review
+        run: python scripts/pipeline/critic_review.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.MODELS_PAT }}
+          CRITIC_MODEL: ${{ steps.critic.outputs.model }}
+          CRITIC_FAMILY: ${{ steps.critic.outputs.family }}
+          CREATION_FAMILY: ${{ needs.detect-pipeline-pr.outputs.creation_family }}
+
+      - name: Run grounded fact-check
+        run: python scripts/pipeline/grounded_review.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.MODELS_PAT }}
+          CRITIC_MODEL: ${{ steps.critic.outputs.model }}
+
+      - name: Generate social content
+        run: python scripts/pipeline/generate_social.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.MODELS_PAT }}
+          CRITIC_MODEL: ${{ steps.critic.outputs.model }}
+          PLATFORMS: ${{ needs.detect-pipeline-pr.outputs.platforms }}
+
+      - name: Commit results
+        run: |
+          git config user.name "content-pipeline[bot]"
+          git config user.email "content-pipeline[bot]@users.noreply.github.com"
+          git add content/
+          git diff --staged --quiet || git commit -m "chore: cross-model critic review + social content"
+          git push
+
+      - name: Post review summary on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.MODELS_PAT }}
+          script: |
+            const fs = require('fs');
+            let review = 'No review output found.';
+            try {
+              review = fs.readFileSync('content/critic-review-summary.md', 'utf8');
+            } catch (e) {
+              console.log('No summary file found');
+            }
+            const creation = '${{ needs.detect-pipeline-pr.outputs.creation_family }}';
+            const critic = '${{ steps.critic.outputs.family }}';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## Cross-Model Critic Review\n\n` +
+                    `| Role | Family |\n|------|--------|\n` +
+                    `| Creation | **${creation}** |\n` +
+                    `| Critic | **${critic}** |\n\n${review}`
+            });

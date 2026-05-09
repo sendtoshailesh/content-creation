@@ -1,0 +1,8 @@
+{
+  "name": "Content Pipeline",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
+  "postCreateCommand": "pip install matplotlib && fc-cache -f 2>/dev/null || true",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+}
