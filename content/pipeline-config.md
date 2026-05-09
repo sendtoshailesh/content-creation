@@ -11,27 +11,28 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
-| **Topic** | Optimizing Cost While Using AI Code Assistants — Token Efficiency, Context Management & Smart Strategies |
+| **Topic** | Engineering Better AI Code Assistant Interactions — Context Engineering, Workflow Discipline & Informed Model Selection |
 | **Started** | 2026-05-06 |
-| **Current Step** | Step 3: Blog post (Part 1 of 3) |
+| **Current Step** | Part 1 complete. Ready for Part 2. |
 | **Series** | `yes (3 parts)` |
-| **Current Part** | Part 1: "The 120x Problem" — Billing change + model routing |
+| **Current Part** | Part 1: "Less Noise, Better Output" — Context engineering |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
-- [x] Steps 1-2: Strategy + outline
-- [x] Step 2b: Scope assessment (single vs. series) → **Series: 3 parts, score 12/14**
-- [ ] Step 2c: Multi-dimensional analysis (persona, practice, WAF pillars) → **4 personas, 11 practices, 3 WAF pillars, score 14/16**
-- [ ] Step 3: Blog post (or Part 1)
-- [ ] Step 3b: Visual assets
-- [ ] Step 3c: Quality review
+- [x] Steps 1-2: Strategy + outline -> `content/ai-code-assistant-optimization-strategy.md` (replaces cost-first angle)
+- [x] Step 2b: Scope assessment (single vs. series) -> **Series: 3 parts, score 16/16**
+- [x] Step 2c: Multi-dimensional analysis -> **3 personas, 11 practices, 3 WAF pillars, score 2/2**
+- [x] Step 3: Blog post (Part 1) -> `content/context-engineering-part-1.md`
+- [x] Step 3b: Visual assets -> 3 PNGs (paradox, framework, before-after)
+- [x] Step 3c: Quality review -> 14/14 claims verified, 1 minor fix (date precision)
+- [x] Step 3e: Grounded content review -> all sources re-fetched, 0 corrections
 - [ ] Step 3d: SEO optimization
-- [ ] Step 4: LinkedIn post
-- [ ] Step 4c: Social platform selection
+- [x] Step 4: LinkedIn post -> `content/linkedin-post-part1.md`
+- [x] Step 4c: Social platform selection -> Reel/Short video only
 - [ ] Step 5: X/Twitter thread (if selected)
 - [ ] Step 6: Reddit post (if selected)
-- [ ] Step 6b: Reel/Short video (if selected)
+- [x] Step 6b: Reel/Short video -> `content/reel-script-part1.md`
 - [ ] Step 7: Brand audit
 - [ ] Step 8: YouTube script (if selected)
 - [ ] Step 10: Publish to GitHub Pages
@@ -53,17 +54,42 @@
 
 Choose which model to use for content generation. Select your model in the **VS Code Copilot model picker** before running agents.
 
+### Model Family Detection
+
+The pipeline tracks which model family was used for content creation and ensures critic review uses a **different** family. No model versions are hardcoded — whatever the latest model is in each family within GitHub Copilot will be used.
+
+| Family | Model name prefix | Examples |
+|--------|------------------|----------|
+| `anthropic` | Claude * | Claude Sonnet, Claude Opus, Claude Haiku |
+| `openai` | GPT-*, o* | GPT-4.1, GPT-4o, GPT-5.x, o3, o4-mini |
+| `google` | Gemini * | Gemini 2.5 Pro, Gemini Flash |
+
+### Cross-Model Critic Review
+
+| Role | Selection Rule |
+|------|---------------|
+| **Content Creation** | User selects any model; pipeline records the family used |
+| **Critic Review** | Must use a model from a **different family** than creation |
+| **Visual Generation** | User selects any model |
+
+> **How it works**: After content is created, the orchestrator identifies the creation model family and prompts you to switch to any model from a different family before running quality review. This ensures adversarial diversity — different model families have different biases, blind spots, and strengths.
+
+### Current Run
+
+| Field | Value |
+|-------|-------|
+| **Creation model family** | _(auto-detected from VS Code picker during content creation)_ |
+| **Critic model family** | _(switch to a different family before quality review)_ |
+
 ### Recommended Models by Task
 
 | Task | Recommended | Why |
 |------|-------------|-----|
-| Content Strategy / Planning | Claude Sonnet 4 or o3 | Deep reasoning, nuanced audience analysis |
-| Blog Writing | Claude Sonnet 4 or GPT-4.1 | Strong technical writing, data accuracy |
-| Visual Generation | GPT-4.1 or Claude Sonnet 4 | Reliable code generation for Python renderers |
-| Quality Review | Claude Sonnet 4 | Best at critical analysis and finding gaps |
-| Social Posts (LinkedIn/Twitter) | Claude Sonnet 4 or GPT-4o | Good at concise, punchy copy |
-| Reddit Posts | Claude Sonnet 4 | Natural conversational tone |
-| Video Scripts | Claude Sonnet 4 or GPT-4.1 | Structured output with timing |
+| Content Strategy / Planning | Best reasoning model available | Deep reasoning, nuanced audience analysis |
+| Blog Writing | Best writing model available | Strong technical writing, data accuracy |
+| Visual Generation | Best code generation model available | Reliable Python renderer generation |
+| Quality Review | **Different family from blog writing** | Cross-model adversarial review catches blind spots |
+| Social Posts (LinkedIn/Twitter) | Any model | Good at concise, punchy copy |
 
 ### Current Selection
 
@@ -71,11 +97,7 @@ Choose which model to use for content generation. Select your model in the **VS 
 
 ### Available Models (GitHub Copilot)
 
-Run `/configure-model` to see the latest available models and get recommendations.
-
-**Flagship**: Claude Sonnet 4, Claude Sonnet 4.5, GPT-4.1, GPT-4o, Gemini 2.5 Pro
-**Fast**: Claude Haiku 3.5, GPT-4o mini, GPT-4.1 mini, GPT-4.1 nano
-**Reasoning**: o3, o4-mini, Claude Sonnet 4 (Extended Thinking)
+Run `/configure-model` to see the latest available models and get recommendations. Models change frequently — do not hardcode specific versions in agents or content.
 
 ---
 

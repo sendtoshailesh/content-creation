@@ -77,3 +77,29 @@ After creating the brief, notify that references are analyzed and the blog-write
 - Note when pricing data has a specific date — it may change
 - If a URL fails to load, note it and proceed with remaining sources
 - Do NOT fabricate data — only use what's actually in the references
+
+## Volatility Tagging
+
+Tag data points that are likely to change before the content is published. Add a `[VOLATILE]` marker next to any data point that meets these criteria:
+
+- **Pricing data**: Model costs, API rates, token pricing, plan pricing, credit allocations
+- **Feature availability**: Free tier models, included models, feature access by plan
+- **Policy/billing changes**: Billing model transitions, deadline dates, promotional periods
+- **Multiplier tables**: Model multipliers, discount rates, tier classifications
+- **Quota/limit data**: Request limits, rate limits, usage caps
+
+Format in the reference brief:
+```
+- `[VOLATILE]` GPT-4.1 included at 0x on paid plans — [source](URL) — verified [date]
+```
+
+The `grounded-content-reviewer` agent uses these tags during Step 3e to prioritize which claims to re-verify against live sources before publishing. Data points without `[VOLATILE]` tags (research findings, benchmarks, case studies) are less likely to change and receive lower re-verification priority.
+
+### "Subject to Change" Detection
+
+When a source explicitly states that data is "subject to change", "may change", or "in preview", capture the caveat:
+```
+- `[VOLATILE][CAVEAT: "subject to change"]` Model multipliers — [source](URL)
+```
+
+Content writers MUST include appropriate caveats when citing `[VOLATILE][CAVEAT]` data points.

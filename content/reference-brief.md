@@ -46,26 +46,26 @@ Generated: 2026-05-06
 ### [GitHub Copilot Premium Requests & Model Multipliers](https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests) — GitHub Docs, Current
 
 - **Model multipliers (key data)**:
-  - Free (0x): GPT-4.1, GPT-4o, GPT-5 mini (included on paid plans)
-  - Cheap (0.25x): GPT-5.4 nano, Grok Code Fast 1
-  - Budget (0.33x): Claude Haiku 4.5, GPT-5.4 mini, Gemini 3 Flash
-  - Standard (1x): Claude Sonnet 4/4.5/4.6, Gemini 2.5 Pro, GPT-5.2, GPT-5.4
-  - Premium (3x): Claude Opus 4.5, Claude Opus 4.6
-  - Expensive (7.5x): GPT-5.5
-  - Very expensive (15x): Claude Opus 4.7
-  - Extreme (30x): Claude Opus 4.6 fast mode
-- **Auto-selection discount**: 10% off multiplier when using Copilot auto model selection
-- **Free tier**: 2,000 inline suggestions + 50 premium requests/month
+  - `[VOLATILE][CAVEAT: "subject to change"]` Included (0x): GPT-4.1, GPT-4o, GPT-5 mini (currently on paid plans; GitHub states included models are subject to change)
+  - `[VOLATILE]` Cheap (0.25x): GPT-5.4 nano, Grok Code Fast 1
+  - `[VOLATILE]` Budget (0.33x): Claude Haiku 4.5, GPT-5.4 mini, Gemini 3 Flash
+  - `[VOLATILE]` Standard (1x): Claude Sonnet 4/4.5/4.6, Gemini 2.5 Pro, GPT-5.2, GPT-5.4
+  - `[VOLATILE]` Premium (3x): Claude Opus 4.5, Claude Opus 4.6
+  - `[VOLATILE]` Expensive (7.5x): GPT-5.5
+  - `[VOLATILE]` Very expensive (15x): Claude Opus 4.7
+  - `[VOLATILE]` Extreme (30x): Claude Opus 4.6 fast mode
+- `[VOLATILE]` **Auto-selection discount**: 10% off multiplier when using Copilot auto model selection
+- `[VOLATILE]` **Free tier**: 2,000 inline suggestions + 50 premium requests/month
 - **Unique angle**: Concrete multiplier table makes ROI of model selection instantly calculable
 
 ### [GitHub Copilot Moving to Usage-Based Billing](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/) — GitHub Blog, Apr 27, 2026
 
-- **What's changing**: Starting June 1, 2026 — Premium Request Units replaced by GitHub AI Credits
-- **Credits consumed by**: Token usage (input + output + cached tokens) at published API rates per model
-- **Plan pricing unchanged**: Pro $10/mo ($10 credits), Pro+ $39/mo ($39 credits), Business $19/user ($19 credits), Enterprise $39/user ($39 credits)
-- **Promotional credits**: Business $30/mo, Enterprise $70/mo for June-August transition
-- **Still free**: Code completions and Next Edit suggestions in all plans
-- **New feature**: Pooled usage across organizations; budget controls at enterprise/cost center/user levels
+- `[VOLATILE]` **What's changing**: Starting June 1, 2026 — Premium Request Units replaced by GitHub AI Credits
+- `[VOLATILE]` **Credits consumed by**: Token usage (input + output + cached tokens) at published API rates per model
+- `[VOLATILE]` **Plan pricing unchanged**: Pro $10/mo ($10 credits), Pro+ $39/mo ($39 credits), Business $19/user ($19 credits), Enterprise $39/user ($39 credits)
+- `[VOLATILE]` **Promotional credits**: Business $30/mo, Enterprise $70/mo for June-August transition
+- `[VOLATILE][CAVEAT: "fallback no longer available"]` **Still free**: Code completions and Next Edit suggestions in all plans
+- `[VOLATILE]` **New feature**: Pooled usage across organizations; budget controls at enterprise/cost center/user levels
 - **Why it matters**: "A quick chat question and a multi-hour autonomous coding session can cost the user the same amount" — this is no longer sustainable
 - **Unique angle**: This is the triggering event — makes cost optimization immediately relevant for every Copilot user
 
@@ -100,9 +100,9 @@ Generated: 2026-05-06
 ### Data Points for Content
 
 **Pricing data (May 2026):**
-- GitHub Copilot: GPT-5.5 = 7.5x multiplier; Claude Opus 4.7 = 15x; GPT-5.4 nano = 0.25x (30x cost difference between cheapest and most expensive)
-- OpenAI API: GPT-5.5 at $5/$30 per MTok; cached input 90% off
-- Anthropic API: Sonnet at $3/$15; cached reads 90% off
+- `[VOLATILE]` GitHub Copilot: GPT-5.5 = 7.5x multiplier; Claude Opus 4.7 = 15x; GPT-5.4 nano = 0.25x (120x cost spread between cheapest and most expensive)
+- `[VOLATILE]` OpenAI API: GPT-5.5 at $5/$30 per MTok; cached input 90% off
+- `[VOLATILE]` Anthropic API: Sonnet at $3/$15; cached reads 90% off
 
 **Savings benchmarks:**
 - Routing: 68-75% cost reduction (multiple sources)

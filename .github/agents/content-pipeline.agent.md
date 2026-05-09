@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full content strategy pipeline. Coordinates all specialist agents in sequence — from clarifying questions through blog, visuals, social posts, and video script. Use for end-to-end content creation runs."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
+agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -19,6 +19,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 3 | `blog-writer` | Long-form blog post (or Part N of series) |
 | 3b | `visual-renderer` | PNGs, SVGs, Mermaid diagrams |
 | 3c | `quality-reviewer` | Quality audit + fixes |
+| 3e | `grounded-content-reviewer` | Fact-check claims against live sources |
 | 3d | `seo-optimizer` | SEO-optimized blog (meta, keywords) |
 | 4a | `social-strategist` | Cross-platform distribution plan |
 | 4b | `social-linkedin` | Plain + Unicode LinkedIn posts |
@@ -75,15 +76,31 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 6. Confirm with user before proceeding to content creation
 
 ### Phase 2: Content Creation (Steps 3-3b)
-4. Delegate to `blog-writer` with the strategy/outline path
-5. Delegate to `visual-renderer` with the outline's visual markers
-6. Both can run in parallel — blog references visual paths, visuals reference outline
+4. Delegate to `blog-writer` with the strategy/outline path. The blog-writer will:
+   - Write the blog following the outline
+   - Auto-insert `[VISUAL: description]` markers for any H2/H3 section exceeding 400 words without a visual
+5. Delegate to `visual-renderer` with the blog (not the outline) — it picks up both outline-planned markers AND blog-writer-inserted markers
+6. After visual-renderer completes, re-read the blog and replace any remaining `[VISUAL:]` markers with actual `![alt](path)` references to the generated PNGs
+7. Run `quality-reviewer` in visual-density-only mode: verify every section >400 words now has a linked visual. If any are still missing, generate additional visuals and re-link.
 
 ### Phase 3: Quality Gate + SEO (Steps 3c-3d)
-7. Delegate to `quality-reviewer` to audit blog + visuals
-8. If issues found, coordinate fixes before proceeding
-9. Delegate to `seo-optimizer` to add SEO metadata, keywords, and heading optimization
-10. Confirm quality gate pass with user
+7. **Cross-model switch**: Before running quality review, detect the model family used for content creation:
+   - If the current model name starts with `Claude` → creation family is `anthropic`
+   - If the current model name starts with `GPT` or `o` → creation family is `openai`
+   - If the current model name starts with `Gemini` → creation family is `google`
+   - Record the creation family in `content/pipeline-config.md` under `Current Run > Creation model family`
+   - Prompt the user: "Content was created with the **[family]** model family. For cross-model critic review, please switch to any model from a **different family** in the VS Code model picker. Available alternatives: [list families excluding creation family]. Then confirm to proceed."
+   - Wait for user confirmation before continuing.
+8. Delegate to `quality-reviewer` to audit blog + visuals (now running on a different model family)
+9. If issues found, coordinate fixes before proceeding
+10. **Source freshness check (Step 3e)**: Delegate to `grounded-content-reviewer` with the blog path. This agent:
+   - Re-fetches live source URLs (pricing pages, announcement posts, documentation)
+   - Verifies all data points tagged `[VOLATILE]` in the reference brief are still accurate
+   - Cross-checks pricing, multiplier, and policy claims against current live pages
+   - Flags and fixes any claims that have changed since the reference brief was created
+   - Reports verified, corrected, and unverified claims
+10. Delegate to `seo-optimizer` to add SEO metadata, keywords, and heading optimization
+11. Confirm quality gate pass with user
 
 ### Phase 4: Distribution (Steps 4-8)
 11. Delegate to `social-strategist` to create cross-platform distribution plan → `content/social-strategy.md`
