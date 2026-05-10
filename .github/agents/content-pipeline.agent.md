@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full content strategy pipeline. Coordinates all specialist agents in sequence — from clarifying questions through blog, visuals, social posts, and video script. Use for end-to-end content creation runs."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher]
+agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -31,6 +31,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 8 | `video-scriptwriter` | YouTube script + slide map (if selected) |
 | 9 | `content-repurposer` | Newsletter, slides, podcast, infographic |
 | 10 | `web-publisher` | Publish blog to GitHub Pages site |
+| 11 | `social-publisher` | Publish social content via MCP (with approval) |
 
 ## Orchestration Protocol
 

@@ -217,3 +217,34 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 - **Target duration**: 60-90 seconds
 - **Platforms**: Instagram Reels, YouTube Shorts, LinkedIn Video
 - **Output path**: `content/reel-script.md`
+
+---
+
+## Publishing Configuration
+
+> Controls how generated social content is published to platforms. See `docs/social-api-setup.md` for credential setup.
+
+### Publishing Mode
+
+| Field | Value |
+|-------|-------|
+| **Publish mode** | `confirm` |
+| **Publish approach** | `per-platform` |
+
+**Mode values:**
+- `manual` — content generated only; user copy-pastes to platforms
+- `confirm` — MCP servers preview content; user approves before posting
+- `auto` — post immediately after generation (not recommended)
+
+**Approach values:**
+- `per-platform` — free MCP servers: reddit-mcp-server + mcp-linkedin + custom (X/YouTube). Cost: $0/mo
+- `posteverywhere` — PostEverywhere SaaS MCP. Cost: $19-79/mo. Does NOT cover Reddit.
+- `postfast` — PostFast SaaS MCP. Cost: paid. Does NOT cover Reddit.
+
+### Published URLs
+
+> Auto-populated after publishing. Cleared on archive.
+
+| Platform | URL | Posted |
+|----------|-----|--------|
+| — | — | — |

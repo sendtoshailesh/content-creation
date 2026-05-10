@@ -1,0 +1,39 @@
+{
+  "servers": {
+    "reddit": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "reddit-mcp-server"],
+      "env": {
+        "REDDIT_CLIENT_ID": "${env:REDDIT_CLIENT_ID}",
+        "REDDIT_CLIENT_SECRET": "${env:REDDIT_CLIENT_SECRET}",
+        "REDDIT_USERNAME": "${env:REDDIT_USERNAME}",
+        "REDDIT_PASSWORD": "${env:REDDIT_PASSWORD}",
+        "REDDIT_SAFE_MODE": "standard",
+        "REDDIT_BOT_DISCLOSURE": "off"
+      }
+    },
+    "linkedin": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-linkedin"],
+      "env": {
+        "UNIPILE_API_KEY": "${env:UNIPILE_API_KEY}",
+        "UNIPILE_DSN": "${env:UNIPILE_DSN}"
+      }
+    },
+    "social-publisher": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": ["${workspaceFolder}/scripts/mcp-social-publisher/server.py"],
+      "env": {
+        "TWITTER_API_KEY": "${env:TWITTER_API_KEY}",
+        "TWITTER_API_SECRET": "${env:TWITTER_API_SECRET}",
+        "TWITTER_ACCESS_TOKEN": "${env:TWITTER_ACCESS_TOKEN}",
+        "TWITTER_ACCESS_SECRET": "${env:TWITTER_ACCESS_SECRET}",
+        "YOUTUBE_CLIENT_ID": "${env:YOUTUBE_CLIENT_ID}",
+        "YOUTUBE_CLIENT_SECRET": "${env:YOUTUBE_CLIENT_SECRET}"
+      }
+    }
+  }
+}

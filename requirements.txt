@@ -1,0 +1,16 @@
+# Content Pipeline Dependencies
+# Install: pip install -r requirements.txt
+
+# Custom MCP server (X/Twitter + YouTube posting)
+mcp[cli]>=1.0.0
+python-dotenv>=1.0.0
+
+# X/Twitter API v2 client
+tweepy>=4.14.0
+
+# YouTube Data API v3
+google-api-python-client>=2.100.0
+google-auth-oauthlib>=1.2.0
+
+# CI/CD script — Reddit posting (MCP server uses npx, script needs direct client)
+praw>=7.7.0

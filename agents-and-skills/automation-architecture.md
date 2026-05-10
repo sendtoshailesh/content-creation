@@ -18,6 +18,7 @@ The 8-step content strategy pipeline is automated as GitHub Copilot custom agent
 │   ├── social-linkedin.agent.md               # Step 4: LinkedIn posts
 │   ├── social-twitter.agent.md                # Step 5: Twitter thread
 │   ├── social-reddit.agent.md                 # Step 6: Reddit post
+│   ├── social-publisher.agent.md              # Step 11: Publish to social platforms via MCP
 │   └── video-scriptwriter.agent.md            # Step 8: YouTube script
 ├── skills/
 │   ├── visual-rendering/
@@ -97,6 +98,77 @@ The orchestrator enforces quality gates between phases:
 | `content/visuals/**` | visual-standards.instructions.md |
 | Social media tasks | social-formatting.instructions.md (on-demand) |
 
+## Social Media Publishing (Step 11)
+
+### MCP Server Topology
+
+```
+@social-publisher agent
+        │
+        ├──► reddit-mcp-server (npm, stdio)
+        │      Tools: create_post, get_top_posts, search_reddit, ...
+        │      Auth: REDDIT_CLIENT_ID + SECRET
+        │      Features: Safe mode, spam protection, bot disclosure
+        │
+        ├──► mcp-linkedin (npm, stdio)
+        │      Tools: linkedin_publish, linkedin_comment, linkedin_react
+        │      Auth: UNIPILE_API_KEY + DSN
+        │      Features: Dry-run default, media, @mentions, auto-like
+        │
+        └──► social-publisher (Python, stdio)
+               Tools: post_to_twitter, update_youtube_metadata,
+                      preview_content, check_credentials
+               Auth: TWITTER_* keys, YOUTUBE_* OAuth
+               Features: Thread support, metadata-only YouTube
+```
+
+### Human-in-the-Loop Flow
+
+```
+Generated content (content/*.md)
+        │
+        ▼
+@social-publisher reads pipeline-config.md
+        │
+        ▼
+check_credentials ──► Report missing credentials
+        │
+        ▼
+Preview ALL platforms (dry_run=true)
+        │
+        ▼
+Present summary to user
+        │
+        ▼
+User approves? ──► NO ──► Stop / Edit / Retry
+        │
+       YES
+        │
+        ▼
+Post to each platform (dry_run=false)
+        │
+        ▼
+Log URLs to content/publishing-log.md
+```
+
+### Configuration
+
+MCP servers are registered in `.vscode/mcp.json`. Credentials in `.env` (see `docs/social-api-setup.md`).
+
+Publishing preferences in `content/pipeline-config.md` → Publishing Configuration section:
+- **Publish mode**: `manual` | `confirm` | `auto`
+- **Publish approach**: `per-platform` (free) | `posteverywhere` ($19/mo) | `postfast` (paid)
+
+### CI/CD Script
+
+`scripts/pipeline/publish_social.py` provides terminal/GitHub Actions publishing:
+```bash
+python scripts/pipeline/publish_social.py --dry-run --platform linkedin,reddit
+python scripts/pipeline/publish_social.py --platform twitter --subreddit ExperiencedDevs
+```
+
+---
+
 ## Model Configuration
 
 Agents do **not** hardcode a model. The user selects the model via the VS Code model picker in the chat panel. This keeps agents flexible as new models become available.
@@ -119,6 +191,7 @@ Agents do **not** hardcode a model. The user selects the model via the VS Code m
 | social-twitter | read, edit, search | Content adaptation only |
 | social-reddit | read, edit, search | Content adaptation only |
 | video-scriptwriter | read, edit, search | Script writing only |
+| social-publisher | read, edit, search, mcp | Orchestrates 3 MCP servers for social posting |
 | content-pipeline | read, edit, search, execute, agent, todo, web | Full orchestration + reference analysis |
 
 ## Skills

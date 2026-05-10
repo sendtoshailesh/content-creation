@@ -30,6 +30,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
 | 9 | Content Repurposing (optional) | `content-repurposer` | ✅ Implemented |
 | 10 | Publish to GitHub Pages | `web-publisher` | ✅ Implemented |
+| 11 | Social Media Publishing (API) | `social-publisher` | ✅ Implemented |
 
 ### Skills Inventory
 
@@ -275,6 +276,34 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 - Include intro hook (first 30 sec), main content, and CTA.
 - Provide thumbnail text/concept suggestions.
 - Script should reference the existing PNGs as slide assets.
+
+---
+
+### Step 11: Social Media Publishing (`social-publisher`)
+
+**Objective:** Publish generated social content to LinkedIn, X/Twitter, Reddit, and YouTube via MCP server tools with human approval.
+
+**Architecture:** Three MCP servers orchestrated by one agent:
+- `reddit-mcp-server` (npm, free) — Reddit posting with safe mode + spam protection
+- `mcp-linkedin` (npm, free tier via Unipile) — LinkedIn posting with dry-run default
+- `social-publisher` (custom Python) — X/Twitter thread posting + YouTube metadata updates
+
+**Tasks:**
+1. Read `pipeline-config.md` for platform selection and publish mode
+2. Validate credentials via `check_credentials` tool
+3. Preview all content across selected platforms (mandatory)
+4. Present summary and request explicit human approval
+5. Post to each approved platform in sequence
+6. Log all posted URLs to `content/publishing-log.md`
+
+**Human-in-the-loop:** All posting tools default to `dry_run: true`. The agent previews everything first and requires explicit user confirmation before any content goes live.
+
+**Output:**
+- Posted URLs reported to user
+- `content/publishing-log.md` updated with timestamps and URLs
+- `content/pipeline-config.md` Published URLs section updated
+
+**Credentials:** Stored in `.env` — see `docs/social-api-setup.md` for setup guide.
 
 ---
 
