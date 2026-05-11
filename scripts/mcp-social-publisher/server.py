@@ -70,7 +70,19 @@ def _parse_twitter_thread(content: str) -> list[str]:
 
     Looks for numbered tweet patterns like '1/' or '**1.**' or 'Tweet 1:'.
     Falls back to splitting on '---' separators.
+    Respects START COPY / END COPY boundaries if present.
     """
+    # Extract content between START/END COPY markers for the thread section
+    # Look for the SECOND pair (the thread), not the first (summary tweet)
+    copy_blocks = re.findall(
+        r"── START COPY ──\s*\n(.*?)\n\s*── END COPY ──",
+        content,
+        re.DOTALL,
+    )
+    # Use the longest block (the thread, not the summary)
+    if copy_blocks:
+        content = max(copy_blocks, key=len)
+
     # Try numbered pattern: "1/ ..." or "**1.** ..."
     pattern = r"(?:^|\n)(?:\*\*)?(\d+)[./](?:\*\*)?\s*(.*?)(?=\n(?:\*\*)?(?:\d+)[./]|\Z)"
     matches = re.findall(pattern, content, re.DOTALL)

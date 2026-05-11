@@ -57,6 +57,15 @@ def read_content(platform: str) -> str:
 
 def parse_twitter_thread(content: str) -> list[str]:
     """Parse X/Twitter thread into individual tweets."""
+    # Extract content between START/END COPY markers for the thread section
+    copy_blocks = re.findall(
+        r"── START COPY ──\s*\n(.*?)\n\s*── END COPY ──",
+        content,
+        re.DOTALL,
+    )
+    if copy_blocks:
+        content = max(copy_blocks, key=len)
+
     pattern = r"(?:^|\n)(?:\*\*)?(\d+)[./](?:\*\*)?\s*(.*?)(?=\n(?:\*\*)?(?:\d+)[./]|\Z)"
     matches = re.findall(pattern, content, re.DOTALL)
     if matches:

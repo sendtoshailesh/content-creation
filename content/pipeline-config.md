@@ -188,10 +188,10 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 > The pipeline always generates LinkedIn. For other platforms, select which to include:
 
 - [x] LinkedIn (always included)
-- [ ] X/Twitter thread
+- [x] X/Twitter thread
 - [ ] Reddit post
-- [ ] Reel/Short video (60-90 sec)
-- [ ] YouTube long-form script (8-12 min)
+- [x] Reel/Short video (60-90 sec)
+- [x] YouTube long-form script (8-12 min)
 
 > **Note:** Pipeline will ask for confirmation at Step 4c. Pre-check platforms above to skip the prompt.
 
