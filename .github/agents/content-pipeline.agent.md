@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full content strategy pipeline. Coordinates all specialist agents in sequence — from clarifying questions through blog, visuals, social posts, and video script. Use for end-to-end content creation runs."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
+agents: [feed-curator, reference-discovery, content-strategist, blog-writer, visual-renderer, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -11,6 +11,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 
 | Step | Agent | Output |
 |------|-------|--------|
+| -1 | `feed-curator` | Content ideas from blog rolls/feeds (optional) |
 | 0a | `reference-discovery` | Curated reference URLs in pipeline config |
 | 0b | `trend-researcher` | Market intelligence + data points |
 | 1-2 | `content-strategist` | Strategy doc + outline |
@@ -39,8 +40,22 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 1. Read `content/pipeline-config.md` — check the **Pipeline Status** section at the top
 2. If Status is `completed`, ask user if they want to archive and start fresh (suggest `/archive-content`)
 3. If Status is `in-progress`, identify the first unchecked step in the Step Checklist and resume from that phase
-4. If Status is `not-started`, set Status to `in-progress`, fill in the **Topic** and **Started** date, then begin Phase 0
+4. If Status is `not-started`:
+   - If **Topic** is empty, suggest content discovery first: "No topic set. Would you like to discover ideas from your blog rolls? Run `@feed-curator` to curate content ideas, or use `/select-idea` to pick from the existing idea queue."
+   - If **Topic** is set, proceed to set Status to `in-progress`, fill in **Started** date, and begin Phase 0
 5. Update **Current Step** in the status section as you move through phases
+
+### Phase -1: Content Discovery (Optional)
+
+This phase runs BEFORE the main pipeline when the user needs to find a topic.
+
+1. Check if `content/idea-queue.md` has any ideas with status `queued`
+   - If yes: suggest "/select-idea" to pick from existing queue
+   - If no: suggest running `@feed-curator` to discover ideas from configured blog rolls and feeds
+2. Once the user has selected a topic (either from the queue or provided directly), the feed-curator or select-idea prompt will populate `pipeline-config.md`
+3. Proceed to Phase 0
+
+> **Note**: This phase is skipped when the user provides a topic directly (e.g., `@content-pipeline AI code assistant optimization`).
 
 ### Phase 0: Reference Discovery & Research
 1. Read `content/pipeline-config.md` — check for reference URLs under the `## Reference URLs` section

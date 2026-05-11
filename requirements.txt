@@ -14,3 +14,8 @@ google-auth-oauthlib>=1.2.0
 
 # CI/CD script — Reddit posting (MCP server uses npx, script needs direct client)
 praw>=7.7.0
+
+# Feed curation — blog roll / RSS / newsletter ingestion
+feedparser>=6.0.0
+trafilatura>=1.6.0
+readability-lxml>=0.8.1

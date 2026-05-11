@@ -20,8 +20,8 @@ if [ ! -d "$CONTENT_DIR" ] || [ -z "$(ls -A "$CONTENT_DIR" 2>/dev/null)" ]; then
   exit 0
 fi
 
-# Skip pipeline-config.md from the "has content" check
-content_files=$(find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' | head -1)
+# Skip pipeline-config.md and feed-sources.md from the "has content" check
+content_files=$(find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' ! -name 'feed-sources.md' ! -name 'idea-queue.md' | head -1)
 if [ -z "$content_files" ]; then
   echo "Nothing to archive — content/ only has pipeline-config.md."
   exit 0
@@ -30,7 +30,7 @@ fi
 # ── Show what will be archived ───────────────────────────────────────────
 echo ""
 echo "=== Content to be archived ==="
-find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' | sort | sed "s|$REPO_ROOT/||"
+find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' ! -name 'feed-sources.md' ! -name 'idea-queue.md' | sort | sed "s|$REPO_ROOT/||"
 echo ""
 
 TIMESTAMP=$(date +"%Y%m%d-%H%M%S")
@@ -50,14 +50,14 @@ fi
 # ── Archive ──────────────────────────────────────────────────────────────
 mkdir -p "$ARCHIVE_DIR/$ARCHIVE_NAME"
 
-# Copy everything except pipeline-config.md (user config stays)
-rsync -a --exclude='pipeline-config.md' "$CONTENT_DIR/" "$ARCHIVE_DIR/$ARCHIVE_NAME/"
+# Copy everything except pipeline-config.md, feed-sources.md, and idea-queue.md (persistent configs stay)
+rsync -a --exclude='pipeline-config.md' --exclude='feed-sources.md' --exclude='idea-queue.md' "$CONTENT_DIR/" "$ARCHIVE_DIR/$ARCHIVE_NAME/"
 
 echo "Archived to archive/$ARCHIVE_NAME/"
 
 # ── Clean content/ for new run ───────────────────────────────────────────
-# Remove everything except pipeline-config.md
-find "$CONTENT_DIR" -mindepth 1 ! -name 'pipeline-config.md' -exec rm -rf {} + 2>/dev/null || true
+# Remove everything except pipeline-config.md, feed-sources.md, and idea-queue.md
+find "$CONTENT_DIR" -mindepth 1 ! -name 'pipeline-config.md' ! -name 'feed-sources.md' ! -name 'idea-queue.md' -exec rm -rf {} + 2>/dev/null || true
 
 # Recreate visuals directory
 mkdir -p "$CONTENT_DIR/visuals"
