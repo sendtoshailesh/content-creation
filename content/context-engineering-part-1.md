@@ -120,7 +120,7 @@ Each practice below passes the "would I do this even if AI were free?" test. The
 
 **Why it works**: Without a copilot-instructions file, you repeat the same context in every prompt: "we use TypeScript," "follow the existing pattern in the codebase," "use Prisma for database access." Each repetition costs tokens and introduces variation (you phrase it slightly differently each time, which can confuse the model). A stable instructions file provides consistent, cacheable project context that the model receives automatically.
 
-**The data**: This practice also enables prompt caching (covered in Part 2). When your instructions file is stable, its tokens form a prefix that providers cache at up to 90% discount. But even without caching, the quality benefit is immediate: the model starts every interaction with accurate project context instead of guessing.
+**The data**: This practice also enables prompt caching (covered in Part 2). When your instructions file is stable, its tokens form a prefix that GitHub Copilot's billing charges at 75-90% less than regular input tokens. But even without caching, the quality benefit is immediate: the model starts every interaction with accurate project context instead of guessing.
 
 **Your action**: Create `.github/copilot-instructions.md` in your repository with three sections: (1) tech stack and framework versions, (2) coding conventions and patterns your team follows, (3) common constraints or gotchas specific to your project. Keep it under 200 lines. Update it when your stack changes, not per-task.
 

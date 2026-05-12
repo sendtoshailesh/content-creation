@@ -25,13 +25,13 @@ keywords:
 
 ---
 
-## The 90% Discount You Are Not Using
+## The 75-90% Discount You Are Not Using
 
-OpenAI and Anthropic both offer a 90% discount on cached input tokens. If you have never heard of AI code assistant prompt caching, you are not alone — and you are paying full price for repeated context every single time.
+`[VOLATILE]` Under GitHub Copilot's usage-based billing (effective June 1, 2026), cached input tokens are charged at a significantly reduced rate compared to regular input tokens. The discount varies by model but ranges from **75% to 90% off** — GitHub's published per-token rates show this directly. If you have never heard of prompt caching, you are not alone — and you may be consuming more credits than necessary on repeated context every single time.
 
 Here is what happens under the hood. Every time you send a prompt to an AI model, the input includes a system prompt, your project instructions, relevant file content, and your actual question. In a typical coding session, **roughly 90% of that input is identical across requests**. Your copilot-instructions file does not change between prompts. Your system-level context is the same. The active file you are editing is the same. Only your specific question varies.
 
-Without caching, the provider charges full price for all of those tokens on every request. With caching, the provider recognizes the repeated prefix and charges a fraction of the cost — **90% less** — for the tokens it has already processed.
+Without caching, every token of that repeated context consumes credits at the full input rate. With caching, the provider recognizes the repeated prefix and charges a fraction — **75-90% less** — for the tokens it has already processed.
 
 In Part 1, I covered context engineering: giving AI better input to get better output. The five practices — single-task focus, thread hygiene, targeted references, front-loaded intent, and stable instructions — reduce noise and improve first-attempt accuracy. This post covers the structural layer that sits on top of clean context: caching that clean context so you do not pay repeatedly for it, and workflow discipline that prevents the good habits from eroding.
 
@@ -45,11 +45,13 @@ The savings here are invisible. You will not feel them in a single prompt. But t
 
 Prompt caching is straightforward. When consecutive prompts share a common prefix — the same system prompt, the same instruction files, the same contextual setup — the provider caches those tokens on first processing. Subsequent requests that match the cached prefix get charged dramatically less.
 
-The mechanics differ slightly by provider, but the economics are consistent:
+`[VOLATILE]` The discount is built into GitHub Copilot's published per-token rates (prices per 1M tokens):
 
-- **OpenAI**: Cached input tokens at **90% off** the base input price. Caching happens automatically when requests share a prefix.
-- **Anthropic**: Cached reads at **90% off**. The first-pass cache write costs 1.25x the base input price. The write cost is amortized across all subsequent reads.
+- **OpenAI models**: Cached input is 75-90% cheaper than regular input. For example, GPT-4.1: $2.00/MTok input vs. $0.50/MTok cached (75% off). GPT-5 mini: $0.25 vs. $0.025 (90% off).
+- **Anthropic models**: Cached reads are **90% off**. Claude Sonnet 4.6: $3.00 input vs. $0.30 cached. Cache writes cost 1.25x ($3.75/MTok) on the first request, amortized across subsequent reads.
 - **TTL (time-to-live)**: Typically **5-10 minutes**. Each matching request resets the TTL. A steady coding session keeps the cache warm indefinitely.
+
+Important: cached tokens **do consume AI Credits** under GitHub Copilot's billing — they are not free. But they consume far fewer credits than uncached input tokens. The savings come from the rate differential, not from being excluded from billing.
 
 ### Why this matters for AI code assistants
 
@@ -72,7 +74,7 @@ Suppose your stable prefix is 10,000 tokens — a reasonable estimate for system
 | **Effective prefix cost** | 100% | ~10.9% of full price |
 | **Savings** | — | **~89%** on prefix tokens |
 
-By request 10, the prefix is essentially free. By request 100, you have saved roughly 890,000 tokens worth of billing on prefix context alone. (Note: Anthropic charges 1.25x for the initial cache write, which slightly increases the first request cost but is amortized across all subsequent cached reads. OpenAI caches automatically with no write surcharge.)
+By request 10, the prefix is essentially free. By request 100, you have saved roughly 890,000 tokens worth of billing on prefix context alone. (Note: the 90% figure used in this calculation reflects Anthropic/GPT-5 mini rates. GPT-4.1 cached rate is 75% off, which still yields ~72% savings over 100 requests. Anthropic charges 1.25x for the initial cache write, slightly increasing the first request cost but amortized across all subsequent reads. OpenAI caches automatically with no write surcharge.)
 
 ### Maximize cache hits
 
@@ -195,8 +197,9 @@ In **Part 3: "The 120x Spread"**, I cover the multiplier table — from GPT-5.4 
 
 | Data Point | Value | Source |
 |------------|-------|--------|
-| Prompt caching discount (OpenAI) | 90% off cached input tokens | [OpenAI Pricing](https://openai.com/api/pricing/) |
-| Prompt caching discount (Anthropic) | 90% off reads, 1.25x on first write | [Anthropic Docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) |
+| `[VOLATILE]` Cached token discount (GitHub Copilot) | 75-90% off vs. regular input, varies by model | [GitHub Docs: Models and Pricing](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing) |
+| `[VOLATILE]` Cached tokens billed | Yes — cached tokens consume AI Credits, but at reduced rates | [GitHub Blog](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/) |
+| `[VOLATILE]` Anthropic cache write cost | 1.25x input rate on first request | [GitHub Docs: Models and Pricing](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing) |
 | Cache TTL | 5-10 minutes typical | [TDS](https://towardsdatascience.com/agentic-ai-how-to-save-on-tokens/) |
 | Semantic caching API call reduction | Up to 68.8% fewer calls | [Redis](https://redis.io/solutions/semantic-caching/) |
 | Semantic caching latency improvement | 40-50% | [Redis](https://redis.io/solutions/semantic-caching/) |

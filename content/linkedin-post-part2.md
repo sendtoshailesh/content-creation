@@ -8,7 +8,7 @@
 
 You are paying full price for it every time.
 
-OpenAI and Anthropic both offer a 90% discount on cached input tokens. If your system prompt, copilot-instructions file, and active file context repeat across prompts in a session — and they do — caching kicks in automatically and charges a fraction of the cost.
+OpenAI and Anthropic both offer a 90% discount on cached input tokens via their APIs — and under GitHub Copilot's new usage-based billing (June 1), cached tokens consume credits at 75-90% less than regular input tokens. If your system prompt, copilot-instructions file, and active file context repeat across prompts in a session — and they do — caching kicks in and charges a fraction of the cost.
 
 Here's the math for a 10K token prefix across 100 daily requests:
 
@@ -50,7 +50,7 @@ Full post: [link]
 
 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗽𝗮𝘆𝗶𝗻𝗴 𝗳𝘂𝗹𝗹 𝗽𝗿𝗶𝗰𝗲 𝗳𝗼𝗿 𝗶𝘁 𝗲𝘃𝗲𝗿𝘆 𝘁𝗶𝗺𝗲.
 
-OpenAI and Anthropic both offer a 90% discount on cached input tokens. If your system prompt, copilot-instructions, and file context repeat across prompts — and they do — caching charges a 𝘧𝘳𝘢𝘤𝘵𝘪𝘰𝘯 of the cost.
+OpenAI and Anthropic both offer a 90% discount on cached input tokens via their APIs — and under GitHub Copilot's new usage-based billing, cached tokens consume credits at 75-90% less than regular input. If your system prompt, copilot-instructions, and file context repeat across prompts — and they do — caching charges a 𝗳𝗿𝗲𝗰𝘁𝗶𝗼𝗻 of the cost.
 
 ━━━
 

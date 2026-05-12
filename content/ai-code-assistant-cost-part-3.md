@@ -21,7 +21,7 @@ keywords:
 
 *Part 3 of 3 in the "Engineering Better AI Code Assistant Interactions" series*
 
-*Previously: [Part 1](context-engineering-part-1.md) covered context engineering — five practices that improve output quality while cutting tokens by 50-85%. [Part 2](ai-code-assistant-cost-part-2.md) covered prompt caching (90% discount on repeated context) and workflow discipline (eliminating the retry tax).*
+*Previously: [Part 1](context-engineering-part-1.md) covered context engineering — five practices that improve output quality while cutting tokens by 50-85%. [Part 2](ai-code-assistant-cost-part-2.md) covered prompt caching (75-90% reduced rate on repeated context) and workflow discipline (eliminating the retry tax).*
 
 ---
 
@@ -130,7 +130,7 @@ This is the first time engineering managers have had granular visibility into AI
 
 **4. Invest in context engineering training, not model restrictions.** The managers who restrict model access will create frustration and workarounds. The managers who teach context engineering will get the same cost reduction — or better — with happier developers.
 
-Consider the math: a team of 10 developers where each applies context engineering (50-85% token reduction from Part 1) and caching (up to 90% on repeated prefixes from Part 2) will spend dramatically less than a team of 10 developers restricted to cheap models but writing vague prompts with 15 files open.
+Consider the math: a team of 10 developers where each applies context engineering (50-85% token reduction from Part 1) and caching (75-90% reduced rate on repeated prefixes from Part 2) will spend dramatically less than a team of 10 developers restricted to cheap models but writing vague prompts with 15 files open.
 
 `[VOLATILE]` If 70% of your team's tasks use included models (0x) with proper context engineering and caching, the effective monthly cost per developer drops well below the credit allocation — even without promotional pricing.
 
@@ -160,7 +160,7 @@ Five practices. Quality improvement is the primary benefit. Token reduction: **5
 
 ### Layer 2: Caching and Workflow Discipline (Part 2)
 
-Structural savings that compound invisibly. Token reduction on repeated context: **up to 90%**. Retry elimination: **20-50% fewer wasted requests**.
+Structural savings that compound invisibly. Token reduction on repeated context: **75-90%**. Retry elimination: **20-50% fewer wasted requests**.
 
 - Stable copilot-instructions enable automatic prefix caching
 - One thread per task maximizes cache hits
@@ -234,4 +234,4 @@ The billing change is real. The urgency is valid. But the advice is durable. Bet
 | `[VOLATILE]` Enterprise plan credits | $39/user ($70/mo promotional Jun-Aug) | [GitHub Blog](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/) |
 | `[VOLATILE]` Billing change date | June 1, 2026 | [GitHub Blog](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/) |
 | Context engineering token reduction | 50-85% (Part 1 data) | [Anthropic Engineering](https://www.anthropic.com/engineering/advanced-tool-use) |
-| Prompt caching discount | 90% on repeated prefixes | [OpenAI](https://openai.com/api/pricing/), [Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) |
+| Prompt caching discount | 75-90% on repeated prefixes (model-dependent) | [GitHub Docs: Models and Pricing](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing) |
