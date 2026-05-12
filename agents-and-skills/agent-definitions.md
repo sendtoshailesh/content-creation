@@ -162,46 +162,49 @@ Each agent below maps to one or more steps in the pipeline. These definitions ca
 
 ## 6. `social-twitter`
 
-**Role:** X/Twitter thread creator. Converts blog into tweet-sized chunks.
+**Role:** X/Twitter visual-first distributor. Commissions platform-sized visuals (via `visual-renderer`, validated by `visual-reviewer`) and writes a short caption that links to the canonical blog.
 
-**Steps:** 5 (X/Twitter Thread)
+**Steps:** 5 (X/Twitter Post)
 
 **Inputs:**
 - Published blog
-- Key data points, framework, case study
+- Canonical URL from `content/publishing-log.md`
+- Existing `content/visuals/` (re-use where possible)
 
 **Outputs:**
-- 10–12 tweet thread with Unicode formatting
-- Standalone single-tweet summary
-- Posting notes (timing, image attachment, cadence)
+- 1–4 platform-sized visuals saved to `content/visuals/social/twitter/twitter-<slug>-N.png`
+- `content/x-twitter-thread.md` containing: short caption (≤ 240 chars), canonical URL, image references in attach order, alt text per image, posting notes
 
 **Formatting Rules:**
-- Same Unicode bold/italic strategy as LinkedIn
-- Each tweet ≤ 280 characters
-- Include image attachment recommendation
-- Thread structure: hook → problem → framework → data → case study → CTA → engagement
+- Caption ≤ 240 characters (URL counts ~23 chars)
+- Optional Unicode Mathematical Bold (𝗕𝗼𝗹𝗱) on a 2–4 word phrase only
+- Single image: 16:9 or 1:1; carousel (2–4): all 1:1
+- No multi-tweet textual thread — substance lives in the images
+- Every image must have a `visual-reviewer` PASS before publishing
 
 ---
 
 ## 7. `social-reddit`
 
-**Role:** Reddit post adapter. Writes for Reddit's technical, skeptical audience.
+**Role:** Reddit visual-first distributor. Commissions a single platform-sized visual (via `visual-renderer`, validated by `visual-reviewer`) and writes a short context paragraph that links to the canonical blog.
 
 **Steps:** 6 (Reddit Post)
 
 **Inputs:**
 - Published blog
 - Target subreddit(s)
+- Canonical URL from `content/publishing-log.md`
 
 **Outputs:**
-- Reddit post with TL;DR, Markdown formatting, discussion-oriented tone
+- 1 platform-sized visual at `content/visuals/social/reddit/reddit-<slug>.png` (1:1 preferred, or 4:5)
+- `content/reddit-post.md` with: subreddit-specific title variants, 2–4 sentence context paragraph (≤ 600 chars), canonical URL, image alt text, posting notes
 
 **Formatting Rules:**
-- Standard Markdown (Reddit's native format) — NOT Unicode bold/italic
-- TL;DR at the top
-- Conversational, anti-promotional tone
-- Link to blog naturally, not as primary CTA
-- Subreddit-specific title variants
+- Submitted as an Image Post wherever the subreddit allows
+- Standard Markdown only (no Unicode bold/italic)
+- No TL;DR section — the visual is the TL;DR
+- No multi-section essay
+- Image must have a `visual-reviewer` PASS before publishing
 
 ---
 
@@ -236,3 +239,26 @@ Each agent below maps to one or more steps in the pipeline. These definitions ca
 - Visual cue annotations (which PNG/slide per section)
 - Intro hook (first 30 sec), main content, CTA
 - Thumbnail concept suggestions
+
+---
+
+## 10. `platform-distiller`
+
+**Role:** Generates the Step 12 platform outputs from a published blog. Visual-first for Medium and Substack; text-only unique-angle for LinkedIn Article.
+
+**Steps:** 12 (Platform Distillation) — runs after web-publisher (Step 10) and social-publisher (Step 11)
+
+**Inputs:**
+- Blog file path (e.g., `content/blog-part1.md`)
+- Canonical URL from `content/publishing-log.md` (matched by `seo.slug`)
+- Existing visuals in `content/visuals/`
+
+**Outputs:**
+- Medium hero visual at `content/visuals/social/medium/medium-<slug>.png` (16:9, 1500×844) + `content/medium-post-{slug}.md` (80–150 word body + canonical link)
+- Substack hero visual at `content/visuals/social/substack/substack-<slug>.png` (1:1 preferred, 1200×1200) + `content/substack-post-{slug}.md` (40–80 word body + canonical link)
+- `content/linkedin-article-{slug}.md` (700–900 words, text-only, **unique angle**, NOT a republish)
+
+**Formatting Rules:**
+- Medium and Substack outputs include exactly one hero image (no inline screenshots) and end with the canonical URL
+- Both hero images must receive a `visual-reviewer` PASS before the post is finalized
+- LinkedIn Article remains text-only with no image markdown — Google indexes the page and a thin visual-only teaser would harm SEO

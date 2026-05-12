@@ -119,8 +119,8 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
 | 4a | `@social-strategist` | Cross-platform social distribution strategy |
 | 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts |
-| 5 | `@social-twitter` | Tweet thread + standalone summary |
-| 6 | `@social-reddit` | Markdown Reddit post |
+| 5 | `@social-twitter` | Visual-first X/Twitter post: 1–4 platform-sized visuals + short caption + canonical link |
+| 6 | `@social-reddit` | Visual-first Reddit Image Post: 1 platform-sized visual + 2–4 sentence context + canonical link |
 | 7 | `@brand-guardian` | Brand consistency audit across all content |
 | 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |

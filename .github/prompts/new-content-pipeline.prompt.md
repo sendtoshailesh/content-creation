@@ -15,11 +15,11 @@ Start a new content pipeline run for the given topic. Follow the pipeline:
 7. **Review** — Audit content and visuals against quality standards
 8. **LinkedIn** — Create plain-text and Unicode-formatted LinkedIn posts (always)
 9. **Platform Selection** — Ask which additional platforms to generate for:
-   - X/Twitter thread (10-12 tweets)
-   - Reddit post (Markdown)
+   - X/Twitter (visual-first: 1–4 platform-sized visuals + short caption + canonical link)
+   - Reddit (visual-first: 1 platform-sized visual + 2–4 sentence context + canonical link, posted as Image Post)
    - Reel/Short video (60-90 sec screen + voiceover script)
    - YouTube long-form script (8-12 min)
-10. **Generate selected platforms** — Run only the chosen agents
+10. **Generate selected platforms** — Run only the chosen agents. For X/Twitter and Reddit, the social agent commissions platform-sized visuals via `visual-renderer` and blocks on a `visual-reviewer` (cross-model) PASS before finalizing the caption.
 11. **Brand audit** — Review all content for consistency
 
 For multi-part series: complete Part 1 through the full pipeline before starting Part 2.

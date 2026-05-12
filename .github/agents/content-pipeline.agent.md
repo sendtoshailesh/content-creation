@@ -25,8 +25,8 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 4a | `social-strategist` | Cross-platform distribution plan |
 | 4b | `social-linkedin` | Plain + Unicode LinkedIn posts |
 | 4c | (user choice) | Ask which additional platforms to generate |
-| 5 | `social-twitter` | Tweet thread + summary (if selected) |
-| 6 | `social-reddit` | Reddit post (if selected) |
+| 5 | `social-twitter` | Visual-first X/Twitter post: 1–4 platform-sized visuals + short caption + canonical link (if selected) |
+| 6 | `social-reddit` | Visual-first Reddit image post: 1 platform-sized visual + 2–4 sentence context + canonical link (if selected) |
 | 6b | `reel-video` | Short-form video script (if selected) |
 | 7 | `brand-guardian` | Brand consistency audit |
 | 8 | `video-scriptwriter` | YouTube script + slide map (if selected) |
@@ -153,16 +153,18 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 11. Delegate to `social-strategist` to create cross-platform distribution plan → `content/social-strategy.md`
 12. Delegate to `social-linkedin` with blog path (always generated — primary distribution channel)
 13. **Ask user which additional platforms to generate** — present options:
-    - [ ] X/Twitter thread (10-12 tweets + standalone summary)
-    - [ ] Reddit post (for configured subreddits)
+    - [ ] X/Twitter (visual-first: 1–4 platform-sized visuals + short caption + canonical link)
+    - [ ] Reddit (visual-first: 1 platform-sized visual + 2–4 sentence context + canonical link, posted as an Image Post)
     - [ ] Reel/Short video (60-90 sec script with screen recording cues)
     - [ ] YouTube long-form script (8-12 min with slide map)
     - [ ] All of the above
 14. Based on user selection:
-    - If X/Twitter selected: delegate to `social-twitter` with blog path
-    - If Reddit selected: delegate to `social-reddit` with blog path and target subreddits
+    - If X/Twitter selected: delegate to `social-twitter` with the blog path. The agent will commission 1–4 platform-sized visuals via `visual-renderer` and require a `visual-reviewer` PASS (cross-model) before finalizing the caption.
+    - If Reddit selected: delegate to `social-reddit` with the blog path and target subreddits. The agent will commission a single 1:1 or 4:5 hero visual via `visual-renderer` and require a `visual-reviewer` PASS before finalizing the context paragraph.
     - If Reel selected: delegate to `reel-video` with blog path and visuals directory
     - If YouTube selected: delegate to `video-scriptwriter` with blog path and visuals directory
+
+> **Note on visual-first social (Twitter, Reddit, and Step 12 Medium/Substack):** These platforms now lead with visuals; the accompanying text is only a short context paragraph plus the canonical link to the GitHub Pages blog. LinkedIn posts (Step 4b, `social-linkedin`) and the LinkedIn Article (Step 12, `platform-distiller`) remain text-led because they require native long-form text for algorithmic reach and Google indexing respectively.
 
 ### Phase 5: Brand Audit + Final Review
 16. Delegate to `brand-guardian` to audit all content for brand consistency
@@ -212,14 +214,19 @@ content/
 ├── <topic>-series.md             # (series index, if series)
 ├── linkedin-post.md
 ├── linkedin-post-formatted.md
-├── x-twitter-thread.md           # (if selected)
-├── reddit-post.md                # (if selected)
+├── x-twitter-thread.md           # (if selected) — visual-first caption + image refs
+├── reddit-post.md                # (if selected) — visual-first context + image refs
 ├── reel-script.md                # (if selected)
 ├── youtube-script.md             # (if selected)
 └── visuals/
     ├── render_<topic>.py
     ├── write_svgs.py
     ├── *.png, *.svg, *.mmd
+    └── social/
+        ├── twitter/twitter-<slug>-*.png
+        ├── reddit/reddit-<slug>.png
+        ├── medium/medium-<slug>.png
+        └── substack/substack-<slug>.png
 ```
 
 ## Series Workflow

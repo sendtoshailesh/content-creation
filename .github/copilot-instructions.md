@@ -75,12 +75,26 @@ Select any model in the VS Code Copilot model picker — all agents inherit your
 
 ## Social Formatting Conventions
 
-- **LinkedIn / X/Twitter**: Unicode Mathematical Bold Sans-Serif (𝗕𝗼𝗹𝗱) and Italic Sans-Serif (𝘐𝘵𝘢𝘭𝘪𝘤) for native formatting
-- **Reddit**: Standard Markdown only (Reddit's native format). No Unicode bold/italic
-- All social posts must be copy-paste ready
+- **LinkedIn (post)**: Unicode Mathematical Bold Sans-Serif (𝗕𝗼𝗹𝗱) and Italic Sans-Serif (𝘐𝘵𝘢𝘭𝘪𝘤) for native formatting. Text-led — full post in `social-linkedin`.
+- **LinkedIn Article (Step 12)**: Standard Markdown, text-only, unique-angle (NOT a republish of the blog). Indexed by Google, so distinct text is required.
+- **X/Twitter, Reddit, Medium, Substack**: **Visual-first.** The substance is carried by platform-sized visuals commissioned from `visual-renderer` and validated by `visual-reviewer` (cross-model). The accompanying text is a short context paragraph (≤ ~150 words) plus a link to the canonical GitHub Pages blog. Do NOT write long textual threads, long Reddit essays, or long Medium/Substack republishes for these four platforms.
+- **Reddit**: When text is needed, use standard Markdown only — no Unicode bold/italic.
+- All social posts must be copy-paste ready, with image attachments listed alongside the text.
 
-## Social Formatting Conventions
+## Visual-First Social Conventions
 
-- **LinkedIn / X/Twitter**: Unicode Mathematical Bold Sans-Serif (𝗕𝗼𝗹𝗱) and Italic Sans-Serif (𝘐𝘵𝘢𝘭𝘪𝘤) for native formatting
-- **Reddit**: Standard Markdown only (Reddit's native format). No Unicode bold/italic
-- All social posts must be copy-paste ready
+When generating content for X/Twitter, Reddit, Medium, or Substack:
+
+| Platform | Required aspect ratio(s) | Output path |
+|----------|--------------------------|-------------|
+| X/Twitter (single) | 16:9 (1600×900) or 1:1 (1200×1200) | `content/visuals/social/twitter/twitter-<slug>-N.png` |
+| X/Twitter (carousel 2–4) | 1:1 each | `content/visuals/social/twitter/twitter-<slug>-N.png` |
+| Reddit | 1:1 (1200×1200) preferred, or 4:5 (1080×1350) | `content/visuals/social/reddit/reddit-<slug>.png` |
+| Medium hero | 16:9 (1500×844) | `content/visuals/social/medium/medium-<slug>.png` |
+| Substack hero | 1:1 (1200×1200) preferred, or 16:9 (1456×816) | `content/visuals/social/substack/substack-<slug>.png` |
+
+Every commissioned social visual must:
+1. Use the design tokens above (BG, ACCENT, TEXT, etc.) and Helvetica Neue at 320 DPI
+2. Use a different theme from `THEMES` than other social visuals for the same blog (round-robin to avoid visual sameness across platforms)
+3. Pass standalone-clarity (a reader who has not seen the blog must understand the insight from the image alone)
+4. Receive a `visual-reviewer` PASS before the social agent finalizes its caption

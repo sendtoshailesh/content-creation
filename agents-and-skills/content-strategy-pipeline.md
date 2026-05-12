@@ -23,8 +23,8 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 4a | Social Distribution Strategy | `social-strategist` | ✅ Implemented |
 | 4b | LinkedIn Post (always) | `social-linkedin` | ✅ Implemented |
 | 4c | Platform Selection | (orchestrator asks user) | ✅ Implemented |
-| 5 | X/Twitter Thread (if selected) | `social-twitter` | ✅ Implemented |
-| 6 | Reddit Post (if selected) | `social-reddit` | ✅ Implemented |
+| 5 | X/Twitter Post — visual-first (if selected) | `social-twitter` | ✅ Implemented |
+| 6 | Reddit Post — visual-first (if selected) | `social-reddit` | ✅ Implemented |
 | 6b | Reel/Short Video (if selected) | `reel-video` | ✅ Implemented |
 | 7 | Brand Audit | `brand-guardian` | ✅ Implemented |
 | 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
@@ -32,7 +32,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 10 | Publish to GitHub Pages | `web-publisher` | ✅ Implemented |
 | 10a | Inject canonical URLs into `[link]` placeholders (pre-flight) | `social-publisher` | ✅ Implemented |
 | 11 | Social Media Publishing (API) | `social-publisher` | ✅ Implemented |
-| 12 | Platform distillation: Medium, Substack, LinkedIn Article | `platform-distiller` | ✅ Implemented |
+| 12 | Platform distillation: Medium + Substack (visual-first), LinkedIn Article (text-only unique angle) | `platform-distiller` | ✅ Implemented |
 
 ### Skills Inventory
 
@@ -170,21 +170,24 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 
 ---
 
-### Step 5: X/Twitter Thread (`social-twitter`)
+### Step 5: X/Twitter Post (`social-twitter`)
 
-**Objective:** Create a 12-tweet thread + standalone summary tweet.
+**Objective:** Create a visual-first X/Twitter post — 1–4 platform-sized visuals plus a short caption that links to the canonical blog.
 
 **Tasks:**
-1. Write 12-tweet thread covering: hook → problem → framework → tiers → hidden costs → case study → latency → routing → playbook → CTA → engagement close.
-2. Apply same Unicode formatting strategy as LinkedIn.
-3. Add standalone single-tweet summary at top of file.
-4. Include posting notes (image attachment, timing, cadence).
+1. Pick 1–4 most "screenshot-worthy" insights from the blog and write a visual brief.
+2. Delegate to `visual-renderer` to render visuals at `content/visuals/social/twitter/twitter-<slug>-N.png`.
+3. Delegate to `visual-reviewer` (cross-model) and block on PASS.
+4. Write a caption ≤ 240 characters that ends with the canonical URL.
+5. Save to `content/x-twitter-thread.md` with caption, attachments in order, alt text, and posting notes.
 
 **Constraints:**
-- Each tweet under 280 characters.
-- Unicode chars count as 1 char on X/Twitter.
+- Single image: 16:9 (1600×900) or 1:1 (1200×1200). Carousel (2–4): all 1:1.
+- No multi-tweet textual thread — substance lives in the images.
+- Optional Unicode Mathematical Bold (𝗕𝗼𝗹𝗱) on a 2–4 word phrase only.
+- Each image must have a `visual-reviewer` PASS before publishing.
 
-**Output:** `content/x-twitter-thread.md` (Unicode formatted, 12 tweets + summary)
+**Output:** `content/x-twitter-thread.md` + visuals under `content/visuals/social/twitter/`
 
 ---
 
@@ -221,17 +224,22 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 
 ### Step 6: Reddit Post (`social-reddit`)
 
-**Objective:** Write a Reddit post for r/MachineLearning, r/artificial, or r/ExperiencedDevs.
+**Objective:** Create a visual-first Reddit Image Post — one platform-sized visual plus a 2–4 sentence context paragraph that links to the canonical blog.
 
 **Tasks:**
-- Reddit supports native Markdown — use **bold**, *italic*, headers, bullet lists (NOT Unicode formatting).
-- Write a longer, more technical version — Reddit rewards depth and contrarian takes.
-- Include a TL;DR at the top.
-- Be conversational and anti-promotional (no obvious self-promotion).
-- Link to blog naturally at the end.
-- Suggest subreddit-specific title variants.
+- Pick the single most discussion-worthy insight from the blog and write a visual brief.
+- Delegate to `visual-renderer` to render at `content/visuals/social/reddit/reddit-<slug>.png` (1:1 preferred, or 4:5).
+- Delegate to `visual-reviewer` (cross-model) and block on PASS.
+- Write 3–4 subreddit-specific title variants.
+- Write a 2–4 sentence context paragraph (≤ 600 chars) ending with the canonical URL.
+- Save to `content/reddit-post.md` with title variants, copy block, alt text, and posting notes.
 
-**Formatting:** Markdown (Reddit's native format). NO Unicode bold/italic.
+**Formatting:** Standard Markdown only (no Unicode bold/italic). Submit as an Image Post wherever the subreddit allows.
+
+**Constraints:**
+- No TL;DR section — the visual is the TL;DR.
+- No multi-section essay.
+- Image must have a `visual-reviewer` PASS before publishing.
 
 ---
 
@@ -311,19 +319,22 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 
 ### Step 12: Platform Distillation (`platform-distiller`)
 
-**Objective:** Generate text-only, copy-paste-ready summaries for Medium, Substack, and LinkedIn Article — all pointing to the GitHub Pages canonical URL.
+**Objective:** Generate Step 12 platform outputs from the published blog. Medium and Substack are visual-first (one platform-sized hero image + short caption + canonical link). LinkedIn Article remains text-only with a unique angle (Google indexes the page, so a thin visual-only teaser would harm SEO).
 
-**Architecture:** Single agent reading blog markdown + `content/publishing-log.md`. No MCP servers required.
+**Architecture:** Single agent reading blog markdown + `content/publishing-log.md`, delegating to `visual-renderer` and `visual-reviewer` for the Medium/Substack heroes. No MCP servers required.
 
 **Tasks:**
 1. Read the blog file and extract: key argument, 3–5 data points, main sections
 2. Look up canonical URL from `content/publishing-log.md` (matched by slug)
-3. Generate Medium excerpt (700–900 words) — substantive, Import-ready
-4. Generate Substack excerpt (300–500 words) — hook only, for Substack Notes
-5. Generate LinkedIn Article (700–900 words) — **unique angle, not a republish**
-6. Validate all outputs: no image refs (`![]`, `.png`, `.svg`, `<img`)
+3. Commission Medium hero (16:9, 1500×844) and Substack hero (1:1 preferred, 1200×1200) via `visual-renderer`; require `visual-reviewer` PASS for both
+4. Generate Medium post (80–150 word body): hero image + short caption + canonical link
+5. Generate Substack post (40–80 word body): hero image + short hook + canonical link
+6. Generate LinkedIn Article (700–900 words) — **unique angle, not a republish, no images**
+7. Validate Medium/Substack: exactly one hero image, body within word limit, canonical URL at end. Validate LinkedIn Article: no image references, unique angle, canonical URL in final paragraph.
 
-**Text-only enforcement:** All chart/diagram data must be expressed as inline numbers, before/after comparisons, or named benchmarks. No image markdown, no HTML image tags, no visual asset paths.
+**Visual-first enforcement (Medium + Substack):** The hero image carries the substance. Inline screenshots, multiple figures, and long textual republishes are prohibited. Each hero must pass `visual-reviewer` cross-model review before the post is finalized.
+
+**Text-only enforcement (LinkedIn Article only):** No image markdown (`![]`, `.png`, `.svg`, `<img`, `content/visuals/`, ` ```mermaid `). Numerical data is expressed inline.
 
 **Publish sequence for outputs:**
 - **Medium**: Day 0 — use Import tool (not paste); auto-sets canonical URL to GitHub Pages source
@@ -331,8 +342,8 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 - **LinkedIn Article**: Day 7+ — unique angle only; never a republish of the blog
 
 **Output:**
-- `content/medium-post-{slug}.md` — with `── START COPY (Medium) ──` / `── END COPY (Medium) ──` markers
-- `content/substack-post-{slug}.md` — with `── START COPY (Substack) ──` / `── END COPY (Substack) ──` markers
+- `content/visuals/social/medium/medium-<slug>.png` + `content/medium-post-{slug}.md` — with `── START COPY (Medium) ──` / `── END COPY (Medium) ──` markers
+- `content/visuals/social/substack/substack-<slug>.png` + `content/substack-post-{slug}.md` — with `── START COPY (Substack) ──` / `── END COPY (Substack) ──` markers
 - `content/linkedin-article-{slug}.md` — with `── START COPY (LinkedIn Article) ──` / `── END COPY (LinkedIn Article) ──` markers
 
 Each file includes a publishing note at the top explaining the correct publish method for that platform.
@@ -368,9 +379,11 @@ content/
 
 ## Key Decisions & Lessons
 
-1. **Unicode formatting for social** — LinkedIn and X/Twitter don't support Markdown. Unicode Mathematical Bold/Italic characters render natively. Reddit supports Markdown natively, so use standard formatting there.
-2. **SVGs via Python script** — Terminal heredoc corrupts SVG files. Always use a Python script to write SVGs.
-3. **ASCII over Unicode in matplotlib** — Helvetica Neue lacks → and ✓ glyphs. Use `->` and `[x]` instead.
-4. **Design tokens** — Centralized color/font system prevents visual inconsistency across 9+ images.
-5. **Quality requires specifics** — Generic advice ("choose the right model") fails. Concrete data ($140K, $0.10/1M tokens, 66% cost reduction) is what makes content credible.
-6. **Substack URL:** `https://shailesh0.substack.com/publish/post/190276894`
+1. **Visual-first social for Twitter / Reddit / Medium / Substack** — These four platforms now lead with platform-sized visuals (commissioned via `visual-renderer`, validated cross-model by `visual-reviewer`). The accompanying text is a short context paragraph plus a link to the canonical GitHub Pages blog. Long textual threads, long Reddit essays, and long Medium/Substack republishes are no longer produced for these platforms.
+2. **LinkedIn (post + Article) stays text-led** — The LinkedIn feed post (`social-linkedin`) keeps Unicode-formatted long text for algorithmic reach. The LinkedIn Article (Step 12) stays text-only with a unique angle because Google indexes the page; a thin visual-only teaser would harm SEO.
+3. **Unicode formatting for social** — LinkedIn posts and the optional 2–4 word emphasis on X/Twitter captions use Unicode Mathematical Bold/Italic. Reddit always uses standard Markdown.
+4. **SVGs via Python script** — Terminal heredoc corrupts SVG files. Always use a Python script to write SVGs.
+5. **ASCII over Unicode in matplotlib** — Helvetica Neue lacks → and ✓ glyphs. Use `->` and `[x]` instead.
+6. **Design tokens** — Centralized color/font system prevents visual inconsistency across 9+ images. Social visuals additionally rotate themes (round-robin) so the same blog does not look identical across X/Reddit/Medium/Substack.
+7. **Quality requires specifics** — Generic advice ("choose the right model") fails. Concrete data ($140K, $0.10/1M tokens, 66% cost reduction) is what makes content credible — and is what the platform-sized visuals must encode.
+8. **Substack URL:** `https://shailesh0.substack.com/publish/post/190276894`
