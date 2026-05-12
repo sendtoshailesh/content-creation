@@ -99,6 +99,37 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 6. After visual-renderer completes, re-read the blog and replace any remaining `[VISUAL:]` markers with actual `![alt](path)` references to the generated PNGs
 7. Run `quality-reviewer` in visual-density-only mode: verify every section >400 words now has a linked visual. If any are still missing, generate additional visuals and re-link.
 
+### Phase 2b: Visual Density Pass (Mandatory)
+8. **Visual density audit** — run immediately after blog writing, before quality review:
+   - Scan every H2/H3 section in the blog post for word count
+   - For any section exceeding **400 words without a visual**, add a `[VISUAL: description]` marker with a description matching the section's concept type:
+     - Concept explanation -> flow diagram or annotated illustration
+     - Comparison (X vs Y) -> side-by-side comparison chart
+     - Process/loop -> sequential flow with cost/impact annotations
+     - Data breakdown -> stacked bar or pie chart
+     - Decision guidance -> decision matrix or two-column comparison
+   - **Never cut text to reduce density.** Quality content requires thorough explanation. Word count may exceed initial targets by 25-40% when the additional text adds essential concepts.
+   - Delegate added markers to `visual-renderer` for PNG generation
+   - After rendering, replace `[VISUAL:]` markers with `![alt](path)` references
+   - Record visual count (planned vs actual) in pipeline-config.md
+   - This step is **mandatory** and cannot be skipped. Dense sections without visuals force readers into a single consumption path. Visuals provide an alternative path so readers can choose: read the text OR understand the concept through the visual.
+
+### Phase 2c: Visual Quality Review (Mandatory)
+9. **Cross-model visual review** — run after all visuals are rendered, before content quality review:
+   - Detect the model family used for visual generation (same as content creation family)
+   - Prompt the user: "Visuals were generated with the **[family]** model family. For cross-model visual review, please switch to a **different family** in the VS Code model picker. Then confirm to proceed."
+   - Wait for user confirmation.
+   - Delegate to `visual-reviewer` agent with the blog post path (it extracts all `![](path)` references)
+   - The visual-reviewer inspects each rendered PNG/SVG against the review checklist (text overflow, overlap, data accuracy, readability, design tokens, standalone clarity)
+   - If **PASS** (0 critical findings): proceed to Phase 3
+   - If **FAIL** (1+ critical findings):
+     a. Prompt user to switch back to the creation model family
+     b. Delegate findings report to `visual-renderer` for fixes
+     c. After fixes, switch back to reviewer family and re-run visual-reviewer
+     d. Repeat until PASS (max 3 review cycles to prevent infinite loops)
+   - Record review results in pipeline-config.md (findings count, pass/fail, review cycles)
+   - This step can also run **independently** via `@visual-reviewer [path]` for ad-hoc visual QA
+
 ### Phase 3: Quality Gate + SEO (Steps 3c-3d)
 7. **Cross-model switch**: Before running quality review, detect the model family used for content creation:
    - If the current model name starts with `Claude` → creation family is `anthropic`

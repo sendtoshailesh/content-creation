@@ -90,7 +90,7 @@ Tag data points that are likely to change before the content is published. Add a
 
 Format in the reference brief:
 ```
-- `[VOLATILE]` GPT-4.1 included at 0x on paid plans — [source](URL) — verified [date]
+- `[VOLATILE]` Model X included at 0x on paid plans — [source](URL) — verified [date]
 ```
 
 The `grounded-content-reviewer` agent uses these tags during Step 3e to prioritize which claims to re-verify against live sources before publishing. Data points without `[VOLATILE]` tags (research findings, benchmarks, case studies) are less likely to change and receive lower re-verification priority.

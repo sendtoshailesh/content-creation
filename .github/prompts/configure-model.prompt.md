@@ -1,42 +1,34 @@
 ---
-description: "List available GitHub Copilot models and help choose the best one for content creation. Use when setting up the pipeline or changing model preferences."
+description: "Show available GitHub Copilot models and explain the cross-model review constraint. Use when the user wants to understand model selection for the pipeline."
 agent: "agent"
-argument-hint: "Type 'list' to see available models, or describe your quality/speed preference"
+argument-hint: "Type 'list' to see available models"
 ---
 
-Help me choose the right model for my content pipeline.
+Help me understand model selection for the content pipeline.
 
-## Step 1: Detect Available Models
+## Step 1: Explain the Model Selection Approach
 
-Check which models are currently available in my GitHub Copilot setup by reading the VS Code Copilot model picker. The models generally available include:
+This pipeline does NOT require a specific model. Select any model available in your VS Code Copilot model picker — all agents inherit your selection automatically.
 
-**Flagship / Highest Quality:**
-- Claude Sonnet 4 — Strong technical writing, nuanced reasoning
-- Claude Sonnet 4.5 — Enhanced creative + analytical
-- GPT-4.1 — Strong general purpose, good at structured output
-- GPT-4o — Multimodal, fast reasoning
-- Gemini 2.5 Pro — Long context, strong analytical
+The only constraint: **cross-model critic review** requires switching to a model from a different *family* (not a different version) before quality review. The pipeline auto-detects which family you used and prompts you to switch.
 
-**Fast / Cost-Efficient:**
-- Claude Haiku 3.5 — Fast, good for simple tasks
-- GPT-4o mini — Fast, lightweight
-- GPT-4.1 mini — Budget-friendly
-- GPT-4.1 nano — Fastest, most lightweight
+## Step 2: List Available Models
 
-**Reasoning / Deep Analysis:**
-- o3 — Deep reasoning for complex analysis
-- o4-mini — Reasoning at lower cost
-- Claude Sonnet 4 (Extended Thinking) — Extended chain-of-thought
+Check the VS Code Copilot model picker dropdown to see what's currently available. Models are grouped into three families:
 
-## Step 2: Recommend for Content Pipeline
+| Family | Prefix | Use Any Model Starting With This |
+|--------|--------|----------------------------------|
+| Anthropic | `Claude` | Any Claude model |
+| OpenAI | `GPT-*`, `o*` | Any GPT or o-series model |
+| Google | `Gemini` | Any Gemini model |
 
-Based on the user's preference (quality vs. speed), recommend a model and update `content/pipeline-config.md` with the selection.
+## Step 3: Cross-Model Review
 
-**For highest content quality:** Claude Sonnet 4 or GPT-4.1
-**For faster iteration:** GPT-4o or Claude Haiku 3.5
-**For deep research/analysis:** o3 or Claude Sonnet 4 (Extended Thinking)
+When the pipeline reaches quality review, it will ask you to switch families. For example:
+- Created content with any Claude model → switch to any GPT/o-series or Gemini model for review
+- Created content with any GPT model → switch to any Claude or Gemini model for review
 
-## Step 3: Apply Selection
+This ensures adversarial diversity — different model families catch different blind spots.
 
 Update the `content/pipeline-config.md` file with the chosen model. All pipeline agents read this config at startup and use the specified model via the chat picker.
 

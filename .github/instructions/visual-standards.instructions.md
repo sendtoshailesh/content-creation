@@ -78,3 +78,51 @@ for i, visual_func in enumerate(visual_functions):
 - **Mermaid**: Use `.mmd` extension, standard Mermaid syntax
 - **Theme diversity**: Each visual in a blog post uses a different theme from the palette list. Cycle round-robin.
 - **Base tokens are constant**: BG, TEXT, TEXT_2, MUTED, GRID, LIGHT_BG, FONT, DPI never change between themes
+
+## Narrow Segment Rule
+
+For any chart element that occupies < 15% of total width/height:
+- Do NOT place text labels inside the segment (they will overflow or be unreadable)
+- Use external labels with leader lines (thin connecting lines from label to segment)
+- Only short values (numbers) go inside narrow segments; descriptive labels go outside
+- For pie chart slices < 5%, use a legend table
+
+## Tool Selection
+
+| Visual type | Tool | When |
+|------------|------|------|
+| Data charts (bar, line, scatter, pie) | **matplotlib** | Quantitative data with axes |
+| Infographic layouts, dashboards, cards | **Pillow (PIL)** | Pixel-precise text, complex multi-panel layouts |
+| Simple flow diagrams (< 10 nodes) | **matplotlib** patches | Decision trees, process flows |
+| Complex flowcharts (10+ nodes) | **Mermaid** (.mmd) | Architecture diagrams, dependency graphs |
+| Comparison tables, matrices | **Pillow (PIL)** | Precise column alignment, cell backgrounds |
+
+### Pillow (PIL) Usage
+
+Use Pillow when text placement precision is critical. Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, preventing overflow.
+
+```python
+from PIL import Image, ImageDraw, ImageFont
+
+WIDTH, HEIGHT = 3200, 2080  # 320 DPI = 10" x 6.5"
+img = Image.new('RGB', (WIDTH, HEIGHT), '#ffffff')
+draw = ImageDraw.Draw(img)
+
+# Measure text before placing
+bbox = draw.textbbox((0, 0), text, font=font)
+text_width = bbox[2] - bbox[0]
+# Now verify it fits the container before committing
+```
+
+## Information Design Principles
+
+1. **Data-ink ratio** (Tufte): Maximize data ink, minimize chartjunk
+2. **Visual hierarchy**: Most important insight = largest/boldest treatment
+3. **Color semantics**: Green = positive, Red = warning, Blue = neutral (consistent across all visuals)
+4. **Annotation-first**: Key takeaways directly on the visual, not left to inference
+5. **Standalone clarity**: Every visual understandable without reading the blog section
+6. **Gestalt grouping**: Proximity and enclosure for related elements; whitespace separates concepts
+
+## Visual Review
+
+All rendered visuals must pass review by the `visual-reviewer` agent (cross-model critic) before publishing. The reviewer checks for text overflow, overlap, data accuracy, design token compliance, and reader comprehension. See `visual-review` skill for the full checklist.

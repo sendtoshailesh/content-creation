@@ -32,3 +32,24 @@ applyTo: "content/**/*.md"
 - Conversational but data-driven
 - Never corporate/fundraising framing
 - Lead with problems and insights
+
+## Visual Density for Dense Sections (Mandatory Pass)
+
+Quality content requires thorough explanation. Never cut essential text to reduce word count. Instead, add visual companions to dense sections so readers can choose their preferred path: read the text OR understand the concept through the visual.
+
+### Rules
+
+- **Word count is flexible.** Blog posts may exceed initial targets by 25-40% when the additional text adds essential concepts, data, or context. Quality always outweighs length constraints.
+- **Every section exceeding 400 words without a visual must get one.** Dense prose sections are the primary candidates for visual companions.
+- **Visuals explain the same concept differently.** The visual is not decoration — it is an alternative explanation path. A reader who skips the text should still understand the concept from the visual alone.
+- **Visual types by section pattern:**
+  - Concept explanation (how X works) -> flow diagram or annotated illustration
+  - Comparison (X vs Y) -> side-by-side comparison chart
+  - Process/loop (vague prompt -> retry -> cost) -> sequential flow with cost annotations
+  - Data breakdown (what repeats vs changes) -> stacked bar or pie chart
+  - Decision guidance (when to use X vs Y) -> decision matrix or two-column comparison
+- **Never compromise text for brevity.** If a section needs 5 paragraphs to explain a concept properly, keep all 5 paragraphs AND add a visual that captures the same idea graphically.
+
+### Audit Method
+
+After writing, scan each H2/H3 section. For any section over 400 words without a visual, add a `[VISUAL: description]` marker. The visual-renderer agent picks up these markers and generates the corresponding PNGs. Target: every dense concept has both a text path and a visual path.

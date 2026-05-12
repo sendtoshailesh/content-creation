@@ -32,7 +32,7 @@ Read that again. They removed context and the model got *better*.
 
 This is not an isolated finding. A 2026 paper on SWEzze — a context compression system for software engineering tasks — showed that **6x compression delivered 51-71% fewer tokens AND 5-9.2% better issue resolution rates** on SWE-bench. Less input. Better output.
 
-If you have used an AI code assistant for more than a week, you have experienced this pattern without knowing it. Some sessions, Copilot generates exactly what you need on the first attempt. Other sessions, it produces confused, irrelevant, or hallucinated code. The difference is usually not the model. It is the context. The files you have open. The chat history you are carrying. The specificity of your prompt.
+If you have used an AI code assistant for more than a week, you have experienced this pattern without knowing it. Some sessions, Copilot generates exactly what you need on the first attempt. Other sessions, it produces confused, irrelevant, or hallucinated code. The difference is usually not the model. It is the context. The files you have open. The chat history you are carrying. The specificity of your prompt. GitHub Copilot context management — what you include, exclude, and how you structure it — determines output quality more than model choice.
 
 The single highest-leverage skill for AI-assisted development is **context engineering**: the practice of giving AI better input so it produces better output. The quality improvement is the primary goal. The cost savings — and with GitHub Copilot moving to usage-based billing on June 1, 2026, there are real cost savings — are a natural consequence.
 
@@ -70,7 +70,7 @@ This is not a trade-off. It is a free lunch.
 
 ---
 
-## Five Practices That Improve Output Quality
+## Five Practices That Improve Output Quality and Optimize AI Code Assistant Output
 
 Each practice below passes the "would I do this even if AI were free?" test. They are ordered by impact and ease of adoption.
 
@@ -214,7 +214,7 @@ In **Part 3: "The 120x Spread"**, I cover model selection — not "use cheap mod
 
 ---
 
-*This is Part 1 of 3 in the "Engineering Better AI Code Assistant Interactions" series. [Part 2: Invisible Compound Savings →](#) | [Part 3: The 120x Spread →](#)*
+*This is Part 1 of 3 in the "Engineering Better AI Code Assistant Interactions" series. [Part 2: Invisible Compound Savings -->](ai-code-assistant-cost-part-2.md) | [Part 3: The 120x Spread -->](ai-code-assistant-cost-part-3.md)*
 
 ---
 

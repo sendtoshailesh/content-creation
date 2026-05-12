@@ -67,16 +67,81 @@ theme_names = list(THEMES.keys())
 - **Base tokens constant**: BG, TEXT, TEXT_2, MUTED, GRID, LIGHT_BG, FONT, DPI never change between themes
 - **Each visual = one function** in the renderer script, accepting a `tokens` dict parameter
 
+## Narrow Segment Rule (Prevents Text Overflow)
+
+For any chart element that occupies < 15% of the total width or height:
+- **DO NOT** place text labels inside the segment — they will overflow
+- **DO** use external labels with leader lines (thin connecting lines from the label to the segment)
+- **DO** place only a short value (number) inside narrow segments; the descriptive label goes outside
+- For pie chart slices < 5%, use a legend table instead of labels on the slice
+
+This is the #1 source of text overflow defects. The visual-reviewer agent will flag violations.
+
+## Tool Selection by Visual Type
+
+| Visual type | Primary tool | When to use |
+|------------|-------------|-------------|
+| Data charts (bar, line, scatter, pie) | **matplotlib** | Quantitative data with axes, labels, legends |
+| Infographic layouts (multi-panel, cards, dashboards) | **Pillow (PIL)** | Pixel-precise text placement, image compositing, complex layouts with exact bounding boxes |
+| Flow diagrams, decision trees | **matplotlib** with patches + annotations | When diagram is simple (< 10 nodes); use Mermaid for complex flows |
+| Comparison tables, matrices | **Pillow (PIL)** | Precise column alignment, cell backgrounds, multi-line text in cells |
+| Architecture diagrams, flowcharts | **Mermaid** (.mmd) | Complex flows with many nodes and connections |
+
+### Pillow (PIL) Guidelines
+
+Use Pillow when text placement precision is critical — especially for infographic-style layouts with:
+- Multiple text blocks that must fit within exact bounding boxes
+- Cards, panels, or dashboard-style layouts
+- Side-by-side comparisons where column alignment matters
+
+```python
+from PIL import Image, ImageDraw, ImageFont
+
+# Standard setup
+WIDTH, HEIGHT = 3200, 2080  # at 320 DPI = 10" x 6.5"
+img = Image.new('RGB', (WIDTH, HEIGHT), '#ffffff')
+draw = ImageDraw.Draw(img)
+
+# Load font (use truetype for precise sizing)
+try:
+    font = ImageFont.truetype('Helvetica Neue', size=32)  # ~10pt at 320 DPI
+except:
+    font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', size=32)
+
+# Measure text before placing (prevents overflow)
+bbox = draw.textbbox((0, 0), text, font=font)
+text_width = bbox[2] - bbox[0]
+text_height = bbox[3] - bbox[1]
+# Now position based on actual measured dimensions
+```
+
+Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, so you can verify text fits its container and adjust font size or position if it doesn't.
+
+## Information Design Principles
+
+Apply these when designing any visual:
+
+1. **Data-ink ratio** (Tufte): Maximize ink used for data. Remove decorative gridlines, 3D effects, redundant borders.
+2. **Visual hierarchy**: Most important insight gets the largest/boldest treatment.
+3. **Color semantics**: Green = positive/success. Red = warning/negative. Blue = neutral/primary. Consistent across all visuals.
+4. **Annotation-first**: Key takeaways annotated directly on the visual. Reader should not have to infer the message.
+5. **Gestalt grouping**: Use proximity and enclosure to group related elements. White space separates distinct concepts.
+6. **Standalone clarity**: Every visual must be understandable WITHOUT reading the surrounding blog text.
+
 ## Output Structure
 
 ```
 content/visuals/
-├── render_<topic>.py   # PNG renderer
+├── render_<topic>.py   # PNG renderer (matplotlib or Pillow)
 ├── write_svgs.py       # SVG generator
 ├── *.png               # Generated PNGs
 ├── *.svg               # Generated SVGs
 └── *.mmd               # Mermaid diagrams
 ```
+
+## Post-Rendering
+
+After generating visuals, the `visual-reviewer` agent will review all rendered output using a cross-model critic pattern. Address any findings from the review report before visuals are considered complete.
 
 ## Constraints
 

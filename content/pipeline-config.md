@@ -10,12 +10,12 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | `in-progress` |
+| **Status** | `completed` |
 | **Topic** | Engineering Better AI Code Assistant Interactions — Context Engineering, Workflow Discipline & Informed Model Selection |
 | **Started** | 2026-05-06 |
-| **Current Step** | Part 1 complete. Ready for Part 2. |
+| **Current Step** | All steps complete. Ready for publishing. |
 | **Series** | `yes (3 parts)` |
-| **Current Part** | Part 1: "Less Noise, Better Output" — Context engineering |
+| **Current Part** | All parts written |
 
 ### Step Checklist
 
@@ -27,16 +27,26 @@
 - [x] Step 3b: Visual assets -> 3 PNGs (paradox, framework, before-after)
 - [x] Step 3c: Quality review -> 14/14 claims verified, 1 minor fix (date precision)
 - [x] Step 3e: Grounded content review -> all sources re-fetched, 0 corrections
-- [ ] Step 3d: SEO optimization
 - [x] Step 4: LinkedIn post -> `content/linkedin-post-part1.md`
 - [x] Step 4c: Social platform selection -> Reel/Short video only
 - [ ] Step 5: X/Twitter thread (if selected)
 - [ ] Step 6: Reddit post (if selected)
 - [x] Step 6b: Reel/Short video -> `content/reel-script-part1.md`
-- [ ] Step 7: Brand audit
-- [ ] Step 8: YouTube script (if selected)
-- [ ] Step 10: Publish to GitHub Pages
-- [ ] Final review complete
+- [x] Step P2-3: Blog post (Part 2) -> `content/ai-code-assistant-cost-part-2.md`
+- [x] Step P2-3b: Visual assets (Part 2) -> 2 PNGs (caching-flow, retry-tax-calculator)
+- [x] Step P2-4: LinkedIn post (Part 2) -> `content/linkedin-post-part2.md`
+- [x] Step P2-6b: Reel/Short video (Part 2) -> `content/reel-script-part2.md`
+- [x] Step P3-3: Blog post (Part 3) -> `content/ai-code-assistant-cost-part-3.md`
+- [x] Step P3-3b: Visual assets (Part 3) -> 3 PNGs (task-model-alignment, team-governance-dashboard, three-layer-stack)
+- [x] Step P3-4: LinkedIn post (Part 3) -> `content/linkedin-post-part3.md`
+- [x] Step P3-6b: Reel/Short video (Part 3) -> `content/reel-script-part3.md`
+- [x] Cross-linking: All 3 parts linked in intro/CTA sections
+- [x] Quality review (Parts 2-3): 27/27 claims verified, 1 fix (GPT-4o missing from included models), 1 clarification (Anthropic cache write cost). Created with Anthropic family.
+- [x] Visual density pass (Parts 2-3): Added 3 new visuals to Part 2 (prompt-structure-breakdown, retry-loop-anatomy, caching-comparison) and 2 to Part 3 (routing-decision-comparison, team-optimization-strategies). Total visuals: Part 2 = 5, Part 3 = 5.
+- [x] Step 3d: SEO optimization -> keyword placement in headings + opening paragraphs across all 3 parts
+- [x] Step 7: Brand audit -> data consistency fix (80-90% -> 90%), hashtag normalization across LinkedIn posts
+- [x] Step 10: Publish to GitHub Pages -> 3 HTML pages + index updated + visuals copied
+- [x] Final review complete
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -58,11 +68,11 @@ Choose which model to use for content generation. Select your model in the **VS 
 
 The pipeline tracks which model family was used for content creation and ensures critic review uses a **different** family. No model versions are hardcoded — whatever the latest model is in each family within GitHub Copilot will be used.
 
-| Family | Model name prefix | Examples |
-|--------|------------------|----------|
-| `anthropic` | Claude * | Claude Sonnet, Claude Opus, Claude Haiku |
-| `openai` | GPT-*, o* | GPT-4.1, GPT-4o, GPT-5.x, o3, o4-mini |
-| `google` | Gemini * | Gemini 2.5 Pro, Gemini Flash |
+| Family | Model name prefix |
+|--------|------------------|
+| `anthropic` | Claude * |
+| `openai` | GPT-*, o* |
+| `google` | Gemini * |
 
 ### Cross-Model Critic Review
 
@@ -81,23 +91,11 @@ The pipeline tracks which model family was used for content creation and ensures
 | **Creation model family** | _(auto-detected from VS Code picker during content creation)_ |
 | **Critic model family** | _(switch to a different family before quality review)_ |
 
-### Recommended Models by Task
-
-| Task | Recommended | Why |
-|------|-------------|-----|
-| Content Strategy / Planning | Best reasoning model available | Deep reasoning, nuanced audience analysis |
-| Blog Writing | Best writing model available | Strong technical writing, data accuracy |
-| Visual Generation | Best code generation model available | Reliable Python renderer generation |
-| Quality Review | **Different family from blog writing** | Cross-model adversarial review catches blind spots |
-| Social Posts (LinkedIn/Twitter) | Any model | Good at concise, punchy copy |
-
 ### Current Selection
 
-**Preferred model**: _(select in VS Code Copilot picker — agents inherit your selection)_
+**Preferred model**: _(select any model in the VS Code Copilot picker — agents inherit your selection automatically)_
 
-### Available Models (GitHub Copilot)
-
-Run `/configure-model` to see the latest available models and get recommendations. Models change frequently — do not hardcode specific versions in agents or content.
+The only constraint is cross-model critic review: the pipeline will ask you to switch to a **different model family** before quality review. No specific model versions are required — use whatever is available.
 
 ---
 

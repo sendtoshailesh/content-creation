@@ -11,9 +11,9 @@
 | Name | URL | Type | Frequency | Tags |
 |------|-----|------|-----------|------|
 | GitHub Blog | https://github.blog/feed/ | rss | daily | AI, DevTools, Engineering |
-| Azure Blog | https://azure.microsoft.com/en-us/blog/feed/ | rss | daily | Cloud, Architecture, AI |
+| Deeplearning AI Batch | https://www.deeplearning.ai/the-batch | newsletter-archive | daily | AI |
 | Towards Data Science (Medium) | https://towardsdatascience.com/feed | rss | daily | AI, ML, Data Science |
-| The Morning Paper (archive) | https://blog.acolyer.org/ | newsletter-archive | weekly | Architecture, Databases, Distributed Systems |
+| PostgreSQL weekly | https://postgresweekly.com/latest | newsletter-archive | weekly | Databases |
 | Simon Willison's Weblog | https://simonwillison.net/atom/everything/ | rss | daily | AI, LLM, DevTools |
 | The Pragmatic Engineer | https://newsletter.pragmaticengineer.com/ | newsletter-archive | weekly | Architecture, Engineering, Career |
 | TLDR AI | https://tldr.tech/ai | newsletter-archive | daily | AI, ML, LLM |

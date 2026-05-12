@@ -1,11 +1,11 @@
 # Content Strategy Pipeline
 
-An automated 8-step content creation pipeline powered by GitHub Copilot custom agents. Provide a technical topic and get a full distribution package: long-form blog, social posts (LinkedIn, X/Twitter, Reddit), and YouTube script — all with consistent visuals and data-driven quality.
+An automated content creation pipeline powered by GitHub Copilot custom agents. Provide a technical topic — or let the pipeline discover one from your blog rolls and RSS feeds — and get a full distribution package: long-form blog, social posts (LinkedIn, X/Twitter, Reddit), and YouTube script — all with consistent visuals and data-driven quality.
 
 ## Prerequisites
 
 - **VS Code** (or VS Code Insiders) with **GitHub Copilot Chat** extension
-- **Python 3.10+** (for visual rendering)
+- **Python 3.10+** (for visual rendering and feed ingestion)
 - A GitHub Copilot subscription with [custom agents support](https://docs.github.com/en/copilot/customizing-copilot)
 
 ## Quick Start
@@ -15,7 +15,7 @@ An automated 8-step content creation pipeline powered by GitHub Copilot custom a
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install matplotlib
+pip install -r requirements.txt
 ```
 
 ### 2. Configure Your Pipeline
@@ -26,13 +26,21 @@ Edit [`content/pipeline-config.md`](content/pipeline-config.md) to set:
 - **Model preferences** — which Copilot model to use per task (informational; you select the actual model in the VS Code picker)
 - **Output preferences** — blog length, target subreddits, YouTube duration
 
-### 3. Choose a Model
+### 3. Run the Pipeline
 
-Open the Copilot Chat panel and select your preferred model from the model picker dropdown. Run `/configure-model` in chat to see all available models with task-specific recommendations.
+**Discover content ideas from your blog rolls** (optional):
+```
+@feed-curator
+```
 
-### 4. Run the Pipeline
+The feed curator reads your configured RSS feeds, newsletters, and blog rolls, classifies articles by subject area, extracts key insights, and presents ranked content ideas for you to curate interactively.
 
-**Full pipeline** — type in Copilot Chat:
+**Pick an idea from the queue:**
+```
+/select-idea
+```
+
+**Or provide a topic directly** — type in Copilot Chat:
 ```
 @content-pipeline Create content about [your topic]
 ```
@@ -42,7 +50,7 @@ Open the Copilot Chat panel and select your preferred model from the model picke
 /new-content-pipeline
 ```
 
-The orchestrator will guide you through all 8 steps with quality gates between phases.
+The orchestrator will guide you through all steps with quality gates between phases.
 
 ## New Content vs. Existing Content
 
@@ -68,10 +76,40 @@ Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **
 2. Run `@content-pipeline` — the orchestrator reads the checklist and picks up where it left off
 3. No need to re-specify the topic; it's saved in the status section
 
+## Content Discovery (Feed Curation)
+
+The feed curation feature automates the process of reading blog rolls, newsletters, and RSS feeds to discover compelling content ideas.
+
+### How It Works
+
+1. **Configure sources** — Edit [`content/feed-sources.md`](content/feed-sources.md) to add your RSS feeds, newsletter archives, and blog URLs
+2. **Define subject areas** — Set topic filters (AI, Architecture, Databases, etc.) with priority levels in the same config
+3. **Run `@feed-curator`** — The agent fetches all sources, classifies articles against your subject areas, extracts key insights, and synthesizes ranked content ideas
+4. **Curate interactively** — Keep, dismiss, explore, or refine ideas (same UX as `@reference-discovery`)
+5. **Pipeline handoff** — Select an idea to auto-populate `pipeline-config.md` with the topic and source URLs as references
+
+### Source Types Supported
+
+| Type | Example | How It's Processed |
+|------|---------|-------------------|
+| `rss` | GitHub Blog, InfoQ | Parsed with `feedparser`, entries filtered by age |
+| `newsletter-archive` | TLDR AI, Pragmatic Engineer | Archive page fetched, article links extracted |
+| `direct-url` | Specific article URL | Full text extracted via `trafilatura` |
+| `opml` | Feedly/Inoreader export | Parsed for feed URLs, each processed as RSS |
+
+### Configuration Files
+
+| File | Purpose | Persists Across Runs |
+|------|---------|---------------------|
+| [`content/feed-sources.md`](content/feed-sources.md) | Source registry, subject filters, extraction preferences | Yes |
+| [`content/idea-queue.md`](content/idea-queue.md) | Curated idea queue with scores and status tracking | Yes |
+| [`content/pipeline-config.md`](content/pipeline-config.md) | Per-run pipeline config (auto-populated from selected idea) | Reset per run |
+
 ## Pipeline Steps
 
 | Step | Agent | What It Does |
 |------|-------|--------------|
+| -1 | `@feed-curator` | _(Optional)_ Discover content ideas from blog rolls, RSS feeds, newsletters |
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
 | 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
 | 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline |
@@ -94,6 +132,7 @@ Open [`content/pipeline-config.md`](content/pipeline-config.md) and check the **
 You don't have to run the full pipeline. Use any agent directly:
 
 ```
+@feed-curator                         Discover content ideas from your blog rolls and feeds
 @blog-writer Write a blog post from content/my-topic-strategy.md
 @social-linkedin Adapt content/my-blog.md for LinkedIn
 @quality-reviewer Review content/my-blog.md
@@ -125,8 +164,8 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 | Command | Description |
 |---------|-------------|
 | `/new-content-pipeline` | Start a full pipeline run |
+| `/select-idea` | Pick a content idea from the curated queue |
 | `/quality-review` | Run quality audit on existing content |
-| `/configure-model` | Discover available Copilot models + recommendations |
 | `/archive-content` | Archive current content and prepare for a new run |
 
 ## Project Structure
@@ -134,19 +173,22 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 15 specialist agents
-├── skills/                          # 3 reusable skills
+├── agents/                          # 16 specialist agents
+├── skills/                          # 4 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
 │   ├── unicode-formatting/          #   Bold/italic for social posts
-│   └── reference-analysis/          #   Fetch + synthesize online sources
+│   ├── reference-analysis/          #   Fetch + synthesize online sources
+│   └── feed-curation/               #   Classify, extract, rank feed articles
 ├── instructions/                    # 3 auto-loading instruction files
-├── prompts/                         # 4 prompt shortcuts
+├── prompts/                         # 5 prompt shortcuts
 ├── ISSUE_TEMPLATE/                  # Bug report & feature request templates
 ├── PULL_REQUEST_TEMPLATE.md         # PR checklist
 └── CODEOWNERS                       # Review assignments
 
 content/
 ├── pipeline-config.md               # ← Edit this before each run
+├── feed-sources.md                  # ← Feed sources + subject area config (persistent)
+├── idea-queue.md                    # Curated content ideas (persistent)
 ├── reference-brief.md               # Auto-generated from reference URLs
 ├── *.md                             # Blog, social posts, scripts
 └── visuals/                         # PNGs, SVGs, Mermaid files, renderers
@@ -158,6 +200,12 @@ archive/                             # Past content runs (max 3 kept)
 
 scripts/
 ├── archive-content.sh               # Archive + rotate content runs
+├── pipeline/
+│   ├── feed_reader.py               # Multi-format blog roll / RSS ingestion
+│   ├── critic_review.py             # Cross-model adversarial review
+│   ├── grounded_review.py           # Fact-check against reference brief
+│   ├── generate_social.py           # Generate social posts from blog
+│   └── publish_social.py            # Publish to LinkedIn, Twitter, Reddit
 └── Validate-DocsReadme.ps1          # Validate all docs/ subfolders have README.md
 
 agents-and-skills/
@@ -203,7 +251,7 @@ When you finish a content run and want to start fresh:
 
 This will:
 1. Show you what will be archived and **ask for confirmation**
-2. Copy all content (except `pipeline-config.md`) to `archive/run-YYYYMMDD-HHMMSS/`
+2. Copy all content (except `pipeline-config.md`, `feed-sources.md`, and `idea-queue.md`) to `archive/run-YYYYMMDD-HHMMSS/`
 3. Clean `content/` for a fresh pipeline run
 4. Keep only the **last 3 archives** — older ones are automatically pruned
 
@@ -213,6 +261,7 @@ This will:
 - **Change visual style**: Edit [design tokens](.github/skills/visual-rendering/references/design-tokens.md)
 - **Adjust quality rules**: Edit [`.github/instructions/content-quality.instructions.md`](.github/instructions/content-quality.instructions.md)
 - **Change social formatting**: Edit [`.github/instructions/social-formatting.instructions.md`](.github/instructions/social-formatting.instructions.md)
+- **Configure feed sources**: Edit [`content/feed-sources.md`](content/feed-sources.md) to add/remove blog rolls, set subject areas
 
 ## Attribution
 

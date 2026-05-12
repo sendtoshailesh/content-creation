@@ -68,10 +68,10 @@ All visual assets must use this shared token system:
 
 Before starting a content run, edit `content/pipeline-config.md` to set:
 - **Reference URLs**: Online sources (articles, pricing pages, research papers) that agents will fetch, analyze, and synthesize into `content/reference-brief.md` before writing begins
-- **Model preferences**: Recommended models per task category (documented in config; actual model is selected via the VS Code model picker)
+- **Model preferences**: The pipeline auto-detects which model family you're using (documented in config; actual model is selected via the VS Code model picker)
 - **Output preferences**: Blog length, social platform targets, subreddits, YouTube duration
 
-Use the `/configure-model` prompt to discover all currently available Copilot models and get task-specific recommendations.
+Select any model in the VS Code Copilot model picker — all agents inherit your selection. The only constraint is cross-model critic review: the pipeline auto-detects which family you used and asks you to switch families before quality review.
 
 ## Social Formatting Conventions
 
