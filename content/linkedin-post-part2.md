@@ -34,7 +34,7 @@ These are set-and-forget optimizations. One-time setup, compounding returns acro
 
 Part 2 of 3. Part 1 covered context engineering (85% token reduction, better output). Part 3 covers model selection (the 120x multiplier spread).
 
-Full post: [link]
+Full post: https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #PromptCaching
 
@@ -87,7 +87,7 @@ These are set-and-forget optimizations. One-time setup, compounding returns acro
 
 Part 2 of 3. Part 1: context engineering (85% fewer tokens, better output). Part 3: model selection (the 120x spread).
 
-Full post: [link]
+Full post: https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #PromptCaching
 

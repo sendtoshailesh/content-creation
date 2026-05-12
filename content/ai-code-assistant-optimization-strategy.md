@@ -712,7 +712,7 @@ All visuals: 320 DPI, Helvetica Neue, no Unicode glyphs in matplotlib (use ASCII
 | 8 | Practice 4: Front-load intent. "Add pagination to the user list endpoint" THEN details. Model processes sequentially. |
 | 9 | Oh, and starting June 1, GitHub Copilot charges per token. So all this context junk now shows up on your bill. |
 | 10 | But honestly? Do this even if AI were free. Better context = better output. The cost savings are a side effect. |
-| 11 | Full breakdown with data from Anthropic, SWEzze, GitHub, and RouteLLM: [link] |
+| 11 | Full breakdown with data from Anthropic, SWEzze, GitHub, and RouteLLM: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html |
 
 ### Reddit
 

@@ -45,7 +45,7 @@ Your first action: switch your default Copilot model to GPT-4.1 today. It's free
 
 This is Part 1 of 3. Part 2 covers prompt caching (90% savings) and context management. Part 3: the team playbook for engineering managers.
 
-Full post with multiplier table, routing decision tree, and case study details: [link]
+Full post with multiplier table, routing decision tree, and case study details: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 #GitHubCopilot #AIEngineering #DeveloperProductivity #CostOptimization #LLM
 
@@ -112,7 +112,7 @@ Switch your default Copilot model to GPT-4.1 today. It's currently included at n
 
 Part 1 of 3. Next: prompt caching (90% savings) + context management.
 
-Full post with decision tree and case study: [link]
+Full post with decision tree and case study: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 #GitHubCopilot #AIEngineering #DeveloperProductivity #CostOptimization #LLM
 

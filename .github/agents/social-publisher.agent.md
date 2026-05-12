@@ -18,6 +18,24 @@ This agent orchestrates three MCP servers:
 
 ## Procedure
 
+### Step 10a: Inject Canonical URLs (Pre-Flight)
+
+Before doing anything else, resolve all `[link]` placeholders in social content files:
+
+1. Read `content/publishing-log.md`
+2. Build a map of `slug → canonical URL` from the log
+3. For each file matching `content/linkedin-post*.md`, `content/x-twitter-thread*.md`, `content/reddit-post*.md`:
+   - Detect which blog slug this file corresponds to (by matching filename or frontmatter)
+   - For series posts: use the **series index URL** for LinkedIn posts; use the **individual part URL** for X/Twitter and Reddit
+   - Replace every occurrence of `[link]` with the appropriate canonical URL
+4. Log: `"Resolved [link] placeholders in {N} files."`
+
+If `content/publishing-log.md` is missing or has no entries, stop and report:
+```
+ERROR (Step 10a): content/publishing-log.md not found or empty.
+Run web-publisher (Step 10) first to publish the blog and generate canonical URLs.
+```
+
 ### 1. Read Pipeline Config
 
 Read `content/pipeline-config.md` and check:
@@ -96,18 +114,27 @@ After each platform posts:
 
 ### LinkedIn (mcp-linkedin)
 - `dry_run` defaults to `true` — always previews first
-- Supports media attachments (images, video) and @mentions
+- For social posts (not Articles): text-only — do NOT attach images or media
+- **Link suppression protection:** The canonical URL must appear at the END of the post body (after all substantive content). Never embed the URL mid-body or in the opening section. Alternative: post the URL as the FIRST comment immediately after publishing instead of in the body. Confirm with user which approach to use.
 - Auto-likes posts after publishing
 - Post URL format: `https://www.linkedin.com/feed/update/urn:li:activity:{post_id}/`
 
 ### Reddit (reddit-mcp-server)
 - Safe mode enabled by default — rate limiting + duplicate detection
-- Use `create_post` tool with `subreddit`, `title`, and `selftext` parameters
+- **Text post required:** Submit as a self/text post (NOT a link post). Minimum 500 words of substantive content — not a teaser.
+- The canonical URL appears at the bottom only, separated by a `---` divider:
+  ```
+  ---
+  Full implementation guide: [canonical URL]
+  ```
+- Title must be discussion-oriented (e.g., "How I reduced AI code assistant latency by 43%") — never promotional
 - Standard Markdown only (no Unicode bold/italic)
 - Reddit-compliant User-Agent auto-generated
 
 ### X/Twitter (custom MCP)
 - Thread support — tweets linked as replies
+- **Text-only thread:** Do NOT attach images or media to any tweet. Remove any image attachment instructions from post files before publishing.
+- **Link placement:** External links go in the LAST tweet only to avoid algorithmic reach suppression (50–90% reach drop if link is in tweet 1)
 - Character validation per tweet (280 max)
 - Free tier: 1,500 tweets/month
 

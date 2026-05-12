@@ -177,9 +177,11 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 
 ### Phase 7: Publish to GitHub Pages
 23. Delegate to `web-publisher` with the blog file path
-24. The agent converts the blog to HTML and saves to `docs/blog/<slug>.html`
-25. The agent links the new post from `docs/index.html` (newest first)
-26. Confirm published URL with user: `https://sendtoshailesh.github.io/content-creation/blog/<slug>.html`
+24. The agent converts the blog to HTML and saves to `blog/<slug>.html` in the `sendtoshailesh.github.io` Pages repo
+25. The agent copies visual assets from `content/visuals/` to `blog/visuals/` in the Pages repo
+26. The agent links the new post from `blog/index.html` in the Pages repo (newest first)
+27. Remind the user to commit and push the Pages repo to make the post live
+28. Confirm published URL with user: `https://sendtoshailesh.github.io/blog/<slug>.html`
 
 ## Progress Tracking
 

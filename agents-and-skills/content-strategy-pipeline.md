@@ -30,7 +30,9 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
 | 9 | Content Repurposing (optional) | `content-repurposer` | ✅ Implemented |
 | 10 | Publish to GitHub Pages | `web-publisher` | ✅ Implemented |
+| 10a | Inject canonical URLs into `[link]` placeholders (pre-flight) | `social-publisher` | ✅ Implemented |
 | 11 | Social Media Publishing (API) | `social-publisher` | ✅ Implemented |
+| 12 | Platform distillation: Medium, Substack, LinkedIn Article | `platform-distiller` | ✅ Implemented |
 
 ### Skills Inventory
 
@@ -307,7 +309,33 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 
 ---
 
-## File Inventory
+### Step 12: Platform Distillation (`platform-distiller`)
+
+**Objective:** Generate text-only, copy-paste-ready summaries for Medium, Substack, and LinkedIn Article — all pointing to the GitHub Pages canonical URL.
+
+**Architecture:** Single agent reading blog markdown + `content/publishing-log.md`. No MCP servers required.
+
+**Tasks:**
+1. Read the blog file and extract: key argument, 3–5 data points, main sections
+2. Look up canonical URL from `content/publishing-log.md` (matched by slug)
+3. Generate Medium excerpt (700–900 words) — substantive, Import-ready
+4. Generate Substack excerpt (300–500 words) — hook only, for Substack Notes
+5. Generate LinkedIn Article (700–900 words) — **unique angle, not a republish**
+6. Validate all outputs: no image refs (`![]`, `.png`, `.svg`, `<img`)
+
+**Text-only enforcement:** All chart/diagram data must be expressed as inline numbers, before/after comparisons, or named benchmarks. No image markdown, no HTML image tags, no visual asset paths.
+
+**Publish sequence for outputs:**
+- **Medium**: Day 0 — use Import tool (not paste); auto-sets canonical URL to GitHub Pages source
+- **Substack**: Day 3–4 — post as Substack Note (ambient feed, not newsletter email)
+- **LinkedIn Article**: Day 7+ — unique angle only; never a republish of the blog
+
+**Output:**
+- `content/medium-post-{slug}.md` — with `── START COPY (Medium) ──` / `── END COPY (Medium) ──` markers
+- `content/substack-post-{slug}.md` — with `── START COPY (Substack) ──` / `── END COPY (Substack) ──` markers
+- `content/linkedin-article-{slug}.md` — with `── START COPY (LinkedIn Article) ──` / `── END COPY (LinkedIn Article) ──` markers
+
+Each file includes a publishing note at the top explaining the correct publish method for that platform.
 
 ```
 content/

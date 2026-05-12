@@ -36,6 +36,7 @@ Extract from the blog's YAML frontmatter:
 Create `blog/<slug>.html` in the Pages repo following the dark-themed structure:
 - Use `<html data-theme="dark">` and link `blog-style.css`
 - Include Google Fonts (Inter) preconnect and stylesheet links
+- Include Open Graph and Twitter Card meta tags (og:type, og:url, og:title, og:description, og:image, twitter:card, twitter:site, twitter:title, twitter:description, twitter:image)
 - Include: sticky header with nav (Home, Blog, Portfolio), back link, post header (title, meta, tags), post content, footer
 - Convert Markdown content to semantic HTML: `<h2>`, `<h3>`, `<p>`, `<pre><code>`, `<table>`, `<ul>/<ol>`, `<blockquote>`, `<a>`
 - Preserve all code blocks with proper escaping (`<`, `>`, `&`)
@@ -89,15 +90,54 @@ When publishing, always:
 2. Use plain `<img>` tags without inline styles — the CSS handles 130% zoom automatically
 3. Include descriptive `alt` text matching the Markdown image alt text
 
+### 5. Write Canonical URL to Publishing Log
+
+After the HTML page is live, update `content/publishing-log.md` in the pipeline repo (`how2genmodel/`):
+
+1. If `content/publishing-log.md` does not exist, create it with this header:
+   ```markdown
+   # Publishing Log
+
+   | Part | Slug | Canonical URL | Published |
+   |------|------|--------------|-----------|
+   ```
+
+2. Append a new row:
+   ```
+   | {part} | {slug} | https://sendtoshailesh.github.io/blog/{slug}.html | {YYYY-MM-DD} |
+   ```
+   - `{part}`: Use `series.part` from blog frontmatter if present; otherwise use `-`
+   - `{slug}`: The `seo.slug` value (or slugified title)
+   - `{YYYY-MM-DD}`: Today's date
+
+3. If the blog is part of a series and this is the **last part**, also add a `### Series Index` entry:
+   ```markdown
+   ### Series Index
+   | Key | Value |
+   |-----|-------|
+   | Series slug | `{series-slug}` |
+   | Series index URL | `https://sendtoshailesh.github.io/blog/series/{series-slug}.html` |
+   ```
+
+4. Confirm: `"Canonical URL written to content/publishing-log.md: https://sendtoshailesh.github.io/blog/{slug}.html"`
+
 ## Output
 
 - `blog/<slug>.html` — the published blog page in the Pages repo
 - `blog/index.html` — updated with the new post card linked at the top
+- `content/publishing-log.md` — updated with canonical URL
 - Confirm the live URL: `https://sendtoshailesh.github.io/blog/<slug>.html`
+- **Remind the user** to commit and push the Pages repo to make the post live:
+  ```
+  cd /Users/shaileshmishra/my-docs/my-proj/sendtoshailesh.github.io
+  git add blog/
+  git commit -m "Publish: <post title>"
+  git push
+  ```
 
 ## Constraints
 
-- Do NOT modify `docs/style.css` unless the blog requires new visual elements not already covered
+- Do NOT modify `blog-style.css` unless the blog requires new visual elements not already covered
 - Do NOT publish drafts — only publish content that has passed the quality gate (Step 3c)
 - Keep HTML semantic and accessible (proper heading hierarchy, alt text for images, link text)
 - All links to external resources use `rel="noopener"` on `target="_blank"` links

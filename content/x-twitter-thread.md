@@ -92,7 +92,7 @@ But these 5 practices are worth doing even if AI were free. Better input = bette
 
 Next: prompt caching (90% savings) and the 120x model spread.
 
-Full blog: [link]
+Full blog: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 What's your best context engineering tip? 👇
 

@@ -39,7 +39,7 @@ But the advice is durable regardless of billing model. Better input produces bet
 
 This is Part 1 of 3. Part 2 covers caching (90% savings with zero quality trade-off) and workflow discipline. Part 3: when expensive models genuinely help.
 
-Full post with before/after data from Anthropic, SWEzze, and GitHub: [link]
+Full post with before/after data from Anthropic, SWEzze, and GitHub: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #PromptEngineering
 
@@ -100,7 +100,7 @@ Close every irrelevant file before your next Copilot prompt. Note whether the ou
 
 Part 1 of 3. Next: caching (90% savings, zero quality trade-off) + workflow discipline.
 
-Full post with before/after data: [link]
+Full post with before/after data: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #PromptEngineering
 

@@ -45,7 +45,7 @@ Combined potential: 70-90% effective cost reduction with better output quality.
 
 Start with context. Everything else follows.
 
-Full series: [link]
+Full series: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #ModelSelection
 
@@ -104,7 +104,7 @@ Combined: 𝟳𝟬-𝟵𝟬% effective cost reduction with 𝘣𝘦𝘵𝘵𝘦�
 
 Start with context. Everything else follows.
 
-Full 3-part series: [link]
+Full 3-part series: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #ModelSelection
 

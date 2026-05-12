@@ -41,7 +41,7 @@ KEY DATA POINTS:
 
 Part 1 of 3 in the "Engineering Better AI Code Assistant Interactions" series.
 
-Blog post: [link]
+Blog post: https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html
 
 #AICodeAssistant #ContextEngineering #GitHubCopilot #DeveloperProductivity
 
