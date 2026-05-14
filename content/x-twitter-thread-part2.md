@@ -81,7 +81,7 @@ Do both together.
 Part 1: context engineering foundations  
 Part 3: model routing and when expensive models are worth it
 
-Full post: https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html
+Published canonical URL: https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html
 
 #PromptCaching #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity
 

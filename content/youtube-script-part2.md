@@ -5,6 +5,7 @@
 - **Target duration**: 8-10 minutes
 - **Topic**: Invisible Compound Savings — Prompt Caching + Retry Tax
 - **Source blog**: `content/ai-code-assistant-cost-part-2.md`
+- **Published URL**: `https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html`
 
 ## Title Options
 
