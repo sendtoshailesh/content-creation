@@ -107,8 +107,8 @@ The feed curation feature automates the process of reading blog rolls, newslette
 
 ## Pipeline Steps
 
-| Step | Agent | What It Does |
-|------|-------|--------------|
+| Step | Agent / Skill | What It Does |
+|------|--------------|--------------|
 | -1 | `@feed-curator` | _(Optional)_ Discover content ideas from blog rolls, RSS feeds, newsletters |
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
 | 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
@@ -118,14 +118,51 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 3c | `@quality-reviewer` | Quality audit with fixes |
 | 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
 | 4a | `@social-strategist` | Cross-platform social distribution strategy |
-| 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts |
-| 5 | `@social-twitter` | Tweet thread + standalone summary |
+| 4a-visual | `visual-pack-generator` skill | _(Optional)_ Generate visual pack (carousel slides or exhibit charts) for visual-first distribution. Set `distillation_persona_mode` in pipeline-config before running. |
+| 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts; visual-first carousel/exhibit posts when visual pack exists |
+| 5 | `@social-twitter` | Single tweet (≤ 280 chars) with visual attachment; references x-card or x-exhibit from visual pack when available |
 | 6 | `@social-reddit` | Markdown Reddit post |
 | 7 | `@brand-guardian` | Brand consistency audit across all content |
 | 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
 | 9 | `@content-repurposer` | Newsletter, slide deck, podcast, infographic |
 | 10 | `@web-publisher` | Publish blog to GitHub Pages site |
+| 11 | `@social-publisher` | Publish to LinkedIn, X/Twitter, Reddit, and YouTube (preview + confirmation required) |
+| 12 | `@platform-distiller` | Unified excerpt for Medium, Substack, and LinkedIn Article with embedded visuals (or text-only fallback) |
+
+## Visual-First Distribution
+
+When `distillation_persona_mode` is set in [`content/pipeline-config.md`](content/pipeline-config.md), the pipeline generates a **visual asset pack** before distribution agents run. Social posts are then built around the visuals (carousel/exhibit images lead; text narrates).
+
+### Persona Modes
+
+| Mode | Format | Dimensions | Style |
+|------|--------|-----------|-------|
+| `practitioner` | 10-slide LinkedIn carousel | 1080×1080 px | Hook → framework → steps → CTA (Welsh/Lenny/Bloom grammar) |
+| `executive` | 3–5 exhibit charts | 1200×627 px | Context → evidence → framework → ROI (HBR/McKinsey exhibit style) |
+| `ask` | _(prompt at runtime)_ | — | The pipeline asks you to choose mode before generating |
+
+### How to Enable
+
+1. In `content/pipeline-config.md`, set:
+   ```
+   distillation_persona_mode: practitioner   # or executive / ask
+   distillation_slug: part1                  # used in output path
+   ```
+2. After Step 3d (SEO), run Step 4a-visual before LinkedIn/Twitter/Platform steps:
+   ```
+   @visual-pack-generator content/my-blog.md part1 practitioner
+   ```
+3. Visual pack is saved to `content/visuals/distilled/part1-practitioner/` (or `part1-executive/`)
+4. Steps 4b, 5, and 12 automatically detect the visual pack and embed references
+
+### Output Files
+
+| Agent | With Visual Pack | Without Visual Pack |
+|-------|-----------------|---------------------|
+| `@social-linkedin` | Visual-first post referencing carousel/exhibit slides | Standard text post |
+| `@social-twitter` | Single tweet teasing the key visual | Single standalone tweet |
+| `@platform-distiller` | Unified excerpt with embedded hero + inline images | Text-only excerpt |
 
 ## Using Individual Agents
 
@@ -135,6 +172,10 @@ You don't have to run the full pipeline. Use any agent directly:
 @feed-curator                         Discover content ideas from your blog rolls and feeds
 @blog-writer Write a blog post from content/my-topic-strategy.md
 @social-linkedin Adapt content/my-blog.md for LinkedIn
+@social-twitter Adapt content/my-blog.md for X/Twitter
+@social-reddit Adapt content/my-blog.md for Reddit
+@social-publisher Publish all generated social content (with preview + confirmation)
+@platform-distiller Distill content/my-blog.md into Medium, Substack, and LinkedIn Article
 @quality-reviewer Review content/my-blog.md
 @visual-renderer Create visuals for content/my-blog.md
 @trend-researcher Research market landscape for [topic]
@@ -173,12 +214,16 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 16 specialist agents
-├── skills/                          # 4 reusable skills
+├── agents/                          # 20 specialist agents
+├── skills/                          # 8 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
 │   ├── unicode-formatting/          #   Bold/italic for social posts
 │   ├── reference-analysis/          #   Fetch + synthesize online sources
-│   └── feed-curation/               #   Classify, extract, rank feed articles
+│   ├── feed-curation/               #   Classify, extract, rank feed articles
+│   ├── visual-pack-generator/       #   Platform-optimized visual packs (carousel / exhibit)
+│   ├── visual-review/               #   Cross-model visual QA critic
+│   ├── multi-dimensional-analysis/  #   Persona × best-practice × WAF dimension analysis
+│   └── content-scope-assessment/    #   Single-post vs. multi-part series scoring
 ├── instructions/                    # 3 auto-loading instruction files
 ├── prompts/                         # 5 prompt shortcuts
 ├── ISSUE_TEMPLATE/                  # Bug report & feature request templates
@@ -191,7 +236,11 @@ content/
 ├── idea-queue.md                    # Curated content ideas (persistent)
 ├── reference-brief.md               # Auto-generated from reference URLs
 ├── *.md                             # Blog, social posts, scripts
-└── visuals/                         # PNGs, SVGs, Mermaid files, renderers
+└── visuals/
+    ├── *.png / *.svg                 # Blog visuals from visual-renderer
+    └── distilled/                   # Visual packs from visual-pack-generator
+        ├── {slug}-practitioner/     #   10-slide LinkedIn carousel (1080×1080px)
+        └── {slug}-executive/        #   3-5 exhibit charts (1200×627px)
 
 archive/                             # Past content runs (max 3 kept)
 ├── run-YYYYMMDD-HHMMSS/
