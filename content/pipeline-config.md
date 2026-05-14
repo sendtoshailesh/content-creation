@@ -35,7 +35,9 @@
 - [x] Step P2-3: Blog post (Part 2) -> `content/ai-code-assistant-cost-part-2.md`
 - [x] Step P2-3b: Visual assets (Part 2) -> 2 PNGs (caching-flow, retry-tax-calculator)
 - [x] Step P2-4: LinkedIn post (Part 2) -> `content/linkedin-post-part2.md`
+- [x] Step P2-5: X/Twitter thread (Part 2) -> `content/x-twitter-thread-part2.md`
 - [x] Step P2-6b: Reel/Short video (Part 2) -> `content/reel-script-part2.md`
+- [x] Step P2-8: YouTube script (Part 2) -> `content/youtube-script-part2.md`
 - [x] Step P3-3: Blog post (Part 3) -> `content/ai-code-assistant-cost-part-3.md`
 - [x] Step P3-3b: Visual assets (Part 3) -> 3 PNGs (task-model-alignment, team-governance-dashboard, three-layer-stack)
 - [x] Step P3-4: LinkedIn post (Part 3) -> `content/linkedin-post-part3.md`
