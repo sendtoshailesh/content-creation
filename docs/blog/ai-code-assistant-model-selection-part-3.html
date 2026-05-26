@@ -43,20 +43,20 @@
 
       <h2>Not All Tokens Are Priced Equal: Understanding GitHub Copilot Model Multipliers</h2>
 
-      <p>Under GitHub Copilot's usage-based billing (effective June 1, 2026), every model carries a multiplier. GPT-5.4 nano costs 0.25x. Claude Opus 4.6 fast mode costs 30x. That is a <strong>120x cost difference</strong> for the same interaction pattern. <em>(Model multipliers and included models are subject to change &mdash; GitHub's documentation says so explicitly.)</em></p>
+      <p>Under GitHub Copilot's usage-based billing (effective June 1, 2026), every model carries a multiplier. The cheapest budget tier sits at 0.25x. The most expensive flagship fast-mode tier sits at 30x. That is a <strong>120x cost difference</strong> for the same interaction pattern. <em>(As of May 2026, budget-tier examples include GPT-5.4 nano and Claude Haiku 4.5; flagship fast-mode includes Claude Opus 4.6 fast mode. Specific multipliers and included models rotate &mdash; GitHub's documentation says so explicitly. <a href="https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests">See current multipliers</a>.)</em></p>
 
-      <p>But this is not a "use cheap models" story. Apple ML Research found that reasoning models burn thousands of extra tokens on simple tasks &mdash; with <strong>zero quality improvement</strong>. Standard models actually provided better accuracy on low-complexity items.</p>
+      <p>But this is not a "use cheap models" story. <a href="https://machinelearning.apple.com/research/illusion-of-thinking">Apple ML Research</a> found that reasoning models burn thousands of extra tokens on simple tasks &mdash; with <strong>zero quality improvement</strong>. Standard models actually provided better accuracy on low-complexity items.</p>
 
       <h2>Matching Model Capability to Task Complexity</h2>
 
       <h3>Tier 1: Simple tasks (60-70% of daily interactions)</h3>
-      <p>Variable renaming. Boilerplate generation. Test scaffolding. Docstring writing. Import fixing. These tasks require pattern matching, not multi-step reasoning. Free/cheap models perform equally well.</p>
+      <p>Variable renaming. Boilerplate generation. Test scaffolding. Docstring writing. Import fixing. These tasks require pattern matching, not multi-step reasoning. The included tier (0x) and budget tier (0.25x &ndash; 0.33x) perform equally well. <em>(As of May 2026: GPT-4.1, GPT-5 mini at 0x; GPT-5.4 nano at 0.25x; Claude Haiku 4.5 at 0.33x.)</em></p>
 
       <h3>Tier 2: Moderate tasks (20-30%)</h3>
-      <p>Code review, refactoring, debugging, architecture questions, multi-file understanding. Standard models (1x) offer the best quality-per-credit ratio.</p>
+      <p>Code review, refactoring, debugging, architecture questions, multi-file understanding. The standard 1x tier offers the best quality-per-credit ratio. <em>(As of May 2026: Claude Sonnet 4.x family, Gemini 2.5 Pro, GPT-5.2.)</em></p>
 
       <h3>Tier 3: Complex tasks (5-10%)</h3>
-      <p>Multi-file refactoring with dependencies, novel algorithms, system design. The <strong>only</strong> tier where premium models demonstrably outperform standard models. Use them deliberately.</p>
+      <p>Multi-file refactoring with dependencies, novel algorithms, system design. The <strong>only</strong> tier where the premium reasoning tier (3x) demonstrably outperforms standard models. Use it deliberately. Reserve 7.5x+ for exceptional cases with a specific, articulable reason. <em>(As of May 2026: Claude Opus 4.5 at 3x.)</em></p>
 
       <h3>The cost math</h3>
 
@@ -72,13 +72,13 @@
         </tbody>
       </table>
 
-      <p>RouteLLM demonstrated this at scale: <strong>95% of GPT-4 quality using only 14% GPT-4 calls</strong>. A production team dropped from <strong>$3,000/day to $970/day (68% reduction, $740K/year annualized)</strong> through routing alone.</p>
+      <p><a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> demonstrated this at scale: <strong>95% of flagship-tier quality using only 14% flagship calls</strong>. <em>(In the original 2024 LMSYS paper, "flagship" = GPT-4 &mdash; the principle generalizes to whatever the current flagship is.)</em> A <a href="https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/">production team profiled by Towards Data Science</a> dropped from <strong>$3,000/day to $970/day (68% reduction, $740K/year annualized)</strong> through routing alone.</p>
 
       <img src="visuals/task-model-alignment.png" alt="Task-Model Alignment: Matching capability to complexity">
 
       <h2>Let the Router Do the Work</h2>
 
-      <p>Copilot's auto model selection offers a 10% multiplier discount and algorithmically routes tasks to appropriate models. RouteLLM achieved 95% quality at 75% cost reduction &mdash; better than most humans would achieve switching manually. CascadeFlow delivered 69% savings with 96% quality retention. Both prove: let the system match complexity to capability.</p>
+      <p>Copilot's auto model selection offers a 10% multiplier discount and algorithmically routes tasks to appropriate models. <a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> achieved 95% quality at 75% cost reduction &mdash; better than most humans would achieve switching manually. <a href="https://arxiv.org/abs/2406.00073">CascadeFlow</a> delivered 69% savings with 96% quality retention. Both prove: let the system match complexity to capability.</p>
 
       <p><em>Caveat: limited public data on Copilot's specific auto-selection algorithm. For maximum control, manual selection using the task taxonomy is more predictable.</em></p>
 
@@ -86,17 +86,17 @@
 
       <img src="visuals/routing-decision-comparison.png" alt="Auto-selection vs Manual Routing: Decision flow for choosing your approach">
 
-      <h2>Budget Visibility for Engineering Managers: GitHub Copilot Usage-Based Billing Governance</h2>
+      <h2>Budget Visibility for AI Team Leads: GitHub Copilot Usage-Based Billing Governance</h2>
 
-      <p>The new billing model introduces governance tools that did not exist under flat-rate pricing: pooled usage across organizations, budget controls at enterprise/cost center/user levels, and visibility into which developers, projects, and models consume the most credits. For the first time, a developer making 300 requests/day and one making 30 look different on the bill.</p>
+      <p>The <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">new billing model</a> introduces governance tools that did not exist under flat-rate pricing: pooled usage across organizations, budget controls at enterprise/cost center/user levels, and visibility into which developers, projects, and model tiers consume the most credits. For the first time, a developer making 300 requests/day and one making 30 look different on the bill.</p>
 
       <h3>Recommended team standards</h3>
 
       <ol>
-        <li><strong>Establish default model guidelines by task type.</strong> Document in your team wiki or <code>.github/copilot-instructions.md</code>.</li>
+        <li><strong>Establish default tier guidelines by task type.</strong> Document the tier (Tier 1, 2, or 3) &mdash; not specific model names &mdash; in your team wiki or <code>.github/copilot-instructions.md</code>. Tiers stay stable; model lineups rotate.</li>
         <li><strong>Set budget alerts before June 1.</strong> Configure at 50%, 75%, and 90% of credit allocation.</li>
         <li><strong>Review top-consuming projects monthly.</strong> Identify which workflows generate the most tokens.</li>
-        <li><strong>Invest in context engineering training, not model restrictions.</strong> The managers who teach context engineering get the same cost reduction with happier developers.</li>
+        <li><strong>Invest in context engineering training, not model restrictions.</strong> AI team leads who teach context engineering get the same cost reduction with happier developers.</li>
       </ol>
 
       <img src="visuals/team-optimization-strategies.png" alt="Team optimization strategies: Training vs Restriction outcomes comparison">
@@ -133,6 +133,19 @@
       <p>The billing change is real. The advice is durable. Better input produces better output whether you pay per token, per request, or nothing at all.</p>
 
       <p><em><a href="ai-code-assistant-context-engineering-part-1.html">&larr; Part 1: Context Engineering</a> | <a href="ai-code-assistant-caching-workflow-part-2.html">&larr; Part 2: Invisible Compound Savings</a></em></p>
+
+      <hr>
+
+      <h3>Sources</h3>
+      <ul style="font-size: 0.9rem;">
+        <li>Apple ML Research, "The Illusion of Thinking": <a href="https://machinelearning.apple.com/research/illusion-of-thinking">machinelearning.apple.com/research/illusion-of-thinking</a></li>
+        <li>RouteLLM (LMSYS, 2024): <a href="https://lmsys.org/blog/2024-07-01-routellm/">lmsys.org/blog/2024-07-01-routellm</a></li>
+        <li>CascadeFlow (arXiv, 2024): <a href="https://arxiv.org/abs/2406.00073">arxiv.org/abs/2406.00073</a></li>
+        <li>Towards Data Science production case study: <a href="https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/">towardsdatascience.com inference-scaling article</a></li>
+        <li>GitHub Copilot billing docs: <a href="https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests">docs.github.com Copilot premium requests</a></li>
+        <li>GitHub usage-based billing announcement: <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">github.blog usage-based billing</a></li>
+      </ul>
+      <p style="font-size: 0.85rem; color: #64748b;"><em>Specific model names cited above are accurate as of May 2026. The tier structure (Tier 1 / 2 / 3 by multiplier) is the durable framework; the lineup of which models occupy each tier rotates as providers release new versions.</em></p>
 
     </div>
   </article>

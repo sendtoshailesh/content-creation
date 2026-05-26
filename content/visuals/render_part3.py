@@ -58,7 +58,7 @@ def render_task_model_alignment():
             'color': TOKENS['TEAL_BG'], 'border': TOKENS['ACCENT_2'],
             'title': 'Tier 1: SIMPLE (60-70%)',
             'tasks': 'Variable rename, boilerplate, test scaffold,\ndocstrings, imports, lint fixes, syntax Q&A',
-            'models': 'GPT-4.1 (0x)  |  GPT-5 mini (0x)\nGPT-5.4 nano (0.25x)  |  Haiku 4.5 (0.33x)',
+            'models': 'Included tier (0x)\nBudget tier (0.25x - 0.33x)\nExamples as of May 2026:\nGPT-4.1, GPT-5 mini, Haiku 4.5',
             'cost_label': '0x - 0.33x',
             'badge_color': TOKENS['SUCCESS'],
         },
@@ -67,7 +67,7 @@ def render_task_model_alignment():
             'color': TOKENS['BLUE_BG'], 'border': TOKENS['ACCENT'],
             'title': 'Tier 2: MODERATE (20-30%)',
             'tasks': 'Code review, refactoring, debugging,\narchitecture Q&A, multi-file understanding',
-            'models': 'Claude Sonnet 4/4.5/4.6 (1x)\nGemini 2.5 Pro (1x)  |  GPT-5.2 (1x)',
+            'models': 'Standard 1x tier\nExamples as of May 2026:\nClaude Sonnet 4.x, Gemini Pro, GPT-5.2',
             'cost_label': '1x',
             'badge_color': TOKENS['ACCENT'],
         },
@@ -76,7 +76,7 @@ def render_task_model_alignment():
             'color': TOKENS['PURPLE_BG'], 'border': TOKENS['ACCENT_3'],
             'title': 'Tier 3: COMPLEX (5-10%)',
             'tasks': 'Multi-file refactor with dependencies,\nnovel algorithms, system design, deep reasoning',
-            'models': 'Claude Opus 4.5 (3x)\nReserve 7.5x+ for exceptional cases',
+            'models': 'Premium reasoning tier (3x)\nExample as of May 2026: Claude Opus 4.5\nReserve 7.5x+ for exceptional cases',
             'cost_label': '3x+',
             'badge_color': TOKENS['ACCENT_3'],
         },
@@ -227,12 +227,12 @@ def render_team_governance_dashboard():
              fontweight='bold', color=TOKENS['TEXT'], transform=ax3.transAxes)
 
     table_data = [
-        ['Workflow', 'Tokens/day', 'Model', 'Action'],
-        ['Agent: auth refactor', '145K', 'Opus 4.5', 'Review context'],
-        ['Chat: API debugging', '89K', 'Sonnet 4.6', 'OK'],
-        ['Agent: test generation', '72K', 'GPT-4.1', 'OK (free)'],
-        ['Chat: code review', '58K', 'Sonnet 4.6', 'OK'],
-        ['Chat: boilerplate', '41K', 'Sonnet 4.6', 'Switch to 0x'],
+        ['Workflow', 'Tokens/day', 'Tier', 'Action'],
+        ['Agent: auth refactor', '145K', 'Premium 3x', 'Review context'],
+        ['Chat: API debugging', '89K', 'Standard 1x', 'OK'],
+        ['Agent: test generation', '72K', 'Included 0x', 'OK (free)'],
+        ['Chat: code review', '58K', 'Standard 1x', 'OK'],
+        ['Chat: boilerplate', '41K', 'Standard 1x', 'Switch to 0x'],
     ]
 
     for i, row in enumerate(table_data):
@@ -468,7 +468,7 @@ def render_routing_decision_comparison():
 
 
 def render_team_optimization_strategies():
-    """Training vs restriction outcomes comparison for engineering managers."""
+    """Training vs restriction outcomes comparison for AI team leads and decision-makers."""
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 6.5)

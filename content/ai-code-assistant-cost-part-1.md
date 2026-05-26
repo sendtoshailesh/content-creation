@@ -234,7 +234,7 @@ Build your habits around the routing discipline, not a specific multiplier numbe
 
 In **Part 2: "Less Context = Better Code"**, I will cover prompt caching (up to 90% savings on repeated context) and context management (how closing files and structuring conversations can cut token consumption by 30-70% — while simultaneously improving output quality). The counterintuitive finding: less context makes AI code assistants both cheaper AND better.
 
-In **Part 3: "The Team Playbook"**, I will cover budget governance for engineering managers, team-wide model selection guidelines, credit forecasting, and the complete optimization framework that combines all four pillars for 70-90% total savings.
+In **Part 3: "The Team Playbook"**, I will cover budget governance for AI team leads and decision-makers, team-wide model selection guidelines, credit forecasting, and the complete optimization framework that combines all four pillars for 70-90% total savings.
 
 ---
 

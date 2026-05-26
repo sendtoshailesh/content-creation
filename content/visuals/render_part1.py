@@ -40,14 +40,14 @@ plt.rcParams.update({
 def render_multiplier_spectrum():
     """Horizontal bar chart showing model multipliers from 0x to 30x, color-coded by tier."""
     models = [
-        ('GPT-4.1 / GPT-5 mini', 0, 'Included* (0x)', TOKENS['SUCCESS']),
-        ('GPT-5.4 nano', 0.25, 'Cheap (0.25x)', TOKENS['ACCENT_2']),
-        ('Claude Haiku 4.5', 0.33, 'Budget (0.33x)', TOKENS['ACCENT_2']),
-        ('Claude Sonnet 4.6', 1.0, 'Standard (1x)', TOKENS['ACCENT']),
-        ('Claude Opus 4.5', 3.0, 'Premium (3x)', TOKENS['ACCENT_3']),
-        ('GPT-5.5', 7.5, 'Expensive (7.5x)', TOKENS['WARN']),
-        ('Claude Opus 4.7', 15.0, 'Very Expensive (15x)', TOKENS['WARN']),
-        ('Opus 4.6 fast', 30.0, 'Extreme (30x)', '#991b1b'),
+        ('Included tier', 0, '(0x)', TOKENS['SUCCESS']),
+        ('Budget tier (entry)', 0.25, '(0.25x)', TOKENS['ACCENT_2']),
+        ('Budget tier (lower-mid)', 0.33, '(0.33x)', TOKENS['ACCENT_2']),
+        ('Standard tier', 1.0, '(1x)', TOKENS['ACCENT']),
+        ('Premium reasoning tier', 3.0, '(3x)', TOKENS['ACCENT_3']),
+        ('Premium-plus tier', 7.5, '(7.5x)', TOKENS['WARN']),
+        ('Flagship tier', 15.0, '(15x)', TOKENS['WARN']),
+        ('Flagship fast-mode tier', 30.0, '(30x)', '#991b1b'),
     ]
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -90,7 +90,12 @@ def render_multiplier_spectrum():
     ax.set_title('GitHub Copilot Model Multipliers: 0x to 30x',
                  fontsize=13, fontweight='bold', color=TOKENS['TEXT'], pad=15)
 
-    plt.tight_layout()
+    fig.text(0.5, 0.02,
+             '[VOLATILE] Tier names and multipliers are accurate as of May 2026. '
+             'Specific model lineups rotate; the tier structure is the durable framework.',
+             ha='center', fontsize=7.5, color=TOKENS['MUTED'], style='italic')
+
+    plt.tight_layout(rect=[0, 0.04, 1, 1])
     path = os.path.join(OUT_DIR, 'model-multiplier-spectrum.png')
     fig.savefig(path, dpi=DPI, bbox_inches='tight', facecolor=TOKENS['BG'])
     plt.close(fig)
@@ -148,7 +153,7 @@ def render_routing_decision_tree():
     # YES -> Free/Cheap
     arrow(3.5, 6.8, 1.8, 6.8, 'YES', 'left')
     draw_box(1.8, 5.8, 2.8, 1.2,
-             'FREE / CHEAP\n\nGPT-4.1 (0x)\nGPT-5 mini (0x)\nGPT-5.4 nano (0.25x)',
+             'INCLUDED / BUDGET\n\nIncluded tier (0x)\nBudget tier (0.25x - 0.33x)',
              TOKENS['TEAL_BG'], bold=False, fontsize=8)
     ax.text(1.8, 4.95, '60-70% of tasks', fontsize=7.5, color=TOKENS['SUCCESS'],
             ha='center', fontweight='bold')
@@ -160,7 +165,7 @@ def render_routing_decision_tree():
     # NO -> Standard
     arrow(6.5, 5.8, 5.2, 5.8, 'NO', 'left')
     draw_box(5.2, 4.6, 2.8, 1.2,
-             'STANDARD (1x)\n\nClaude Sonnet 4.6\nGemini 2.5 Pro\nGPT-5.2',
+             'STANDARD (1x)\n\nMid-tier general-purpose\nmodels from your provider\nof choice',
              TOKENS['BLUE_BG'], fontsize=8)
     ax.text(5.2, 3.75, '20-30% of tasks', fontsize=7.5, color=TOKENS['ACCENT'],
             ha='center', fontweight='bold')
@@ -168,7 +173,7 @@ def render_routing_decision_tree():
     # YES -> Premium
     arrow(8, 5.25, 8, 4.5)
     draw_box(8, 3.7, 2.8, 1.2,
-             'PREMIUM (3x)\n\nClaude Opus 4.5\nUse deliberately,\nnot by default',
+             'PREMIUM (3x)\n\nReasoning-class models\nUse deliberately,\nnot by default',
              TOKENS['PURPLE_BG'], fontsize=8)
     ax.text(8, 2.85, '5-10% of tasks', fontsize=7.5, color=TOKENS['ACCENT_3'],
             ha='center', fontweight='bold')

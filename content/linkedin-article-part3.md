@@ -1,18 +1,18 @@
-# LinkedIn Article — Part 3: Engineering Manager's Guide
+# LinkedIn Article — Part 3: AI Team Lead's Guide
 
 > Platform: LinkedIn Article (Google-indexed, no canonical protection)
-> Angle: UNIQUE — "What engineering managers need to know before June 1" (executive decision-making, not a republish)
+> Angle: UNIQUE — "What AI team leads and decision-makers need to know before June 1" (strategic decision-making, not a republish)
 > NOT a republish of the blog — entirely different frame, audience, and structure
-> Word count: ~820 words
+> Word count: ~830 words
 > Canonical blog: https://sendtoshailesh.github.io/blog/ai-code-assistant-model-selection-part-3.html
 
 ── START COPY ──
 
-# The GitHub Copilot Billing Change: What Engineering Managers Need to Decide Before June 1
+# The GitHub Copilot Billing Change: What AI Team Leads Need to Decide Before June 1
 
 On June 1, 2026, GitHub Copilot moves from flat-rate billing to usage-based billing for Business and Enterprise plans. Every AI interaction now has a visible price tag — determined by which model processes the request.
 
-I have been helping engineering teams prepare for this change. The managers who navigate it well share one characteristic: they understand the distinction between restricting usage and optimizing it. These are not the same thing. The managers who conflate them will spend months managing frustrated developers and watching AI adoption stall.
+I have been helping AI team leads and decision-makers prepare for this change. The ones who navigate it well share one characteristic: they understand the distinction between restricting usage and optimizing it. These are not the same thing. The leaders who conflate them will spend months managing frustrated developers and watching AI adoption stall.
 
 Here is what you actually need to know.
 
@@ -24,23 +24,23 @@ The popular framing is: "models are expensive now, so use cheaper ones."
 
 That is the wrong framing.
 
-Under usage-based billing, GitHub Copilot's model multipliers range from 0.25x (GPT-5.4 nano) to 30x (Claude Opus 4.6 fast mode) — a 120x spread. The correct question is not "which model is cheapest?" It is "which model is right for which task?"
+Under usage-based billing, GitHub Copilot's [model multipliers](https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests) range from 0.25x at the cheapest budget tier to 30x at the most expensive flagship fast-mode tier — a 120x spread. *(As of writing in May 2026, the 0.25x example is GPT-5.4 nano and the 30x example is Claude Opus 4.6 fast mode. Specific model names will rotate; the tier structure is what matters.)* The correct question for decision-makers is not "which model is cheapest?" It is "which model is right for which task?"
 
-Apple ML Research found that reasoning models burn thousands of extra tokens on simple tasks — with zero quality improvement. Standard models actually delivered better accuracy on low-complexity items. The expensive model is not always the better choice, even if your credits allow it.
+[Apple ML Research](https://machinelearning.apple.com/research/illusion-of-thinking) found that reasoning models burn thousands of extra tokens on simple tasks — with zero quality improvement. Standard models actually delivered better accuracy on low-complexity items. The expensive model is not always the better choice, even if your credits allow it.
 
 The research points to a three-tier task taxonomy:
 
-Tier 1 (60-70% of daily interactions): simple pattern matching tasks — variable renaming, test scaffolding, docstring writing, boilerplate generation. Included models at 0x multiplier or budget-tier models at 0.25x deliver the same quality as premium models. Using a 30x model for this tier is waste — not because it is expensive, but because it often produces worse output on simple tasks.
+Tier 1 (60-70% of daily interactions): simple pattern matching tasks — variable renaming, test scaffolding, docstring writing, boilerplate generation. The included tier (0x multiplier) or budget tier (0.25x) deliver the same quality as the premium tier. Using a 30x model for this tier is waste — not because it is expensive, but because it often produces worse output on simple tasks.
 
-Tier 2 (20-30%): reasoning tasks — code review, multi-function refactoring, debugging, architecture questions. The 1x tier delivers the best quality-per-credit ratio. Forcing this tier to budget models visibly degrades output quality.
+Tier 2 (20-30%): reasoning tasks — code review, multi-function refactoring, debugging, architecture questions. The standard 1x tier delivers the best quality-per-credit ratio. Forcing this tier to budget models visibly degrades output quality.
 
-Tier 3 (5-10%): complex reasoning tasks — multi-file refactoring with complex dependencies, novel algorithm design, system-level architectural decisions. Only here do premium models demonstrably outperform. This is where the 3x investment pays off.
+Tier 3 (5-10%): complex reasoning tasks — multi-file refactoring with complex dependencies, novel algorithm design, system-level architectural decisions. Only here does the premium reasoning tier demonstrably outperform. This is where the 3x investment pays off.
 
-Production validation: a coding team using task-based routing dropped from $3,000/day to $970/day — 68% reduction, $740,000/year annualized. RouteLLM achieved 95% of GPT-4 quality using only 14% GPT-4 calls. The router did not sacrifice quality. It eliminated waste.
+Production validation: a coding team using task-based routing dropped from $3,000/day to $970/day — 68% reduction, $740,000/year annualized ([Towards Data Science case study](https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/)). [RouteLLM](https://lmsys.org/blog/2024-07-01-routellm/) achieved 95% of the flagship-tier quality using only 14% flagship calls. *(In RouteLLM's 2024 paper, "flagship" = GPT-4 — the principle generalizes to whatever the current flagship is.)* The router did not sacrifice quality. It eliminated waste.
 
 ---
 
-## The Management Decision That Matters Most
+## The Decision That Matters Most for AI Team Leads
 
 Before you set model policies, you need to make a prior decision: will you optimize by restricting model access, or by improving how your team uses AI?
 
@@ -54,9 +54,9 @@ The framing that works: this is "investing in developer effectiveness," not "pol
 
 ## Four Actions Before June 1
 
-1. Document a team task taxonomy. Write down which types of tasks fall into each tier and what the recommended model is for each. Put it in your team wiki and in your .github/copilot-instructions.md where it becomes AI context itself.
+1. Document a team task taxonomy. Write down which types of tasks fall into each tier and what the recommended tier is for each. Put it in your team wiki and in your .github/copilot-instructions.md where it becomes AI context itself.
 
-2. Set budget alerts before the first bill. Business plans include $19 in credits per user ($30/month promotional June through August 2026). Enterprise plans include $39 per user ($70/month promotional). Set alerts at 50%, 75%, and 90% of your team's expected monthly allocation — not the promotional ceiling.
+2. Set budget alerts before the first bill. Business plans include $19 in credits per user ($30/month promotional June through August 2026). Enterprise plans include $39 per user ($70/month promotional) ([GitHub Blog announcement](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/)). Set alerts at 50%, 75%, and 90% of your team's expected monthly allocation — not the promotional ceiling.
 
 3. Review top-consuming workflows after the first month. High consumption typically comes from agent-mode sessions (multi-step autonomous coding), which are valuable but expensive. Ensure these run with clean context and caching-friendly structure — which reduces their cost without reducing their value.
 
@@ -66,7 +66,7 @@ The framing that works: this is "investing in developer effectiveness," not "pol
 
 ## What the Usage Data Will Tell You
 
-For the first time under usage-based billing, you will have visibility into which developers, projects, and models consume the most credits. This is not a surveillance tool. It is a coaching tool.
+For the first time under usage-based billing, AI team decision-makers will have visibility into which developers, projects, and models consume the most credits. This is not a surveillance tool. It is a coaching tool.
 
 The developer consuming the most credits is not necessarily the one extracting the most value. The developer with the highest credits-per-successful-task ratio is the one worth coaching. Usage-based billing gives you the data to have that conversation.
 

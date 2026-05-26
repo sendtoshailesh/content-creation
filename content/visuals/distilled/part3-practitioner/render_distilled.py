@@ -82,9 +82,9 @@ def render_medium_hero(tokens):
 
     # Three stat callouts
     stats = [
-        ("0.25x", "GPT-5.4 nano"),
-        ("1x", "Claude Sonnet 4.6"),
-        ("30x", "Claude Opus 4.6 fm"),
+        ("0.25x", "Budget tier"),
+        ("1x", "Standard tier"),
+        ("30x", "Flagship fast-mode"),
     ]
     x_positions = [W * 0.20, W * 0.50, W * 0.80]
     colors = [tokens['SUCCESS'], tokens['ACCENT'], tokens['WARN']]
@@ -223,7 +223,7 @@ def render_medium_inline_02(tokens):
             fontfamily=FONT, fontweight='bold', color=tokens['ACCENT'])
 
     ax.text(W / 2, H * 0.04,
-            "RouteLLM: 95% GPT-4 quality at 75% cost reduction using only 14% GPT-4 calls | Source: LMSYS, 2024",
+            "RouteLLM: 95% flagship-tier quality at 75% cost reduction (LMSYS, 2024 -- flagship = GPT-4 baseline)",
             ha='center', va='center', fontsize=fs(9),
             fontfamily=FONT, color=tokens['MUTED'], style='italic')
 

@@ -4,7 +4,7 @@
 
 ── START COPY ──
 
-The cheapest AI model in GitHub Copilot costs 0.25x.
+The cheapest AI model tier in GitHub Copilot costs 0.25x.
 
 The most expensive costs 30x.
 
@@ -16,15 +16,15 @@ Here's a three-tier task taxonomy from the research:
 
 Tier 1: Simple (60-70% of daily tasks)
 Variable rename, boilerplate, test scaffold, docstrings, imports.
-Pattern matching, not reasoning. Free/cheap models perform equally.
+Pattern matching, not reasoning. Included/budget tier performs equally.
 
 Tier 2: Moderate (20-30%)
 Code review, refactoring, debugging, architecture questions.
-Standard models (1x) offer the best quality-per-credit.
+The standard 1x tier offers the best quality-per-credit.
 
 Tier 3: Complex (5-10%)
 Multi-file refactoring, novel algorithms, system design.
-The only tier where premium models demonstrably outperform.
+The only tier where the premium reasoning tier demonstrably outperforms.
 
 The cost math for 100 daily requests:
 ▸ 65 simple @ 0x = 0 credits
@@ -32,7 +32,7 @@ The cost math for 100 daily requests:
 ▸ 10 complex @ 3x = 0.30x weighted
 ▸ Effective average: 0.55x (45% savings vs. 1x baseline)
 
-RouteLLM proved this at scale: 95% of GPT-4 quality using only 14% GPT-4 calls.
+RouteLLM proved this at scale: 95% of the flagship-tier quality using only 14% flagship calls. (In the original LMSYS paper, "flagship" referred to GPT-4 as the 2024 baseline.)
 
 A production team dropped from $3,000/day to $970/day — 68% reduction ($740K/year) — through routing alone.
 
@@ -47,6 +47,11 @@ Start with context. Everything else follows.
 
 Full series: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html
 
+Sources (paste URLs into a browser to verify):
+• Apple ML Research: machinelearning.apple.com/research/illusion-of-thinking
+• RouteLLM (LMSYS): lmsys.org/blog/2024-07-01-routellm
+• GitHub Copilot billing docs: docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests
+
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #ModelSelection
 
 ── END COPY ──
@@ -57,7 +62,7 @@ Full series: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-opti
 
 ── START COPY ──
 
-The cheapest AI model in GitHub Copilot costs 0.25x.
+The cheapest AI model tier in GitHub Copilot costs 0.25x.
 
 The most expensive costs 30x.
 
@@ -72,13 +77,13 @@ Apple ML Research: reasoning models burn thousands of extra tokens on simple tas
 𝗧𝗵𝗿𝗲𝗲-𝘁𝗶𝗲𝗿 𝘁𝗮𝘀𝗸 𝘁𝗮𝘅𝗼𝗻𝗼𝗺𝘆:
 
 𝟭. 𝗦𝗶𝗺𝗽𝗹𝗲 (60-70%) — rename, boilerplate, scaffolding
-▸ Pattern matching, not reasoning. Free models perform equally.
+▸ Pattern matching, not reasoning. Included tier performs equally.
 
 𝟮. 𝗠𝗼𝗱𝗲𝗿𝗮𝘁𝗲 (20-30%) — review, refactor, debug
-▸ Standard (1x) models. Best quality-per-credit.
+▸ Standard 1x tier. Best quality-per-credit.
 
 𝟯. 𝗖𝗼𝗺𝗽𝗹𝗲𝘅 (5-10%) — multi-file refactor, system design
-▸ 𝘖𝘯𝘭𝘺 tier where premium models outperform.
+▸ 𝘖𝘯𝘭𝘺 tier where the premium reasoning tier outperforms.
 
 ━━━
 
@@ -89,7 +94,7 @@ Apple ML Research: reasoning models burn thousands of extra tokens on simple tas
 ▸ 10 complex @ 3x = 0.30x
 ▸ 𝗘𝗳𝗳𝗲𝗰𝘁𝗶𝘃𝗲 𝗮𝘃𝗲𝗿𝗮𝗴𝗲: 𝟬.𝟱𝟱𝘅 (45% savings)
 
-RouteLLM: 95% GPT-4 quality, only 14% GPT-4 calls.
+RouteLLM: 95% flagship-tier quality, only 14% flagship calls (in the 2024 LMSYS paper, "flagship" = GPT-4).
 Production team: $3K/day -> $970/day (68% reduction).
 
 ━━━
@@ -105,6 +110,11 @@ Combined: 𝟳𝟬-𝟵𝟬% effective cost reduction with 𝘣𝘦𝘵𝘵𝘦�
 Start with context. Everything else follows.
 
 Full 3-part series: https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html
+
+Sources (verify the ground rules):
+• Apple ML Research: machinelearning.apple.com/research/illusion-of-thinking
+• RouteLLM (LMSYS): lmsys.org/blog/2024-07-01-routellm
+• GitHub billing docs: docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests
 
 #ContextEngineering #GitHubCopilot #AIEngineering #DeveloperProductivity #ModelSelection
 
