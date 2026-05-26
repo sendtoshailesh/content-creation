@@ -275,7 +275,7 @@ def render_team_governance_dashboard():
             ha='center', va='center')
     ax4.text(0, -0.15, 'Budget used', fontsize=9, color=TOKENS['TEXT_2'],
             ha='center', va='center')
-    ax4.text(0, -0.35, '$11.59 of $19.00', fontsize=8, color=TOKENS['MUTED'],
+    ax4.text(0, -0.35, '\$11.59 of \$19.00', fontsize=8, color=TOKENS['MUTED'],
             ha='center', va='center')
 
     ax4.set_xlim(-1.3, 1.3)
@@ -309,8 +309,8 @@ def render_three_layer_stack():
             'color': TOKENS['TEAL_BG'], 'border': TOKENS['ACCENT_2'],
             'title': 'LAYER 1: Context Engineering',
             'subtitle': 'Quality-first. Works even if AI is free.',
-            'items': '[-] Close irrelevant files  [-] One thread per task  [-] #file references\n'
-                     '[-] Front-load intent  [-] Stable copilot-instructions.md',
+            'items': '- Close irrelevant files  - One thread per task  - #file references\n'
+                     '- Front-load intent  - Stable copilot-instructions.md',
             'savings': '50-85%\ntoken reduction',
             'savings_color': TOKENS['ACCENT_2'],
         },
@@ -319,8 +319,8 @@ def render_three_layer_stack():
             'color': TOKENS['BLUE_BG'], 'border': TOKENS['ACCENT'],
             'title': 'LAYER 2: Caching + Workflow Discipline',
             'subtitle': 'Structural. Set once, compounds forever.',
-            'items': '[-] Prefix caching (90% off repeated context)  [-] Thread-per-task = cache hits\n'
-                     '[-] Diagnose before retrying  [-] Stable context first, query last',
+            'items': '- Prefix caching (90% off repeated context)  - Thread-per-task = cache hits\n'
+                     '- Diagnose before retrying  - Stable context first, query last',
             'savings': 'Up to 90%\non repeated prefix',
             'savings_color': TOKENS['ACCENT'],
         },
@@ -329,8 +329,8 @@ def render_three_layer_stack():
             'color': TOKENS['PURPLE_BG'], 'border': TOKENS['ACCENT_3'],
             'title': 'LAYER 3: Informed Model Selection',
             'subtitle': 'Cost-aware. Matches capability to task.',
-            'items': '[-] 60-70% simple tasks -> free/cheap models  [-] 20-30% moderate -> standard (1x)\n'
-                     '[-] 5-10% complex -> premium (3x)  [-] Auto-selection for 10% discount',
+            'items': '- 60-70% simple tasks -> free/cheap models  - 20-30% moderate -> standard (1x)\n'
+                     '- 5-10% complex -> premium (3x)  - Auto-selection for 10% discount',
             'savings': '45-75%\non model costs',
             'savings_color': TOKENS['ACCENT_3'],
         },

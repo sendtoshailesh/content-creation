@@ -80,6 +80,7 @@ def render_multiplier_spectrum():
     ax.set_ylim(-0.8, len(models) - 0.2)
     ax.set_xlabel('Model Multiplier', fontsize=10, color=TOKENS['TEXT_2'])
     ax.set_yticks([])
+    ax.set_xticks([0, 5, 10, 15, 20, 25, 30, 35])
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
@@ -211,11 +212,11 @@ def render_routing_savings():
     ax.text(mid_x, 2500, '$740K/year', fontsize=11, fontweight='bold',
             color=TOKENS['ACCENT_2'], ha='center')
 
-    # Context label
-    ax.text(mid_x, -450, 'Coding assistant team: 70% simple tasks routed to cheaper models',
-            fontsize=8.5, color=TOKENS['TEXT_2'], ha='center', style='italic')
+    # Context label (below chart via figure text)
+    fig.text(0.5, 0.01, 'Coding assistant team: 70% simple tasks routed to cheaper models',
+             fontsize=8.5, color=TOKENS['TEXT_2'], ha='center', style='italic')
 
-    ax.set_ylim(-600, 3400)
+    ax.set_ylim(0, 3400)
     ax.set_ylabel('Daily Cost (USD)', fontsize=10, color=TOKENS['TEXT_2'])
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)

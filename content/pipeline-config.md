@@ -48,9 +48,12 @@
 - [x] Step 3d: SEO optimization -> keyword placement in headings + opening paragraphs across all 3 parts
 - [x] Step 7: Brand audit -> data consistency fix (80-90% -> 90%), hashtag normalization across LinkedIn posts
 - [x] Step 10: Publish to GitHub Pages -> 3 HTML pages + index updated + visuals copied
-- [ ] Step 10a: Inject canonical URLs into [link] placeholders in social posts
-- [ ] Step 11: Social media publishing (LinkedIn, X/Twitter, Reddit)
-- [ ] Step 12: Platform distillation -> Medium, Substack, LinkedIn Article
+- [x] Step 10a: Canonical URLs verified — all social posts already contain hardcoded canonical URLs (no [link] placeholders found)
+- [x] Step P3-5: X/Twitter thread (Part 3) -> `content/x-twitter-thread-part3.md`
+- [x] Step P3-8: YouTube script (Part 3) -> `content/youtube-script-part3.md`
+- [x] Step P3-9: Reddit post (Part 3) -> `content/reddit-post-part3.md`
+- [x] Step 12: Platform distillation -> Medium posts rewritten to visual-rich distilled format (Parts 2-3), visual packs generated in `content/visuals/distilled/part2-practitioner/` and `part3-practitioner/`
+- [ ] Step 11: Social media publishing (LinkedIn, X/Twitter, Reddit) — content ready, awaiting publish
 - [x] Final review complete
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
