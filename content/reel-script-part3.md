@@ -1,4 +1,4 @@
-# Reel Script: The 120x Spread
+# Reel Script: From PRUs to AI Credits
 
 **Duration**: 60 seconds (Reels/Shorts) / 75 seconds (LinkedIn Video)
 **Format**: A — "Did You Know?" (Data Shock)
@@ -12,14 +12,14 @@
 
 | Time | Visual | Voiceover | Text Overlay |
 |------|--------|-----------|--------------|
-| 0:00-0:06 | Dark screen. Animated counter rapidly counting from 0.25x to 30x, landing on "120x" in large red text | "The cheapest AI model tier in GitHub Copilot costs zero-point-two-five x. The most expensive: thirty x. That's a one-hundred-twenty-x spread." | **0.25x to 30x = 120x spread** |
-| 0:06-0:13 | Cut to `task-model-alignment.png` visual, zoom into the three tiers | "But expensive doesn't mean better. Apple's research: reasoning models burn extra tokens on simple tasks with zero quality gain. Standard models actually scored higher." | **Expensive [not equal to] better** |
-| 0:13-0:22 | Animated pie chart: 65% green (simple), 25% blue (moderate), 10% purple (complex) | "Sixty to seventy percent of your daily coding tasks are simple. Variable renames. Boilerplate. Test scaffolding. These don't need the premium tier." | **60-70% of tasks = simple** |
-| 0:22-0:30 | Screen recording: VS Code model picker switching between an included-tier model for a simple task and a premium-tier model for complex refactor | "Match the tier to the task. The included tier for simple work. Standard for moderate. Premium only for the five to ten percent that's genuinely complex." | **Match tier to task** |
-| 0:30-0:38 | Animated cost math: 65 at 0x + 25 at 1x + 10 at 3x = 0.55x average, with arrow showing "45% savings" | "One hundred requests a day. Route by complexity. Effective average: zero-point-five-five x. That's forty-five percent savings with a better model for the hard tasks." | **0.55x avg = 45% savings** |
-| 0:38-0:48 | Cut to `three-layer-stack.png` visual, camera panning upward through the three layers | "This is the final layer of a three-part stack. Context engineering. Caching. Model selection. Each layer multiplies the savings below it." | **3 layers. Compounding.** |
-| 0:48-0:55 | Summary card: "70-90% cost reduction + better output quality" | "Combined potential: seventy to ninety percent cost reduction. Not by sacrificing quality — by engineering better interactions." | **70-90% savings. Better quality.** |
-| 0:55-0:60 | End card: series title + "Part 3 of 3" + "Full series + sources in description" | "That's the complete playbook. All three parts and the source links in the description. Start with context. Everything else follows." | **Part 3 of 3 | Sources in description** |
+| 0:00-0:07 | Dark screen. "PRUs" text gets a strike-through line; "AI Credits" rises in big white letters with a $ tick counter | "June first, twenty-twenty-six. GitHub Copilot retires Premium Request Units. Token-metered AI Credits take over." | **June 1, 2026: PRUs → AI Credits** |
+| 0:07-0:15 | Cut to `task-model-alignment.png` visual, zoom into three categories | "A short Lightweight chat: about a tenth of a cent. A deep Powerful agent session: forty-five cents. That's a four-hundred-fifty-x spread — now in real dollars on your bill." | **~450x per-request spread** |
+| 0:15-0:24 | Animated pie chart: 65% green (Lightweight), 25% blue (Versatile), 10% purple (Powerful) | "But expensive doesn't mean better. Apple's research: reasoning models burn extra tokens on simple tasks with zero quality gain. Sixty to seventy percent of your tasks are Lightweight by nature." | **60-70% = Lightweight** |
+| 0:24-0:34 | Screen recording: VS Code model picker switching between a Lightweight model for a simple task and a Powerful model for complex refactor | "Match the category to the task. Lightweight for renames, docs, scaffolding. Versatile for review and refactor. Powerful only for the five to ten percent that's genuinely complex." | **Match category to task** |
+| 0:34-0:43 | Animated cost math: 65×$0.001 + 25×$0.04 + 10×$0.30 = $4.07/day, with arrow vs $30/day for all-Powerful | "One hundred requests a day, routed by category. Daily cost: about four dollars. Run everything through Powerful instead: about thirty. That's roughly eighty-six percent saved." | **$4.07/day vs $30/day** |
+| 0:43-0:52 | Cut to `three-layer-stack.png` visual, camera panning upward through the three layers | "This is the final layer of a three-part stack. Context engineering. Caching. Category-based routing. Each layer multiplies the savings below it." | **3 layers. Compounding.** |
+| 0:52-0:58 | Summary card: "~90% cost reduction + better output quality" | "Combined: about ninety percent cost reduction. Not by sacrificing quality — by engineering better interactions." | **~90% savings. Better quality.** |
+| 0:58-0:60 | End card: series title + "Part 3 of 3" + "Full series + sources in description" | "Full series and source links in the description. Start with context. Everything else follows." | **Part 3 of 3 \| Sources in description** |
 
 ---
 
@@ -27,12 +27,12 @@
 
 - **App**: VS Code with GitHub Copilot extension active
 - **Theme**: Dark theme
-- **Setup for model picker shot (0:22-0:30)**:
+- **Setup for model picker shot (0:24-0:34)**:
   - Open a simple file (e.g., a utility with a variable to rename)
-  - Show the Copilot model picker selecting an included-tier model (specific model is illustrative; pick whichever sits in the included tier at recording time)
+  - Show the Copilot model picker selecting a Lightweight-category model (specific model is illustrative; pick whichever sits in the Lightweight category at recording time)
   - Ask a simple question — show clean result
   - Cut to a complex multi-file scenario
-  - Switch the model picker to a premium-tier model (3x)
+  - Switch the model picker to a Powerful-category model
   - Show the model handling complex reasoning well
 - **Zoom**: 150-200% on model picker and chat areas
 
@@ -40,23 +40,23 @@
 
 ## Voiceover Script (Full)
 
-> The cheapest AI model tier in GitHub Copilot costs zero-point-two-five x. The most expensive: thirty x. That's a one-hundred-twenty-x spread.
+> June first, twenty-twenty-six. GitHub Copilot retires Premium Request Units. Token-metered AI Credits take over.
 >
-> But expensive doesn't mean better. Apple's research: reasoning models burn extra tokens on simple tasks with zero quality gain. Standard models actually scored higher.
+> A short Lightweight chat: about a tenth of a cent. A deep Powerful agent session: forty-five cents. That's a four-hundred-fifty-x spread — now in real dollars on your bill.
 >
-> Sixty to seventy percent of your daily coding tasks are simple. Variable renames. Boilerplate. Test scaffolding. These don't need the premium tier.
+> But expensive doesn't mean better. Apple's research: reasoning models burn extra tokens on simple tasks with zero quality gain. Sixty to seventy percent of your tasks are Lightweight by nature.
 >
-> Match the tier to the task. The included tier for simple work. Standard for moderate. Premium only for the five to ten percent that's genuinely complex.
+> Match the category to the task. Lightweight for renames, docs, scaffolding. Versatile for review and refactor. Powerful only for the five to ten percent that's genuinely complex.
 >
-> One hundred requests a day. Route by complexity. Effective average: zero-point-five-five x. That's forty-five percent savings with a better model for the hard tasks.
+> One hundred requests a day, routed by category. Daily cost: about four dollars. Run everything through Powerful instead: about thirty. That's roughly eighty-six percent saved.
 >
-> This is the final layer of a three-part stack. Context engineering. Caching. Model selection. Each layer multiplies the savings below it.
+> This is the final layer of a three-part stack. Context engineering. Caching. Category-based routing. Each layer multiplies the savings below it.
 >
-> Combined potential: seventy to ninety percent cost reduction. Not by sacrificing quality — by engineering better interactions.
+> Combined: about ninety percent cost reduction. Not by sacrificing quality — by engineering better interactions.
 >
-> That's the complete playbook. All three parts and the source links in the description. Start with context. Everything else follows.
+> Full series and source links in the description. Start with context. Everything else follows.
 
-**Word count**: ~155 words (~62-68 seconds at conversational pace)
+**Word count**: ~170 words (~62-68 seconds at conversational pace)
 
 ---
 
@@ -64,44 +64,47 @@
 
 ### Instagram Reels / YouTube Shorts
 
-0.25x to 30x = 120x cost spread between AI model tiers in GitHub Copilot.
+PRUs are out. AI Credits are in. June 1, 2026.
 
-60-70% of your tasks don't need the expensive tier.
+A short Lightweight chat: ~$0.001. A deep Powerful agent session: ~$0.45. ~450x spread.
 
-Match the tier to the task. 45% savings. Better quality.
+60-70% of your tasks are Lightweight. Match the category to the task. ~86% less spend. Better output.
 
 Sources (verify the ground rules):
+• GitHub Blog: github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing
+• GitHub Docs (models and pricing): docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing
 • Apple ML Research: machinelearning.apple.com/research/illusion-of-thinking
 • RouteLLM: lmsys.org/blog/2024-07-01-routellm
-• GitHub billing docs: docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests
 
 The complete 3-part playbook (link in bio).
 
-#GitHubCopilot #AIEngineering #ModelSelection #CodingTips #DeveloperTools
+#GitHubCopilot #AICredits #AIEngineering #ModelSelection #CodingTips
 
 ### LinkedIn Video
 
-GitHub Copilot model tiers range from 0.25x to 30x. 120x cost spread.
+On June 1, 2026, GitHub Copilot retires PRUs and switches to token-metered AI Credits.
 
-60-70% of coding tasks are simple — the premium tier adds zero value on these (Apple ML Research).
+A short Lightweight chat: ~$0.001. A Powerful agent session: ~$0.45. ~450x per-request spread.
 
-Match the tier to task complexity:
-- Simple (60-70%): included/budget tier
-- Moderate (20-30%): standard (1x)
-- Complex (5-10%): premium (3x)
+60-70% of coding tasks are Lightweight by nature — the Powerful category adds zero value on these (Apple ML Research).
 
-Effective average: 0.55x = 45% savings.
+Match the category to task complexity:
+- Lightweight (60-70%): rename, docs, scaffolding
+- Versatile (20-30%): review, refactor, debug
+- Powerful (5-10%): multi-file, system design
+
+Daily cost on 100 requests: ~$4 vs ~$30 if you ran everything Powerful.
 
 Part 3 of 3. Full series + source links in comments.
 
-#GitHubCopilot #AIEngineering #ModelSelection #DeveloperProductivity
+#GitHubCopilot #AICredits #ModelSelection #DeveloperProductivity
 
 ---
 
 ## Thumbnail / Cover Frame
 
 **Visual**: Dark background with dramatic composition.
-- Large "120x" in gradient from green (0.25x) to red (30x)
-- Three tier blocks below: green small (budget tier), blue medium (1x), purple large (3x+)
-- Bottom: "Match the Tier to the Task" in white text
+- "PRUs" struck through; "$ AI Credits" rising next to it
+- Three category blocks below: green small (Lightweight ~$0.001), blue medium (Versatile ~$0.04), purple large (Powerful ~$0.45)
+- Bottom: "Match the Category to the Task" in white text
 - Top corner: "Part 3/3" badge with checkmark

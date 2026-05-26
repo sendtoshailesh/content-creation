@@ -3,22 +3,24 @@
 
 ── START COPY ──
 
-# The 120x Spread: A Developer's Guide to Model Selection (Visual Guide)
+# From PRUs to AI Credits: The Token-Based Bill Is Already Here (Visual Guide)
 
-![The 120x cost spread across GitHub Copilot model tiers](visuals/distilled/part3-practitioner/medium-hero.png)
+![Per-request cost spread across GitHub Copilot model categories](visuals/distilled/part3-practitioner/medium-hero.png)
 
-GitHub Copilot's cheapest tier costs 0.25x. The most expensive: 30x. That is a 120x spread. [Apple ML Research](https://machinelearning.apple.com/research/illusion-of-thinking) found reasoning models burn extra tokens on simple tasks with zero quality gain — the expensive model is not always better. *(Model lineups will rotate; specific examples in this post are as of May 2026 and the multiplier structure is what matters.)*
+On June 1, 2026, GitHub Copilot retires Premium Request Units and switches to **[token-metered AI Credits](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/)** (1 credit = $0.01). A short Lightweight chat reply costs ~$0.001. A deep Powerful agent session can cost $0.45. That is a ~450x per-request cost spread, now visible on your bill in real dollars.
 
-The 3-tier routing framework:
+[Apple ML Research](https://machinelearning.apple.com/research/illusion-of-thinking) found reasoning models burn extra tokens on simple tasks with zero quality gain — the expensive model is not always better. The right question is "which model category fits this task?" *(Specific model examples are as of May 2026; GitHub's [Lightweight / Versatile / Powerful](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing) categories are what stay durable.)*
 
-![3-tier task taxonomy: match tier to complexity](visuals/distilled/part3-practitioner/medium-inline-01.png)
+The 3-category routing framework:
 
-![Weighted cost math: 0.55x average with 45% savings](visuals/distilled/part3-practitioner/medium-inline-02.png)
+![Three-category task taxonomy: match category to complexity](visuals/distilled/part3-practitioner/medium-inline-01.png)
 
-Full guide with multiplier table, [RouteLLM](https://lmsys.org/blog/2024-07-01-routellm/) case study, and team governance playbook for AI team leads ->
+![Per-request cost math in real dollars — ~86% savings versus all-Powerful](visuals/distilled/part3-practitioner/medium-inline-02.png)
+
+Full guide with per-1M-token pricing table, [RouteLLM](https://lmsys.org/blog/2024-07-01-routellm/) case study, and team governance playbook for AI team leads ->
 [https://sendtoshailesh.github.io/blog/ai-code-assistant-model-selection-part-3.html](https://sendtoshailesh.github.io/blog/ai-code-assistant-model-selection-part-3.html)
 
-*Sources (verify directly): [GitHub Copilot billing documentation](https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests); [Apple ML Research — The Illusion of Thinking](https://machinelearning.apple.com/research/illusion-of-thinking); [LMSYS RouteLLM (2024)](https://lmsys.org/blog/2024-07-01-routellm/); [CascadeFlow paper (arXiv 2024)](https://arxiv.org/abs/2406.00073); [TDS production case study](https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/). In RouteLLM's 2024 paper, "GPT-4" refers to the then-current flagship baseline.*
+*Sources (verify directly): [GitHub Blog — usage-based billing](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/); [GitHub Docs — Models and Pricing](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing); [Apple ML Research — The Illusion of Thinking](https://machinelearning.apple.com/research/illusion-of-thinking); [LMSYS RouteLLM (2024)](https://lmsys.org/blog/2024-07-01-routellm/); [CascadeFlow (arXiv 2024)](https://arxiv.org/abs/2406.00073); [TDS production case study](https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/). In RouteLLM's 2024 paper, "GPT-4" refers to the then-current flagship baseline.*
 
 ── END COPY ──
 

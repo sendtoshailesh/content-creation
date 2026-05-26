@@ -1,10 +1,10 @@
 """
-Visual renderer for Part 1: "The 120x Problem"
+Visual renderer for Part 3 supporting visuals (originally named for Part 1).
 Generates 3 PNGs at 320 DPI using the shared design token system.
 
 Visuals:
-1. model-multiplier-spectrum.png — horizontal bar chart of model multipliers by tier
-2. task-routing-decision-tree.png — decision flowchart for model selection
+1. model-multiplier-spectrum.png — per-request cost spectrum across Lightweight/Versatile/Powerful
+2. task-routing-decision-tree.png — decision flowchart for category selection
 3. routing-savings-bar.png — before/after cost comparison with 68% savings
 """
 
@@ -34,20 +34,21 @@ plt.rcParams.update({
     'axes.facecolor': TOKENS['BG'],
     'figure.facecolor': TOKENS['BG'],
     'text.color': TOKENS['TEXT'],
+    'text.parse_math': False,
 })
 
 
 def render_multiplier_spectrum():
-    """Horizontal bar chart showing model multipliers from 0x to 30x, color-coded by tier."""
+    """Horizontal bar chart showing per-request $ cost across categories."""
     models = [
-        ('Included tier', 0, '(0x)', TOKENS['SUCCESS']),
-        ('Budget tier (entry)', 0.25, '(0.25x)', TOKENS['ACCENT_2']),
-        ('Budget tier (lower-mid)', 0.33, '(0.33x)', TOKENS['ACCENT_2']),
-        ('Standard tier', 1.0, '(1x)', TOKENS['ACCENT']),
-        ('Premium reasoning tier', 3.0, '(3x)', TOKENS['ACCENT_3']),
-        ('Premium-plus tier', 7.5, '(7.5x)', TOKENS['WARN']),
-        ('Flagship tier', 15.0, '(15x)', TOKENS['WARN']),
-        ('Flagship fast-mode tier', 30.0, '(30x)', '#991b1b'),
+        ('Lightweight - short chat', 0.001, '~$0.001', TOKENS['SUCCESS']),
+        ('Lightweight - typical', 0.005, '~$0.005', TOKENS['SUCCESS']),
+        ('Versatile - chat reply', 0.015, '~$0.015', TOKENS['ACCENT_2']),
+        ('Versatile - review', 0.04, '~$0.04', TOKENS['ACCENT']),
+        ('Versatile - refactor', 0.10, '~$0.10', TOKENS['ACCENT']),
+        ('Powerful - moderate task', 0.20, '~$0.20', TOKENS['ACCENT_3']),
+        ('Powerful - agent session', 0.30, '~$0.30', TOKENS['ACCENT_3']),
+        ('Powerful - deep agent', 0.45, '~$0.45', '#991b1b'),
     ]
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -55,44 +56,45 @@ def render_multiplier_spectrum():
     y_positions = list(range(len(models)))
     y_positions.reverse()
 
-    for i, (name, mult, tier, color) in enumerate(models):
+    for i, (name, cost, label, color) in enumerate(models):
         y = y_positions[i]
-        bar_width = max(mult, 0.15)  # give free models a tiny visible bar
+        bar_width = max(cost, 0.003)  # give cheapest a visible bar
         ax.barh(y, bar_width, height=0.6, color=color, alpha=0.85, edgecolor='white', linewidth=0.5)
 
         # Model name on left
-        ax.text(-0.5, y, name, ha='right', va='center', fontsize=8.5,
+        ax.text(-0.008, y, name, ha='right', va='center', fontsize=8.5,
                 color=TOKENS['TEXT'], fontweight='bold')
 
-        # Tier label on bar or right of bar
-        label_x = bar_width + 0.4
-        ax.text(label_x, y, tier, ha='left', va='center', fontsize=8,
+        # $ label on bar or right of bar
+        label_x = bar_width + 0.006
+        ax.text(label_x, y, label, ha='left', va='center', fontsize=8,
                 color=TOKENS['TEXT_2'])
 
-    # 120x annotation
-    ax.annotate('120x cost\ndifference',
-                xy=(30, y_positions[0]), xytext=(22, y_positions[3]),
+    # ~450x spread annotation
+    ax.annotate('~450x cost\nspread per request',
+                xy=(0.45, y_positions[0]), xytext=(0.32, y_positions[3]),
                 fontsize=9, fontweight='bold', color=TOKENS['WARN'],
                 ha='center', va='center',
                 arrowprops=dict(arrowstyle='->', color=TOKENS['WARN'], lw=1.5))
 
-    ax.set_xlim(-8, 35)
+    ax.set_xlim(-0.13, 0.52)
     ax.set_ylim(-0.8, len(models) - 0.2)
-    ax.set_xlabel('Model Multiplier', fontsize=10, color=TOKENS['TEXT_2'])
+    ax.set_xlabel('Per-request cost in USD (GitHub AI Credits, 1 credit = $0.01)', fontsize=10, color=TOKENS['TEXT_2'])
     ax.set_yticks([])
-    ax.set_xticks([0, 5, 10, 15, 20, 25, 30, 35])
+    ax.set_xticks([0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5])
+    ax.set_xticklabels(['$0', '$0.05', '$0.10', '$0.20', '$0.30', '$0.40', '$0.50'])
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_color(TOKENS['GRID'])
     ax.tick_params(axis='x', colors=TOKENS['TEXT_2'])
 
-    ax.set_title('GitHub Copilot Model Multipliers: 0x to 30x',
+    ax.set_title('Per-Request Cost Spectrum: Lightweight to Powerful',
                  fontsize=13, fontweight='bold', color=TOKENS['TEXT'], pad=15)
 
     fig.text(0.5, 0.02,
-             '[VOLATILE] Tier names and multipliers are accurate as of May 2026. '
-             'Specific model lineups rotate; the tier structure is the durable framework.',
+             'Per-token rates and category placements as of May 2026. '
+             'Specific model lineups rotate; the Lightweight / Versatile / Powerful taxonomy is durable.',
              ha='center', fontsize=7.5, color=TOKENS['MUTED'], style='italic')
 
     plt.tight_layout(rect=[0, 0.04, 1, 1])
@@ -150,10 +152,10 @@ def render_routing_decision_tree():
     arrow(5, 8.0, 5, 7.4)
     draw_diamond(5, 6.8, 3, 1.1, 'Can you explain\nthe task in\n< 30 seconds?', TOKENS['LIGHT_BG'])
 
-    # YES -> Free/Cheap
+    # YES -> Lightweight
     arrow(3.5, 6.8, 1.8, 6.8, 'YES', 'left')
     draw_box(1.8, 5.8, 2.8, 1.2,
-             'INCLUDED / BUDGET\n\nIncluded tier (0x)\nBudget tier (0.25x - 0.33x)',
+             'LIGHTWEIGHT\n\n~$0.001-$0.005/request\nExamples (May 2026):\nGPT-5 mini, Gemini 3.5 Flash',
              TOKENS['TEAL_BG'], bold=False, fontsize=8)
     ax.text(1.8, 4.95, '60-70% of tasks', fontsize=7.5, color=TOKENS['SUCCESS'],
             ha='center', fontweight='bold')
@@ -162,26 +164,26 @@ def render_routing_decision_tree():
     arrow(6.5, 6.8, 8, 6.8, 'NO')
     draw_diamond(8, 5.8, 3, 1.1, 'Does it need\nmulti-file reasoning\nor system design?', TOKENS['LIGHT_BG'])
 
-    # NO -> Standard
+    # NO -> Versatile
     arrow(6.5, 5.8, 5.2, 5.8, 'NO', 'left')
     draw_box(5.2, 4.6, 2.8, 1.2,
-             'STANDARD (1x)\n\nMid-tier general-purpose\nmodels from your provider\nof choice',
+             'VERSATILE\n\n~$0.015-$0.10/request\nClaude Sonnet 4.x, GPT-4.1,\nHaiku 4.5 (May 2026)',
              TOKENS['BLUE_BG'], fontsize=8)
     ax.text(5.2, 3.75, '20-30% of tasks', fontsize=7.5, color=TOKENS['ACCENT'],
             ha='center', fontweight='bold')
 
-    # YES -> Premium
+    # YES -> Powerful
     arrow(8, 5.25, 8, 4.5)
     draw_box(8, 3.7, 2.8, 1.2,
-             'PREMIUM (3x)\n\nReasoning-class models\nUse deliberately,\nnot by default',
+             'POWERFUL\n\n~$0.20-$0.45/request\nClaude Opus 4.x, GPT-5.5,\nGemini 2.5 Pro (May 2026)',
              TOKENS['PURPLE_BG'], fontsize=8)
     ax.text(8, 2.85, '5-10% of tasks', fontsize=7.5, color=TOKENS['ACCENT_3'],
             ha='center', fontweight='bold')
 
     # Bottom note
     draw_box(5, 1.5, 7, 0.9,
-             'TIP: Enable auto-selection for 10% multiplier discount when you have no strong preference.\n'
-             'AVOID 7.5x+ models unless you have a specific, articulable reason.',
+             'TIP: Enable auto-routing when you have no strong preference; let Copilot pick the category.\n'
+             'AVOID running a Powerful agent session on a Lightweight task — that is where ~450x bills come from.',
              TOKENS['RED_BG'], fontsize=7.5, text_color=TOKENS['TEXT_2'])
 
     plt.tight_layout()

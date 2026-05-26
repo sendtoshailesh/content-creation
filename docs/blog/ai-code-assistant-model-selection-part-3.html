@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 120x Spread: Understanding What You Pay For and When It Matters (Part 3 of 3) | Shailesh Mishra</title>
-  <meta name="description" content="The cheapest AI model costs 0.25x. The most expensive costs 30x. A three-tier task taxonomy for matching model capability to task complexity, plus the complete three-layer optimization playbook.">
+  <title>From PRUs to AI Credits: The Token-Based Bill Is Already Here (Part 3 of 3) | Shailesh Mishra</title>
+  <meta name="description" content="On June 1, 2026 GitHub Copilot retires Premium Request Units and replaces them with token-metered GitHub AI Credits. Here is a task taxonomy keyed to GitHub's official model categories (Lightweight, Versatile, Powerful), the new cost math in actual dollars, and a three-layer playbook for AI code assistant optimization.">
   <meta name="author" content="Shailesh Mishra">
-  <meta name="keywords" content="GitHub Copilot model multipliers, AI model selection, model routing cost optimization, task taxonomy AI code assistant, team governance, RouteLLM">
-  <meta property="og:title" content="The 120x Spread: Understanding What You Pay For and When It Matters">
-  <meta property="og:description" content="0.25x to 30x = 120x cost spread. A task taxonomy for matching AI model capability to task complexity.">
+  <meta name="keywords" content="GitHub Copilot AI Credits, token-based billing, GitHub Copilot model selection, Premium Request Units retired, Lightweight Versatile Powerful, usage-based billing June 2026, RouteLLM">
+  <meta property="og:title" content="From PRUs to AI Credits: The Token-Based Bill Is Already Here">
+  <meta property="og:description" content="PRUs retire June 1, 2026. GitHub AI Credits ($0.01 each) bill by tokens. Match the task to GitHub's Lightweight / Versatile / Powerful categories and save ~86% in dollars, not multipliers.">
   <meta property="og:type" content="article">
   <link rel="stylesheet" href="../style.css">
 </head>
@@ -27,77 +27,147 @@
 
   <article>
     <div class="post-header">
-      <h1>The 120x Spread: Understanding What You Pay For and When It Matters</h1>
-      <div class="meta">Shailesh Mishra &middot; May 11, 2026 &middot; 10 min read</div>
+      <h1>From PRUs to AI Credits: The Token-Based Bill Is Already Here</h1>
+      <div class="meta">Shailesh Mishra &middot; May 26, 2026 &middot; 11 min read</div>
       <div style="margin-top: 0.75rem;">
-        <span class="tag">model-selection</span>
         <span class="tag">github-copilot</span>
-        <span class="tag">ai-code-assistant</span>
+        <span class="tag">ai-credits</span>
+        <span class="tag">model-selection</span>
+        <span class="tag">usage-based-billing</span>
         <span class="tag">series-part-3</span>
       </div>
     </div>
 
     <div class="post-content">
 
-      <p><em>Part 3 of 3 in the "Engineering Better AI Code Assistant Interactions" series. Previously: <a href="ai-code-assistant-context-engineering-part-1.html">Part 1</a> covered context engineering (50-85% token reduction). <a href="ai-code-assistant-caching-workflow-part-2.html">Part 2</a> covered prompt caching (90% discount) and workflow discipline.</em></p>
+      <p><em>Part 3 of 3 in the "Engineering Better AI Code Assistant Interactions" series. Previously: <a href="ai-code-assistant-context-engineering-part-1.html">Part 1</a> covered context engineering (50-85% token reduction). <a href="ai-code-assistant-caching-workflow-part-2.html">Part 2</a> covered prompt caching (75-90% reduced rate on repeated context) and workflow discipline.</em></p>
 
-      <h2>Not All Tokens Are Priced Equal: Understanding GitHub Copilot Model Multipliers</h2>
+      <h2>What Changes on June 1, 2026: PRUs Are Gone, Tokens Are In</h2>
 
-      <p>Under GitHub Copilot's usage-based billing (effective June 1, 2026), every model carries a multiplier. The cheapest budget tier sits at 0.25x. The most expensive flagship fast-mode tier sits at 30x. That is a <strong>120x cost difference</strong> for the same interaction pattern. <em>(As of May 2026, budget-tier examples include GPT-5.4 nano and Claude Haiku 4.5; flagship fast-mode includes Claude Opus 4.6 fast mode. Specific multipliers and included models rotate &mdash; GitHub's documentation says so explicitly. <a href="https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests">See current multipliers</a>.)</em></p>
+      <p>If you have been navigating GitHub Copilot using the model-multiplier mental model (a lightweight model costs 0.25x, a heavy reasoning model costs 3x, a flagship fast-mode tier costs 30x), <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">that system is being retired</a>. On <strong>June 1, 2026</strong>, GitHub Copilot replaces Premium Request Units (PRUs) with <strong>GitHub AI Credits</strong> &mdash; a token-metered system where every request is billed by the actual tokens consumed.</p>
 
-      <p>But this is not a "use cheap models" story. <a href="https://machinelearning.apple.com/research/illusion-of-thinking">Apple ML Research</a> found that reasoning models burn thousands of extra tokens on simple tasks &mdash; with <strong>zero quality improvement</strong>. Standard models actually provided better accuracy on low-complexity items.</p>
+      <p>The headline numbers from <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">GitHub's official announcement</a>:</p>
 
-      <h2>Matching Model Capability to Task Complexity</h2>
+      <ul>
+        <li><strong>1 AI Credit = $0.01 USD.</strong> Token consumption is converted into credits using each model's published per-token rate.</li>
+        <li><strong>Plan prices do not change.</strong> Copilot Pro stays at $10/month and now includes $10 in monthly AI Credits. Pro+ stays at $39/month with $39 in credits. Business stays at $19/user/month with $19/user in credits (plus a $30/user promotional bump June-Aug). Enterprise stays at $39/user/month with $39/user in credits (plus a $70/user promotional bump June-Aug).</li>
+        <li><strong>Code completions and Next Edit suggestions remain unmetered</strong> on all paid plans. Chat, agent mode, multi-step coding, Spaces/Spark, code review, and any feature where you pick a model do consume credits.</li>
+        <li><strong>The fallback experience is going away.</strong> When PRUs ran out you were silently routed to a cheaper model and could keep working. Under AI Credits, when your pool is exhausted you either authorize additional usage at published rates or stop &mdash; admin budget controls govern overages.</li>
+        <li><strong>Annual Pro/Pro+ subscribers stay on PRU multipliers</strong> until their existing plan expires. <a href="https://docs.github.com/copilot/reference/copilot-billing/models-and-pricing#model-multipliers-for-annual-copilot-pro-and-copilot-pro-subscribers">The multipliers will actually <em>increase</em> for that group on June 1</a>. Everyone else moves to AI Credits automatically.</li>
+        <li><strong>Copilot code review consumes GitHub Actions minutes</strong> on top of AI Credits, billed at standard Actions runner rates.</li>
+      </ul>
 
-      <h3>Tier 1: Simple tasks (60-70% of daily interactions)</h3>
-      <p>Variable renaming. Boilerplate generation. Test scaffolding. Docstring writing. Import fixing. These tasks require pattern matching, not multi-step reasoning. The included tier (0x) and budget tier (0.25x &ndash; 0.33x) perform equally well. <em>(As of May 2026: GPT-4.1, GPT-5 mini at 0x; GPT-5.4 nano at 0.25x; Claude Haiku 4.5 at 0.33x.)</em></p>
+      <p>Why GitHub made this change: Copilot has evolved from in-editor completions to agentic platforms that run multi-step coding sessions across whole repos. A quick chat and a multi-hour autonomous coding session used to cost a user the same single PRU. That subsidy is no longer financially sustainable, and the token model makes the cost surface visible &mdash; which is exactly what you need to make sensible model-selection decisions.</p>
 
-      <h3>Tier 2: Moderate tasks (20-30%)</h3>
-      <p>Code review, refactoring, debugging, architecture questions, multi-file understanding. The standard 1x tier offers the best quality-per-credit ratio. <em>(As of May 2026: Claude Sonnet 4.x family, Gemini 2.5 Pro, GPT-5.2.)</em></p>
+      <h2>Not All Tokens Are Priced Equal: The New Per-Request Cost Spread</h2>
 
-      <h3>Tier 3: Complex tasks (5-10%)</h3>
-      <p>Multi-file refactoring with dependencies, novel algorithms, system design. The <strong>only</strong> tier where the premium reasoning tier (3x) demonstrably outperforms standard models. Use it deliberately. Reserve 7.5x+ for exceptional cases with a specific, articulable reason. <em>(As of May 2026: Claude Opus 4.5 at 3x.)</em></p>
-
-      <h3>The cost math</h3>
+      <p>Under the new model, the cost of an interaction is <code>tokens_consumed &times; rate_per_token</code> &mdash; and both factors vary by an order of magnitude depending on the model and the task. Here is GitHub's <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">published pricing</a> (per 1 million tokens, as of May 26, 2026):</p>
 
       <table>
         <thead>
-          <tr><th>Tier</th><th>% of requests</th><th>Multiplier</th><th>Weighted cost</th></tr>
+          <tr><th>Provider</th><th>Model</th><th>Category</th><th>Input</th><th>Cached input</th><th>Output</th></tr>
         </thead>
         <tbody>
-          <tr><td>Simple (Tier 1)</td><td>65%</td><td>0x (included)</td><td>0</td></tr>
-          <tr><td>Moderate (Tier 2)</td><td>25%</td><td>1x</td><td>0.25x</td></tr>
-          <tr><td>Complex (Tier 3)</td><td>10%</td><td>3x</td><td>0.30x</td></tr>
-          <tr><td><strong>Effective average</strong></td><td></td><td></td><td><strong>0.55x (45% savings)</strong></td></tr>
+          <tr><td>OpenAI</td><td>GPT-5 mini</td><td>Lightweight</td><td>$0.25</td><td>$0.025</td><td>$2.00</td></tr>
+          <tr><td>OpenAI</td><td>GPT-5.4 nano</td><td>Lightweight</td><td>$0.20</td><td>$0.02</td><td>$1.25</td></tr>
+          <tr><td>OpenAI</td><td>GPT-4.1</td><td>Versatile</td><td>$2.00</td><td>$0.50</td><td>$8.00</td></tr>
+          <tr><td>OpenAI</td><td>GPT-5.4</td><td>Versatile</td><td>$2.50</td><td>$0.25</td><td>$15.00</td></tr>
+          <tr><td>OpenAI</td><td>GPT-5.5</td><td>Powerful</td><td>$5.00</td><td>$0.50</td><td>$30.00</td></tr>
+          <tr><td>Anthropic</td><td>Claude Haiku 4.5</td><td>Versatile</td><td>$1.00</td><td>$0.10</td><td>$5.00</td></tr>
+          <tr><td>Anthropic</td><td>Claude Sonnet 4.x</td><td>Versatile</td><td>$3.00</td><td>$0.30</td><td>$15.00</td></tr>
+          <tr><td>Anthropic</td><td>Claude Opus 4.5 / 4.6 / 4.7</td><td>Powerful</td><td>$5.00</td><td>$0.50</td><td>$25.00</td></tr>
+          <tr><td>Google</td><td>Gemini 3.5 Flash</td><td>Lightweight</td><td>$1.50</td><td>$0.15</td><td>$9.00</td></tr>
+          <tr><td>Google</td><td>Gemini 2.5 Pro</td><td>Powerful</td><td>$1.25</td><td>$0.125</td><td>$10.00</td></tr>
         </tbody>
       </table>
 
-      <p><a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> demonstrated this at scale: <strong>95% of flagship-tier quality using only 14% flagship calls</strong>. <em>(In the original 2024 LMSYS paper, "flagship" = GPT-4 &mdash; the principle generalizes to whatever the current flagship is.)</em> A <a href="https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/">production team profiled by Towards Data Science</a> dropped from <strong>$3,000/day to $970/day (68% reduction, $740K/year annualized)</strong> through routing alone.</p>
+      <p><em>(Anthropic models also charge a cache-write cost. The full table including Raptor mini and Goldeneye fine-tuned GitHub models lives in <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">the docs</a>. Specific model lineups rotate; the three categories &mdash; <strong>Lightweight / Versatile / Powerful</strong> &mdash; are GitHub's durable taxonomy.)</em></p>
+
+      <p>Translate that into per-request cost. A short chat reply (~2K input + 500 output) on GPT-5.4 nano costs about <strong>$0.001</strong>. A deep agent-mode session with rich context (~40K input + 10K output) on Claude Opus 4.7 costs about <strong>$0.45</strong>. <strong>That is a ~450x per-request cost spread between the cheapest and most expensive realistic interaction patterns &mdash; and the gap widens with longer agent sessions.</strong></p>
+
+      <p>This is not a "use cheap models" story. This is a "understand when expensive models add genuine value" story.</p>
+
+      <p><a href="https://machinelearning.apple.com/research/illusion-of-thinking">Apple ML Research</a> found that reasoning models burn thousands of extra tokens on simple tasks &mdash; with <strong>zero quality improvement</strong>. Standard models actually provided better accuracy on low-complexity items. The expensive model is not always the better choice, even if money is no object. And under token-based billing, those extra reasoning tokens hit your bill directly.</p>
+
+      <img src="visuals/model-multiplier-spectrum.png" alt="Per-request cost spectrum across Lightweight, Versatile, and Powerful categories">
+
+      <h2>Matching Model Capability to Task Complexity</h2>
+
+      <p>GitHub categorizes every Copilot model into three durable buckets: <strong>Lightweight</strong>, <strong>Versatile</strong>, and <strong>Powerful</strong>. Pair each bucket with a task profile and the credit math takes care of itself.</p>
+
+      <h3>Lightweight (60-70% of daily interactions)</h3>
+      <p>Variable renaming. Boilerplate generation. Test scaffolding. Docstring writing. Import fixing. Linting explanations. Simple chat questions about syntax or API usage.</p>
+      <p><strong>What to pick from the Lightweight category</strong> <em>(as of May 26, 2026)</em>: GPT-5 mini, GPT-5.4 nano, GPT-5.4 mini from OpenAI; Gemini 3 Flash (public preview) and Gemini 3.5 Flash from Google.</p>
+      <p><strong>Concrete cost</strong>: a typical lightweight request (~2K input + 500 output) on GPT-5.4 nano is <strong>~$0.001</strong> &mdash; about a tenth of one AI Credit. A Pro plan's $10/month credit allowance covers roughly 10,000 such interactions.</p>
+
+      <h3>Versatile (20-30% of daily interactions)</h3>
+      <p>Code review with contextual understanding. Refactoring suggestions that span multiple functions. Debugging assistance. Architecture questions. Multi-file understanding.</p>
+      <p><strong>What to pick from the Versatile category</strong> <em>(as of May 26, 2026)</em>: GPT-4.1, GPT-5.4 from OpenAI; Claude Haiku 4.5, Claude Sonnet 4.x family from Anthropic. Most teams should set their default here unless they have measured a need to go higher.</p>
+      <p><strong>Concrete cost</strong>: a typical versatile request (~5K input + 1.5K output) on Claude Sonnet 4.6 is <strong>~$0.04</strong> &mdash; roughly 4 AI Credits, or ~265 such interactions per $10 of credit allowance. With caching enabled (Part 2), the cached-input portion drops the cost ~10x.</p>
+
+      <h3>Powerful (5-10% of daily interactions)</h3>
+      <p>Multi-file refactoring with complex dependency chains. Novel algorithm implementation. System design with constraint satisfaction across performance, security, and maintainability. Deep architectural reasoning.</p>
+      <p><strong>What to pick from the Powerful category</strong> <em>(as of May 26, 2026)</em>: Claude Opus 4.5 / 4.6 / 4.7 from Anthropic; GPT-5.5, GPT-5.2-Codex, GPT-5.3-Codex from OpenAI; Gemini 2.5 Pro and Gemini 3.1 Pro (public preview) from Google.</p>
+      <p><strong>Concrete cost</strong>: a deep agent-mode session on Claude Opus 4.7 (~40K input + 10K output) is <strong>~$0.45</strong> &mdash; about 45 AI Credits, or ~22 such sessions per $10 of credit allowance.</p>
+
+      <h3>The cost math, in dollars</h3>
+
+      <table>
+        <thead>
+          <tr><th>Category</th><th>% of requests</th><th>Daily requests</th><th>Typical cost / request</th><th>Daily $</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lightweight</td><td>65%</td><td>65</td><td>$0.001</td><td>$0.065</td></tr>
+          <tr><td>Versatile</td><td>25%</td><td>25</td><td>$0.04</td><td>$1.00</td></tr>
+          <tr><td>Powerful</td><td>10%</td><td>10</td><td>$0.30</td><td>$3.00</td></tr>
+          <tr><td><strong>Total</strong></td><td></td><td>100</td><td></td><td><strong>~$4.07 / day</strong></td></tr>
+        </tbody>
+      </table>
+
+      <p>Compared to the same 100 requests all routed to a Powerful model at ~$0.30 each ($30/day), task-aware routing cuts the bill by <strong>~86%</strong> &mdash; while still using the Powerful category for the hardest tasks. You are not downgrading. You are matching capability to need.</p>
+
+      <p>Apply caching from Part 2 on top: cached input is roughly 10x cheaper than fresh input (Anthropic also adds a small cache-write cost). With a stable copilot-instructions file and disciplined thread-per-task workflow, the effective daily cost drops further to <strong>~$1.50-2.00/day per developer</strong> &mdash; comfortably inside the Pro plan's $10/month allowance.</p>
+
+      <p><a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> demonstrated this at scale: <strong>95% of the flagship-model quality using only 14% flagship calls</strong>. <em>(In the RouteLLM paper, "flagship" = GPT-4 as the 2024 LMSYS baseline; the principle generalizes to whatever the current Powerful-category leader is.)</em> <a href="https://arxiv.org/abs/2406.00073">CascadeFlow</a> achieved <strong>69% savings with 96% quality retention</strong>. A <a href="https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/">production team profiled by Towards Data Science</a> dropped from <strong>$3,000/day to $970/day (68% reduction, $740K/year annualized)</strong> through routing alone.</p>
 
       <img src="visuals/task-model-alignment.png" alt="Task-Model Alignment: Matching capability to complexity">
 
       <h2>Let the Router Do the Work</h2>
 
-      <p>Copilot's auto model selection offers a 10% multiplier discount and algorithmically routes tasks to appropriate models. <a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> achieved 95% quality at 75% cost reduction &mdash; better than most humans would achieve switching manually. <a href="https://arxiv.org/abs/2406.00073">CascadeFlow</a> delivered 69% savings with 96% quality retention. Both prove: let the system match complexity to capability.</p>
+      <p>For developers who do not want to manually switch models for every request, <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Copilot's auto model selection</a> algorithmically routes tasks to appropriate models inside the AI Credits framework. <a href="https://lmsys.org/blog/2024-07-01-routellm/">RouteLLM</a> achieved 95% quality at 75% cost reduction &mdash; better than most humans would achieve switching models manually. <a href="https://arxiv.org/abs/2406.00073">CascadeFlow</a> delivered 69% savings with 96% quality retention. Both prove: let the system match complexity to capability.</p>
 
-      <p><em>Caveat: limited public data on Copilot's specific auto-selection algorithm. For maximum control, manual selection using the task taxonomy is more predictable.</em></p>
+      <p><em>Caveat: limited public data on Copilot's specific auto-selection algorithm and its credit-consumption profile compared to manual selection. For teams that want maximum control and predictable per-request cost, manual selection using the Lightweight / Versatile / Powerful taxonomy above is more transparent.</em></p>
 
       <p>Clean context (Part 1) improves routing decisions. When the router gets better signal about what you are asking, it makes better model choices. Clean context improves model output <em>and</em> model selection.</p>
 
       <img src="visuals/routing-decision-comparison.png" alt="Auto-selection vs Manual Routing: Decision flow for choosing your approach">
 
-      <h2>Budget Visibility for AI Team Leads: GitHub Copilot Usage-Based Billing Governance</h2>
+      <h2>Budget Visibility for AI Team Leads: GitHub Copilot AI Credits Governance</h2>
 
-      <p>The <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">new billing model</a> introduces governance tools that did not exist under flat-rate pricing: pooled usage across organizations, budget controls at enterprise/cost center/user levels, and visibility into which developers, projects, and model tiers consume the most credits. For the first time, a developer making 300 requests/day and one making 30 look different on the bill.</p>
+      <p>If you are an AI team lead or decision-maker responsible for 5-20 developers on GitHub Copilot Business or Enterprise, AI Credits introduces governance tools that did not exist under the PRU model.</p>
+
+      <h3>New capabilities under AI Credits</h3>
+
+      <p>Per <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">GitHub's announcement</a>:</p>
+
+      <ul>
+        <li><strong>Pooled included usage</strong> across a business &mdash; instead of each user's unused credits being siloed, allowances can be pooled across the organization to eliminate stranded capacity.</li>
+        <li><strong>Budget controls</strong> at the enterprise, cost center, and user levels &mdash; admins set spending limits before they are hit. When the included pool is exhausted, admins choose whether to authorize additional usage at published rates or cap spend.</li>
+        <li><strong>Itemized usage visibility</strong> &mdash; see which developers, projects, and models consume the most credits, with the actual dollar cost attached to each.</li>
+      </ul>
+
+      <p>This is the first time AI team decision-makers have had granular, dollar-denominated visibility into AI tool consumption.</p>
 
       <h3>Recommended team standards</h3>
 
       <ol>
-        <li><strong>Establish default tier guidelines by task type.</strong> Document the tier (Tier 1, 2, or 3) &mdash; not specific model names &mdash; in your team wiki or <code>.github/copilot-instructions.md</code>. Tiers stay stable; model lineups rotate.</li>
-        <li><strong>Set budget alerts before June 1.</strong> Configure at 50%, 75%, and 90% of credit allocation.</li>
-        <li><strong>Review top-consuming projects monthly.</strong> Identify which workflows generate the most tokens.</li>
-        <li><strong>Invest in context engineering training, not model restrictions.</strong> AI team leads who teach context engineering get the same cost reduction with happier developers.</li>
+        <li><strong>Establish default model guidelines by task category.</strong> Document your team's task taxonomy (which work is Lightweight, Versatile, or Powerful) and the recommended model category for each. Add this to your team wiki or, better yet, to your <code>.github/copilot-instructions.md</code>.</li>
+        <li><strong>Set budget alerts before June 1.</strong> Configure budget alerts at 50%, 75%, and 90% of your team's credit allocation. Set alerts relative to your expected post-September usage, not the promotional ceiling &mdash; otherwise you will get a sticker shock in October.</li>
+        <li><strong>Review top-consuming projects monthly.</strong> The highest consumption typically comes from agent-mode sessions and Copilot code review (which also consumes GitHub Actions minutes). Ensure they are running with clean context (Part 1) and caching-friendly structure (Part 2).</li>
+        <li><strong>Invest in context engineering training, not model restrictions.</strong> AI team leads who restrict model access create frustration and workarounds. AI team leads who teach context engineering get the same cost reduction &mdash; or better &mdash; with happier developers.</li>
       </ol>
+
+      <p>The framing matters for decision-makers. This is "investing in developer effectiveness," not "policing AI usage." The goal is developers who produce better code with AI assistance, not developers who use less AI.</p>
 
       <img src="visuals/team-optimization-strategies.png" alt="Team optimization strategies: Training vs Restriction outcomes comparison">
 
@@ -111,12 +181,12 @@
         </thead>
         <tbody>
           <tr><td><strong>1: Context Engineering</strong> (<a href="ai-code-assistant-context-engineering-part-1.html">Part 1</a>)</td><td>Five practices: close files, thread hygiene, #file references, front-load intent, stable instructions</td><td>50-85% token reduction</td><td>Yes</td></tr>
-          <tr><td><strong>2: Caching + Workflow</strong> (<a href="ai-code-assistant-caching-workflow-part-2.html">Part 2</a>)</td><td>Prefix caching, retry elimination, structured prompts</td><td>Up to 90% on repeated context</td><td>Mostly</td></tr>
-          <tr><td><strong>3: Model Selection</strong> (Part 3)</td><td>Task taxonomy, auto-selection, deliberate premium use</td><td>45-75% on model costs</td><td>Billing-specific</td></tr>
+          <tr><td><strong>2: Caching + Workflow</strong> (<a href="ai-code-assistant-caching-workflow-part-2.html">Part 2</a>)</td><td>Prefix caching, retry elimination, structured prompts</td><td>~10x reduced rate on cached input</td><td>Mostly</td></tr>
+          <tr><td><strong>3: Model Selection</strong> (Part 3)</td><td>Lightweight / Versatile / Powerful routing, auto-selection, deliberate Powerful use</td><td>~85% on model costs (worked example)</td><td>Billing-specific</td></tr>
         </tbody>
       </table>
 
-      <p>Combined potential: <strong>70-90% effective cost reduction</strong> with better output quality than an unoptimized workflow using expensive models. Start with Layer 1 (free, quality-first). Each layer multiplies the savings of the layers below it.</p>
+      <p>Combined potential: <strong>~90% effective cost reduction</strong> with better output quality than an unoptimized workflow using Powerful-category models. Start with Layer 1 (free, quality-first). Each layer multiplies the savings of the layers below it.</p>
 
       <img src="visuals/three-layer-stack.png" alt="The Three-Layer Optimization Stack">
 
@@ -127,10 +197,10 @@
       <ol>
         <li><strong>Apply the five context engineering practices from <a href="ai-code-assistant-context-engineering-part-1.html">Part 1</a> this week.</strong></li>
         <li><strong>Stabilize your copilot-instructions file to enable caching (<a href="ai-code-assistant-caching-workflow-part-2.html">Part 2</a>).</strong></li>
-        <li><strong>Review the task taxonomy and match your default model to your actual task mix.</strong></li>
+        <li><strong>Review the task taxonomy and match your default model category to your actual task mix.</strong></li>
       </ol>
 
-      <p>The billing change is real. The advice is durable. Better input produces better output whether you pay per token, per request, or nothing at all.</p>
+      <p>The billing change is real. The urgency is valid. But the advice is durable. Better input produces better output whether you pay per token, per request, or nothing at all. Build your workflow around that principle, and the AI Credit bill takes care of itself.</p>
 
       <p><em><a href="ai-code-assistant-context-engineering-part-1.html">&larr; Part 1: Context Engineering</a> | <a href="ai-code-assistant-caching-workflow-part-2.html">&larr; Part 2: Invisible Compound Savings</a></em></p>
 
@@ -138,14 +208,15 @@
 
       <h3>Sources</h3>
       <ul style="font-size: 0.9rem;">
+        <li>GitHub Copilot usage-based billing announcement: <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing</a></li>
+        <li>GitHub Copilot models and pricing (per-token rates, AI Credits): <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing</a></li>
+        <li>GitHub Docs &mdash; multipliers for annual Pro/Pro+ subscribers (transitional): <a href="https://docs.github.com/copilot/reference/copilot-billing/models-and-pricing#model-multipliers-for-annual-copilot-pro-and-copilot-pro-subscribers">docs.github.com/copilot/reference/copilot-billing/models-and-pricing</a></li>
         <li>Apple ML Research, "The Illusion of Thinking": <a href="https://machinelearning.apple.com/research/illusion-of-thinking">machinelearning.apple.com/research/illusion-of-thinking</a></li>
         <li>RouteLLM (LMSYS, 2024): <a href="https://lmsys.org/blog/2024-07-01-routellm/">lmsys.org/blog/2024-07-01-routellm</a></li>
         <li>CascadeFlow (arXiv, 2024): <a href="https://arxiv.org/abs/2406.00073">arxiv.org/abs/2406.00073</a></li>
         <li>Towards Data Science production case study: <a href="https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/">towardsdatascience.com inference-scaling article</a></li>
-        <li>GitHub Copilot billing docs: <a href="https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests">docs.github.com Copilot premium requests</a></li>
-        <li>GitHub usage-based billing announcement: <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/">github.blog usage-based billing</a></li>
       </ul>
-      <p style="font-size: 0.85rem; color: #64748b;"><em>Specific model names cited above are accurate as of May 2026. The tier structure (Tier 1 / 2 / 3 by multiplier) is the durable framework; the lineup of which models occupy each tier rotates as providers release new versions.</em></p>
+      <p style="font-size: 0.85rem; color: #64748b;"><em>Per-token rates and named model examples cited above are accurate as of May 26, 2026 and rotate as providers release new versions. GitHub's three model categories &mdash; <strong>Lightweight, Versatile, Powerful</strong> &mdash; are the durable taxonomy and the right interface for governance.</em></p>
 
     </div>
   </article>

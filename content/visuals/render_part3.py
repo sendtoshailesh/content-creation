@@ -1,12 +1,12 @@
 """
-Visual renderer for Part 3: "The 120x Spread"
+Visual renderer for Part 3: "From PRUs to AI Credits"
 Generates 5 PNGs at 320 DPI using the shared design token system.
 
 Visuals:
-1. task-model-alignment.png — Three-tier task/model matching diagram with cost math
-2. team-governance-dashboard.png — Mock dashboard with credit consumption charts
-3. three-layer-stack.png — Stacked architecture diagram (context -> caching -> model selection)
-4. routing-decision-comparison.png — Auto-selection vs manual routing decision flow
+1. task-model-alignment.png — Three-category task/model matching diagram with $ cost math
+2. team-governance-dashboard.png — Mock dashboard with AI Credit consumption charts
+3. three-layer-stack.png — Stacked architecture diagram (context -> caching -> category routing)
+4. routing-decision-comparison.png — Auto-selection vs manual category routing decision flow
 5. team-optimization-strategies.png — Training vs restriction outcomes comparison
 """
 
@@ -36,6 +36,7 @@ plt.rcParams.update({
     'axes.facecolor': TOKENS['BG'],
     'figure.facecolor': TOKENS['BG'],
     'text.color': TOKENS['TEXT'],
+    'text.parse_math': False,
 })
 
 
@@ -47,37 +48,37 @@ def render_task_model_alignment():
     ax.axis('off')
 
     # Title
-    ax.text(6, 8.6, 'Task-Model Alignment: Match Capability to Complexity',
+    ax.text(6, 8.6, 'Task-Model Alignment: Match Category to Complexity',
             fontsize=14, fontweight='bold', color=TOKENS['TEXT'], ha='center')
-    ax.text(6, 8.2, '60-70% of coding tasks need zero or near-zero cost models',
+    ax.text(6, 8.2, 'GitHub AI Credits (June 1, 2026+): per-request cost varies ~450x across categories',
             fontsize=9, color=TOKENS['TEXT_2'], ha='center')
 
     tiers = [
         {
             'y': 6.2, 'height': 1.5,
             'color': TOKENS['TEAL_BG'], 'border': TOKENS['ACCENT_2'],
-            'title': 'Tier 1: SIMPLE (60-70%)',
+            'title': 'LIGHTWEIGHT (60-70%)',
             'tasks': 'Variable rename, boilerplate, test scaffold,\ndocstrings, imports, lint fixes, syntax Q&A',
-            'models': 'Included tier (0x)\nBudget tier (0.25x - 0.33x)\nExamples as of May 2026:\nGPT-4.1, GPT-5 mini, Haiku 4.5',
-            'cost_label': '0x - 0.33x',
+            'models': 'GitHub Lightweight category\n~$0.20-$1.50 in / $1.25-$9 out per 1M tok\nExamples (May 2026):\nGPT-5 mini, GPT-5.4 nano, Gemini 3.5 Flash',
+            'cost_label': '~$0.001/req',
             'badge_color': TOKENS['SUCCESS'],
         },
         {
             'y': 4.0, 'height': 1.5,
             'color': TOKENS['BLUE_BG'], 'border': TOKENS['ACCENT'],
-            'title': 'Tier 2: MODERATE (20-30%)',
+            'title': 'VERSATILE (20-30%)',
             'tasks': 'Code review, refactoring, debugging,\narchitecture Q&A, multi-file understanding',
-            'models': 'Standard 1x tier\nExamples as of May 2026:\nClaude Sonnet 4.x, Gemini Pro, GPT-5.2',
-            'cost_label': '1x',
+            'models': 'GitHub Versatile category\n~$1-$3 in / $5-$15 out per 1M tok\nExamples (May 2026):\nClaude Sonnet 4.x, GPT-4.1, Haiku 4.5',
+            'cost_label': '~$0.04/req',
             'badge_color': TOKENS['ACCENT'],
         },
         {
             'y': 1.8, 'height': 1.5,
             'color': TOKENS['PURPLE_BG'], 'border': TOKENS['ACCENT_3'],
-            'title': 'Tier 3: COMPLEX (5-10%)',
-            'tasks': 'Multi-file refactor with dependencies,\nnovel algorithms, system design, deep reasoning',
-            'models': 'Premium reasoning tier (3x)\nExample as of May 2026: Claude Opus 4.5\nReserve 7.5x+ for exceptional cases',
-            'cost_label': '3x+',
+            'title': 'POWERFUL (5-10%)',
+            'tasks': 'Multi-file refactor with dependencies,\nnovel algorithms, system design, deep agent sessions',
+            'models': 'GitHub Powerful category\n~$1.25-$5 in / $10-$30 out per 1M tok\nExamples (May 2026):\nClaude Opus 4.x, GPT-5.5, Gemini 2.5 Pro',
+            'cost_label': '~$0.30-$0.45/req',
             'badge_color': TOKENS['ACCENT_3'],
         },
     ]
@@ -119,41 +120,41 @@ def render_task_model_alignment():
             color=TOKENS['TEXT_2'], ha='center')
 
     math_lines = [
-        ('65 simple @ 0x', TOKENS['SUCCESS'], 6.2),
-        ('= 0 credits', TOKENS['SUCCESS'], 5.85),
+        ('65 Lightweight', TOKENS['SUCCESS'], 6.2),
+        ('@ ~$0.001 = $0.065', TOKENS['SUCCESS'], 5.85),
         ('', None, 5.6),
-        ('25 moderate @ 1x', TOKENS['ACCENT'], 5.4),
-        ('= 0.25x weighted', TOKENS['ACCENT'], 5.05),
+        ('25 Versatile', TOKENS['ACCENT'], 5.4),
+        ('@ ~$0.04 = $1.00', TOKENS['ACCENT'], 5.05),
         ('', None, 4.8),
-        ('10 complex @ 3x', TOKENS['ACCENT_3'], 4.6),
-        ('= 0.30x weighted', TOKENS['ACCENT_3'], 4.25),
+        ('10 Powerful', TOKENS['ACCENT_3'], 4.6),
+        ('@ ~$0.30 = $3.00', TOKENS['ACCENT_3'], 4.25),
         ('', None, 3.9),
-        ('Effective avg:', TOKENS['TEXT'], 3.6),
-        ('0.55x', TOKENS['TEXT'], 3.2),
-        ('vs 1.0x baseline', TOKENS['TEXT_2'], 2.85),
+        ('Daily total:', TOKENS['TEXT'], 3.6),
+        ('~$4.07', TOKENS['TEXT'], 3.2),
+        ('vs ~$30 all-Powerful', TOKENS['TEXT_2'], 2.85),
     ]
 
     for text, color, y_pos in math_lines:
         if text:
-            weight = 'bold' if 'Effective' in text or text == '0.55x' else 'normal'
-            size = 12 if text == '0.55x' else 8
+            weight = 'bold' if 'Daily' in text or text == '~$4.07' else 'normal'
+            size = 12 if text == '~$4.07' else 8
             ax.text(10.4, y_pos, text, fontsize=size, color=color,
                     ha='center', fontweight=weight)
 
-    # 45% savings callout
+    # ~86% savings callout
     savings_box = FancyBboxPatch((9.2, 2.6), 2.4, 0.7,
                                   boxstyle="round,pad=0.1",
                                   facecolor=TOKENS['TEAL_BG'],
                                   edgecolor=TOKENS['ACCENT_2'], linewidth=1)
     ax.add_patch(savings_box)
-    ax.text(10.4, 3.0, '45% savings', fontsize=11, fontweight='bold',
+    ax.text(10.4, 3.0, '~86% savings', fontsize=11, fontweight='bold',
             color=TOKENS['ACCENT_2'], ha='center')
-    ax.text(10.4, 2.72, 'on model costs', fontsize=7.5,
+    ax.text(10.4, 2.72, 'vs all-Powerful baseline', fontsize=7.5,
             color=TOKENS['TEXT_2'], ha='center')
 
     # Volatile disclaimer
-    ax.text(6, 0.5, '[VOLATILE] Model multipliers and included models are subject to change. '
-            'Route by task complexity, not specific multiplier values.',
+    ax.text(6, 0.5, 'Per-token rates and specific model names rotate over time. '
+            'Route by task complexity into Lightweight / Versatile / Powerful — the durable categories.',
             fontsize=7, color=TOKENS['MUTED'], ha='center', style='italic')
 
     plt.tight_layout()
@@ -203,10 +204,10 @@ def render_team_governance_dashboard():
     # --- Panel 2: Model usage distribution (pie chart) ---
     ax2 = fig.add_axes([0.55, 0.5, 0.38, 0.38])
 
-    model_labels = ['Included (0x)\n62%', 'Budget (0.25-0.33x)\n15%',
-                    'Standard (1x)\n18%', 'Premium (3x+)\n5%']
-    model_sizes = [62, 15, 18, 5]
-    model_colors = [TOKENS['SUCCESS'], TOKENS['ACCENT_2'], TOKENS['ACCENT'], TOKENS['ACCENT_3']]
+    model_labels = ['Lightweight\n62%', 'Versatile\n23%',
+                    'Powerful\n10%', 'Auto-routed\n5%']
+    model_sizes = [62, 23, 10, 5]
+    model_colors = [TOKENS['SUCCESS'], TOKENS['ACCENT'], TOKENS['ACCENT_3'], TOKENS['ACCENT_2']]
 
     wedges, texts = ax2.pie(model_sizes, colors=model_colors,
                             startangle=90, labels=model_labels,
@@ -227,12 +228,12 @@ def render_team_governance_dashboard():
              fontweight='bold', color=TOKENS['TEXT'], transform=ax3.transAxes)
 
     table_data = [
-        ['Workflow', 'Tokens/day', 'Tier', 'Action'],
-        ['Agent: auth refactor', '145K', 'Premium 3x', 'Review context'],
-        ['Chat: API debugging', '89K', 'Standard 1x', 'OK'],
-        ['Agent: test generation', '72K', 'Included 0x', 'OK (free)'],
-        ['Chat: code review', '58K', 'Standard 1x', 'OK'],
-        ['Chat: boilerplate', '41K', 'Standard 1x', 'Switch to 0x'],
+        ['Workflow', 'Tokens/day', 'Category', 'Action'],
+        ['Agent: auth refactor', '145K', 'Powerful', 'Review context'],
+        ['Chat: API debugging', '89K', 'Versatile', 'OK'],
+        ['Agent: test generation', '72K', 'Lightweight', 'OK (cheap)'],
+        ['Chat: code review', '58K', 'Versatile', 'OK'],
+        ['Chat: boilerplate', '41K', 'Versatile', 'Switch to Lightweight'],
     ]
 
     for i, row in enumerate(table_data):
@@ -329,9 +330,9 @@ def render_three_layer_stack():
             'color': TOKENS['PURPLE_BG'], 'border': TOKENS['ACCENT_3'],
             'title': 'LAYER 3: Informed Model Selection',
             'subtitle': 'Cost-aware. Matches capability to task.',
-            'items': '- 60-70% simple tasks -> free/cheap models  - 20-30% moderate -> standard (1x)\n'
-                     '- 5-10% complex -> premium (3x)  - Auto-selection for 10% discount',
-            'savings': '45-75%\non model costs',
+            'items': '- 60-70% Lightweight -> ~$0.001/req  - 20-30% Versatile -> ~$0.04/req\n'
+                     '- 5-10% Powerful -> ~$0.30-$0.45/req  - Auto-routing for hands-off mix',
+            'savings': '~85%\non model costs',
             'savings_color': TOKENS['ACCENT_3'],
         },
     ]
@@ -368,7 +369,7 @@ def render_three_layer_stack():
     cumulative = [
         {'y': 1.9, 'label': 'Layer 1 alone', 'value': '50-85%', 'color': TOKENS['ACCENT_2']},
         {'y': 4.1, 'label': 'Layers 1+2', 'value': '60-90%', 'color': TOKENS['ACCENT']},
-        {'y': 6.3, 'label': 'Layers 1+2+3', 'value': '70-90%+', 'color': TOKENS['ACCENT_3']},
+        {'y': 6.3, 'label': 'Layers 1+2+3', 'value': '~90%', 'color': TOKENS['ACCENT_3']},
     ]
 
     for item in cumulative:
@@ -421,7 +422,7 @@ def render_routing_decision_comparison():
             color=TOKENS['ACCENT'], ha='center')
 
     auto_items = [
-        ('How', 'Copilot routes automatically\n+ 10% multiplier discount'),
+        ('How', 'Copilot routes automatically\nacross AI Credits categories'),
         ('Best for', 'Individual developers,\nno strong model preference'),
         ('Pros', 'Zero effort, no fatigue,\nconsistent decisions'),
         ('Cons', 'Limited visibility into\nrouting algorithm'),
@@ -441,7 +442,7 @@ def render_routing_decision_comparison():
             color=TOKENS['ACCENT_3'], ha='center')
 
     manual_items = [
-        ('How', 'Developer picks model per task\nusing 3-tier taxonomy'),
+        ('How', 'Developer picks category per task\n(Lightweight/Versatile/Powerful)'),
         ('Best for', 'Teams wanting full control,\npredictable costs'),
         ('Pros', 'Maximum control, matches\nexact complexity needs'),
         ('Cons', 'Requires discipline,\ndecision fatigue over time'),
