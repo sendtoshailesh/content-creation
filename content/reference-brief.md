@@ -1,126 +1,171 @@
-# Reference Brief — Optimizing Cost While Using AI Code Assistants
+# Reference Brief — How to Evaluate AI Agents Before They Break Production
 
-Generated: 2026-05-06
+Generated: 2025-07-17
+Topic: How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
+Primary source: `content/agent-eval-knowledge-extract.md` (34K chars, first-party practitioner knowledge)
 
----
+## Primary Source Summary
 
-## Source Summary
+The primary source is first-party practitioner material from building and running Waza-based evals for GitHub Copilot's Git-Ape project. It covers 14 skills, 8 agents, and 38 task patterns; three grader types (`text`, `tool_constraint`, `prompt`); the full PR-triggered eval flow; real costs (~15-25 minutes, ~200K-400K tokens, ~$3-8 per run); and several operational lessons that do not appear in the external references.
 
-### [Agentic AI: How to Save on Tokens](https://towardsdatascience.com/agentic-ai-how-to-save-on-tokens/) — TDS, Apr 29, 2026
+Most importantly, it introduces four original framing ideas that should anchor the blog:
+- **The Sourdough Test**: one identical off-topic prompt across agents to catch persona-boundary regressions.
+- **Fabrication Without Action**: the agent says it did the work but never called tools.
+- **Safety Gate vs. Off-Topic**: refusing a valid deployment without confirmation is a different contract from refusing sourdough.
+- **Binary grading as a feature**: pass/fail is more actionable in CI than subjective 1-5 scales.
 
-- **Key framework**: Four design principles — (1) Reuse tokens when possible, (2) Don't preload dormant tokens, (3) Use cheap models for cheap work, (4) Keep your context clean
-- **Prompt caching data**: OpenAI cached input up to 90% off base input price; Anthropic same discount on reads but charges for writes (1.25x); TTL typically 5-10 min
-- **Tool Search savings**: Anthropic saw 55K–134K tokens of tool definitions before optimization; Tool Search Tool reduces to ~500 tokens initial load (85% reduction)
-- **Semantic caching**: Redis claims up to 68.8% fewer API calls, 40-50% latency improvement for Q&A use cases
-- **Routing economics**: CascadeFlow claims 69% savings, 96% quality retention vs GPT-5; subagents save ~11% vs no routing
-- **Context cleanup**: Removing junk clears 30-70% of context; at 10K context window with 100K runs → up to $1,500 savings; at 40K → up to $6,000
-- **SWEzze paper**: 6x compression ratio → 51.8-71.3% token-budget reduction + 5-9.2% better issue resolution
-- **Unique angle**: Practical engineering focus with interactive calculators; acknowledges trade-offs honestly
+It also contributes a concrete execution gotcha that external sources barely discuss: **tool name translation** between production and eval environments (`execute` -> `bash`, `read` -> `view`, `search` -> `grep`, etc.).
 
-### [Inference Scaling: Why Reasoning Models Raise Your Compute Bill](https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/) — TDS, May 3, 2026
+## External Source Summaries
 
-- **Framework**: Cost-Quality-Latency triangle for inference decisions
-- **Task taxonomy**: Use (math, multi-step planning) / Maybe (code architecture) / Avoid (extraction, classification, formatting)
-- **Case study**: Development team building coding assistant — 70% of requests were simple tasks; routing saved $3,000/day → $970/day (68% reduction); annualized savings $740K
-- **Apple ML Research finding**: Reasoning models burn thousands of tokens on simple tasks; standard models provide better accuracy on low-complexity items without extra cost
-- **Production failure modes**: Verbose wrong answers, task drift, timeout cascades, token bloat, false confidence
-- **Key metric shift**: Stop measuring $/million tokens → measure cost per successful task
-- **Unique angle**: Operations and governance perspective; treats reasoning as "metered resource"
+### [Working with evals | OpenAI API](https://platform.openai.com/docs/guides/evals)
+- **Key data points**: Official OpenAI flow is **3 steps**: describe the task, run the eval on test inputs, analyze results and iterate. Evals require a `data_source_config` plus `testing_criteria`, with examples using `string_check` graders.
+- **Unique angle**: Strongest official product framing for evals as a repeatable API object rather than an ad hoc notebook habit.
+- **Relevant quotes**: "Writing evals to understand how your LLM applications are performing against your expectations, especially when upgrading or trying new models, is an essential component to building reliable applications." `[VOLATILE]` "Evals will become read-only for existing users on October 31, 2026, and the platform is scheduled to shut down on November 30, 2026."
+- **Credibility**: Official OpenAI documentation; high authority for API shape and platform roadmap.
+- **Date**: No page date surfaced in the curl excerpt; deprecation notice references a 2026 transition timeline.
 
-### [GitHub Copilot Tips, Tricks, and Best Practices](https://github.blog/developer-skills/github/how-to-use-github-copilot-in-your-ide-tips-tricks-and-best-practices/) — GitHub Blog, Mar 2024
+### [OpenAI Evals GitHub repository](https://github.com/openai/evals)
+- **Key data points**: Repo positions Evals as both a **framework** and an **open-source registry**. It requires **Python 3.9+** and uses **Git LFS** for registry data. README points users to YAML/JSON-first eval authoring and notes that OpenAI was "currently not accepting evals with custom code."
+- **Unique angle**: Useful contrast with the API guide: the repo emphasizes community contribution, templates, local runs, and private evals using your own data.
+- **Relevant quotes**: "Evals provide a framework for evaluating large language models (LLMs) or systems built using LLMs." / "Without evals, it can be very difficult and time intensive to understand how different model versions might affect your use case."
+- **Credibility**: Official OpenAI open-source repo; high authority, though the README reflects an older/open-source workflow while the product docs now emphasize the API/dashboard path.
+- **Date**: No publication date surfaced in the curl excerpt.
 
-- **Context management tactics**: Open relevant files, provide top-level comments, set includes/references manually, use meaningful names, provide sample code
-- **Key insight**: "Garbage in, garbage out" — better context = fewer wasted tokens/retries
-- **Practical tips**: Close unneeded files when switching tasks; use #file references; remove irrelevant chat history; organize conversations with threads
-- **Unique angle**: Direct from GitHub — official "how to get more value from fewer interactions"
+### [Building Effective AI Agents — Anthropic](https://www.anthropic.com/research/building-effective-agents)
+- **Key data points**: Published **Dec 19, 2024**. Distinguishes **workflows** from **agents**. Recommends five reusable patterns: **prompt chaining**, **routing**, **parallelization**, **orchestrator-workers**, and **evaluator-optimizer**.
+- **Unique angle**: Best source for the "start simpler than you think" argument. Anthropic explicitly says many successful teams use composable patterns rather than heavy frameworks.
+- **Relevant quotes**: "The most successful implementations weren't using complex frameworks or specialized libraries. Instead, they were building with simple, composable patterns." / "Agentic systems often trade latency and cost for better task performance."
+- **Credibility**: High. First-party engineering guidance from a model provider with practical implementation examples.
+- **Date**: 2024-12-19.
 
-### [Anthropic: Advanced Tool Use](https://www.anthropic.com/engineering/advanced-tool-use) — Anthropic Engineering, Nov 2025
+### [SWE-bench Leaderboards](https://www.swebench.com/)
+- **Key data points**: The site describes **SWE-bench Verified** as a **human-filtered subset of 500 instances** created with OpenAI. It also documents a **bash-only** comparison mode using **mini-SWE-agent** in a minimal bash environment with a simple ReAct loop.
+- **Unique angle**: Important benchmark-context source because it clarifies what SWE-bench Verified actually is: a capability benchmark with a constrained execution setup, not a production-behavior test.
+- **Relevant quotes**: "A human-validated subset of 500 SWE-bench instances for reliable evaluation of coding agents and language models." / "No tools, no special scaffold structure; just a simple ReAct agent loop."
+- **Credibility**: High for benchmark definition and leaderboard framing. Exact ranking values appear to be dynamically rendered and were not fully extractable from the first 50K curl snapshot.
+- **Date**: No publication date surfaced in the curl excerpt.
 
-- **Tool Search Tool**: 85% token reduction; 55K tokens → ~8.7K tokens for 50+ MCP tools; only ~500 tokens initial load
-- **Accuracy improvement**: Opus 4 improved from 49% to 74%; Opus 4.5 from 79.5% to 88.1% with Tool Search enabled
-- **Programmatic Tool Calling**: 37% token reduction (43,588 → 27,297 tokens on complex research tasks); eliminates inference passes for intermediate steps
-- **Tool Use Examples**: Accuracy improved from 72% to 90% on complex parameter handling
-- **Implementation pattern**: defer_loading: true for discoverable tools; allowed_callers for code execution; input_examples for usage patterns
-- **Unique angle**: These aren't just cost savings — they also improve accuracy. Less context noise = better model performance
+### [Coding Agent Benchmarks 2026 — Presenc AI](https://presenc.ai/research/coding-agent-benchmarks-2026)
+- **Key data points**: Claims SWE-Bench Verified rose from **13% (early 2024)** to **78% (May 2026)**. Reports top-agent ranges of **74-78%** on SWE-Bench Verified, **52-58%** on TerminalBench, and real-world PR acceptance rates of only **35-50%**. Also reports median time-to-PR of **8-25 minutes** and test-pass-before-review rates of **63-71%**. `[VOLATILE]` Cost/task estimates: Claude Code **$1.50-3.00**, Cursor Agent **$0.40-0.90**, Devin **$3.00-6.00**, Aider **$0.30-0.70**.
+- **Unique angle**: Strongest explicit benchmark-to-production gap framing for coding agents.
+- **Relevant quotes**: "Real-world pull-request pass rates ... are estimated at 35-50 percent for top agents, materially below SWE-Bench because real codebases have implicit conventions and reviewer expectations benchmarks miss."
+- **Credibility**: Mixed. Detailed and numerically rich, but it is a vendor research page aggregating public reports plus Presenc's own instrumentation across **25+ enterprise coding-agent rollouts**.
+- **Date**: 2026-05-07.
 
-### [GitHub Copilot Premium Requests & Model Multipliers](https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests) — GitHub Docs, Current
+### [AI Benchmarks in 2026: The Complete Guide — explainx.ai](https://explainx.ai/blog/ai-benchmarks-complete-guide-2026)
+- **Key data points**: Says frontier models cluster at **Arena Elo 1,424-1,503**. Claims MMLU/HellaSwag are functionally saturated above **88%** and **95%**. Gives a claimed **37% gap** between lab benchmark scores and real-world deployment performance, with **50x cost variation** for similar accuracy.
+- **Unique angle**: Best source for the "benchmark saturation" argument and for explaining why older academic leaderboards are becoming less decision-useful.
+- **Relevant quotes**: "The most significant development is benchmark saturation." / "These differences tell us little about which model performs better in production."
+- **Credibility**: Secondary synthesis rather than primary benchmark research. Good for framing, weaker than primary benchmark papers for hard claims.
+- **Date**: 2026-05-02.
 
-- **Model multipliers (key data)**:
-  - `[VOLATILE][CAVEAT: "subject to change"]` Included (0x): GPT-4.1, GPT-4o, GPT-5 mini (currently on paid plans; GitHub states included models are subject to change)
-  - `[VOLATILE]` Cheap (0.25x): GPT-5.4 nano, Grok Code Fast 1
-  - `[VOLATILE]` Budget (0.33x): Claude Haiku 4.5, GPT-5.4 mini, Gemini 3 Flash
-  - `[VOLATILE]` Standard (1x): Claude Sonnet 4/4.5/4.6, Gemini 2.5 Pro, GPT-5.2, GPT-5.4
-  - `[VOLATILE]` Premium (3x): Claude Opus 4.5, Claude Opus 4.6
-  - `[VOLATILE]` Expensive (7.5x): GPT-5.5
-  - `[VOLATILE]` Very expensive (15x): Claude Opus 4.7
-  - `[VOLATILE]` Extreme (30x): Claude Opus 4.6 fast mode
-- `[VOLATILE]` **Auto-selection discount**: 10% off multiplier when using Copilot auto model selection
-- `[VOLATILE]` **Free tier**: 2,000 inline suggestions + 50 premium requests/month
-- **Unique angle**: Concrete multiplier table makes ROI of model selection instantly calculable
+### [Awesome Agent Failures](https://github.com/vectara/awesome-agent-failures)
+- **Key data points**: Maintains a concrete failure taxonomy including **tool hallucination**, **response hallucination**, **goal misinterpretation**, **plan generation failures**, **incorrect tool use**, **verification & termination failures**, and **prompt injection**. The curated incident list includes concrete numbers such as **$812** Air Canada damages, **10,000 customer inquiries** deleted in one email-tool example, **~40 hallucinations** in one Sullivan & Cromwell filing, **~72% of 27 citations** fabricated/broken in the EY report example, and a **$47,000** multi-agent loop lasting **264 hours (11 days)**.
+- **Unique angle**: Best compendium of vivid production failure stories across legal, customer-service, autonomous-agent, and security incidents.
+- **Relevant quotes**: "AI agents fail in predictable ways." / "$47,000 LangChain A2A Multi-Agent Loop ... observability without enforcement."
+- **Credibility**: Useful curated survey, but community-maintained rather than peer-reviewed. Individual examples should be traced to primary case links before publication.
+- **Date**: No single publication date; living repository.
 
-### [GitHub Copilot Moving to Usage-Based Billing](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/) — GitHub Blog, Apr 27, 2026
+### [Why AI Agent Prototypes Fail in Production — Softcery](https://softcery.com/lab/why-ai-agent-prototypes-fail-in-production-and-how-to-fix-it)
+- **Key data points**: Cites Gartner's **June 2025** forecast that **over 40%** of agentic AI projects will be canceled by end of **2027**; claims only **~130** of thousands of vendors are "real" agentic vendors. Also cites hallucination ranges of **~3%** for Claude Sonnet 4.6 versus **15-25%** for many production models on harder real-world benchmarks.
+- **Unique angle**: Strong architecture anti-pattern framing: wrong problem selection, PoC architecture promoted to prod, brittle integrations, missing tests, poor observability, and all-in rollouts.
+- **Relevant quotes**: "Most production failures trace back to six common patterns." / "A PoC tests business need, not technical feasibility for production."
+- **Credibility**: Vendor/lab content with useful practitioner heuristics and citations, but still a consultancy-marketing source.
+- **Date**: Page metadata shows 2025-10-08; article body says "Last updated on April 24, 2026." Treat as 2026-updated content.
 
-- `[VOLATILE]` **What's changing**: Starting June 1, 2026 — Premium Request Units replaced by GitHub AI Credits
-- `[VOLATILE]` **Credits consumed by**: Token usage (input + output + cached tokens) at published API rates per model
-- `[VOLATILE]` **Plan pricing unchanged**: Pro $10/mo ($10 credits), Pro+ $39/mo ($39 credits), Business $19/user ($19 credits), Enterprise $39/user ($39 credits)
-- `[VOLATILE]` **Promotional credits**: Business $30/mo, Enterprise $70/mo for June-August transition
-- `[VOLATILE][CAVEAT: "fallback no longer available"]` **Still free**: Code completions and Next Edit suggestions in all plans
-- `[VOLATILE]` **New feature**: Pooled usage across organizations; budget controls at enterprise/cost center/user levels
-- **Why it matters**: "A quick chat question and a multi-hour autonomous coding session can cost the user the same amount" — this is no longer sustainable
-- **Unique angle**: This is the triggering event — makes cost optimization immediately relevant for every Copilot user
+### [5 AI Agent Failures in Production — DEV Community](https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0)
+- **Key data points**: Opens with a concrete failure vignette: **47 tool calls instead of 3** and a **$200** API-bill spike. Organizes production failure into five patterns: **infinite helpfulness loop**, **tool schema mismatch**, **retrieval pollution**, **overconfident wrong answer**, and **prompt regression**. Recommends eval sets of **30-50** golden cases.
+- **Unique angle**: Best "minimal observability stack" piece. Very practical on what to log, where to set step budgets, and how to catch loops before they become billing surprises.
+- **Relevant quotes**: "Agents fail quietly, producing plausible-looking wrong behavior five steps downstream from the actual cause." / "A healthy agent run should have zero tool errors."
+- **Credibility**: Practitioner blog post; useful operational heuristics, but anecdotal and not independently audited.
+- **Date**: Visible in page content as "Posted on Mar 7"; year was not surfaced in the first 50K curl excerpt.
 
-### [RouteLLM: Cost-Effective LLM Routing](https://lmsys.org/blog/2024-07-01-routellm/) — LMSYS, Jul 2024
+### [Agent Regression Testing Actually Catches Silent Failures This Way — Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures)
+- **Key data points**: Claims **78%** of agent failures are not crashes or timeouts; cites observations across **12 million production logs**. Recommends an initial suite of **20-50 scenarios**, about **one day** to build the first suite, and roughly **one sprint** to wire it into CI/CD.
+- **Unique angle**: Strongest closed-loop framing: offline versioned regression suite plus production monitoring that continuously feeds new incidents back into the suite.
+- **Relevant quotes**: "Passing all tests and not regressing are different things for agents." / "Offline regression testing and production monitoring aren't the same thing, and they're not alternatives."
+- **Credibility**: Vendor blog. Valuable for operational framing, but several headline numbers are themselves attributed to other linked sources and should be re-verified if used.
+- **Date**: 2026-05-28 (page metadata) / article body says May 27, 2026.
 
-- **Core result**: 95% of GPT-4 performance using only 14% GPT-4 calls (matrix factorization router with augmented data) — 75% cheaper than random baseline
-- **Benchmark savings**: 85% cost reduction on MT Bench, 45% on MMLU, 35% on GSM8K while maintaining 95% GPT-4 quality
-- **vs. commercial**: Outperforms Martian and Unify AI by 40% on cost efficiency
-- **Generalizability**: Same routers work on Claude 3 Opus + Llama 3 8B without retraining
-- **Training data**: Public Chatbot Arena preference data + augmentation with LLM judge
-- **Four router types**: Similarity-weighted ranking, matrix factorization, BERT classifier, causal LLM classifier
-- **Unique angle**: Open-source, production-ready framework; proves routing works with real benchmarks
+### [Regression Testing for AI Agents: Catching Silent Breakage Before Users Do — CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage)
+- **Key data points**: Provides one of the strongest concrete silent-regression examples: a prompt edit reduced token usage by **18%**, improved latency by **200ms**, but dropped booking conversion by **11%** over **5 days** because the confirmation step disappeared. Recommends gate thresholds such as **no eval drop >2%**, **no tag drop >5%**, and latency p95 staying within **+20%** of baseline.
+- **Unique angle**: Best source for the idea that regression in agent systems is a **statistical claim**, not a deterministic snapshot. Also useful for pairwise A-vs-B judging and baseline/candidate experiment comparisons.
+- **Relevant quotes**: "A regression in agent-land is a statistical claim, not a binary one." / "The metric you forgot to test moves silently while the metrics you did test all look fine."
+- **Credibility**: Vendor blog with strong implementation detail and concrete examples, but still not neutral benchmark research.
+- **Date**: 2026-05-06.
 
----
+### [About agent skills — configured URL in pipeline](https://docs.github.com/en/copilot/concepts/agents/agent-skills)
+- **Key data points**: The configured URL returned **404** during curl fetch, which is itself useful: the pipeline reference appears stale. A current canonical GitHub Docs page exists at `/en/copilot/concepts/agents/about-agent-skills`, and it states that project skills live in **`.github/skills`, `.claude/skills`, or `.agents/skills`**, while personal skills live in **`~/.copilot/skills` or `~/.agents/skills`**.
+- **Unique angle**: Useful context for how Copilot packages reusable behavior as skill folders of instructions, scripts, and resources.
+- **Relevant quotes**: From the current canonical docs page: "Skills allow Copilot to perform specialized tasks." / "Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant."
+- **Credibility**: Official GitHub documentation, but the exact URL in the pipeline is stale and should be updated before publishing.
+- **Date**: Listed URL unavailable; current canonical page has no visible publication date in the fetched excerpt.
+
+### [Custom agents configuration — GitHub Docs](https://docs.github.com/en/copilot/reference/custom-agents-configuration)
+- **Key data points**: Documents frontmatter properties including `name`, `description`, `target`, `tools`, `model`, `disable-model-invocation`, `user-invocable`, `mcp-servers`, and `metadata`. It also documents tool aliases and mappings such as `execute` -> shell (`bash`/`powershell`) and `read` -> `view`.
+- **Unique angle**: Very relevant for this topic because it validates that tool naming and agent frontmatter are part of the behavioral contract surface.
+- **Relevant quotes**: `[VOLATILE][CAVEAT: "public preview"]` "Custom agents are in public preview for JetBrains IDEs, Eclipse, and Xcode, and subject to change." / "The prompt can be a maximum of 30,000 characters."
+- **Credibility**: Official GitHub docs; high authority for configuration behavior.
+- **Date**: No publication date surfaced in the fetched excerpt.
+
+### [How to maximize GitHub Copilot's agentic capabilities — GitHub Blog](https://github.blog/ai-and-ml/github-copilot/how-to-maximize-github-copilots-agentic-capabilities/)
+- **Key data points**: Frames agent mode around multi-file, architecture-aware work: decomposition, migrations, refactors, and test modernization. The example workflow covers decomposition, tagging subsystem design, backward-compatible schema migration, validation-layer refactor, and contract/integration/domain tests.
+- **Unique angle**: Shows how GitHub positions agentic capability as a collaborator for system design and multi-step coordination, not just code generation.
+- **Relevant quotes**: "Copilot's agentic capabilities don't replace your judgment in these situations—they amplify it." / "This transforms Copilot from an autocomplete tool into a design reviewer."
+- **Credibility**: Official GitHub Blog; strong for GitHub's product framing and practitioner workflow examples.
+- **Date**: 2026-02-02.
+
+### [AI Agent Monitoring Best Practices, Tools and Metrics — UptimeRobot](https://uptimerobot.com/knowledge-hub/monitoring/ai-agent-monitoring-best-practices-tools-and-metrics/)
+- **Key data points**: Could not be fetched successfully with `curl -sL --max-time 15 ... | head -c 50000`; follow-up fetch attempts also timed out.
+- **Unique angle**: Intended as monitoring/metrics context, but no verified claims were extracted.
+- **Relevant quotes**: None — fetch failed.
+- **Credibility**: Not assessed because content could not be retrieved.
+- **Date**: Unavailable.
+
+### [Agent Failure Diagnosis in Production — AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith)
+- **Key data points**: Claims **40%** of multi-agent pilots fail within **6 months** of production deployment. Cites a **76.3% -> 50.5%** drop from short to long-horizon pass@1, a **14-failure-mode** MAST taxonomy built from **1,600+ annotated traces**, and breakdowns such as **11.8%** task derailment and **8.2%** information withholding. Gives a compounding-error example: a **10-step** pipeline at **97%** per-step accuracy yields only **72%** end-to-end accuracy; at **99%** per-step it reaches **90%**. Also claims teams spend roughly **40%** of sprint time investigating failures, and that **89%** of orgs have observability but only **62%** can inspect step-level behavior.
+- **Unique angle**: Best market/observability framing in this set. It is especially useful for the case that standard APM misses semantic drift and silent step-level failures.
+- **Relevant quotes**: "Welcome to the silent failure problem — the defining operational challenge of production AI agents in 2026." / "Traditional observability tools check HTTP status codes and return 200 OK while the agent has already sent the wrong context to the wrong tool three steps ago."
+- **Credibility**: Vendor/market-analysis blog, numerically rich and well framed, but many figures are synthesized from external studies rather than first-party audited market data.
+- **Date**: URL path indicates 2026-04-06; no explicit published date surfaced in the first 50K curl excerpt.
 
 ## Cross-Source Analysis
 
 ### Consensus Points
-
-1. **Model routing delivers 50-75% cost savings** — confirmed by RouteLLM (75%), TDS case study (68%), MindStudio example (68%)
-2. **Prompt/prefix caching is the easiest win** — OpenAI 90% discount, Anthropic 90% read discount; nearly free to implement with structured prompts
-3. **Context size directly correlates to cost** — all sources agree: less context = less money AND better performance
-4. **60-70% of AI coding tasks are "simple"** — don't need reasoning/expensive models
-5. **June 2026 billing change makes this urgent** — GitHub Copilot moving from flat premium requests to token-based billing
+- **Benchmarks are necessary but insufficient**. [OpenAI's evals guide](https://platform.openai.com/docs/guides/evals), [Anthropic's agent guide](https://www.anthropic.com/research/building-effective-agents), [Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026), [explainx.ai](https://explainx.ai/blog/ai-benchmarks-complete-guide-2026), [Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures), and [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage) all converge on the idea that you need explicit evaluation because capability and production quality drift apart.
+- **Silent failures dominate agent operations**. [DEV Community](https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0), [Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures), [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage), and [AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith) all emphasize that the agent often returns *something* coherent while the actual task has failed.
+- **Simple, observable systems beat clever opaque ones**. [Anthropic](https://www.anthropic.com/research/building-effective-agents), [Softcery](https://softcery.com/lab/why-ai-agent-prototypes-fail-in-production-and-how-to-fix-it), [DEV Community](https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0), and the [GitHub Blog](https://github.blog/ai-and-ml/github-copilot/how-to-maximize-github-copilots-agentic-capabilities/) all push decomposition, explicit contracts, and stepwise review.
+- **Tool use is a first-class eval surface**. [Anthropic](https://www.anthropic.com/research/building-effective-agents) discusses tools and ground truth, [GitHub custom agents docs](https://docs.github.com/en/copilot/reference/custom-agents-configuration) document tool alias mappings, and failure catalogs like [Awesome Agent Failures](https://github.com/vectara/awesome-agent-failures) and [DEV Community](https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0) repeatedly show incorrect tool use as a core failure mode.
 
 ### Contradictions
-
-1. **Router effectiveness**: RouteLLM shows 75% savings; LLMRouterBench (ref #22) says many routers barely beat simple baselines — truth likely depends on model pair and task distribution
-2. **Semantic caching value**: Redis claims 68.8% fewer API calls; TDS article warns it's risky and needs significant engineering work
-3. **Tool Search at scale**: Anthropic claims 85% token reduction; Arcade.dev's 4000-tool test showed lackluster results at extreme scale
+- **Capability leaderboards vs. production acceptance**: [SWE-bench](https://www.swebench.com/) and [Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026) celebrate high coding-agent scores, while [Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026), [Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures), [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage), and [AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith) argue those numbers overstate real-world reliability.
+- **Blocking gates vs. advisory evals**: vendor regression-testing sources like [Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures) and [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage) push hard release gates, whereas the primary first-party knowledge argues for **advisory** agent evals because of non-determinism, cost, and bootstrapping friction.
+- **Binary vs. statistical framing**: [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage) frames regressions statistically across datasets, while the primary source argues that **binary pass/fail** is more actionable at the single-task CI level. These are not mutually exclusive, but they operate at different layers and should be reconciled explicitly in the blog.
+- **Platform stability**: [OpenAI's evals guide](https://platform.openai.com/docs/guides/evals) says the Evals platform is being deprecated, while the [OpenAI/evals repo](https://github.com/openai/evals) still presents Evals as an active framework/registry. That split is useful context for "framework vs. product" drift.
 
 ### Data Points for Content
-
-**Pricing data (May 2026):**
-- `[VOLATILE]` GitHub Copilot: GPT-5.5 = 7.5x multiplier; Claude Opus 4.7 = 15x; GPT-5.4 nano = 0.25x (120x cost spread between cheapest and most expensive)
-- `[VOLATILE]` OpenAI API: GPT-5.5 at $5/$30 per MTok; cached input 90% off
-- `[VOLATILE]` Anthropic API: Sonnet at $3/$15; cached reads 90% off
-
-**Savings benchmarks:**
-- Routing: 68-75% cost reduction (multiple sources)
-- Prompt caching: Up to 90% on repeated prefixes
-- Tool search: 85% token reduction for tool-heavy prompts
-- Context compression: 30-70% token reduction
-- Programmatic tool calling: 37% token reduction
-- Combined strategies: Could achieve 80-90%+ reduction for well-optimized setups
-
-**Case study numbers:**
-- Coding assistant team: $3,000/day → $970/day = $740K/yr saved
-- CascadeFlow: 69% savings, 96% quality retention
-- SWEzze: 6x compression + 5-9.2% BETTER accuracy
+- [SWE-bench Verified](https://www.swebench.com/) is a **500-instance human-validated subset** — useful to define the benchmark before critiquing it.
+- [Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026): **74-78%** SWE-Bench Verified vs **35-50%** real-world PR acceptance; **52-58%** TerminalBench.
+- [explainx.ai](https://explainx.ai/blog/ai-benchmarks-complete-guide-2026): **37% lab-to-production gap** and **50x cost variation** for similar accuracy.
+- [Softcery](https://softcery.com/lab/why-ai-agent-prototypes-fail-in-production-and-how-to-fix-it): Gartner forecast of **40%** project cancellations by **2027**.
+- [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage): a prompt tweak cut tokens **18%**, improved latency **200ms**, but hurt conversion **11%** over **5 days**.
+- [Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures): **78%** of failures are behavioral rather than clean crashes/timeouts.
+- [AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith): **14** failure modes in the MAST taxonomy; **11.8%** derailment; **8.2%** information withholding; **97%** per-step accuracy still yields only **72%** end-to-end over **10 steps**.
+- [Awesome Agent Failures](https://github.com/vectara/awesome-agent-failures): concrete incident numbers such as **$47K** loop cost, **264 hours** loop duration, **6.3M lost orders** in one Amazon Q incident, and **CVSS 9.4 / 9.9** style security severity examples.
+- `[VOLATILE]` [OpenAI docs](https://platform.openai.com/docs/guides/evals): read-only on **2026-10-31** and shutdown on **2026-11-30**.
+- `[VOLATILE][CAVEAT: "public preview"]` [GitHub custom agents docs](https://docs.github.com/en/copilot/reference/custom-agents-configuration): custom agents remain in preview for some IDEs.
+- `[VOLATILE]` [Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026): cost/task estimates and model-specific benchmark snapshots are time-sensitive.
 
 ### Gaps
+- None of the external references describe **The Sourdough Test** as a reusable off-topic boundary probe.
+- None of them name **Fabrication Without Action** as a distinct failure class caught by tool-call assertions.
+- None of them make the **Safety Gate vs. Off-Topic** distinction as crisply as the primary source.
+- None of them argue for **Binary Grading as a Feature** from the perspective of reviewer actionability in CI.
+- None of them capture the **Tool Name Translation** problem between production tool IDs and eval-environment tool IDs as concretely as the primary source.
+- Several sources discuss regression testing or observability, but almost none describe a real, PR-triggered Copilot-agent eval system with dynamic agent discovery, mirrored agent files, and three grader types running inside full sessions.
 
-1. **No comprehensive end-to-end case study** of a team optimizing their AI code assistant costs specifically (vs. general LLM costs)
-2. **Limited data on Cursor/Cody cost optimization** — most data is GitHub Copilot or raw API focused
-3. **Missing: how much does the average developer actually spend** per month on AI coding tools with the new billing?
-4. **No comparison of "instructions file" vs "no instructions file"** impact on token efficiency in code assistants
-5. **Limited data on the GitHub Copilot auto-selection algorithm** — what models does it actually pick?
+### Industry Context for Framing
+- The external set makes the timing argument strong: coding-agent benchmark scores are rising quickly ([Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026)), old academic benchmarks are saturating ([explainx.ai](https://explainx.ai/blog/ai-benchmarks-complete-guide-2026)), and production failures are shifting from loud crashes to silent behavioral drift ([Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures), [CallSphere](https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage), [AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith)).
+- The best framing for the blog is therefore **not** "benchmarks are useless." It is: **benchmarks tell you whether the agent can do the task; behavioral evals tell you whether it will do the right thing in production.**
+- The primary source gives the missing practitioner bridge between those two worlds: how to turn abstract worries about silent regressions into concrete pass/fail tasks that run on every PR.

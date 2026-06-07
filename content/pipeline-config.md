@@ -10,51 +10,24 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | `completed` |
-| **Topic** | Engineering Better AI Code Assistant Interactions — Context Engineering, Workflow Discipline & Informed Model Selection |
-| **Started** | 2026-05-06 |
-| **Current Step** | All steps complete. Ready for publishing. |
-| **Series** | `yes (3 parts)` |
-| **Current Part** | All parts written |
+| **Status** | `in-progress` |
+| **Topic** | How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond |
+| **Started** | 2025-07-17 |
+| **Current Step** | Steps 1-2: Strategy + outline |
+| **Series** | `pending-assessment` |
+| **Current Part** | — |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
-- [x] Steps 1-2: Strategy + outline -> `content/ai-code-assistant-optimization-strategy.md` (replaces cost-first angle)
-- [x] Step 2b: Scope assessment (single vs. series) -> **Series: 3 parts, score 16/16**
-- [x] Step 2c: Multi-dimensional analysis -> **3 personas, 11 practices, 3 WAF pillars, score 2/2**
-- [x] Step 3: Blog post (Part 1) -> `content/context-engineering-part-1.md`
-- [x] Step 3b: Visual assets -> 3 PNGs (paradox, framework, before-after)
-- [x] Step 3c: Quality review -> 14/14 claims verified, 1 minor fix (date precision)
-- [x] Step 3e: Grounded content review -> all sources re-fetched, 0 corrections
-- [x] Step 4: LinkedIn post -> `content/linkedin-post-part1.md`
-- [x] Step 4c: Social platform selection -> Reel/Short video only
-- [ ] Step 5: X/Twitter thread (if selected)
-- [ ] Step 6: Reddit post (if selected)
-- [x] Step 6b: Reel/Short video -> `content/reel-script-part1.md`
-- [x] Step P2-3: Blog post (Part 2) -> `content/ai-code-assistant-cost-part-2.md`
-- [x] Step P2-3b: Visual assets (Part 2) -> 2 PNGs (caching-flow, retry-tax-calculator)
-- [x] Step P2-4: LinkedIn post (Part 2) -> `content/linkedin-post-part2.md`
-- [x] Step P2-5: X/Twitter thread (Part 2) -> `content/x-twitter-thread-part2.md`
-- [x] Step P2-6b: Reel/Short video (Part 2) -> `content/reel-script-part2.md`
-- [x] Step P2-8: YouTube script (Part 2) -> `content/youtube-script-part2.md`
-- [x] Step P3-3: Blog post (Part 3) -> `content/ai-code-assistant-cost-part-3.md`
-- [x] Step P3-3b: Visual assets (Part 3) -> 3 PNGs (task-model-alignment, team-governance-dashboard, three-layer-stack)
-- [x] Step P3-4: LinkedIn post (Part 3) -> `content/linkedin-post-part3.md`
-- [x] Step P3-6b: Reel/Short video (Part 3) -> `content/reel-script-part3.md`
-- [x] Cross-linking: All 3 parts linked in intro/CTA sections
-- [x] Quality review (Parts 2-3): 27/27 claims verified, 1 fix (GPT-4o missing from included models), 1 clarification (Anthropic cache write cost). Created with Anthropic family.
-- [x] Visual density pass (Parts 2-3): Added 3 new visuals to Part 2 (prompt-structure-breakdown, retry-loop-anatomy, caching-comparison) and 2 to Part 3 (routing-decision-comparison, team-optimization-strategies). Total visuals: Part 2 = 5, Part 3 = 5.
-- [x] Step 3d: SEO optimization -> keyword placement in headings + opening paragraphs across all 3 parts
-- [x] Step 7: Brand audit -> data consistency fix (80-90% -> 90%), hashtag normalization across LinkedIn posts
-- [x] Step 10: Publish to GitHub Pages -> 3 HTML pages + index updated + visuals copied
-- [x] Step 10a: Canonical URLs verified — all social posts already contain hardcoded canonical URLs (no [link] placeholders found)
-- [x] Step P3-5: X/Twitter thread (Part 3) -> `content/x-twitter-thread-part3.md`
-- [x] Step P3-8: YouTube script (Part 3) -> `content/youtube-script-part3.md`
-- [x] Step P3-9: Reddit post (Part 3) -> `content/reddit-post-part3.md`
-- [x] Step 12: Platform distillation -> Medium posts rewritten to visual-rich distilled format (Parts 2-3), visual packs generated in `content/visuals/distilled/part2-practitioner/` and `part3-practitioner/`
-- [ ] Step 11: Social media publishing (LinkedIn, X/Twitter, Reddit) — content ready, awaiting publish
-- [x] Final review complete
+- [ ] Steps 1-2: Strategy + outline
+- [ ] Step 2b: Scope assessment (single vs. series)
+- [ ] Step 2c: Multi-dimensional analysis
+- [ ] Step 3: Blog post
+- [ ] Step 3b: Visual assets
+- [ ] Step 3c: Quality review
+- [ ] Step 4: LinkedIn post
+- [ ] Step 4c: Social platform selection
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -121,38 +94,31 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 <!-- Add your reference URLs below. Format: - [description](URL) -->
 
-**General content:**
-- https://towardsdatascience.com/agentic-ai-how-to-save-on-tokens/ — Token savings strategies for agentic AI workflows
-- https://towardsdatascience.com/inference-scaling-test-time-compute-why-reasoning-models-raise-your-compute-bill/ — Why reasoning models cost more, task taxonomy (Use/Maybe/Avoid)
-- https://github.blog/developer-skills/github/how-to-use-github-copilot-in-your-ide-tips-tricks-and-best-practices/ — Context management best practices that reduce wasted tokens
-- https://www.anthropic.com/engineering/advanced-tool-use — 85% token reduction via Tool Search, 37% via programmatic calling
-- https://github.com/openai/openai-cookbook/blob/main/articles/openai-harmony.md — Model routing: Use/Maybe/Avoid taxonomy for reasoning models
-- https://towardsdatascience.com/tool-masking-the-layer-mcp-forgot/ — Shaping MCP tool surfaces to cut tokens and improve accuracy
+**Agent Evaluation Frameworks & Platforms:**
+- https://platform.openai.com/docs/guides/evals — OpenAI Evals: official guide for building custom evals with graders (text, model-graded, tool-constraint patterns)
+- https://github.com/openai/evals — OpenAI Evals open-source framework — eval registry, YAML task definitions, community benchmarks
+- https://www.anthropic.com/research/building-effective-agents — Anthropic's guide on building effective agents: workflows vs agents, composability, validation gates between steps
 
-**Industry Reports & Benchmarks:**
-- https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/unleashing-developer-productivity-with-generative-ai — 2x speed gains, <10% on complex tasks, developer satisfaction data
-- https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-in-the-enterprise-with-accenture/ — RCT: 55% faster coding, 85% confidence, 30% acceptance rate
-- https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests — Model multipliers (Opus=3x, nano=0.25x), 10% auto-selection discount
-- https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/ — June 2026 shift to per-token billing, why cost optimization matters NOW
+**Coding Agent Benchmarks (contrast with agent behavioral evals):**
+- https://www.swebench.com/ — SWE-bench leaderboard: SOTA ~88% on Verified, but tests capability not behavior contracts
+- https://presenc.ai/research/coding-agent-benchmarks-2026 — Coding Agent Benchmarks 2026: SWE-bench, TerminalBench, live PR acceptance rates (35-50% gap between benchmark and real-world)
+- https://explainx.ai/blog/ai-benchmarks-complete-guide-2026 — Complete guide to AI benchmarks in 2026: MMLU, GPQA, SWE-bench — why they don't catch behavioral regressions
 
-**Competitor / Related Articles:**
-- https://www.cursor.com/en/pricing — Pro $20, Pro+ $60, Ultra $200, Teams $40/user comparison
-- https://www.arcade.dev/blog/anthropic-tool-search-4000-tools-test/ — Independent test of lazy-loading with 4000 tools, counterpoint to claims
-- https://www.mindstudio.ai/blog/what-is-ai-model-router-optimize-cost-llm-providers — 68% cost reduction example ($3K→$970/day) via model routing
+**Agent Failures & Silent Regressions:**
+- https://github.com/vectara/awesome-agent-failures — Awesome Agent Failures: curated list of real production failure modes with mitigations and war stories
+- https://softcery.com/lab/why-ai-agent-prototypes-fail-in-production-and-how-to-fix-it — Why AI Agents Fail in Production: 6 architecture patterns and fixes for common failure modes
+- https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0 — 5 AI Agent Failures in Production: hallucinations, incorrect tool use, plan generation failures
+- https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures — AI Agent Regression Testing: catching silent failures, 78% of regressions undetected by common approaches
+- https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage — Regression Testing for AI Agents: trace-driven debugging, semantic regression tests, pre/post-deploy gates
 
-**Pricing Pages & Documentation:**
-- https://openai.com/api/pricing/ — GPT-5.5 ($5/$30 MTok), cached input 90% discount, batch 50% off
-- https://claude.com/pricing#api — Opus ($5/$25), Sonnet ($3/$15), Haiku ($1/$5), prompt caching 90% off reads
-- https://docs.github.com/en/copilot/concepts/billing/copilot-requests#model-multipliers — Full multiplier table, auto-selection discount, free tier limits
+**GitHub Copilot Agent & Skills Documentation:**
+- https://docs.github.com/en/copilot/concepts/agents/agent-skills — About agent skills: SKILL.md format, auto-discovery, project-specific skills
+- https://docs.github.com/en/copilot/reference/custom-agents-configuration — Custom agents configuration: YAML frontmatter, agent personas, tool access, invocation rules
+- https://github.blog/ai-and-ml/github-copilot/how-to-maximize-github-copilots-agentic-capabilities/ — Maximizing Copilot agentic capabilities: custom agents, skills, advanced workflows
 
-**Case Studies & Examples:**
-- https://github.blog/news-insights/research/survey-ai-wave-grows/ — 2000-person survey on AI tool adoption, satisfaction, and enterprise usage data
-
-**Research Papers:**
-- https://arxiv.org/abs/2310.06201 — Selective Context (EMNLP 2023): 50% context reduction, 36% memory savings, minimal quality loss
-- https://arxiv.org/abs/2603.28119 — SWEzze: 6x compression, 51-71% token reduction + 5-9% better issue resolution
-- https://lmsys.org/blog/2024-07-01-routellm/ — RouteLLM: 95% GPT-4 quality at 75% lower cost, outperforms commercial routers
-- https://arxiv.org/abs/2601.07206 — LLMRouterBench: Counterpoint — many learned routers barely beat simple baselines
+**Industry Context & Market Data:**
+- https://uptimerobot.com/knowledge-hub/monitoring/ai-agent-monitoring-best-practices-tools-and-metrics/ — AI Agent Monitoring: best practices, tools, behavioral metrics (step count, tool usage anomalies)
+- https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith — Agent Failure Diagnosis: MAST taxonomy (NeurIPS 2025), 14 distinct failure modes in production
 
 ---
 
@@ -168,9 +134,9 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Is Series** | `yes` |
-| **Total Parts** | 3 |
-| **Current Part** | All parts written |
+| **Is Series** | `pending-assessment` |
+| **Total Parts** | — |
+| **Current Part** | — |
 | **Part 1 Focus** | — |
 | **Publishing Cadence** | — |
 
@@ -180,14 +146,14 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Persona count** | 4 |
-| **Personas** | Senior Developer, Tech Lead, Engineering Manager, Platform Engineer |
-| **Technology practices** | 6 (model routing, prompt caching, context management, context cleanup, token compression, programmatic tool calling) |
-| **Governance practices** | 5 (budget alerting, usage monitoring, team model guidelines, credit forecasting, cost center allocation) |
-| **Total practices** | 11 |
-| **Primary WAF pillars** | Cost Optimization |
-| **Secondary WAF pillars** | Operational Excellence, Performance Efficiency |
-| **Dimension breadth score** | 2/2 |
+| **Persona count** | — |
+| **Personas** | — |
+| **Technology practices** | — |
+| **Governance practices** | — |
+| **Total practices** | — |
+| **Primary WAF pillars** | — |
+| **Secondary WAF pillars** | — |
+| **Dimension breadth score** | — |
 
 ### Social Platform Selection
 
@@ -299,10 +265,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Part | URL | Published |
 |------|-----|-----------|
-| Part 1 | https://sendtoshailesh.github.io/blog/ai-code-assistant-context-engineering-part-1.html | 2026-05-07 |
-| Part 2 | https://sendtoshailesh.github.io/blog/ai-code-assistant-caching-workflow-part-2.html | 2026-05-11 |
-| Part 3 | https://sendtoshailesh.github.io/blog/ai-code-assistant-model-selection-part-3.html | 2026-05-11 |
-| Series index | https://sendtoshailesh.github.io/blog/series/ai-code-assistant-optimization.html | — |
+| — | — | — |
 
 #### Social Media
 
