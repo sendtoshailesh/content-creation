@@ -4,7 +4,7 @@
 **Format**: A — "Did You Know?" (Data Shock) + B — "Before/After" hybrid
 **Platforms**: Instagram Reels (60s), YouTube Shorts (60s), LinkedIn Video (75s)
 **Aspect ratio**: 9:16 (1080×1920) for Reels/Shorts; 1:1 (1080×1080) optional for LinkedIn
-**Series**: Part 1 of 3 — "How to Evaluate AI Agents Before They Break Production"
+**Series**: Part 1 of 2 — "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
 **Blog URL**: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
 
 ---
@@ -25,7 +25,7 @@
 | 0:42–0:47 | Return to the sourdough visual. The passing agents glow green, failing agents stay red. A "regex grader" label appears with "$0 cost" badge. | "One absurd prompt — graded by a simple regex. Zero cost. Zero LLM tokens. And it caught what benchmarks completely missed." | **"$0 to run"** (green SUCCESS badge) + **"Regex grader"** |
 | 0:47–0:52 | Title card with concept name: "THE SOURDOUGH TEST" in large bold text. Subtle bread emoji + code bracket animation. Background uses ACCENT blue. | "It's called the Sourdough Test. And it's the simplest eval you'll ever build." | **"THE SOURDOUGH TEST"** 🍞 (hero title card) |
 | 0:52–0:57 | Screen recording: brief flash of the YAML config (the regex grader block from the blog). Zoom into the `match:` line. Keep it fast — 3 seconds max. | "Two tasks per agent. Copy-paste YAML. You can start today." | **"Start today →"** (with arrow animation) |
-| 0:57–1:00 | End card: "Full deep-dive in the blog" + profile handle + "Part 1 of 3" badge. Blog URL displayed. Clean layout on LIGHT_BG (#f8fafc). | "Link in the bio. Full write-up in the description." | **"Link in bio 🔗"** + **"Part 1 of 3"** |
+| 0:57–1:00 | End card: "Full deep-dive in the blog" + profile handle + "Part 1 of 2" badge. Blog URL displayed. Clean layout on LIGHT_BG (#f8fafc). | "Link in the bio. Full write-up in the description." | **"Link in bio 🔗"** + **"Part 1 of 2"** |
 
 ### LinkedIn Extended Ending (1:00–1:15)
 
@@ -128,9 +128,9 @@ That's how we catch model-wide regressions for $0.
 
 It's called The Sourdough Test — one absurd prompt that catches what benchmarks miss.
 
-Full deep-dive on the blog (link in bio) → Part 1 of 3
+Full deep-dive on the blog (link in bio) → Part 1 of 2
 
-This is Part 1 of 3. Part 2: "Three Graders, 38 Tasks, Zero Trust" — the grading system that catches what benchmarks miss.
+This is Part 1 of 2. Part 2: "Build the Eval System" — three graders, real regressions caught, and the $3-8 safety net.
 
 #AIAgents #AgentEvals #SourdoughTest #MachineLearning #DevTools #SoftwareEngineering #AIReliability #MLOps
 
@@ -153,7 +153,7 @@ Agents score 74-78% on benchmarks but only 35-50% of their PRs get merged in pro
 Full write-up with YAML configs and the complete failure taxonomy:
 👉 https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
 
-Part 1 of 3 in the series "How to Evaluate AI Agents Before They Break Production"
+Part 1 of 2 in the series "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
 
 #AIAgents #AgentEvals #SourdoughTest #SoftwareEngineering #AIReliability
 
@@ -178,7 +178,7 @@ The full deep-dive covers:
 
 ━━━
 🔗 Full write-up: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
-📌 Part 1 of 3. Part 2 next week: 𝗧𝗵𝗿𝗲𝗲 𝗚𝗿𝗮𝗱𝗲𝗿𝘀, 𝟯𝟴 𝗧𝗮𝘀𝗸𝘀, 𝗭𝗲𝗿𝗼 𝗧𝗿𝘂𝘀𝘁 — the grader decision tree and the `continue_session: true` gotcha that causes 90% of false failures.
+📌 Part 1 of 2. Part 2 next week: 𝗕𝘂𝗶𝗹𝗱 𝘁𝗵𝗲 𝗘𝘃𝗮𝗹 𝗦𝘆𝘀𝘁𝗲𝗺 — three graders, real regressions caught, and the $3-8 safety net.
 
 #AIAgents #AgentEvals #SoftwareEngineering #AIReliability #SourdoughTest
 
@@ -193,7 +193,7 @@ The full deep-dive covers:
 - **Layout**: Split down the middle — left half shows a rustic sourdough loaf (warm tones, flour-dusted), right half shows a dark-themed code terminal with red error highlighting
 - **Center text**: "THE SOURDOUGH TEST" in bold white text with a subtle drop shadow, spanning both halves
 - **Bottom badge**: "3/8 AGENTS FAILED" in a red (WARN #dc2626) pill-shaped badge
-- **Top-left corner**: Small "Part 1 of 3" badge in ACCENT blue (#1f6feb)
+- **Top-left corner**: Small "Part 1 of 2" badge in ACCENT blue (#1f6feb)
 - **Vibe**: The absurd contrast between bread and code is the scroll-stopper. The red "3/8 FAILED" badge creates urgency
 - **Aspect ratio**: 9:16 for Reels/Shorts, 1:1 variant for LinkedIn
 

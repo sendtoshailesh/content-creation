@@ -11,10 +11,10 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
-| **Topic** | How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond |
+| **Topic** | SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production |
 | **Started** | 2025-07-17 |
-| **Current Step** | Step 10 complete — Part 1 published to GitHub Pages |
-| **Series** | `yes (3 parts)` |
+| **Current Step** | Parts 2+3 complete — awaiting publish decision |
+| **Series** | `yes (2 parts)` |
 | **Current Part** | 1 |
 
 ### Step Checklist
@@ -135,9 +135,10 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 | Field | Value |
 |-------|-------|
 | **Is Series** | `yes` |
-| **Total Parts** | 3 |
-| **Current Part** | 1 |
+| **Total Parts** | 2 |
+| **Current Part** | 2 |
 | **Part 1 Focus** | The Gap Nobody's Testing For — benchmark gap, failure taxonomy, Sourdough Test, minimum viable eval |
+| **Part 2 Focus** | Build the Eval System — graders, task patterns, CI architecture, regressions, cost, gotchas, playbook |
 | **Publishing Cadence** | 3-5 days between parts |
 
 ### Dimension Analysis

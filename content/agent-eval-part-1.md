@@ -1,5 +1,5 @@
 ---
-title: "How to Evaluate AI Agents Before Production Breaks"
+title: "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
 description: "Learn how to evaluate AI agents for silent failures before production: benchmark gaps, the Sourdough Test, and a two-task eval engineers can run pre-release."
 slug: "agent-eval-part-1"
 series: "how-to-evaluate-ai-agents"
@@ -10,11 +10,11 @@ canonical: "https://sendtoshailesh.github.io/blog/agent-eval-part-1.html"
 og_image: "visuals/sourdough_test.png"
 ---
 
-# How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
+# SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
 
 ## Part 1: The Gap Nobody's Testing For
 
-*Part 1 of 3 in the series "How to Evaluate AI Agents Before They Break Production"*
+*Part 1 of 2 in the series "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"*
 
 ---
 
@@ -76,7 +76,7 @@ A year ago, this was an academic concern. AI coding assistants suggested code, y
 
 That's not the world we live in anymore.
 
-In the system I built evals for — Git-Ape, an internal GitHub Copilot project — agents operate with real credentials and real consequences:
+In the system I built evals for — [Git-Ape](https://github.com/Azure/git-ape), a GitHub Copilot project for Azure infrastructure deployment — agents operate with real credentials and real consequences:
 
 - An **Azure Resource Deployer** agent creates infrastructure with real billing implications
 - An **Onboarding** agent configures OIDC credentials and RBAC permissions
@@ -146,7 +146,7 @@ expected:
 
 ![The Silent Failure Taxonomy — three failure modes and the graders that catch them](visuals/failure_taxonomy.png)
 
-Three failure modes. Three grader types. Each designed to catch what the others miss. That's not coincidence — it's the architecture. (Part 2 goes deep on how the three-layer grading system works.)
+Three failure modes. Three grader types. Each designed to catch what the others miss. That's not coincidence — it's the architecture. (Part 2 goes deep on the grading system, the regressions it caught, and what it costs to run.)
 
 ---
 
@@ -244,10 +244,8 @@ Here's what Part 1 gives you to walk away with today:
 
 But two tasks per agent is just the beginning. The real architecture — the three-layer grading system, the four task patterns, the full PR-triggered CI pipeline with dynamic agent discovery and mirror sync — that's where the system scales from "useful sanity check" to "behavioral contract enforcement."
 
-**Part 2: [Three Graders, 38 Tasks, Zero Trust](#)** goes deep on the grading system. You'll get the full `tool_constraint` YAML, the LLM judge rubric for gated step-1 tasks, the grading decision tree, and the architectural walkthrough from PR trigger to PR comment. If you want the sourdough regex table, the tool name translation map, and the `continue_session: true` gotcha that causes 90% of false failures — that's where it lives.
-
-**Part 3: [What Broke, What It Costs, What's Next](#)** covers the operational reality — cost profiles, advisory vs. blocking CI, the tool name translation problem that cost me two days, and the gaps we still haven't closed (multi-turn, adversarial, regression trending).
+**Part 2: [Build the Eval System — Three Graders, 38 Tasks, and the $3-8 Safety Net](https://sendtoshailesh.github.io/blog/agent-eval-part-2.html)** goes deep on the grading system, the four task patterns, the full CI architecture from PR trigger to PR comment, three real regressions we caught, the $3-8/run cost profile, the gotcha hall of fame, and a 4-week playbook to get started.
 
 ---
 
-*This is Part 1 of a 3-part series. Next: [Part 2: Three Graders, 38 Tasks, Zero Trust](#) — the practitioner's reference for grader design, task taxonomy, and CI architecture.*
+*This is Part 1 of a 2-part series. Next: [Part 2: Build the Eval System — Three Graders, 38 Tasks, and the $3-8 Safety Net](https://sendtoshailesh.github.io/blog/agent-eval-part-2.html) — the complete practitioner's guide to building and operating agent evals.*

@@ -24,17 +24,17 @@ Last curated: 2026-06-08 (Apple Notes — 37 notes analyzed, 18 content-relevant
 
 -->
 
-### [1] How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
+### [1] SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
 - **Score**: 23/25 (relevance: 5 + data density: 5 + timeliness: 5 + gap: 4 + validation: 4)
 - **Subject areas**: AI & LLM, DevOps & Platform Engineering, Architecture
 - **Source articles**:
-  - [First-party] Azure/git-ape-private repo — built and operated the eval system (Waza) with 14 agents/skills, 38 tasks, 3 grader types
+  - [First-party] [Azure/git-ape](https://github.com/Azure/git-ape) repo — built and operated the eval system (Waza) with 14 agents/skills, 38 tasks, 3 grader types
   - [First-party] Live-tested all CLI commands, built workshop Labs 07+08, analyzed CI workflow (1,029 lines)
 - **Content angle**: Practitioner deep-dive — "I built an agent evaluation system for GitHub Copilot agents that deploy real Azure infrastructure. Here's the taxonomy of what can go wrong and how to test for it." Unique concepts: The Sourdough Test, Fabrication Without Action, Binary Grading as Feature, Safety Gate vs Off-Topic distinction, Tool Name Translation gotcha
 - **Key data points**: 14 agents/skills evaluated, 38 task definitions, 3 grader types (text/tool_constraint/prompt), 4 task patterns (positive/negative/safety/gated), $3-8 per eval run, ~200K-400K tokens per full run, 5 model regressions caught, `continue_session: true` as #1 gotcha
 - **Timeliness**: Agentic AI moving from autocomplete to autonomous operations; model updates (Claude 4.5→4.6, GPT-5.x) create silent behavioral regressions; no established industry practice for agent evaluation yet — thought leadership opportunity
 - **Knowledge extract**: `content/agent-eval-knowledge-extract.md` (34K chars, 100% first-party, zero external dependencies)
-- **Suggested series**: Yes (Part 1: Why agent eval ≠ model benchmarks + taxonomy, Part 2: Building the eval system + grader deep-dive, Part 3: Operational lessons + roadmap)
+- **Suggested series**: Yes — consolidated to 2 parts (Part 1: Why agent eval ≠ model benchmarks + taxonomy, Part 2: Building the eval system + grader deep-dive + operational lessons + roadmap)
 - **Status**: `queued`
 
 ### [2] WebMCP & Browser AI Agents — The Most Architecturally Significant Shift from Google I/O

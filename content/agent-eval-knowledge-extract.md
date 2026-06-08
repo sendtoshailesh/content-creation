@@ -3,7 +3,7 @@
 > **Pipeline input document.** This is first-party research extracted from building and operating a real agent evaluation system (Waza) inside GitHub Copilot's Git-Ape project. Not synthesized from external articles — this is practitioner knowledge from designing, implementing, and live-testing 14 agent evaluation suites with 38+ tasks.
 
 Generated: 2026-06-05
-Source: Git-Ape private repository (Azure/git-ape-private) — internal Microsoft/GitHub project
+Source: [Git-Ape repository](https://github.com/Azure/git-ape) (Azure/git-ape) — GitHub Copilot project for Azure infrastructure deployment
 Author context: Hands-on builder of the eval system, workshop labs, and CI integration
 
 ---
@@ -621,7 +621,7 @@ Is the assertion about complex behavioral contracts?
 
 All claims in this document are derived from:
 
-1. **Direct file inspection** of 16 agent task YAMLs, 22 skill task YAMLs, 8 eval.yaml configs, manifest.yaml, .waza.yaml, and docs/WAZA.md in the Azure/git-ape-private repository
+1. **Direct file inspection** of 16 agent task YAMLs, 22 skill task YAMLs, 8 eval.yaml configs, manifest.yaml, .waza.yaml, and docs/WAZA.md in the [Azure/git-ape](https://github.com/Azure/git-ape) repository
 2. **CI workflow analysis** of `.github/workflows/waza-agent-evals.yml` (1,029 lines) and `waza-evals.yml`
 3. **Live testing** of CLI commands against Azure sandbox subscription (ME-MngEnvMCAP078213)
 4. **Direct experience** building Lab 07 (Drift Operations) and Lab 08 (Agent Evaluation) workshop content

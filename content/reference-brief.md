@@ -1,12 +1,12 @@
-# Reference Brief — How to Evaluate AI Agents Before They Break Production
+# Reference Brief — SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
 
 Generated: 2025-07-17
-Topic: How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
+Topic: SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
 Primary source: `content/agent-eval-knowledge-extract.md` (34K chars, first-party practitioner knowledge)
 
 ## Primary Source Summary
 
-The primary source is first-party practitioner material from building and running Waza-based evals for GitHub Copilot's Git-Ape project. It covers 14 skills, 8 agents, and 38 task patterns; three grader types (`text`, `tool_constraint`, `prompt`); the full PR-triggered eval flow; real costs (~15-25 minutes, ~200K-400K tokens, ~$3-8 per run); and several operational lessons that do not appear in the external references.
+The primary source is first-party practitioner material from building and running Waza-based evals for GitHub Copilot's [Git-Ape](https://github.com/Azure/git-ape) project. It covers 14 skills, 8 agents, and 38 task patterns; three grader types (`text`, `tool_constraint`, `prompt`); the full PR-triggered eval flow; real costs (~15-25 minutes, ~200K-400K tokens, ~$3-8 per run); and several operational lessons that do not appear in the external references.
 
 Most importantly, it introduces four original framing ideas that should anchor the blog:
 - **The Sourdough Test**: one identical off-topic prompt across agents to catch persona-boundary regressions.

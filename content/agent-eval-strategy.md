@@ -1,4 +1,4 @@
-# Strategy Document — How to Evaluate AI Agents Before They Break Production: The Sourdough Test & Beyond
+# Strategy Document — SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
 
 ## Audience Persona Analysis
 
@@ -85,36 +85,31 @@ This content uniquely offers:
 
 ## Series Recommendation
 
-### Verdict: 3-Part Series (confirmed)
+### Verdict: 2-Part Series (consolidated from original 3-part plan)
 
-The idea queue's suggested 3-part structure is sound but I'm adjusting the boundaries based on deep reading of the source material. The key change: Part 1 needs to carry a quick-win concept (The Sourdough Test) alongside the "why" framing, so it stands alone as a shareable piece even if readers never click Part 2.
+> **Consolidation note (July 2025):** Originally planned as 3 parts, consolidated to 2 parts. Old Part 2 (grading system) and old Part 3 (operations/cost) were merged into a single stronger Part 2 (~5,500 words) that serves as the definitive implementation + operations playbook. Part 1 stands as published. Distribution and social assets below that reference "3 parts" reflect the original plan; actual publishing follows the 2-part structure.
 
-### Revised Series Structure
+### Final Series Structure
 
-**Part 1: "The Gap Nobody's Testing For"** (~3,000 words)
+**Part 1: "The Gap Nobody's Testing For"** (~2,900 words) — *Published*
 - Why agent eval ≠ model benchmarks (the capability vs. behavior gap)
 - The failure taxonomy: Fabrication Without Action, persona boundary erosion, safety gate skipping
 - The Sourdough Test — introduced as the memorable anchor concept
 - Quick-win: the minimum viable eval (1 positive + 1 negative task per agent)
 
-**Part 2: "Three Graders, 38 Tasks, Zero Trust"** (~3,200 words)
+**Part 2: "Build the Eval System — Three Graders, 38 Tasks, and the $3-8 Safety Net"** (~5,500 words)
 - The three-layer grading system: text → tool_constraint → prompt (LLM judge)
-- Task taxonomy: happy-path, off-topic, safety gate, gated step-1
+- Binary grading as feature, four task patterns, the 2×2 matrix
 - The architecture: PR trigger → agent discovery → mirror sync → execution → grading → PR comment
-- Binary grading as feature, `continue_session: true`, `_suppress_auto_inject`
-
-**Part 3: "What Broke, What It Costs, What's Next"** (~2,800 words)
-- Operational gotchas: Tool Name Translation, agent mirror sync, quality scoring workaround
-- Cost profile: $3-8/run, 200K-400K tokens, advisory vs blocking
-- Real regressions caught: persona erosion, safety gate skipping, tool call fabrication
-- Gaps and roadmap: multi-turn, adversarial, regression trending, coverage gating
+- Three regressions actually caught: persona erosion, safety gate skip, tool call fabrication
+- Cost profile: $3-8/run, 200K-400K tokens, ~$180-800/month
+- Advisory vs blocking: pragmatic enforcement path
+- The Gotcha Hall of Fame: 5 operational gotchas with YAML fixes
+- Roadmap (P0/P1) and the 4-week adoption playbook
 
 ### Publishing Cadence
-- **3-5 days between parts** — enough for LinkedIn engagement cycle, short enough to maintain momentum
+- **3-5 days between parts** — enough for LinkedIn engagement cycle
 - Each part has its own hook, own CTA, and stands alone
-
-### Rationale
-The content has 5+ distinct pillars each needing >500 words, 20+ data points, 3 audience personas, deep technical depth (YAML configs, grader examples, CI workflows), and needs 9,000+ words for proper coverage. A single 9,000-word post would lose readers. Three focused parts with named-concept hooks maximize shareability per part.
 
 ---
 

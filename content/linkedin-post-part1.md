@@ -2,7 +2,7 @@
 
 ## Post Type: Text-Only (no visual pack detected)
 ## Target: 1,200–1,500 characters
-## Series: Part 1 of 3
+## Series: Part 1 of 2
 
 ---
 
@@ -51,7 +51,7 @@ Part 2 goes deep on the grading system: three grader types, full YAML configs, a
 
 ── START FIRST COMMENT ──
 
-Full deep-dive (Part 1 of 3): https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
+Full deep-dive (Part 1 of 2): https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
 
 Next up — Part 2: "Three Graders, 38 Tasks, Zero Trust" — the how-to reference for grader design, task taxonomy, and CI architecture.
 

@@ -1,6 +1,6 @@
 # Social Distribution Strategy — Part 1: "The Gap Nobody's Testing For"
 
-*Series: How to Evaluate AI Agents Before They Break Production*
+*Series: SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production*
 *Canonical URL: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html*
 
 ---
@@ -185,7 +185,7 @@ Target audience timezone: US Pacific / US Eastern (primary), EU (secondary)
 |----------|----------------|---------------|
 | LinkedIn post | Final line before CTA | "Part 2 drops [day]: the three-layer grading system, the grader decision tree, and the `continue_session: true` gotcha that causes 90% of false failures." |
 | X/Twitter thread | Tweet 12/12 | "Part 2 next week: 𝗧𝗵𝗿𝗲𝗲 𝗚𝗿𝗮𝗱𝗲𝗿𝘀, 𝟯𝟴 𝗧𝗮𝘀𝗸𝘀, 𝗭𝗲𝗿𝗼 𝗧𝗿𝘂𝘀𝘁 — the practitioner's reference for grader design and CI architecture." |
-| Reel/Short | Description text (not voiceover) | "This is Part 1 of 3. Part 2: the grading system that catches what benchmarks miss → [profile link]" |
+| Reel/Short | Description text (not voiceover) | "This is Part 1 of 2. Part 2: the grading system that catches what benchmarks miss → [profile link]" |
 | Substack Note | Closing line | "Next in the series: the three grader types, why binary grading is a feature, and the 4 task patterns that cover the full behavioral surface." |
 | LinkedIn Article | Closing paragraph | Deeper tease — name the three grader types (text, tool_constraint, prompt) and hint at the cost difference ($0 vs $$). |
 
