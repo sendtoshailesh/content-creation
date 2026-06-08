@@ -20,6 +20,13 @@ You are a web publisher agent. Your job is to take a completed blog post from th
 
 ## Publishing Steps
 
+### 0. Pipeline Status Pre-Flight
+
+Before generating or updating HTML:
+1. Read `content/pipeline-config.md`.
+2. Confirm all upstream content, visual, quality, grounded, SEO, and brand gates needed for the blog are current.
+3. If the user asks to republish because an earlier artifact changed, first roll status back to the earliest affected step and mark publish output stale, then only publish after the corrected upstream files are ready.
+
 ### 1. Read the Blog Frontmatter
 
 Extract from the blog's YAML frontmatter:

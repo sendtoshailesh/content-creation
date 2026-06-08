@@ -83,6 +83,15 @@ For all files in `content/visuals/`:
 - [ ] X/Twitter: Unicode formatting, thread numbered correctly
 - [ ] YouTube: Timed script with visual cues
 
+## Pipeline Status Hygiene
+
+If brand fixes require changing source blog, visuals, social posts, or scripts after later steps are complete, update `content/pipeline-config.md` before editing:
+- Roll back to the earliest affected step, not merely the brand-audit step
+- Set Status to `in-progress`
+- Set Current Step to `Step <N> redo — brand consistency fixes (<YYYY-MM-DD>)`
+- Uncheck that step and downstream publishing/social publishing steps
+- Mark already-published outputs stale until republished
+
 ## Output Format
 
 Produce a brand audit report as a summary in chat:

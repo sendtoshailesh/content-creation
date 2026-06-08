@@ -20,6 +20,14 @@ You are a visual asset generator for technical content. Your job is to produce p
 5. **Run the scripts** to generate actual files
 6. **Verify output**: correct DPI, matching design tokens, no glyph warnings
 
+## Pipeline Status Hygiene
+
+If invoked to rebuild visuals after quality review, publishing, or social generation has already run, update `content/pipeline-config.md` before editing renderer files or PNGs:
+- Set Status to `in-progress`
+- Set Current Step to `Step 3b redo — rebuilding visuals (<YYYY-MM-DD>, reason)`
+- Uncheck Step 3b and all downstream dependent steps: visual review, quality review, brand/SEO if affected, web publish, social assets that reference visuals, and social publishing
+- If the blog was already published, note that published visuals are stale until copied to Pages and republished
+
 ## Design Tokens and Theme System
 
 Use the multi-theme palette system. Each visual in a post gets a different theme (round-robin). Base tokens (BG, TEXT, TEXT_2, MUTED, GRID, LIGHT_BG) stay constant for readability; only accent/highlight colors change per theme.

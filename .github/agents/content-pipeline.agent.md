@@ -45,6 +45,17 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
    - If **Topic** is set, proceed to set Status to `in-progress`, fill in **Started** date, and begin Phase 0
 5. Update **Current Step** in the status section as you move through phases
 
+### Rollback / Redo Protocol (Mandatory)
+
+When user feedback, review findings, failed publishing, stale content, or any agent decision sends the workflow back to an earlier phase, update `content/pipeline-config.md` **before** redoing work. Do not leave the status pointing at a later completed step while earlier content is being rebuilt.
+
+1. Set **Status** to `in-progress` unless the rollback is blocked and waiting on user input; use `blocked` only when work cannot continue.
+2. Set **Current Step** to the earliest step that must be redone, with a short reason and date, for example: `Step 3b redo — rebuilding visuals after QA failure (2026-06-08)`.
+3. Uncheck that step and every downstream checklist item that depends on it. Preserve earlier independent completed steps.
+4. If the rollback changes already-published content, mark publish/social status as stale in the current step text until the corrected content is republished.
+5. When the redo completes, re-check the completed steps and move **Current Step** forward again. Never mark a later step complete until all earlier invalidated steps have passed their gates again.
+6. For series content, apply this per part. Include the part number in **Current Step** whenever only one part is being rebuilt.
+
 ### Phase -1: Content Discovery (Optional)
 
 This phase runs BEFORE the main pipeline when the user needs to find a topic.
@@ -192,6 +203,7 @@ After completing each phase, update `content/pipeline-config.md`:
 - Check off the completed steps in the Step Checklist (replace `- [ ]` with `- [x]`)
 - Update **Current Step** to the next step about to begin
 - If a step fails or is blocked, set Status to `blocked` and note the issue in Current Step
+- If you move backward to redo any earlier phase, apply the **Rollback / Redo Protocol** immediately before editing content. Downstream agents must not infer readiness from stale checked boxes.
 
 ## Quality Gates
 
@@ -237,6 +249,7 @@ When content is planned as a multi-part series:
 - DO NOT auto-generate all social platforms — always ask after LinkedIn
 - ALWAYS track progress with the todo tool
 - ALWAYS read and update Pipeline Status in `content/pipeline-config.md` at start and after each phase
+- ALWAYS roll Pipeline Status back before redoing earlier content, visuals, reviews, publishing, or social assets
 - ALWAYS confirm with user after Phase 1 before writing content
 - ALWAYS run scope assessment after strategy to detect multi-part series need
 - For series: complete one part fully before starting the next

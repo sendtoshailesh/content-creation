@@ -73,6 +73,10 @@ Before starting a content run, edit `content/pipeline-config.md` to set:
 
 Select any model in the VS Code Copilot model picker — all agents inherit your selection. Review gates use GitHub Copilot's rubber-duck review feature, so the pipeline does not ask you to switch model families before quality review.
 
+### Pipeline Status Hygiene
+
+Whenever the workflow moves backward to redo an earlier phase, update `content/pipeline-config.md` before editing artifacts. Set Status to `in-progress`, set Current Step to the earliest step being redone with date and reason, uncheck that step and downstream dependent steps, and mark published/social outputs stale until regenerated. Never leave the status pointing at a later completed step while earlier content, visuals, reviews, publishing, or social assets are being rebuilt.
+
 ## Social Formatting Conventions
 
 - **LinkedIn / X/Twitter**: Unicode Mathematical Bold Sans-Serif (𝗕𝗼𝗹𝗱) and Italic Sans-Serif (𝘐𝘵𝘢𝘭𝘪𝘤) for native formatting

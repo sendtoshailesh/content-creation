@@ -38,6 +38,8 @@
 > - If Status is `in-progress` → Content creation is underway. Run `@content-pipeline` to resume from where it left off
 > - If Status is `completed` → All steps done! Review the content, then run `/archive-content` to archive and start fresh
 > - If Status is `blocked` → See Current Step for what needs attention
+>
+> **Rollback / redo rule:** If any agent goes back to rebuild an earlier phase, update this status before editing: set Status to `in-progress`, set Current Step to the earliest step being redone with the date and reason, uncheck that step and all downstream dependent steps, and mark published/social outputs stale until republished. Do not leave this file saying a later step is complete while earlier content is being regenerated.
 
 ---
 

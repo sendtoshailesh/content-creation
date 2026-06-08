@@ -31,6 +31,15 @@ This adversarial stance supplements — does not replace — the standard qualit
 3. **Report findings** with specific line references
 4. **Fix issues** directly in the files (with user approval for major rewrites)
 
+## Pipeline Status Hygiene
+
+If quality findings require returning to an earlier pipeline phase, update `content/pipeline-config.md` before fixing files:
+- Blog/content rewrite -> set Current Step to `Step 3 redo — quality findings (<YYYY-MM-DD>)` and uncheck Step 3 plus downstream steps
+- Visual rebuild -> set Current Step to `Step 3b redo — visual QA findings (<YYYY-MM-DD>)` and uncheck visual assets plus downstream steps
+- Social/script rewrite -> set Current Step to the earliest affected distribution step and uncheck that step plus downstream publishing
+
+Do not leave the config at a later completed/published step while applying fixes that invalidate downstream outputs.
+
 ## Quality Audit Checklist
 
 ### Content
@@ -87,3 +96,4 @@ Provide a structured review:
 - DO NOT rewrite entire content without user approval
 - DO NOT change the topic, angle, or structure — only fix quality issues
 - ONLY audit and fix; do not create new content
+- DO NOT fix content that invalidates downstream outputs without rolling pipeline status back first

@@ -44,6 +44,8 @@ Read `content/pipeline-config.md` and check:
 - **Publishing Config** — publish mode and approach
 - **Target Subreddits** — which subreddits for Reddit posts
 
+If the blog, visuals, canonical URL, or generated social copy changed after social review, do not publish stale social content. Update `content/pipeline-config.md` first: set Status to `in-progress`, set Current Step to the earliest affected social/content step, uncheck downstream social publishing, and mark social outputs stale until regenerated/reviewed.
+
 ### 2. Validate Credentials
 
 Call `check_credentials` (social-publisher MCP) to verify which platforms have credentials configured. Report any missing credentials and link to `docs/social-api-setup.md`.

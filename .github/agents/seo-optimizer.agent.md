@@ -102,3 +102,4 @@ Add the SEO frontmatter to the blog file, then provide a summary:
 - Read `content/pipeline-config.md` for topic context
 - Output informs which keywords social posts should also reference
 - Can be invoked standalone: `@seo-optimizer Optimize content/[blog-file].md`
+- If SEO changes modify title, slug, canonical URL, headings, or metadata after publishing/social generation, update `content/pipeline-config.md` first: set Status to `in-progress`, set Current Step to `Step 3d redo — SEO changes (<YYYY-MM-DD>)`, and uncheck downstream web publish and social publishing steps. Mark published/social URLs stale until regenerated.

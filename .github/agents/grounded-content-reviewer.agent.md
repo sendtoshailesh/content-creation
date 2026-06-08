@@ -26,6 +26,15 @@ Before any review work:
 2. ONLY proceed if status is `in-progress` or `completed`
 3. If status is `not-started` or `blocked`, STOP and inform the user
 
+## Pipeline Status Hygiene
+
+If fact-checking changes an already-reviewed or published artifact, update `content/pipeline-config.md` before editing:
+- Set Status to `in-progress`
+- Set Current Step to the earliest affected phase, for example `Step 3e redo — grounded corrections (<YYYY-MM-DD>)`
+- Uncheck grounded review and every downstream dependent step: SEO, social assets, brand review, web publish, and social publishing
+- If only social/script content changes, roll back to that platform's generation/review step instead of the blog step
+- If content was already published, mark published/social outputs stale in Current Step until republished
+
 ## Pre-Review Context Loading
 
 Before performing any web searches, read these files to understand what was created and what sources were already used:
@@ -90,6 +99,7 @@ Work through content in this exact order. For each piece:
 - DO NOT change the narrative arc or case study details (these are composite/anonymized scenarios)
 - DO NOT proceed if pipeline status is `not-started`
 - ONLY use web search results that you can attribute to a specific source
+- DO NOT silently edit published/downstream-approved content without rolling pipeline status back
 
 ## Output Format
 
