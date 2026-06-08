@@ -28,6 +28,8 @@
 | `direct-url` | A specific article or page URL | Full text extracted directly via `trafilatura` |
 | `opml` | OPML subscription export file | Parsed for feed URLs, each processed as `rss` type |
 
+> **Note:** Chrome Reading List is handled by the dedicated `@reading-list-curator` agent (not via this feed-sources table). Run `@reading-list-curator` or `/reading-list-ideas` to generate ideas from your Chrome reading list. It uses the same subject area filters and scoring system defined below.
+
 ### How to Add Sources
 
 1. Add a row to the table above with the source details

@@ -12,6 +12,8 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 |------|------|-------------|--------|
 | 0a | Reference Discovery | `reference-discovery` | ✅ Implemented |
 | 0b | Market Intelligence | `trend-researcher` | ✅ Implemented |
+| 0c | Reading List Curation | `reading-list-curator` | ✅ Implemented |
+| 0d | Apple Notes Curation | `apple-notes-curator` | ✅ Implemented |
 | 1 | Clarifying Questions | `content-strategist` | ✅ Implemented |
 | 2 | Strategy & Outline | `content-strategist` | ✅ Implemented |
 | 2b | Scope Assessment (single vs. series) | `content-scope-assessment` skill | ✅ Implemented |
@@ -47,6 +49,52 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 ---
 
 ## Completed Steps — Detailed Record
+
+### Step 0c: Reading List Curation (`reading-list-curator`)
+
+**Objective:** Generate content ideas from the user's Chrome reading list — articles they've explicitly saved represent high-intent signals for content creation.
+
+**Task:**
+- Read Chrome's local `Bookmarks` JSON file to extract reading list entries
+- Filter by user-selected time range (1d, 3d, 7d, 2w, 1m, 3m, 6m, all) and read status
+- Auto-categorize items against subject area filters from `content/feed-sources.md`
+- Cluster related items into theme groups (multiple articles on same topic = stronger idea)
+- Smart priority scoring (/25 scale, same dimensions as feed-curator)
+- Present ranked ideas for interactive curation (keep/dismiss/explore/merge)
+- Append accepted ideas to `content/idea-queue.md`
+- Optionally batch-add selected URLs as references in `content/pipeline-config.md`
+
+**Script:** `scripts/pipeline/reading_list_reader.py` — parses Chrome Bookmarks, filters, optionally extracts full text via trafilatura
+
+**Output:** Curated ideas in `content/idea-queue.md` with Chrome Reading List attribution
+
+**Trigger:** Run `@reading-list-curator` or `/reading-list-ideas`
+
+---
+
+### Step 0d: Apple Notes Curation (`apple-notes-curator`)
+
+**Objective:** Generate content ideas from Apple Notes — notes captured from conferences, articles, conversations, and quick thoughts represent raw idea signals.
+
+**Task:**
+- Read the Apple Notes SQLite database (`NoteStore.sqlite`) via a safe copy
+- Filter by user-selected time range and optionally by folder name
+- Triage notes to skip personal/non-content items (reminders, credentials, to-do lists)
+- Auto-categorize content-relevant notes against subject area filters
+- Cluster related notes into themes (multiple notes on the same topic = stronger signal)
+- Extract embedded URLs from note bodies for use as references
+- Smart priority scoring (/25 scale)
+- Present ranked ideas for interactive curation
+- Append accepted ideas to `content/idea-queue.md`
+- Optionally batch-add embedded URLs as references in `content/pipeline-config.md`
+
+**Script:** `scripts/pipeline/apple_notes_reader.py` — reads Apple Notes SQLite DB, extracts note content from gzip-compressed protobuf blobs, supports folder listing and filtering
+
+**Output:** Curated ideas in `content/idea-queue.md` with Apple Notes attribution
+
+**Trigger:** Run `@apple-notes-curator` or `/apple-notes-ideas`
+
+---
 
 ### Step 0a: Reference Discovery (`reference-discovery`)
 
