@@ -119,8 +119,10 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 ### Phase 2c: Visual Quality Review (Mandatory)
 9. **Rubber-duck visual review** — run after all visuals are rendered, before content quality review:
    - Do **not** ask the user to switch model families.
-   - Delegate the adversarial critique to GitHub Copilot's `rubber-duck` review feature with the blog post path (it should inspect all `![](path)` references)
-   - Ask rubber-duck to inspect each rendered PNG/SVG against the review checklist (text overflow, overlap, data accuracy, readability, design tokens, standalone clarity)
+   - Delegate the adversarial critique to GitHub Copilot's `rubber-duck` review feature with the blog post path.
+   - Rubber-duck must enumerate only Markdown image references (`![alt](visuals/...)`), verify each file exists at 320 DPI, and open/inspect every referenced PNG/SVG. Frontmatter `og_image` does not count as a Markdown image reference.
+   - Ask rubber-duck to inspect each rendered PNG/SVG against the review checklist: text overflow, overlap, clipping, data accuracy, readability, bold typography, design tokens, standalone clarity, excessive whitespace, and repetitive color/shape/layout patterns.
+   - Repetitive visual patterns, small/unbold text, or any uninspected referenced image are blocking findings.
    - If rubber-duck reports actionable visual findings, delegate the findings to `visual-reviewer` for structured triage and to `visual-renderer` for fixes.
    - If **PASS** (0 critical findings): proceed to Phase 3
    - If **FAIL** (1+ critical findings):

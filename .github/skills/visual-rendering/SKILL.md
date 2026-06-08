@@ -31,7 +31,20 @@ Identify what's needed from the content outline:
 - **SVGs**: interactive/collapsible web graphics (tradeoff charts, decision funnels, checklist cards)
 - **Mermaid** (`.mmd`): flowcharts, decision trees, process timelines
 
-### 2. Generate PNGs via matplotlib
+### 2. Generate PNGs with the right renderer
+
+Use **Pillow (PIL)** for blog infographics, comparison panels, matrices, workflows, callout cards, and any visual with more than one text block. Use matplotlib only for true quantitative charts with axes.
+
+For text-heavy blog visuals, create a Python renderer script at `content/visuals/render_<topic>.py` with measured text helpers (`textbbox`, wrapping, font fitting). Do not place text into a box unless it has been measured against that box first.
+
+Mandatory for every renderer:
+- Generate every `![...](visuals/*.png)` image referenced by the blog, not just the first few visuals.
+- Use body labels >= 34 px for 320 DPI output, and bold all primary claims, labels, values, and section headers.
+- Use a distinct composition pattern for adjacent visuals (split-screen, timeline, flow, scorecard, matrix, annotated scene, radial, dashboard). Reusing the same card grid/table pattern across a post is a review failure.
+- Use high-contrast token combinations by default. Pale backgrounds are allowed only when paired with bold dark labels and strong borders.
+- Keep one canonical series renderer when a multi-part series shares visuals. Per-part renderer files may exist only as compatibility wrappers that call the canonical renderer.
+
+### 3. Matplotlib template for quantitative charts only
 
 Create a Python renderer script at `content/visuals/render_<topic>.py`:
 
@@ -87,11 +100,11 @@ def get_tokens(theme_name):
 
 Each visual gets its own function. Save with `plt.savefig(path, dpi=DPI, bbox_inches='tight', facecolor=TOKENS['BG'])`.
 
-### 3. Generate SVGs via Python
+### 4. Generate SVGs via Python
 
 Create `content/visuals/write_svgs.py` — never use terminal heredoc for SVGs. Write SVG XML strings from Python using `with open(path, 'w') as f: f.write(svg_content)`.
 
-### 4. Generate Mermaid Diagrams
+### 5. Generate Mermaid Diagrams
 
 Write `.mmd` files in `content/visuals/` using standard Mermaid syntax. Example:
 
@@ -102,7 +115,7 @@ graph TD
     B -->|No| D[Alternative]
 ```
 
-### 5. Run and Verify
+### 6. Run and Verify
 
 ```bash
 cd content/visuals
@@ -110,7 +123,13 @@ python render_<topic>.py
 python write_svgs.py
 ```
 
-Verify: all PNGs at 320 DPI, colors match tokens, no Unicode glyph warnings.
+Verify:
+- Every Markdown image reference resolves to an existing file.
+- Every PNG is 320 DPI.
+- Every referenced image was opened/inspected after rendering.
+- No visible text overflow, clipping, overlap, tiny labels, or unbold primary labels.
+- Adjacent visuals vary in theme and composition pattern.
+- No Unicode glyph warnings.
 
 ## Critical Rules
 
@@ -118,3 +137,6 @@ Verify: all PNGs at 320 DPI, colors match tokens, no Unicode glyph warnings.
 - **SVGs via Python only**: heredoc causes encoding corruption
 - **Consistent palette**: every visual must use the shared tokens
 - **320 DPI**: non-negotiable for all PNG output
+- **Ask before assuming style**: if the user criticizes visual aesthetics or asks for creative improvement, ask for rebuild scope, design direction, color policy, diagram-pattern preferences, and typography density before rendering.
+- **Text-heavy visuals use Pillow**: use `textbbox()`/font fitting for cards, tables, workflows, matrices, scorecards, and infographics. Do not approve matplotlib or unmeasured text placement for these.
+- **Review is blocking**: visual review must fail on text overflow, clipped elements, small/unbold typography, excessive whitespace, or repetitive shape/color patterns.

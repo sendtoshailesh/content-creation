@@ -24,17 +24,19 @@ This skill uses GitHub Copilot's rubber-duck review pattern for adversarial visu
 3. **Data inaccuracy**: Numbers in visual don't match the blog/reference brief
 4. **Element clipping**: Chart elements cut off at figure boundaries
 5. **Unreadable blog typography**: Blog/social visuals use body labels below 11pt equivalent, weak hierarchy, or non-bold primary claims
+6. **Uninspected referenced image**: Any `![...](visuals/...)` reference that was not opened and visually inspected after rendering
+7. **Monotone visual system**: Multiple visuals in the same post repeat the same card grid, row-table, shape language, or color theme without a concept-driven reason
+8. **Excessive whitespace**: Important content is tiny or sparse while large areas of the canvas are unused
 
 ### Important (should fix before publishing)
 
-6. **Standalone clarity**: Reader cannot understand visual without reading the blog section
-7. **Design token violation**: Colors not from token palette, wrong font, wrong DPI
-8. **Layout imbalance**: Large empty areas, misaligned columns, uneven spacing
-9. **Repetitive design system**: Multiple visuals in the same post repeat the same card grid, row-table, shape language, or color theme without a concept-driven reason
+9. **Standalone clarity**: Reader cannot understand visual without reading the blog section
+10. **Design token violation**: Colors not from token palette, wrong font, wrong DPI
+11. **Layout imbalance**: Misaligned columns, uneven spacing, weak grouping
 
 ### Minor (nice to fix)
 
-10. **Visual polish**: Inconsistent padding, arrows overlapping content, legend placement
+12. **Visual polish**: Inconsistent padding, arrows overlapping content, legend placement
 
 ## Professional Infographic Principles
 
@@ -60,12 +62,13 @@ This is the #1 source of text overflow in stacked bars, pie charts, and treemaps
 
 ## Procedure
 
-1. Enumerate all visual files to review (from blog `![](path)` references or `content/visuals/` scan)
-2. View each rendered image using the image viewing capability
-3. Apply all review dimensions from the checklist above
-4. Cross-reference data in visuals against `content/reference-brief.md` and the blog post
-5. Produce structured findings report (severity, category, finding, suggestion)
-6. Return PASS (0 critical findings) or FAIL (1+ critical findings)
+1. Enumerate all visual files from blog `![alt](visuals/...)` references. Do not infer from frontmatter `og_image`.
+2. Verify every referenced file exists and is 320 DPI.
+3. View each rendered image using the image viewing capability. Reading renderer code is not sufficient.
+4. Apply all review dimensions from the checklist above.
+5. Cross-reference data in visuals against `content/reference-brief.md` and the blog post.
+6. Produce structured findings report (severity, category, finding, suggestion).
+7. Return PASS only when there are **0 critical findings and 0 uninspected referenced images**. Repetitive shape/color patterns block publishing.
 
 ## Output Format
 

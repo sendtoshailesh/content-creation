@@ -78,6 +78,11 @@ for i, visual_func in enumerate(visual_functions):
 - **Mermaid**: Use `.mmd` extension, standard Mermaid syntax
 - **Theme diversity**: Each visual in a blog post uses a different theme from the palette list. Cycle round-robin.
 - **Base tokens are constant**: BG, TEXT, TEXT_2, MUTED, GRID, LIGHT_BG, FONT, DPI never change between themes
+- **Text-heavy visuals use Pillow**: Comparison panels, matrices, workflows, scorecards, tables, and infographics must use Pillow or another measured-text renderer. Matplotlib is only for true quantitative charts.
+- **Measured text is mandatory**: Use `textbbox()`/wrapping/font-fitting before drawing text into any bounded area.
+- **Large bold typography**: Body labels should be >= 34 px at 320 DPI. Primary claims, values, labels, and section headers must be bold.
+- **Pattern diversity blocks publishing**: A post must not repeat the same card grid/table/flow pattern across multiple visuals. Adjacent visuals must differ in composition and theme.
+- **Series renderer consistency**: Multi-part series should use one canonical renderer for all shared visuals; per-part renderers should wrap the canonical renderer rather than diverging.
 
 ## Narrow Segment Rule
 
@@ -125,7 +130,7 @@ text_width = bbox[2] - bbox[0]
 
 ## Visual Review
 
-All rendered visuals must pass rubber-duck review by the `visual-reviewer` agent before publishing. The reviewer checks for text overflow, overlap, data accuracy, design token compliance, and reader comprehension. See `visual-review` skill for the full checklist.
+All rendered visuals must pass rubber-duck review by the `visual-reviewer` agent before publishing. The reviewer must open and inspect every Markdown-referenced image, verify it exists at 320 DPI, and fail the review for text overflow, overlap, clipping, tiny/unbold typography, excessive whitespace, or repetitive color/shape/layout patterns. See `visual-review` skill for the full checklist.
 
 ## Visual Diversity and Typography
 

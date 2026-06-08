@@ -71,6 +71,9 @@ theme_names = list(THEMES.keys())
 - **No text overflow**: measure text before rendering. Use Pillow `textbbox()` or equivalent for card/table/infographic layouts. If text does not fit, wrap, increase the box, reduce copy, or ask the user which content to prioritize.
 - **Layout diversity**: a single post must mix diagram patterns. Avoid repeating the same card grid, row table, or color theme across visuals. Prefer a deliberate mix such as split-screen narrative, timeline, flow, scorecard, matrix, radial, and annotated-scene layouts.
 - **Creative but consistent**: visuals may use varied shapes, asymmetry, hero numbers, callout ribbons, timelines, and editorial compositions, but must stay inside the shared design token palette.
+- **Series-wide consistency**: for multi-part series, create one canonical renderer for all visuals in the series. Per-part renderers must be thin wrappers that call the canonical renderer so later parts cannot regress to weaker templates.
+- **Render all referenced assets**: after writing renderer code, compare blog Markdown `![alt](visuals/*.png)` references against generated files. Do not stop until every referenced PNG exists at 320 DPI.
+- **No unreviewed publishing**: do not mark visuals complete until every referenced image has been opened and inspected by the visual-reviewer/rubber-duck gate.
 
 ## Narrow Segment Rule (Prevents Text Overflow)
 

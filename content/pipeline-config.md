@@ -13,7 +13,7 @@
 | **Status** | `in-progress` |
 | **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
 | **Started** | 2025-07-17 |
-| **Current Step** | Parts 2+3 complete — awaiting publish decision |
+| **Current Step** | Step 10 complete — both parts published to GitHub Pages |
 | **Series** | `yes (2 parts)` |
 | **Current Part** | 1 |
 
@@ -267,6 +267,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 | Part | URL | Published |
 |------|-----|-----------|
 | Part 1 | https://sendtoshailesh.github.io/blog/agent-eval-part-1.html | 2025-07-17 |
+| Part 2 | https://sendtoshailesh.github.io/blog/agent-eval-part-2.html | 2025-07-17 |
 | Series Index | https://sendtoshailesh.github.io/blog/series/agent-eval.html | 2025-07-17 |
 
 #### Social Media
