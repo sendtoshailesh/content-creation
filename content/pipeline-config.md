@@ -11,7 +11,7 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
-| **Topic** | SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production |
+| **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
 | **Started** | 2025-07-17 |
 | **Current Step** | Parts 2+3 complete — awaiting publish decision |
 | **Series** | `yes (2 parts)` |

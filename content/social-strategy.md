@@ -1,6 +1,6 @@
 # Social Distribution Strategy — Part 1: "The Gap Nobody's Testing For"
 
-*Series: SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production*
+*Series: AI Agent Evals: Why SWE-bench Isn't Enough Before Production*
 *Canonical URL: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html*
 
 ---

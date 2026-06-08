@@ -1,7 +1,7 @@
-# Reference Brief — SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
+# Reference Brief — AI Agent Evals: Why SWE-bench Isn't Enough Before Production
 
 Generated: 2025-07-17
-Topic: SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
+Topic: AI Agent Evals: Why SWE-bench Isn't Enough Before Production
 Primary source: `content/agent-eval-knowledge-extract.md` (34K chars, first-party practitioner knowledge)
 
 ## Primary Source Summary

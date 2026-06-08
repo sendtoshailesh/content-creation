@@ -24,7 +24,7 @@ Last curated: 2026-06-08 (Apple Notes — 37 notes analyzed, 18 content-relevant
 
 -->
 
-### [1] SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond
+### [1] AI Agent Evals: Why SWE-bench Isn't Enough Before Production — The Sourdough Test & Beyond
 - **Score**: 23/25 (relevance: 5 + data density: 5 + timeliness: 5 + gap: 4 + validation: 4)
 - **Subject areas**: AI & LLM, DevOps & Platform Engineering, Architecture
 - **Source articles**:

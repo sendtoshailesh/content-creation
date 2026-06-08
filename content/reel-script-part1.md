@@ -4,7 +4,7 @@
 **Format**: A — "Did You Know?" (Data Shock) + B — "Before/After" hybrid
 **Platforms**: Instagram Reels (60s), YouTube Shorts (60s), LinkedIn Video (75s)
 **Aspect ratio**: 9:16 (1080×1920) for Reels/Shorts; 1:1 (1080×1080) optional for LinkedIn
-**Series**: Part 1 of 2 — "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
+**Series**: Part 1 of 2 — "AI Agent Evals: Why SWE-bench Isn't Enough Before Production"
 **Blog URL**: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
 
 ---
@@ -153,7 +153,7 @@ Agents score 74-78% on benchmarks but only 35-50% of their PRs get merged in pro
 Full write-up with YAML configs and the complete failure taxonomy:
 👉 https://sendtoshailesh.github.io/blog/agent-eval-part-1.html
 
-Part 1 of 2 in the series "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
+Part 1 of 2 in the series "AI Agent Evals: Why SWE-bench Isn't Enough Before Production"
 
 #AIAgents #AgentEvals #SourdoughTest #SoftwareEngineering #AIReliability
 

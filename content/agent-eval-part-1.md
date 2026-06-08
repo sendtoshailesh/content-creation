@@ -1,5 +1,5 @@
 ---
-title: "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"
+title: "AI Agent Evals: Why SWE-bench Isn't Enough Before Production"
 description: "Learn how to evaluate AI agents for silent failures before production: benchmark gaps, the Sourdough Test, and a two-task eval engineers can run pre-release."
 slug: "agent-eval-part-1"
 series: "how-to-evaluate-ai-agents"
@@ -10,11 +10,11 @@ canonical: "https://sendtoshailesh.github.io/blog/agent-eval-part-1.html"
 og_image: "visuals/sourdough_test.png"
 ---
 
-# SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
+# AI Agent Evals: Why SWE-bench Isn't Enough Before Production
 
 ## Part 1: The Gap Nobody's Testing For
 
-*Part 1 of 2 in the series "SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production"*
+*Part 1 of 2 in the series "AI Agent Evals: Why SWE-bench Isn't Enough Before Production"*
 
 ---
 

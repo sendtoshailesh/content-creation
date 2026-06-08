@@ -10,7 +10,7 @@ A $47K agent loop ran for 11 days because nobody tested behavior. Three of our m
 
 ━━━
 
-🔬 Here's the system (Part 2 of 2 — the finale of "SWE-bench Isn't Enough").
+🔬 Here's the system (Part 2 of 2 — the finale of "AI Agent Evals: Why SWE-bench Isn't Enough").
 
 We built a three-layer grading stack across 38 tasks and 8 agents. The design principle: 𝗮𝗹𝘄𝗮𝘆𝘀 𝘂𝘀𝗲 𝘁𝗵𝗲 𝗰𝗵𝗲𝗮𝗽𝗲𝘀𝘁 𝗴𝗿𝗮𝗱𝗲𝗿 𝘁𝗵𝗮𝘁 𝗰𝗮𝘁𝗰𝗵𝗲𝘀 𝘁𝗵𝗲 𝗳𝗮𝗶𝗹𝘂𝗿𝗲.
 

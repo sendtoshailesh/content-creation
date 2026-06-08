@@ -8,7 +8,7 @@ $3-8 per eval run.
 
 A $47K agent loop ran for 11 days because nobody tested behavior. Three of our model regressions were caught before production — for less than the cost of a latte.
 
-Here's the system (Part 2 of 2 — the finale of "SWE-bench Isn't Enough").
+Here's the system (Part 2 of 2 — the finale of "AI Agent Evals: Why SWE-bench Isn't Enough").
 
 We built a three-layer grading stack across 38 tasks and 8 agents. The design principle: always use the cheapest grader that catches the failure.
 

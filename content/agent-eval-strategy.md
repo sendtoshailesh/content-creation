@@ -1,4 +1,4 @@
-# Strategy Document — SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
+# Strategy Document — AI Agent Evals: Why SWE-bench Isn't Enough Before Production
 
 ## Audience Persona Analysis
 

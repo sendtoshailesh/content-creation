@@ -10,11 +10,11 @@ canonical: "https://sendtoshailesh.github.io/blog/agent-eval-part-2.html"
 og_image: "visuals/grading_decision_tree.png"
 ---
 
-# SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production
+# AI Agent Evals: Why SWE-bench Isn't Enough Before Production
 
 ## Part 2: Build the Eval System — Three Graders, 38 Tasks, and the $3-8 Safety Net
 
-*Part 2 of 2 in the series "[SWE-bench Isn't Enough: How to Evaluate AI Agents Before They Break Production](https://sendtoshailesh.github.io/blog/agent-eval-part-1.html)"*
+*Part 2 of 2 in the series "[AI Agent Evals: Why SWE-bench Isn't Enough Before Production](https://sendtoshailesh.github.io/blog/agent-eval-part-1.html)"*
 
 ---
 
