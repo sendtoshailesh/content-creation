@@ -125,4 +125,11 @@ text_width = bbox[2] - bbox[0]
 
 ## Visual Review
 
-All rendered visuals must pass review by the `visual-reviewer` agent (cross-model critic) before publishing. The reviewer checks for text overflow, overlap, data accuracy, design token compliance, and reader comprehension. See `visual-review` skill for the full checklist.
+All rendered visuals must pass rubber-duck review by the `visual-reviewer` agent before publishing. The reviewer checks for text overflow, overlap, data accuracy, design token compliance, and reader comprehension. See `visual-review` skill for the full checklist.
+
+## Visual Diversity and Typography
+
+- Ask clarifying questions before rebuilding visuals when the user is asking for aesthetic changes; do not assume style direction.
+- Every visual in a post should have a distinct layout pattern or composition. Avoid repeated card grids, repeated row tables, and same-looking color themes across a series.
+- Use large, bold typography for primary claims and labels. Body labels should generally be at least 11pt equivalent; reduce copy before reducing readability.
+- Measure text before rendering. For infographic layouts, prefer Pillow with `textbbox()` so text cannot overflow boxes.

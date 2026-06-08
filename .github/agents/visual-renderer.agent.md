@@ -66,6 +66,11 @@ theme_names = list(THEMES.keys())
 - **Theme diversity**: each visual in a post uses a different theme from the THEMES dict (round-robin by visual index). Do NOT use the same theme for all visuals.
 - **Base tokens constant**: BG, TEXT, TEXT_2, MUTED, GRID, LIGHT_BG, FONT, DPI never change between themes
 - **Each visual = one function** in the renderer script, accepting a `tokens` dict parameter
+- **Ask before assuming style**: if the user criticizes visual style or asks for "better", ask which design direction, color policy, diagram patterns, and typography density they prefer before rebuilding.
+- **Minimum typography for blog visuals**: titles >= 16pt equivalent, body labels >= 11pt equivalent, and important numbers/claims bold. If using pixel-based renderers at 320 DPI, body labels should generally be >= 34 px.
+- **No text overflow**: measure text before rendering. Use Pillow `textbbox()` or equivalent for card/table/infographic layouts. If text does not fit, wrap, increase the box, reduce copy, or ask the user which content to prioritize.
+- **Layout diversity**: a single post must mix diagram patterns. Avoid repeating the same card grid, row table, or color theme across visuals. Prefer a deliberate mix such as split-screen narrative, timeline, flow, scorecard, matrix, radial, and annotated-scene layouts.
+- **Creative but consistent**: visuals may use varied shapes, asymmetry, hero numbers, callout ribbons, timelines, and editorial compositions, but must stay inside the shared design token palette.
 
 ## Narrow Segment Rule (Prevents Text Overflow)
 
@@ -117,6 +122,15 @@ text_height = bbox[3] - bbox[1]
 
 Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, so you can verify text fits its container and adjust font size or position if it doesn't.
 
+### Mandatory Pre-Render Design Plan
+
+Before writing or modifying renderer code, produce a short visual plan:
+
+| Visual | Layout pattern | Theme | Typography strategy | Overflow prevention |
+|--------|----------------|-------|---------------------|---------------------|
+
+The plan must show that adjacent visuals do not reuse the same layout pattern or theme. If the user's desired style is unclear, stop and ask clarifying questions instead of guessing.
+
 ## Information Design Principles
 
 Apply these when designing any visual:
@@ -141,7 +155,7 @@ content/visuals/
 
 ## Post-Rendering
 
-After generating visuals, the `visual-reviewer` agent will review all rendered output using a cross-model critic pattern. Address any findings from the review report before visuals are considered complete.
+After generating visuals, the `visual-reviewer` agent will review all rendered output using GitHub Copilot's rubber-duck review pattern. Address any findings from the review report before visuals are considered complete.
 
 ## Constraints
 

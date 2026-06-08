@@ -115,30 +115,25 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
    - This step is **mandatory** and cannot be skipped. Dense sections without visuals force readers into a single consumption path. Visuals provide an alternative path so readers can choose: read the text OR understand the concept through the visual.
 
 ### Phase 2c: Visual Quality Review (Mandatory)
-9. **Cross-model visual review** — run after all visuals are rendered, before content quality review:
-   - Detect the model family used for visual generation (same as content creation family)
-   - Prompt the user: "Visuals were generated with the **[family]** model family. For cross-model visual review, please switch to a **different family** in the VS Code model picker. Then confirm to proceed."
-   - Wait for user confirmation.
-   - Delegate to `visual-reviewer` agent with the blog post path (it extracts all `![](path)` references)
-   - The visual-reviewer inspects each rendered PNG/SVG against the review checklist (text overflow, overlap, data accuracy, readability, design tokens, standalone clarity)
+9. **Rubber-duck visual review** — run after all visuals are rendered, before content quality review:
+   - Do **not** ask the user to switch model families.
+   - Delegate the adversarial critique to GitHub Copilot's `rubber-duck` review feature with the blog post path (it should inspect all `![](path)` references)
+   - Ask rubber-duck to inspect each rendered PNG/SVG against the review checklist (text overflow, overlap, data accuracy, readability, design tokens, standalone clarity)
+   - If rubber-duck reports actionable visual findings, delegate the findings to `visual-reviewer` for structured triage and to `visual-renderer` for fixes.
    - If **PASS** (0 critical findings): proceed to Phase 3
    - If **FAIL** (1+ critical findings):
-     a. Prompt user to switch back to the creation model family
-     b. Delegate findings report to `visual-renderer` for fixes
-     c. After fixes, switch back to reviewer family and re-run visual-reviewer
-     d. Repeat until PASS (max 3 review cycles to prevent infinite loops)
+     a. Delegate findings report to `visual-renderer` for fixes
+     b. Re-run rubber-duck visual review on the updated visuals
+     c. Repeat until PASS (max 3 review cycles to prevent infinite loops)
    - Record review results in pipeline-config.md (findings count, pass/fail, review cycles)
    - This step can also run **independently** via `@visual-reviewer [path]` for ad-hoc visual QA
 
 ### Phase 3: Quality Gate + SEO (Steps 3c-3d)
-7. **Cross-model switch**: Before running quality review, detect the model family used for content creation:
-   - If the current model name starts with `Claude` → creation family is `anthropic`
-   - If the current model name starts with `GPT` or `o` → creation family is `openai`
-   - If the current model name starts with `Gemini` → creation family is `google`
-   - Record the creation family in `content/pipeline-config.md` under `Current Run > Creation model family`
-   - Prompt the user: "Content was created with the **[family]** model family. For cross-model critic review, please switch to any model from a **different family** in the VS Code model picker. Available alternatives: [list families excluding creation family]. Then confirm to proceed."
-   - Wait for user confirmation before continuing.
-8. Delegate to `quality-reviewer` to audit blog + visuals (now running on a different model family)
+7. **Rubber-duck review gate**: Before running remediation reviewers, run GitHub Copilot's `rubber-duck` review feature as the adversarial critic:
+   - Do **not** ask the user to switch model families.
+   - Ask rubber-duck to challenge assumptions, detect hallucinated specificity, find logical gaps, check tone drift, verify internal consistency, and review visuals for reader comprehension.
+   - Record the review method in `content/pipeline-config.md` under `Current Run > Review method` as `GitHub Copilot rubber-duck`.
+8. Delegate rubber-duck findings to `quality-reviewer` to audit blog + visuals and fix confirmed issues
 9. If issues found, coordinate fixes before proceeding
 10. **Source freshness check (Step 3e)**: Delegate to `grounded-content-reviewer` with the blog path. This agent:
    - Re-fetches live source URLs (pricing pages, announcement posts, documentation)

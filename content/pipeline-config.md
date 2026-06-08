@@ -13,21 +13,21 @@
 | **Status** | `in-progress` |
 | **Topic** | How to Evaluate AI Agents Before They Break Production — The Sourdough Test & Beyond |
 | **Started** | 2025-07-17 |
-| **Current Step** | Steps 1-2: Strategy + outline |
-| **Series** | `pending-assessment` |
-| **Current Part** | — |
+| **Current Step** | Step 10 complete — Part 1 published to GitHub Pages |
+| **Series** | `yes (3 parts)` |
+| **Current Part** | 1 |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
-- [ ] Steps 1-2: Strategy + outline
-- [ ] Step 2b: Scope assessment (single vs. series)
-- [ ] Step 2c: Multi-dimensional analysis
-- [ ] Step 3: Blog post
-- [ ] Step 3b: Visual assets
-- [ ] Step 3c: Quality review
-- [ ] Step 4: LinkedIn post
-- [ ] Step 4c: Social platform selection
+- [x] Steps 1-2: Strategy + outline
+- [x] Step 2b: Scope assessment (single vs. series)
+- [x] Step 2c: Multi-dimensional analysis
+- [x] Step 3: Blog post
+- [x] Step 3b: Visual assets
+- [x] Step 3c: Quality review
+- [x] Step 4: LinkedIn post
+- [x] Step 4c: Social platform selection
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -47,7 +47,7 @@ Choose which model to use for content generation. Select your model in the **VS 
 
 ### Model Family Detection
 
-The pipeline tracks which model family was used for content creation and ensures critic review uses a **different** family. No model versions are hardcoded — whatever the latest model is in each family within GitHub Copilot will be used.
+The pipeline uses the selected model for content generation and GitHub Copilot's **rubber-duck review** feature for adversarial review gates. No model-family switch is required before reviews.
 
 | Family | Model name prefix |
 |--------|------------------|
@@ -55,28 +55,28 @@ The pipeline tracks which model family was used for content creation and ensures
 | `openai` | GPT-*, o* |
 | `google` | Gemini * |
 
-### Cross-Model Critic Review
+### Rubber-Duck Review
 
 | Role | Selection Rule |
 |------|---------------|
 | **Content Creation** | User selects any model; pipeline records the family used |
-| **Critic Review** | Must use a model from a **different family** than creation |
+| **Critic Review** | Use GitHub Copilot **rubber-duck review**; no model switch required |
 | **Visual Generation** | User selects any model |
 
-> **How it works**: After content is created, the orchestrator identifies the creation model family and prompts you to switch to any model from a different family before running quality review. This ensures adversarial diversity — different model families have different biases, blind spots, and strengths.
+> **How it works**: After content is created, the orchestrator runs rubber-duck review as the adversarial critique gate, then routes findings to the appropriate reviewer/fixer agents.
 
 ### Current Run
 
 | Field | Value |
 |-------|-------|
-| **Creation model family** | _(auto-detected from VS Code picker during content creation)_ |
-| **Critic model family** | _(switch to a different family before quality review)_ |
+| **Creation model family** | `anthropic` |
+| **Review method** | `GitHub Copilot rubber-duck` |
 
 ### Current Selection
 
 **Preferred model**: _(select any model in the VS Code Copilot picker — agents inherit your selection automatically)_
 
-The only constraint is cross-model critic review: the pipeline will ask you to switch to a **different model family** before quality review. No specific model versions are required — use whatever is available.
+Review gates use GitHub Copilot rubber-duck review. No specific model versions are required — use whatever is available.
 
 ---
 
@@ -134,11 +134,11 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Is Series** | `pending-assessment` |
-| **Total Parts** | — |
-| **Current Part** | — |
-| **Part 1 Focus** | — |
-| **Publishing Cadence** | — |
+| **Is Series** | `yes` |
+| **Total Parts** | 3 |
+| **Current Part** | 1 |
+| **Part 1 Focus** | The Gap Nobody's Testing For — benchmark gap, failure taxonomy, Sourdough Test, minimum viable eval |
+| **Publishing Cadence** | 3-5 days between parts |
 
 ### Dimension Analysis
 
@@ -146,14 +146,14 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Persona count** | — |
-| **Personas** | — |
-| **Technology practices** | — |
-| **Governance practices** | — |
-| **Total practices** | — |
-| **Primary WAF pillars** | — |
-| **Secondary WAF pillars** | — |
-| **Dimension breadth score** | — |
+| **Persona count** | 5 |
+| **Personas** | IC Engineer, Tech Lead, Engineering Manager, Platform Engineer, AI Team Decision-Maker |
+| **Technology practices** | 10 |
+| **Governance practices** | 6 |
+| **Total practices** | 16 |
+| **Primary WAF pillars** | Reliability, Security, Operational Excellence |
+| **Secondary WAF pillars** | Cost Optimization |
+| **Dimension breadth score** | 6/6 |
 
 ### Social Platform Selection
 
@@ -265,7 +265,8 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Part | URL | Published |
 |------|-----|-----------|
-| — | — | — |
+| Part 1 | https://sendtoshailesh.github.io/blog/agent-eval-part-1.html | 2025-07-17 |
+| Series Index | https://sendtoshailesh.github.io/blog/series/agent-eval.html | 2025-07-17 |
 
 #### Social Media
 

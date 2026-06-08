@@ -71,7 +71,7 @@ Before starting a content run, edit `content/pipeline-config.md` to set:
 - **Model preferences**: The pipeline auto-detects which model family you're using (documented in config; actual model is selected via the VS Code model picker)
 - **Output preferences**: Blog length, social platform targets, subreddits, YouTube duration
 
-Select any model in the VS Code Copilot model picker — all agents inherit your selection. The only constraint is cross-model critic review: the pipeline auto-detects which family you used and asks you to switch families before quality review.
+Select any model in the VS Code Copilot model picker — all agents inherit your selection. Review gates use GitHub Copilot's rubber-duck review feature, so the pipeline does not ask you to switch model families before quality review.
 
 ## Social Formatting Conventions
 

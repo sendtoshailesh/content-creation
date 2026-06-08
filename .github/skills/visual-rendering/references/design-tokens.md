@@ -40,6 +40,7 @@ TOKENS = {
 - **Title size**: 16–18pt
 - **Body size**: 10–12pt
 - **Label size**: 8–9pt
+- **Editorial/blog visuals**: prefer larger/bolder typography than the minimums above. Use >= 11pt equivalent for body labels and bold treatment for primary claims, values, and section labels.
 
 ## Output
 
@@ -51,3 +52,4 @@ TOKENS = {
 
 - **No Unicode glyphs in matplotlib**: Characters like →, ✓, ✗ cause rendering warnings. Use ASCII: `->`, `[x]`, `[ ]`
 - **SVG via Python only**: Writing SVGs with shell heredoc causes encoding corruption. Always use Python `open()` + `write()`.
+- **Text overflow**: For card/table/infographic layouts, measure text before rendering. Prefer Pillow `textbbox()` when exact fit matters.

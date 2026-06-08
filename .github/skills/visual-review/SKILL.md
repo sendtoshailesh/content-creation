@@ -11,15 +11,9 @@ Review rendered visual assets (PNG, SVG, Mermaid diagrams) for layout defects, t
 - When a user reports a visual defect (standalone invocation)
 - After any renderer code change to verify the fix
 
-## Cross-Model Requirement
+## Rubber-Duck Review Requirement
 
-This skill MUST be executed on a different LLM model family than the one that created the visuals. This follows the same principle as the content quality review (cross-model critic) and GitHub's rubber duck review pattern — adversarial diversity catches systematic blind spots.
-
-| Creation model | Reviewer model options |
-|---------------|----------------------|
-| Anthropic (Claude) | OpenAI (GPT) or Google (Gemini) |
-| OpenAI (GPT) | Anthropic (Claude) or Google (Gemini) |
-| Google (Gemini) | Anthropic (Claude) or OpenAI (GPT) |
+This skill uses GitHub Copilot's rubber-duck review pattern for adversarial visual critique. Do **not** require a model-family switch before running visual review.
 
 ## Review Dimensions
 
@@ -29,18 +23,18 @@ This skill MUST be executed on a different LLM model family than the one that cr
 2. **Text overlap**: Labels, annotations, or values colliding with adjacent elements
 3. **Data inaccuracy**: Numbers in visual don't match the blog/reference brief
 4. **Element clipping**: Chart elements cut off at figure boundaries
+5. **Unreadable blog typography**: Blog/social visuals use body labels below 11pt equivalent, weak hierarchy, or non-bold primary claims
 
 ### Important (should fix before publishing)
 
-5. **Readability**: Font size < 7pt at 320 DPI, insufficient color contrast
 6. **Standalone clarity**: Reader cannot understand visual without reading the blog section
 7. **Design token violation**: Colors not from token palette, wrong font, wrong DPI
 8. **Layout imbalance**: Large empty areas, misaligned columns, uneven spacing
+9. **Repetitive design system**: Multiple visuals in the same post repeat the same card grid, row-table, shape language, or color theme without a concept-driven reason
 
 ### Minor (nice to fix)
 
-9. **Visual polish**: Inconsistent padding, arrows overlapping content, legend placement
-10. **Theme compliance**: Multiple visuals in same post using the same theme (should rotate)
+10. **Visual polish**: Inconsistent padding, arrows overlapping content, legend placement
 
 ## Professional Infographic Principles
 
@@ -49,6 +43,8 @@ Apply these principles from information design best practices (Edward Tufte, IBC
 - **Data-ink ratio**: Maximize the share of ink used to present data. Remove chartjunk (decorative gridlines, 3D effects, redundant labels).
 - **Small multiples**: When comparing similar data across categories, use consistent scales and aligned axes.
 - **Visual hierarchy**: The most important insight should have the largest/boldest visual treatment. Secondary information is smaller/lighter.
+- **Pattern diversity**: A post should mix visual patterns (split-screen, timeline, flow, scorecard, matrix, annotated scene, radial) instead of repeating the same composition.
+- **Ask before assuming**: When the user criticizes aesthetics, ask for design direction, color policy, diagram-pattern preferences, and typography density before approving or rebuilding.
 - **Color semantics**: Green = positive/success, Red = warning/negative, Blue = neutral/primary. Never use color as the only differentiator (accessibility).
 - **Annotation-first**: Key takeaways should be annotated directly on the visual, not left for the reader to infer.
 - **Gestalt principles**: Use proximity, similarity, and enclosure to group related elements. White space separates distinct concepts.
