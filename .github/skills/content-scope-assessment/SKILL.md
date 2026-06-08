@@ -46,29 +46,63 @@ If multi-dimensional analysis has not been run yet, omit this signal and use the
 
 - **Score 0-5**: Single post — topic fits well in ~3,000 words
 - **Score 6-10**: Consider series — topic is comprehensive but could be compressed
-- **Score 11+**: Recommend series — splitting improves depth, SEO, and distribution
+- **Score 11+**: Run the series necessity test below before recommending a series
+
+## Series Necessity Test
+
+Do not recommend a series from score alone. First decide whether the topic can be consolidated into one useful post.
+
+### Single-Post Feasibility Gate
+
+Recommend a **single comprehensive post** when all are true:
+
+1. The core reader job-to-be-done can be answered in one sitting.
+2. Proper coverage fits in **3,500-4,500 words** without cutting essential steps.
+3. The outline has **one dominant narrative arc** rather than separate independent arcs.
+4. Visual count can stay at **6 or fewer** without making dense sections unreadable.
+5. Social distribution can promote one clear CTA without cherry-picking unrelated angles.
+
+If this gate passes, choose a single post even if the numeric score is high. High score means "dense topic"; it does not automatically mean "series."
+
+### Required Series Gate
+
+Recommend a **multi-part series** only when at least two are true:
+
+1. The outline contains **2+ independent reader jobs** that would each make a complete article.
+2. Proper coverage would exceed **4,500 words** or require **7+ visuals** in one post.
+3. The topic has separate implementation phases that readers would execute at different times.
+4. The topic naturally separates by practice group, lifecycle stage, persona, or WAF pillar.
+5. Combining everything would bury the highest-impact takeaway below the fold.
+
+If only one condition is true, present a choice to the user: single comprehensive post vs. short series.
 
 ## Series Planning Procedure
 
 When recommending a series:
 
 1. **Identify the natural split points** — Where does the topic divide into self-contained subtopics?
-2. **Define part boundaries** — Each part must:
+2. **Choose part count from evidence** — do not default to 3 parts. Minimum 2, maximum 5:
+   - **2 parts**: one major divide, e.g., "why/what" + "how/playbook" or "practitioner" + "leader"
+   - **3 parts**: three natural lifecycle stages, practice clusters, or narrative arcs
+   - **4 parts**: four independent implementation pillars, each too deep for one section
+   - **5 parts**: only for broad guide-level topics with five standalone pillars and enough evidence for each
+3. **Define part boundaries** — Each part must:
    - Stand alone (reader gets value without reading other parts)
    - Have its own hook and CTA
    - Be 2,500-3,500 words
    - Have 2-3 dedicated visuals
-3. **Plan the series arc**:
+4. **Plan the series arc**:
    - Part 1: Problem framing + highest-impact strategy (the "quick win")
    - Part 2-N: Deep dives into each subsequent pillar
    - Final part: Synthesis + complete playbook
-4. **Dimension-informed split**: When multi-dimensional analysis is available, use dimension data to determine part boundaries:
+5. **Dimension-informed split**: When multi-dimensional analysis is available, use dimension data to determine part boundaries:
    - Choose the dimension type with the most natural groupings as the primary split axis
    - Align each part to 1-2 WAF pillars and a primary persona
    - Consider a persona arc: Part 1 = IC developer, middle parts = tech lead/architect, final part = manager/executive
    - Each part must have at least 2 practices with standalone value
-5. **Cross-linking strategy**: Each part links to previous/next, with a series landing page
-6. **Distribution plan per part**: Each part gets its own social distribution cycle
+6. **Part-count justification**: Include a one-paragraph explanation for why the selected N is better than N-1 and N+1.
+7. **Cross-linking strategy**: Each part links to previous/next, with a series landing page
+8. **Distribution plan per part**: Each part gets its own social distribution cycle
 
 ## Output Format
 
@@ -77,8 +111,11 @@ Add a `## Series Plan` section to the strategy document:
 ```markdown
 ## Series Plan
 
-**Assessment score**: X/14
-**Recommendation**: Multi-part series (N parts)
+**Assessment score**: X/16 (or X/14 if dimension analysis was omitted)
+**Single-post feasibility**: Pass/Fail — [why]
+**Required series gate**: [conditions met]
+**Recommendation**: Single post OR Multi-part series (N parts)
+**Part-count rationale**: Why N parts, not N-1 or N+1
 
 ### Series Structure
 
@@ -114,6 +151,8 @@ When a series is recommended:
 ## Constraints
 
 - DO NOT automatically split every topic — many fit well in a single post
+- DO NOT recommend a series from score alone; apply the single-post feasibility gate and required series gate
+- DO NOT default to 3 parts; choose 2, 3, 4, or 5 based on natural boundaries
 - DO NOT create artificial splits that break the reader's flow
 - Each part MUST deliver standalone value (not a cliffhanger with no resolution)
 - Minimum 2 parts, maximum 5 parts for a series

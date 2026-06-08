@@ -195,8 +195,9 @@ When the scope assessment recommends a multi-part series, use dimension data to 
 1. **Primary split axis**: Choose the dimension type with the most natural groupings (usually best practices for technical topics, personas for cross-functional topics)
 2. **Part 1 rule**: Always pair the highest-impact practice with the most common persona (usually the developer/IC). Part 1 must deliver a quick win.
 3. **Pillar alignment**: Each part should map to 1-2 WAF pillars. Avoid mixing all 5 pillars into one part.
-4. **Persona progression**: If series has 3+ parts, consider a persona arc: Part 1 = IC developer, middle parts = tech lead/architect, final part = manager/executive.
-5. **Standalone check**: Each part must have at least 2 practices with standalone value = yes.
+4. **Part-count neutrality**: Do not infer that a series must have 3 parts. Use the number of natural groups from the primary split axis, constrained to 2-5 parts.
+5. **Persona progression**: If series has 3+ parts, consider a persona arc: Part 1 = IC developer, middle parts = tech lead/architect, final part = manager/executive.
+6. **Standalone check**: Each part must have at least 2 practices with standalone value = yes.
 
 ## Constraints
 

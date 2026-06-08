@@ -70,15 +70,24 @@ After completing the outline, evaluate content comprehensiveness:
 **Total score interpretation (without dimension analysis):**
 - **0-4**: Single post — proceed normally
 - **5-8**: Suggest series — note the option and let user decide
-- **9+**: Recommend series — add a `## Series Plan` section to the strategy
+- **9+**: Run the single-post feasibility gate and required-series gate before recommending a series
 
 **Total score interpretation (with dimension analysis, 0-16 scale):**
 - **0-5**: Single post — proceed normally
 - **6-10**: Suggest series — note the option and let user decide
-- **11+**: Recommend series — add a `## Series Plan` section to the strategy
+- **11+**: Run the single-post feasibility gate and required-series gate before recommending a series
+
+**Single-post feasibility gate:**
+- Prefer a single comprehensive post if the reader job-to-be-done fits one sitting, proper coverage fits 3,500-4,500 words, there is one dominant narrative arc, visual count stays at 6 or fewer, and social distribution has one clear CTA.
+- High score means dense topic; it does not automatically mean series.
+
+**Required-series gate:**
+- Recommend a series only if 2+ are true: 2+ independent reader jobs, >4,500 words or 7+ visuals required, distinct implementation phases, natural split by practice/persona/lifecycle/WAF pillar, or consolidation would bury the highest-impact takeaway.
 
 If recommending a series, include:
 - Part boundaries (which pillars go in which part)
+- Part count from evidence: 2, 3, 4, or 5 parts. Do not default to 3.
+- Why the selected part count is better than N-1 and N+1.
 - Each part must stand alone with its own hook and CTA
 - Part 1 = problem framing + highest-impact quick-win pillar
 - Publishing cadence recommendation (days between parts)

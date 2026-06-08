@@ -136,6 +136,7 @@ After the user confirms selections:
    - **Content angle**: How to frame this as a blog post
    - **Key data points**: Specific numbers/benchmarks to use
    - **Timeliness**: Why this matters now
+   - **Scope hypothesis**: `single-post candidate` | `possible series` | `unknown` — do not specify a fixed part count here; formal scope assessment decides single vs series and 2-5 part count
    - **Status**: `queued`
    ```
 

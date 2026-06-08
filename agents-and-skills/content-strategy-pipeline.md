@@ -245,8 +245,10 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 **Tasks:**
 - Score the strategy/outline against 8 comprehensiveness signals (0-2 each, 0-16 total):
   Pillar count, data density, audience breadth, technical depth, word count pressure, visual complexity, distribution fragmentation, dimension breadth
-- If score 0-5: single post. If 6-10: suggest series. If 11+: recommend series.
-- When recommending series, use dimension data (personas, WAF pillars) as split-point candidates.
+- If score 0-5: single post. If 6-10: suggest series. If 11+: run the single-post feasibility gate and required-series gate before recommending series.
+- When recommending series, use dimension data (personas, practices, lifecycle stages, WAF pillars) as split-point candidates.
+- Choose part count from natural boundaries: 2, 3, 4, or 5 parts. Do not default to 3.
+- Include a part-count rationale explaining why the selected N is better than N-1 and N+1.
 
 **Output:** Series plan appended to strategy document + pipeline-config.md update.
 

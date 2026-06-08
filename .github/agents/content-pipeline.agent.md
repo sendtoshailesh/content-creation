@@ -71,10 +71,12 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 1. Delegate to `content-strategist` with the user's topic (and reference brief + trend research paths if they exist)
 2. Wait for strategy doc and outline to be saved to `content/`
 3. **Scope Assessment (Step 2b)**: Use the `content-scope-assessment` skill to evaluate whether the topic should be a single post or multi-part series:
-   - Score the strategy against comprehensiveness signals (pillar count, data density, audience breadth, technical depth, word count, visual complexity)
-   - If score >= 9: **Recommend multi-part series** — present the series plan to the user for approval
-   - If score 5-8: **Suggest series option** — ask user preference (single comprehensive post vs. series)
-   - If score 0-4: Proceed with single post
+   - Score the strategy against comprehensiveness signals (pillar count, data density, audience breadth, technical depth, word count, visual complexity, distribution fragmentation, dimension breadth)
+   - Apply the **single-post feasibility gate** and **required series gate** from the skill. Do not recommend a series from score alone.
+   - If score 0-5 and the feasibility gate passes: proceed with a single post
+   - If score 6-10 or only one required-series condition is met: ask user preference (single comprehensive post vs. 2-5 part series)
+   - If score 11+ and 2+ required-series conditions are met: recommend a series, but still present the single-post alternative and ask for approval
+   - Choose the part count from natural boundaries. Do **not** default to 3 parts; justify why the selected count is better than N-1 and N+1.
 4. If series is approved:
    - Add a `## Series Plan` section to the strategy document with part boundaries, titles, and focus areas
    - Update pipeline-config.md with series metadata (total parts, current part number)
