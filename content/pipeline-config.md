@@ -13,7 +13,7 @@
 | **Status** | `in-progress` |
 | **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
 | **Started** | 2025-07-17 |
-| **Current Step** | Step 4a-visual: Full pack rebuilt on HTML/CSS+Chromium engine (consistent theme, no gauges/stray-labels, proportionate type) — 2026-06-09: all 27 assets PASS inspector; social packets + publishing STALE until refreshed |
+| **Current Step** | Step 4-social: Full visual pack rebuilt (HTML/CSS+Chromium, all 27 assets PASS inspector + live on Pages). 2026-06-09: social packets refreshed against rebuilt visuals (reel storyboard cues realigned to comic + x-card-03 stat; LinkedIn/Medium/Substack/X packets verified to reference rebuilt PNGs). Social PUBLISHING gated — awaiting explicit user approval. |
 | **Series** | `yes (2 parts)` |
 | **Current Part** | 1 |
 

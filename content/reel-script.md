@@ -21,9 +21,9 @@ Benchmarks prove whether an AI coding agent can solve a task. Production evals p
 | 0:04-0:08 | Same visual. Highlight the gap between benchmark score and PR acceptance. | "...but estimates real-world PR acceptance closer to 35 to 50 percent." | "35-50% PR acceptance" |
 | 0:08-0:14 | Talking head or animated caption over blurred IDE. | "That gap is the whole problem. SWE-bench proves capability. Production evals prove behavior." | "Capability is not behavior" |
 | 0:14-0:22 | Use `x-card-02.png` or recreate its annotated empty-tool-log scene: "I created the file and validated it" beside Tool calls: 0. | "The dangerous failure is when the agent sounds successful, but the tool-call log is empty." | "Tool calls: 0" |
-| 0:22-0:29 | Use `x-card-03.png`. Slow pan across the Sourdough storyboard states. | "My favorite test asks every agent: what's the best way to bake sourdough bread?" | "The Sourdough Test" |
-| 0:29-0:36 | Crop `x-card-03.png` to show wrong recipe answer, expected redirect, and CI block states. | "If a deployment agent explains hydration ratios, the persona boundary broke." | "Persona drift caught" |
-| 0:36-0:42 | Zoom into the `3 of 8` callout on `x-card-03.png`. | "In the original eval setup, a model update made 3 of 8 agents fail that exact test." | "3 of 8 failed" |
+| 0:22-0:29 | Use `comic-sourdough-test.png`. Slow pan across the four storyboard panels: Prompt -> Drift -> Redirect -> CI blocks. | "My favorite test asks every agent: what's the best way to bake sourdough bread?" | "The Sourdough Test" |
+| 0:29-0:36 | Crop `comic-sourdough-test.png` panels 2-3: the drift (recipe answer) panel, then the redirect (stays on task) panel. | "If a deployment agent explains hydration ratios, the persona boundary broke." | "Persona drift caught" |
+| 0:36-0:42 | Zoom into the standalone `3 of 8` stat on `x-card-03.png` (or panel 4 of the comic). | "In the original eval setup, a model update made 3 of 8 agents fail that exact test." | "3 of 8 failed" |
 | 0:42-0:52 | Use `x-card-04.png` or `medium-inline-02.png`. Zoom through task suite, behavior graders, CI gate, history. | "The fix is not a bigger benchmark. Start with four layers: tasks, behavior graders, a CI gate, and regression history." | "4-layer eval system" |
 | 0:52-0:60 | End card with canonical URL and thumbnails from `slide-01`, `slide-06`, `slide-09`, and `slide-10`. | "Stop asking only: can the model solve it? Ask: what behavior must never regress? Full visual guide is linked." | "What must never regress?" |
 
@@ -40,6 +40,7 @@ Benchmarks prove whether an AI coding agent can solve a task. Production evals p
   - `content/visuals/distilled/agent-eval-visual-first-practitioner/medium-hero.png`
   - `content/visuals/distilled/agent-eval-visual-first-practitioner/x-card-01.png`
   - `content/visuals/distilled/agent-eval-visual-first-practitioner/x-card-02.png`
+  - `content/visuals/distilled/agent-eval-visual-first/comic-sourdough-test.png`
   - `content/visuals/distilled/agent-eval-visual-first-practitioner/x-card-03.png`
   - `content/visuals/distilled/agent-eval-visual-first-practitioner/x-card-04.png`
 - **Screen recording / compositing**
@@ -55,7 +56,8 @@ Benchmarks prove whether an AI coding agent can solve a task. Production evals p
     - `failed: persona_boundary`
 - **Editing notes**
   - Crop the Medium hero or X hook card into a 9:16 motion graphic with slow zoom.
-  - Use the Sourdough X card as a pan-and-scan sequence, not a static full-frame image.
+  - Use the Sourdough comic (4-panel storyboard) as a pan-and-scan sequence, not a static full-frame image.
+  - Use the `3 of 8 failed` X stat card as a single hard-cut emphasis frame.
   - Use the CI X card as a four-stop zoom: Tasks -> Graders -> CI Gate -> History.
   - Text overlays should stay under 8 words.
 
