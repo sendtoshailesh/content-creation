@@ -54,7 +54,7 @@ def one_page_eval_system() -> str:
            ("4", "Gate every release in CI", "ok")])}
     {body("Four steps to catch silent failures before your users do.")}
     {source()}"""
-    return page(1080, 1350, b, scale=INLINE)
+    return page(1200, 820, b, pad=48, scale=INLINE)
 
 
 # --- LinkedIn carousel cards (1080x1350) ------------------------------------
