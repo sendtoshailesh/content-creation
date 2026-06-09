@@ -22,6 +22,28 @@ argument-hint: 'Describe the visuals needed (e.g., "comparison matrix for 5 mode
 
 All visuals MUST use the shared design token palette. See [token reference](./references/design-tokens.md) for the full color map.
 
+## Preferred path: HTML/CSS + Chromium + browser-rendered QA (diagrams, flows, infographics, exhibits)
+
+Hand-built coordinate/path math (Pillow polygons, SVG arc sweeps) is the root cause of recurring defects: inverted gauges, arrows that miss box edges, overlapping or clipped text, and type sizes wildly out of proportion with the article body. **Author these visuals as HTML/CSS and let Chromium's layout engine place everything, then gate through an automated Playwright/Chromium inspector before rasterizing to PNG.** CSS Flexbox/Grid removes the math; web fonts match the article; magnitude is shown with bars, never gauges.
+
+Toolkit at `scripts/visuals/html/`:
+- `design.py` — `css(theme)` (tokens as CSS vars + a fixed `TYPE_SCALE`) and `page(w, h, body_html, theme, pad)` wrapper. Every text element MUST carry a `data-role` (`display`/`title`/`value`/`subtitle`/`label`/`body`/`caption`); the role drives both its CSS size and the QA gate. Shared components: `.card`, `.bar-row`/`.bar-track`/`.bar-fill` (horizontal magnitude bars), `.badge`, `.flow`/`.connector` (straight line + CSS chevron), `.gap-callout`, `.eyebrow`, `.source`.
+- `render.py` — `render_html_to_png` / `render_many`: clips the screenshot to `#stage` and rasterizes via Chromium at device scale 2, awaiting `document.fonts.ready` so Inter is loaded.
+- `inspect.py` — `inspect_files(paths)` / CLI `python3 -m scripts.visuals.html.inspect <file.html> ...`: loads the DOM in Chromium and FAILS on: any computed font-size not in `TYPE_SCALE`, more than 7 distinct sizes, more than one focal `display` number, text that overflows its own box (clipped), content overflowing the canvas, stray internal labels (`02 / 10`, `EXHIBIT 1`, `Slide 3`), and a multi-step `.flow` with no connectors.
+
+Mandatory rules (enforced by the inspector):
+- **No gauges / no arcs.** Show magnitude with `.bar-row` horizontal bars or proportionate numbers. Semicircular gauges and hand-computed arcs are banned — they invert.
+- **Typography is uniform and article-proportionate.** Only `TYPE_SCALE` roles; exactly one `display` focal number per asset; the largest non-focal text is the `title` (≈30px), sized so that at in-article display width (~1000px) diagram text is close to the article's 17px body / ~24px headings — never towering over it. Use Inter to match the blog.
+- **Connectors mean transitions and stay flush.** Use `.flow .connector` (a strong-token line + chevron) attached directly to box edges. Never leave a gap between a box and its connector.
+- **No internal numbering/labels.** Never emit slide counters (`02 / 10`), `EXHIBIT N`, or `Fig N` onto the image.
+
+Workflow: author HTML via `design.page()` -> `inspect_files()` (must PASS) -> `render_many()` to PNG -> **view every PNG and zoom on bars/connectors** to confirm geometry (the inspector is necessary but not sufficient; a past inverted gauge passed DOM checks). A renderer that rasterizes before inspection PASSES is a process failure. Reference: `content/visuals/distilled/agent-eval-visual-first/render_html_pack.py`.
+
+### Secondary path: SVG + browser QA (`scripts/visuals/svg/`)
+Still available for cases that need explicit vector control (`python3 -m scripts.visuals.svg.inspect`). Same rules apply: `TYPE_SCALE` roles only, `connect()` for edge-to-edge arrows, no gauges, no stray labels. Prefer the HTML/CSS path for anything layout-heavy.
+
+## Legacy path: Pillow/matplotlib (charts and comic/storyboard only)
+
 ## Procedure
 
 ### 1. Plan Visual Assets
