@@ -92,4 +92,11 @@
 
 | Source | Last Fetched | Articles Found | Status |
 |--------|-------------|----------------|--------|
-| _(auto-populated on first run)_ | | | |
+| GitHub Blog | 2026-06-09 | 5 | ok |
+| Deeplearning AI Batch | 2026-06-09 | 20 | ok |
+| Towards Data Science (Medium) | 2026-06-09 | 20 | ok |
+| PostgreSQL weekly | 2026-06-09 | 0 | warn — nav-only page, no parseable articles |
+| Simon Willison's Weblog | 2026-06-09 | 30 | ok |
+| The Pragmatic Engineer | 2026-06-09 | 0 | warn — empty (likely paywall/login required) |
+| TLDR AI | 2026-06-09 | 2 | ok |
+| InfoQ | 2026-06-09 | 15 | ok |
