@@ -148,6 +148,22 @@ graph TD
     B -->|No| D[Alternative]
 ```
 
+**MANDATORY — never ship a raw ` ```mermaid ` fence to a published page.** The
+blog pages load no mermaid.js runtime, so a `<code class="language-mermaid">`
+block renders as literal source text in the browser (this is a real defect that
+shipped once). Always **pre-render the `.mmd` to a static, on-brand PNG** and
+embed it as an `<img>`:
+
+```bash
+python3 -m scripts.visuals.html.render_mermaid \
+  content/visuals/distilled/<dir>/<diagram>.mmd \
+  content/visuals/distilled/<dir>/<diagram>.png
+```
+
+The renderer applies the design-token palette (use `classDef` in the `.mmd` for
+gate/warn/success boxes) and rasterizes via our Chromium. In Markdown, replace
+the fence with `![alt](visuals/.../<diagram>.png)`.
+
 ### 6. Run and Verify
 
 ```bash
@@ -163,6 +179,17 @@ Verify:
 - No visible text overflow, clipping, overlap, tiny labels, or unbold primary labels.
 - Adjacent visuals vary in theme and composition pattern.
 - No Unicode glyph warnings.
+
+**Published-page gate (run after web-publisher writes/updates any page):**
+
+```bash
+python3 -m scripts.visuals.html.check_published <pages-repo>/blog/*.html
+```
+
+Exit code is non-zero if any page contains a raw diagram fence/`language-*`
+block with no matching runtime — i.e. anything that would show as code instead
+of a rendered diagram. This closes the gap that the `#stage` inspector does not
+cover (it only checks generated assets, never the published HTML).
 
 ## Critical Rules
 

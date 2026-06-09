@@ -109,18 +109,14 @@ The first-party/original implementation cost profile from the [original eval sys
 
 Agent evals become real when they run where engineering decisions already happen: pull requests.
 
-```mermaid
-flowchart LR
-    A[Agent change or prompt update] --> B[Task suite]
-    B --> C[Behavior graders]
-    C --> D{Regression gate}
-    D -->|Pass| E[Ship to production]
-    D -->|Fail| F[Debug trace]
-    F --> G[Fix prompt, tool policy, or guardrail]
-    G --> B
-    C --> H[Eval history dashboard]
-    H --> I[Release review]
-```
+![CI eval-gate loop: an agent or prompt change runs the task suite and behavior graders, hits a regression gate that either ships to production (pass) or routes to debug trace then a fix that re-enters the task suite (fail); graders also feed an eval history dashboard into release review](visuals/distilled/agent-eval-visual-first/eval-ci-architecture.png)
+
+<!-- Source diagram: visuals/distilled/agent-eval-visual-first/eval-ci-architecture.mmd
+     Rendered to PNG via: python3 -m scripts.visuals.html.render_mermaid \
+       content/visuals/distilled/agent-eval-visual-first/eval-ci-architecture.mmd \
+       content/visuals/distilled/agent-eval-visual-first/eval-ci-architecture.png
+     Do NOT ship a raw ```mermaid``` fence to the published page: it has no
+     mermaid.js runtime and would render as literal code text. -->
 
 The loop is intentionally boring:
 
