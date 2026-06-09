@@ -13,7 +13,7 @@
 | **Status** | `in-progress` |
 | **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
 | **Started** | 2025-07-17 |
-| **Current Step** | Step 4-social: Full visual pack rebuilt (HTML/CSS+Chromium, all 27 assets PASS inspector + live on Pages). 2026-06-09: social packets refreshed against rebuilt visuals (reel storyboard cues realigned to comic + x-card-03 stat; LinkedIn/Medium/Substack/X packets verified to reference rebuilt PNGs). Social PUBLISHING gated — awaiting explicit user approval. |
+| **Current Step** | DONE (LinkedIn carousel + Medium published 2026-06-09). LinkedIn: ugcPost 7470133668175433728. Medium: ai-agent-evals-production-readiness-guide (canonical = GitHub Pages). Visual pack live + QA-clean. Optional remaining: X/Twitter, Substack, LinkedIn Article, Reel, YouTube — not yet posted. |
 | **Series** | `yes (2 parts)` |
 | **Current Part** | 1 |
 
@@ -299,7 +299,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Platform | URL | Posted |
 |----------|-----|--------|
-| LinkedIn | — | — |
+| LinkedIn | https://www.linkedin.com/feed/update/urn:li:ugcPost:7470133668175433728/ | 2026-06-09 |
 | X/Twitter | — | — |
 | Reddit | — | — |
 
@@ -307,7 +307,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Platform | URL | Posted |
 |----------|-----|--------|
-| Medium | — | — |
+| Medium | https://medium.com/@shaileshkumarmishra/ai-agent-evals-production-readiness-guide-bd60e62f877a | 2026-06-09 |
 | Substack | — | — |
 | LinkedIn Article | — | — |
 
