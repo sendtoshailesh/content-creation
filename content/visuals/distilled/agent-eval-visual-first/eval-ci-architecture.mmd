@@ -1,0 +1,20 @@
+flowchart LR
+    A[Agent change or prompt update] --> B[Task suite]
+    B --> C[Behavior graders]
+    C --> D{Regression gate}
+    D -->|Pass| E[Ship to production]
+    D -->|Fail| F[Debug trace]
+    F --> G[Fix prompt, tool policy, or guardrail]
+    G --> B
+    C --> H[Eval history dashboard]
+    H --> I[Release review]
+
+    classDef default fill:#f8fafc,stroke:#94a3b8,color:#1e293b
+    classDef gate fill:#dbeafe,stroke:#1f6feb,color:#1e293b
+    classDef warn fill:#fee2e2,stroke:#dc2626,color:#1e293b
+    classDef success fill:#ccfbf1,stroke:#0d9488,color:#1e293b
+
+    class D gate
+    class F warn
+    class E success
+

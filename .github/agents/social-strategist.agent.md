@@ -24,6 +24,7 @@ Create a social distribution strategy that maximizes reach and engagement:
    - Actionable frameworks or checklists
    - Quotable one-liners
    - Visual assets that stand alone
+   - P0/P1 entries in `content/visual-opportunity-map.md`
 2. Identify the 3-5 core themes/messages
 
 ### Step 2: Platform Strategy
@@ -32,7 +33,7 @@ Define the approach for each platform:
 **LinkedIn** (Professional audience):
 - Lead with: industry insight or data point
 - Tone: Thought leadership, practitioner sharing learnings
-- Best for: Longer narrative posts, carousel concepts
+- Best for: Visual-first card packs, comic/storyboards, one-pagers, executive exhibits, and concise narration
 - Timing: Tuesday-Thursday, morning
 
 **X/Twitter** (Tech-forward audience):
@@ -64,6 +65,13 @@ Create a distribution plan at `content/social-strategy.md`:
 - [Quotable insight]
 - [Framework/checklist excerpt]
 
+## Visual-First Campaign Calendar
+| Day | Platform | Visual Asset | Visual Family | Text Role | CTA |
+|-----|----------|--------------|---------------|-----------|-----|
+| 1 | LinkedIn | [asset path] | Comic/storyboard | Narrate the lesson behind the visual | First comment |
+| 3 | Medium/Substack | [asset path] | Infographic/one-pager | Add context not shown in visual | Canonical link |
+| 7 | LinkedIn Article | [asset path] | Executive exhibit | Leadership angle and implications | End body |
+
 ## Rollout Sequence
 | Day | Platform | Content Type | Key Message | Hook |
 |-----|----------|-------------|-------------|------|
@@ -79,7 +87,7 @@ Create a distribution plan at `content/social-strategy.md`:
 
 ## Platform-Specific Notes
 ### For @social-linkedin:
-- [Specific guidance on angle, hashtags, formatting]
+- [Specific guidance on visual asset path, angle, hashtags, formatting]
 
 ### For @social-twitter:
 - [Thread structure, key tweet hooks, visual suggestions]
@@ -98,11 +106,14 @@ Define post-publication engagement strategy:
 
 - Strategy must be grounded in the actual blog content — no invented angles
 - Each platform gets a genuinely different approach (not just reformatting)
+- Visual assets lead the strategy. Text explains, contextualizes, or narrates what the visual cannot.
+- LinkedIn and long-form platform assets should be selected from `content/visual-opportunity-map.md` when available.
 - Reddit strategy must follow 90/10 rule (90% value, 10% promotion maximum)
 - Timing recommendations should consider the target audience's timezone
 
 ## Integration with Pipeline
 
-- Run AFTER `blog-writer` and BEFORE individual social agents (`social-linkedin`, `social-twitter`, `social-reddit`)
+- Run AFTER `blog-writer`, visual opportunity mapping, and blog companion visuals; run BEFORE individual social agents (`social-linkedin`, `social-twitter`, `social-reddit`)
 - Individual social agents should read `content/social-strategy.md` for their platform-specific notes
+- Individual agents should also read `content/visual-opportunity-map.md` and any visual-pack manifests before writing copy
 - Read `content/pipeline-config.md` for target subreddits and platform preferences

@@ -24,6 +24,7 @@ Read the blog post and extract:
 3. **Frameworks/checklists** (reusable structures)
 4. **Visual assets** (existing PNGs/SVGs from `content/visuals/`)
 5. **Quotable lines** (punchy, shareable phrases)
+6. **Visual opportunity map entries** from `content/visual-opportunity-map.md`
 
 ### Step 2: Generate Derivatives
 
@@ -64,10 +65,27 @@ Create each derivative in `content/repurposed/`:
 - Color tokens to use (reference design token system from blog visuals)
 - Text content for each section
 
+#### Comic / Storyboard Brief (`content/repurposed/comic-storyboard-brief.md`)
+- 3-panel or 4-panel story arc
+- Character roles (symbolic only; programmatic shapes)
+- Scene caption for each panel
+- Speech bubbles (max 12 words each)
+- Technical callouts and source lines
+- Target platform dimensions
+
+#### Executive Exhibit Brief (`content/repurposed/executive-exhibit-brief.md`)
+- Conclusion-as-title
+- Evidence hierarchy
+- Chart or exhibit type
+- Source attribution
+- Leadership implication
+- Placement: Medium hero, LinkedIn Article inline, or blog companion
+
 ### Step 3: Cross-Reference Check
 - Verify all data points match the original blog (no drift)
 - Ensure visual asset references point to real files in `content/visuals/`
 - Confirm each derivative can stand alone without the blog
+- Confirm renderable briefs include dimensions, renderer type, source lines, and one insight per asset
 
 ## Quality Rules
 
@@ -76,10 +94,12 @@ Create each derivative in `content/repurposed/`:
 - Maintain the same voice/tone defined in `content/pipeline-config.md`
 - Never invent data that isn't in the source blog
 - Each format should take less than 5 minutes to consume
+- Renderable visual briefs must use programmatic rendering only: Pillow, Mermaid, matplotlib, or SVG via Python
+- Comic/storyboard briefs must be useful technical explanations, not decorative cartoons
 
 ## Integration with Pipeline
 
 - Run AFTER the blog post is finalized and quality-reviewed
 - Read `content/pipeline-config.md` for voice/tone preferences
 - Output directory: `content/repurposed/` (create if it doesn't exist)
-- The `@visual-renderer` agent can later produce the infographic from the brief
+- The `@visual-renderer` agent can later produce infographics, comic/storyboards, architecture explainers, and executive exhibits from the briefs

@@ -14,11 +14,12 @@ You are a visual asset generator for technical content. Your job is to produce p
 ## Procedure
 
 1. **Identify assets needed** from the outline or request
-2. **Create Python renderer** at `content/visuals/render_<topic>.py` for PNGs
-3. **Create SVG writer** at `content/visuals/write_svgs.py` (or append to existing)
-4. **Create Mermaid files** at `content/visuals/<name>.mmd` for flowcharts
-5. **Run the scripts** to generate actual files
-6. **Verify output**: correct DPI, matching design tokens, no glyph warnings
+2. **Require infographic art direction** from `infographic-design-system` for every infographic, comic/storyboard, card pack, one-pager, or executive exhibit. Do not render from a vague "make it visual" prompt.
+3. **Create Python renderer** at `content/visuals/render_<topic>.py` for PNGs
+4. **Create SVG writer** at `content/visuals/write_svgs.py` (or append to existing)
+5. **Create Mermaid files** at `content/visuals/<name>.mmd` for flowcharts
+6. **Run the scripts** to generate actual files
+7. **Verify output**: correct DPI, matching design tokens, no glyph warnings
 
 ## Pipeline Status Hygiene
 
@@ -82,6 +83,9 @@ theme_names = list(THEMES.keys())
 - **Series-wide consistency**: for multi-part series, create one canonical renderer for all visuals in the series. Per-part renderers must be thin wrappers that call the canonical renderer so later parts cannot regress to weaker templates.
 - **Render all referenced assets**: after writing renderer code, compare blog Markdown `![alt](visuals/*.png)` references against generated files. Do not stop until every referenced PNG exists at 320 DPI.
 - **No unreviewed publishing**: do not mark visuals complete until every referenced image has been opened and inspected by the visual-reviewer/rubber-duck gate.
+- **Infographic-first rendering**: if an asset is an infographic or social visual, the primary information must be encoded visually through chart, path, state, metaphor, scene, or hierarchy. Text is support, not the structure.
+- **Stateful comics**: comic/storyboard panels must change character pose, expression, badge, color, environment, or system state. Repeating one icon with different captions is a blocking defect.
+- **No four-box one-pagers**: framework visuals must use a metaphor or system pattern such as factory line, control tower, circuit board, bridge/gap, radar, security checkpoint, snake path, or timeline.
 
 ## Narrow Segment Rule (Prevents Text Overflow)
 
@@ -102,6 +106,8 @@ This is the #1 source of text overflow defects. The visual-reviewer agent will f
 | Flow diagrams, decision trees | **matplotlib** with patches + annotations | When diagram is simple (< 10 nodes); use Mermaid for complex flows |
 | Comparison tables, matrices | **Pillow (PIL)** | Precise column alignment, cell backgrounds, multi-line text in cells |
 | Architecture diagrams, flowcharts | **Mermaid** (.mmd) | Complex flows with many nodes and connections |
+| Comic/storyboard panels | **Pillow helpers in `scripts/visuals/`** | Programmatic panels, symbolic characters, speech bubbles, captions |
+| Infographic/one-pager assets | **Pillow helpers in `scripts/visuals/`** | Saveable summaries, metric cards, source lines, platform-sized cards |
 
 ### Pillow (PIL) Guidelines
 
@@ -133,6 +139,19 @@ text_height = bbox[3] - bbox[1]
 
 Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, so you can verify text fits its container and adjust font size or position if it doesn't.
 
+### Reusable Visual Toolkit
+
+Prefer the reusable helpers under `scripts/visuals/` for new visual families:
+
+- `tokens.py` — shared design tokens, themes, platform size presets, 320 DPI constant
+- `text_layout.py` — font loading, measured wrapping, font fitting, wrapped text drawing
+- `panels.py` — panel boxes, grids, rounded panels
+- `comic.py` — programmatic comic/storyboard primitives, speech bubbles, symbolic characters
+- `infographic.py` — title blocks, metric cards, source lines
+- `export.py` — PNG export with repository-standard DPI
+
+Use these helpers for comic/storyboard, infographic/one-pager, LinkedIn card, and long-form platform assets before writing custom layout code.
+
 ### Mandatory Pre-Render Design Plan
 
 Before writing or modifying renderer code, produce a short visual plan:
@@ -152,6 +171,8 @@ Apply these when designing any visual:
 4. **Annotation-first**: Key takeaways annotated directly on the visual. Reader should not have to infer the message.
 5. **Gestalt grouping**: Use proximity and enclosure to group related elements. White space separates distinct concepts.
 6. **Standalone clarity**: Every visual must be understandable WITHOUT reading the surrounding blog text.
+7. **Infographic type fit**: Choose process, statistical, informational, timeline, comparison, hierarchy, list/checklist, or comic/storyboard based on the communication goal.
+8. **State change**: Show problem -> tension -> insight -> resolution when explaining behavior failures, workflows, or transformations.
 
 ## Output Structure
 
@@ -162,6 +183,14 @@ content/visuals/
 ├── *.png               # Generated PNGs
 ├── *.svg               # Generated SVGs
 └── *.mmd               # Mermaid diagrams
+
+scripts/visuals/
+├── tokens.py           # Shared tokens and platform presets
+├── text_layout.py      # Measured text helpers
+├── panels.py           # Panel and grid primitives
+├── comic.py            # Comic/storyboard primitives
+├── infographic.py      # One-pager primitives
+└── export.py           # PNG export helpers
 ```
 
 ## Post-Rendering

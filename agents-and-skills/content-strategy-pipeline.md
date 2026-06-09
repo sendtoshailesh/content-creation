@@ -18,11 +18,14 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 2 | Strategy & Outline | `content-strategist` | ✅ Implemented |
 | 2b | Scope Assessment (single vs. series) | `content-scope-assessment` skill | ✅ Implemented |
 | 2c | Multi-Dimensional Analysis (persona, practice, WAF) | `multi-dimensional-analysis` skill | ✅ Implemented |
+| 2d | Visual Opportunity Mapping | `visual-strategist` + `visual-content-planning` skill | ✅ Implemented |
+| 2e | Infographic Art Direction | `infographic-art-director` + `infographic-design-system` skill | ✅ Implemented |
 | 3 | Full Blog Post (or Part N) | `blog-writer` | ✅ Implemented |
 | 3b | Visual Generation | `visual-renderer` | ✅ Implemented |
 | 3c | Quality Overhaul | `quality-reviewer` | ✅ Implemented |
 | 3d | SEO Optimization | `seo-optimizer` | ✅ Implemented |
 | 4a | Social Distribution Strategy | `social-strategist` | ✅ Implemented |
+| 4a-visual-plus | Standalone Visual Asset Generation | `visual-strategist` + `visual-renderer` | ✅ Implemented |
 | 4b | LinkedIn Post (always) | `social-linkedin` | ✅ Implemented |
 | 4c | Platform Selection | (orchestrator asks user) | ✅ Implemented |
 | 5 | X/Twitter Thread (if selected) | `social-twitter` | ✅ Implemented |
@@ -31,6 +34,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 7 | Brand Audit | `brand-guardian` | ✅ Implemented |
 | 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
 | 9 | Content Repurposing (optional) | `content-repurposer` | ✅ Implemented |
+| 9b | Renderable Visual Repurposing Pack | `content-repurposer` + `visual-renderer` | ✅ Implemented |
 | 10 | Publish to GitHub Pages | `web-publisher` | ✅ Implemented |
 | 10a | Inject canonical URLs into `[link]` placeholders (pre-flight) | `social-publisher` | ✅ Implemented |
 | 11 | Social Media Publishing (API) | `social-publisher` | ✅ Implemented |
@@ -45,6 +49,26 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | `reference-analysis` | Fetch and synthesize online reference URLs into a reference brief |
 | `unicode-formatting` | Format text with Unicode Mathematical Bold/Italic for LinkedIn and X/Twitter |
 | `visual-rendering` | Generate PNG (matplotlib), SVG (Python), and Mermaid diagrams |
+| `visual-content-planning` | Create the mandatory visual opportunity map for diagrams, infographics, comic/storyboards, LinkedIn cards, and executive exhibits |
+| `infographic-design-system` | Choose infographic type, visual metaphor, state-change plan, text budget, and review criteria before rendering |
+
+### Mandatory Visual Editorial System
+
+Every content run now includes visual opportunity mapping before blog writing. The map is saved to `content/visual-opportunity-map.md` and becomes the contract between strategy, writing, rendering, social distribution, and review.
+
+Every P0/P1 visual also requires infographic art direction before rendering. The art-direction brief chooses the infographic type, visual metaphor, state-change plan, text budget, icon/illustration plan, and visual-reviewer acceptance criteria. This prevents "text cards with icons" from passing as visual-first content.
+
+First-milestone visual families:
+
+| Family | Primary Use | Platforms |
+|--------|-------------|-----------|
+| Architecture / flow diagram | Systems, workflows, ownership, decision paths | Blog, LinkedIn, Medium/LinkedIn Article |
+| Infographic / one-pager | Saveable summaries, metrics, checklists | Blog, LinkedIn, Substack |
+| Comic explainer / storyboard | Human scenarios, failure stories, before/after lessons | Blog, LinkedIn |
+| LinkedIn social card pack | Swipeable visual thought leadership | LinkedIn |
+| Executive exhibit | ROI, risk, cost, and decision evidence | Blog, Medium, LinkedIn Article |
+
+Comic/storyboard and cartoon-style assets are programmatic only: Python, Pillow, Mermaid, matplotlib, and SVG via Python. External image-generation tools are not required for the first implementation.
 
 ---
 

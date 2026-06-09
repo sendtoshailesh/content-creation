@@ -113,12 +113,14 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
 | 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
 | 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline |
+| 2d | `@visual-strategist` / `visual-content-planning` skill | Mandatory visual opportunity map before writing |
 | 3 | `@blog-writer` | Long-form blog (~3,000 words) |
 | 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams |
 | 3c | `@quality-reviewer` | Quality audit with fixes |
 | 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
 | 4a | `@social-strategist` | Cross-platform social distribution strategy |
-| 4a-visual | `visual-pack-generator` skill | _(Optional)_ Generate visual pack (carousel slides or exhibit charts) for visual-first distribution. Set `distillation_persona_mode` in pipeline-config before running. |
+| 4a-visual | `visual-pack-generator` skill | Generate visual pack (carousel slides, exhibits, or standalone visual assets) for visual-first distribution. |
+| 4a-visual-plus | `@visual-strategist` + `@visual-renderer` | Generate standalone LinkedIn and long-form platform visual assets from the opportunity map |
 | 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts; visual-first carousel/exhibit posts when visual pack exists |
 | 5 | `@social-twitter` | Single tweet (≤ 280 chars) with visual attachment; references x-card or x-exhibit from visual pack when available |
 | 6 | `@social-reddit` | Markdown Reddit post |
@@ -130,9 +132,25 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 11 | `@social-publisher` | Publish to LinkedIn, X/Twitter, Reddit, and YouTube (preview + confirmation required) |
 | 12 | `@platform-distiller` | Unified excerpt for Medium, Substack, and LinkedIn Article with embedded visuals (or text-only fallback) |
 
+## Mandatory Visual-First Strategy
+
+Every content run includes a visual opportunity map at `content/visual-opportunity-map.md`. The map turns the strategy or draft into a backlog of visual assets before the blog is finalized.
+
+First-milestone visual families:
+
+| Family | Use For | Primary Platforms |
+|--------|---------|-------------------|
+| Architecture / flow diagrams | Systems, workflows, ownership, decision paths | Blog, LinkedIn, Medium/LinkedIn Article |
+| Infographics / one-pagers | Saveable summaries, metrics, checklists | Blog, LinkedIn, Substack |
+| Comic explainers / storyboards | Human scenarios, failure stories, before/after lessons | Blog, LinkedIn |
+| LinkedIn social card packs | Swipeable visual thought leadership | LinkedIn |
+| Executive exhibits | ROI, risk, cost, and decision evidence | Blog, Medium, LinkedIn Article |
+
+Comic/storyboard visuals are generated programmatically with Python/Pillow/SVG primitives only. The pipeline does not require external image generation.
+
 ## Visual-First Distribution
 
-When `distillation_persona_mode` is set in [`content/pipeline-config.md`](content/pipeline-config.md), the pipeline generates a **visual asset pack** before distribution agents run. Social posts are then built around the visuals (carousel/exhibit images lead; text narrates).
+The pipeline generates a **visual asset pack** before distribution agents run. Social posts are then built around the visuals (carousel/exhibit/image cards lead; text narrates).
 
 ### Persona Modes
 
@@ -214,13 +232,14 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 20 specialist agents
-├── skills/                          # 8 reusable skills
+├── agents/                          # 21 specialist agents
+├── skills/                          # 9 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
+│   ├── visual-content-planning/      #   Mandatory visual opportunity mapping
 │   ├── unicode-formatting/          #   Bold/italic for social posts
 │   ├── reference-analysis/          #   Fetch + synthesize online sources
 │   ├── feed-curation/               #   Classify, extract, rank feed articles
-│   ├── visual-pack-generator/       #   Platform-optimized visual packs (carousel / exhibit)
+│   ├── visual-pack-generator/       #   Platform-optimized visual packs (carousel / exhibit / cards)
 │   ├── visual-review/               #   Cross-model visual QA critic
 │   ├── multi-dimensional-analysis/  #   Persona × best-practice × WAF dimension analysis
 │   └── content-scope-assessment/    #   Single-post vs. multi-part series scoring
@@ -232,6 +251,7 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 
 content/
 ├── pipeline-config.md               # ← Edit this before each run
+├── visual-opportunity-map.md         # Mandatory visual backlog and renderer handoff
 ├── feed-sources.md                  # ← Feed sources + subject area config (persistent)
 ├── idea-queue.md                    # Curated content ideas (persistent)
 ├── reference-brief.md               # Auto-generated from reference URLs
@@ -248,6 +268,7 @@ archive/                             # Past content runs (max 3 kept)
 │   └── visuals/
 
 scripts/
+├── visuals/                          # Reusable visual rendering primitives
 ├── archive-content.sh               # Archive + rotate content runs
 ├── pipeline/
 │   ├── feed_reader.py               # Multi-format blog roll / RSS ingestion

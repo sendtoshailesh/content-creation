@@ -30,6 +30,8 @@ Identify what's needed from the content outline:
 - **PNGs** (320 DPI): comparison matrices, 2x2 tradeoff charts, timelines, frameworks, checklists
 - **SVGs**: interactive/collapsible web graphics (tradeoff charts, decision funnels, checklist cards)
 - **Mermaid** (`.mmd`): flowcharts, decision trees, process timelines
+- **Comic/storyboard panels**: programmatic panel sequences, symbolic characters, speech bubbles, captions
+- **Infographics/one-pagers**: metric cards, source lines, saveable summaries, LinkedIn cards
 
 ### 2. Generate PNGs with the right renderer
 
@@ -37,12 +39,21 @@ Use **Pillow (PIL)** for blog infographics, comparison panels, matrices, workflo
 
 For text-heavy blog visuals, create a Python renderer script at `content/visuals/render_<topic>.py` with measured text helpers (`textbbox`, wrapping, font fitting). Do not place text into a box unless it has been measured against that box first.
 
+For new text-heavy or panel-based visuals, prefer reusable helpers from `scripts/visuals/`:
+- `tokens.py` for palette and platform sizes
+- `text_layout.py` for wrapping and font fitting
+- `panels.py` for panel layouts
+- `comic.py` for comic/storyboard primitives
+- `infographic.py` for one-pager primitives
+- `export.py` for DPI-safe PNG output
+
 Mandatory for every renderer:
 - Generate every `![...](visuals/*.png)` image referenced by the blog, not just the first few visuals.
 - Use body labels >= 34 px for 320 DPI output, and bold all primary claims, labels, values, and section headers.
 - Use a distinct composition pattern for adjacent visuals (split-screen, timeline, flow, scorecard, matrix, annotated scene, radial, dashboard). Reusing the same card grid/table pattern across a post is a review failure.
 - Use high-contrast token combinations by default. Pale backgrounds are allowed only when paired with bold dark labels and strong borders.
 - Keep one canonical series renderer when a multi-part series shares visuals. Per-part renderer files may exist only as compatibility wrappers that call the canonical renderer.
+- Comic/storyboard visuals must be programmatic only. Use simple shapes, panels, captions, callouts, and speech bubbles; do not require external image generation.
 
 ### 3. Matplotlib template for quantitative charts only
 

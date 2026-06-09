@@ -13,7 +13,7 @@
 | **Status** | `in-progress` |
 | **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
 | **Started** | 2025-07-17 |
-| **Current Step** | Step 10 complete — both parts published to GitHub Pages |
+| **Current Step** | Step 11: Social publishing |
 | **Series** | `yes (2 parts)` |
 | **Current Part** | 1 |
 
@@ -23,11 +23,26 @@
 - [x] Steps 1-2: Strategy + outline
 - [x] Step 2b: Scope assessment (single vs. series)
 - [x] Step 2c: Multi-dimensional analysis
-- [x] Step 3: Blog post
+- [x] Step 2d: Visual opportunity mapping
+- [x] Step 2e: Infographic art direction
+- [x] Step 3: Blog post refresh for visual-first strategy
 - [x] Step 3b: Visual assets
 - [x] Step 3c: Quality review
+- [x] Step 3d: SEO optimization
+- [x] Step 4a: Social distribution strategy refresh
+- [x] Step 4a-visual: Visual-first asset pack
 - [x] Step 4: LinkedIn post
 - [x] Step 4c: Social platform selection
+- [x] Step 5: X/Twitter thread
+- [x] Step 6b: Reel/Short video
+- [x] Step 7: Brand audit
+- [x] Step 7b: Grounded content review
+- [x] Step 8: YouTube script
+- [x] Step 10: Web publishing refresh
+- [ ] Step 11: Social publishing
+- [x] Step 12: Platform distillation draft
+
+> **Visual-first reset note (2026-06-08):** The content strategy changed materially from text-led to visual-first. Existing Part 1/Part 2 blog posts, LinkedIn posts, X/Twitter threads, reel scripts, YouTube/platform excerpts, and previously published pages must be considered stale until regenerated from `content/visual-opportunity-map.md` and the new visual asset pack.
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -114,7 +129,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 - https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage — Regression Testing for AI Agents: trace-driven debugging, semantic regression tests, pre/post-deploy gates
 
 **GitHub Copilot Agent & Skills Documentation:**
-- https://docs.github.com/en/copilot/concepts/agents/agent-skills — About agent skills: SKILL.md format, auto-discovery, project-specific skills
+- https://docs.github.com/en/copilot/concepts/agents/about-agent-skills — About agent skills: skill folder format, instructions/scripts/resources, project-specific and personal skills
 - https://docs.github.com/en/copilot/reference/custom-agents-configuration — Custom agents configuration: YAML frontmatter, agent personas, tool access, invocation rules
 - https://github.blog/ai-and-ml/github-copilot/how-to-maximize-github-copilots-agentic-capabilities/ — Maximizing Copilot agentic capabilities: custom agents, skills, advanced workflows
 
@@ -216,6 +231,11 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Setting | Value | Description |
 |---------|-------|-------------|
+| `visual_strategy_mode` | `mandatory` | Visual opportunity mapping is required for every content run before blog writing. Read by: content-pipeline, visual-strategist, blog-writer, visual-renderer, social-strategist. |
+| `visual_opportunity_map` | `content/visual-opportunity-map.md` | Planning artifact that maps text sections to blog companion visuals and standalone distribution assets. |
+| `visual_first_platform_scope` | `blog, linkedin, medium, substack, linkedin-article` | First implementation platform scope. X/Twitter, Reddit, YouTube, and Reels remain follow-on unless selected elsewhere. |
+| `visual_first_formats` | `architecture-flow, infographic-one-pager, comic-storyboard, linkedin-card-pack, executive-exhibit` | Mandatory first-milestone visual families. Comic/storyboard assets must be programmatic only. |
+| `image_generation_policy` | `programmatic-only` | Use Python, Pillow, SVG via Python, Mermaid, and matplotlib only. Do not require external image generation. |
 | `distillation_persona_mode` | `practitioner` | Visual pack persona mode. Options: `practitioner` (10-slide carousel, 1080×1080px, Welsh/Lenny/Bloom grammar), `executive` (3-5 exhibits, 1200×627px, HBR/McKinsey exhibit grammar), `ask` (prompt at runtime). Read by: visual-pack-generator skill, social-linkedin agent, social-twitter agent, platform-distiller agent. |
 | `distillation_slug` | *(set per run)* | Part identifier used in visual pack directory naming, e.g., `part1`, `part2`. Results in `content/visuals/distilled/{slug}-{mode}/`. |
 
@@ -223,11 +243,13 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 ## Pipeline Steps Reference
 
-> Distribution and publishing steps. Run in order. Steps 4a-visual through 12 are post-content steps. Step 4a-visual is on-demand (run it when visual-first mode is desired).
+> Distribution and publishing steps. Run in order. Visual opportunity mapping is mandatory before blog writing; Steps 4a-visual through 12 are post-content steps.
 
 | Step | Agent / Skill | Trigger | Description |
 |------|--------------|---------|-------------|
-| Step 4a-visual | visual-pack-generator | On-demand | Generates visual asset pack (PNGs + manifest + renderer) for all platforms. Run BEFORE Steps 4, 5, 12 when visual-first mode is desired. Invoked via visual-pack-generator skill with blog path + distillation_slug + distillation_persona_mode. |
+| Step 2d | visual-strategist / visual-content-planning | Mandatory | Creates `content/visual-opportunity-map.md` and adds P0 visual markers before blog writing. |
+| Step 4a-visual | visual-pack-generator | Mandatory for visual-first distribution | Generates visual asset pack (PNGs + manifest + renderer) for selected platforms. Run BEFORE Steps 4, 5, 12. Invoked via visual-pack-generator skill with blog path + distillation_slug + distillation_persona_mode. |
+| Step 4a-visual-plus | visual-strategist + visual-renderer | Mandatory when opportunity map has P0/P1 standalone visuals | Generates LinkedIn and long-form platform assets: architecture/flow diagrams, infographics/one-pagers, comic/storyboards, card packs, and executive exhibits. |
 | Step 4 | social-linkedin | Manual | LinkedIn post generation. Output: `content/linkedin-post.md` |
 | Step 5 | social-twitter | Manual | X/Twitter thread generation. Output: `content/x-twitter-thread.md` |
 | Step 6 | social-reddit | Manual | Reddit post generation (if selected). Output: `content/reddit-post.md` |
@@ -271,6 +293,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 | Part 1 | https://sendtoshailesh.github.io/blog/agent-eval-part-1.html | 2025-07-17 |
 | Part 2 | https://sendtoshailesh.github.io/blog/agent-eval-part-2.html | 2025-07-17 |
 | Series Index | https://sendtoshailesh.github.io/blog/series/agent-eval.html | 2025-07-17 |
+| Visual-first Canonical | https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html | 2026-06-08 |
 
 #### Social Media
 

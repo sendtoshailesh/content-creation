@@ -1,253 +1,322 @@
-# Social Distribution Strategy — Part 1: "The Gap Nobody's Testing For"
+# Social Distribution Strategy — AI Agent Evals Visual-First Edition
 
-*Series: AI Agent Evals: Why SWE-bench Isn't Enough Before Production*
-*Canonical URL: https://sendtoshailesh.github.io/blog/agent-eval-part-1.html*
-
----
-
-## Core Messages (Part 1)
-
-These 4 themes must echo across every platform. Each post hits at least 2.
-
-| # | Theme | One-Liner | Best Data Point |
-|---|-------|-----------|-----------------|
-| 1 | **The Benchmark Gap is Behavioral** | Your agent scores 78% on SWE-bench — and 35-50% of its PRs get rejected. The gap isn't intelligence; it's behavior. | 74-78% SWE-bench vs 35-50% PR acceptance ([Presenc](https://presenc.ai/research/coding-agent-benchmarks-2026)) |
-| 2 | **Silent Failures Look Like Success** | 78% of agent failures return HTTP 200 and a coherent response. No crash, no error — just quietly wrong. | 78% behavioral failures ([Sentrial](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures)) |
-| 3 | **The Sourdough Test** (named concept) | Ask every agent "How do I bake sourdough bread?" — if it answers, your persona boundaries are broken. | 3 of 8 agents failed simultaneously after a model bump |
-| 4 | **You Can Start Today for $0** | Two tasks per agent. Zero LLM tokens. Catches the two most common regressions. | $3-8 per full eval run; tool_constraint grader = $0 |
+*Package: AI Agent Evals for Production Readiness*  
+*Canonical URL: https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html*  
+*Mode: mandatory visual-first*  
+*Do not publish from this artifact.*
 
 ---
+
+## Primary Narrative
+
+SWE-bench is useful, but it is not enough for production AI agent evals.
+
+Benchmarks prove whether an agent can solve a coding task. Production evals prove whether the agent follows the behavior contract when prompts, tools, policies, models, and team conventions change.
+
+The core contrast:
+
+- **SWE-bench / coding benchmarks:** capability signal
+- **Production evals:** behavior, tool use, persona boundaries, CI regressions, and release readiness signal
+
+The visual-first campaign should make one idea unavoidable:
+
+> Benchmarks tell you whether the model can solve the task. Production evals tell you what behavior must never regress.
+
+## Grounding Notes
+
+- [SWE-bench Verified](https://www.swebench.com/) is used here as a coding-agent capability benchmark signal, not as a production-readiness claim.
+- [Presenc's May 2026 coding-agent benchmark snapshot](https://presenc.ai/research/coding-agent-benchmarks-2026) is the source for the **74-78% SWE-bench Verified** and **35-50% real-world PR acceptance** figures. Treat both as vendor-reported, point-in-time signals.
+- [Sentrial's May 2026 regression-testing article](https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures) is the source for the **78% behavioral/silent failure** figure. Treat it as a vendor-reported operational signal, not a universal failure-rate law.
+- First-party/original implementation metrics, including **8 agents**, **38 tasks**, **14 eval suites**, **3 grader types**, **3 of 8 Sourdough Test failures**, **$3-8/run**, **200K-400K tokens**, and **15-25 minutes**, come from the original [Part 1](https://sendtoshailesh.github.io/blog/agent-eval-part-1.html) and [Part 2](https://sendtoshailesh.github.io/blog/agent-eval-part-2.html) write-ups.
+
+## Core Messages
+
+1. **SWE-bench is not your production eval.** Use the benchmark gap to show why capability does not equal production readiness.
+2. **The dangerous failures look successful.** Fabrication Without Action is the memorable failure mode: the agent says it created, validated, or deployed something while the tool-call log is empty.
+3. **Persona drift needs simple, repeatable tests.** The Sourdough Test makes off-topic behavior visible across all agents.
+4. **Production evals need a behavior contract.** Minimum viable eval system: task suite, behavior graders, CI gate, regression history.
+5. **Run evals where engineering decisions happen.** The operating model is a PR-level CI loop, not a release-week benchmark ceremony.
 
 ## Shareable Assets
 
-These are the elements that work as standalone content across platforms:
+| Asset | Path | Visual Family | Best Persona | Primary Message |
+|---|---|---|---|---|
+| LinkedIn carousel cards | `content/visuals/distilled/agent-eval-visual-first-practitioner/slide-01-hook.png` through `slide-10-cta.png` | Practitioner carousel | Practitioner / tech lead | SWE-bench proves capability; production evals prove behavior |
+| X/Twitter cards | `content/visuals/distilled/agent-eval-visual-first-practitioner/x-card-01.png` through `x-card-04.png` | Image-thread card pack | Practitioner | Benchmark gap -> empty trace -> Sourdough -> CI gate |
+| Medium/Substack assets | `medium-hero.png`, `medium-inline-01.png`, `medium-inline-02.png`, `substack-hero.png` | Platform visual pack | Tech lead | Visual-first long-form summary with canonical link |
+| LinkedIn Article exhibits | `linkedin-exhibit-01.png`, `linkedin-exhibit-02.png` | Executive exhibit | Executive / AI team decision-maker | Benchmark confidence can hide production risk |
+| Platform excerpt | `content/platform-excerpt-agent-eval-visual-first.md` | Medium/Substack/LinkedIn Article excerpt | Tech lead / executive | Visual-first long-form summary with canonical link |
 
-- **Stat pair**: "74-78% on SWE-bench → 35-50% PR acceptance" — the single most shareable number
-- **The Sourdough Test concept**: One absurd prompt, 8 agents, instant regression detection — inherently memorable and visual
-- **Fabrication Without Action story**: Agent said "I've deployed your ARM template" — tool call log was empty. Visceral, specific, scary
-- **Comparison table**: Model Benchmark vs Agent Eval (capability vs behavior) — works as image or text
-- **The minimum viable eval YAML**: 2 tasks, copy-paste ready — actionable quick-win
-- **Compounding error stat**: 97% per-step accuracy → 72% end-to-end over 10 steps
+## Visual-First Campaign Calendar
 
----
+| Day | Platform | Visual Asset | Visual Family | Text Role | CTA |
+|---|---|---|---|---|---|
+| Day 0, Tue-Thu 7:30 AM PT | LinkedIn | `slide-01-hook.png` through `slide-10-cta.png` | Practitioner carousel | Narrate the lesson behind the cards: benchmarks prove capability, production evals prove behavior | First comment with canonical URL |
+| Day 1, 7:00 AM PT or 5:00 PM PT | X/Twitter | `x-card-01.png` through `x-card-04.png` | Image-thread visuals | Punchy thread: benchmark gap -> silent failures -> Sourdough Test -> CI eval system | Final tweet only |
+| Day 3-4 | Medium/Substack | `medium-hero.png`, `medium-inline-01.png`, `medium-inline-02.png`, `substack-hero.png` | Platform visual pack | Add context not shown in visuals; keep canonical link explicit | Canonical URL |
+| Day 5 | LinkedIn follow-up | `x-card-03.png` or `slide-10-cta.png` | Storyboard / CTA card | Practitioner story: why the Sourdough Test works | Comment CTA to visual guide |
+| Day 7+ | LinkedIn Article | `linkedin-exhibit-01.png`, `linkedin-exhibit-02.png` | Executive exhibits | Leadership angle: production readiness and regression risk | End body canonical URL |
 
-## Rollout Sequence & Timing
+Canonical URL for all CTAs:  
+`https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html`
 
-Target audience timezone: US Pacific / US Eastern (primary), EU (secondary)
+## Recommended Posting Order and Timing
 
-| Day | Time (PT) | Platform | Content Type | Primary Theme | Hook |
-|-----|-----------|----------|-------------|---------------|------|
-| 0 (Tue-Thu) | 7:00 AM | Blog | Full post publishes | All 4 | — |
-| 0 | 7:30 AM | LinkedIn | Long-form post (1,200-1,500 char) | Theme 1 + 2 | Fabrication Without Action opening → Sourdough Test payoff |
-| 0 | 8:00 AM | X/Twitter | Thread (10-12 tweets) | Theme 1 + 3 | "Your agent just lied to you" → data → Sourdough Test → minimum viable eval |
-| 1-2 | — | Reel/Short | 60-90 sec video | Theme 3 | The Sourdough Test — visual walkthrough |
-| 3-4 | — | Substack Note | 300-500 word excerpt | Theme 1 + 4 | Benchmark gap framing + minimum viable eval CTA |
-| 7+ | Morning | LinkedIn Article | 700-900 words, unique angle (>30% new) | Theme 2 + 4 | "Why advisory evals beat blocking gates" or deeper Fabrication Without Action analysis |
+| Order | Day | Time | Platform | Content Type | Lead Asset | Hook |
+|---|---|---:|---|---|---|---|
+| 1 | Day 0, Tue-Thu | 7:30 AM PT | LinkedIn | Carousel post | 10-slide practitioner pack | "SWE-bench is not your production eval." |
+| 2 | Day 0 | Within 60 sec | LinkedIn comment | Source/canonical comment | N/A | Canonical guide + source links |
+| 3 | Day 1 | 7:00 AM PT or 5:00 PM PT | X/Twitter | 10-tweet thread | X card pack | "Benchmarks prove capability. Production evals prove behavior." |
+| 4 | Day 3-4 | Morning PT | Medium/Substack | Platform excerpt | Medium/Substack visual pack | "The benchmark gap is behavioral." |
+| 5 | Day 5 | 7:30 AM PT | LinkedIn | Follow-up post | Sourdough X card / CTA slide | "The Sourdough Test caught persona drift in 3 of 8 agents." |
+| 6 | Day 7+ | Morning PT | LinkedIn Article | Leadership article | LinkedIn Article exhibits | "Why production AI agent readiness needs behavior contracts." |
 
-**Why Tuesday-Thursday for Day 0?** LinkedIn engagement peaks mid-week mornings. Schedule the blog publish to align with a Tue/Wed/Thu window.
+## Copy Angle by Asset and Persona
 
----
+### 1. LinkedIn Carousel — Practitioner Angle
+
+**Asset:** `slide-01-hook.png` through `slide-10-cta.png`  
+**Persona:** IC engineer / platform engineer  
+**Angle:** "Here is what to test before your agent ships."
+
+Use concrete practitioner language:
+
+- Tool-call assertions
+- Off-topic controls
+- Behavior graders
+- PR-level CI checks
+- Regression history by model, prompt, tool, and release
+
+Primary copy hook:
+
+> SWE-bench is not your production eval.  
+> Benchmarks prove capability. Production evals prove behavior.
+
+CTA:
+
+> Full visual guide in the first comment.
+
+### 2. Comic/Storyboard — Practitioner Angle
+
+**Asset:** `x-card-03.png` or `slide-10-cta.png`  
+**Persona:** Practitioner  
+**Angle:** "One absurd prompt can reveal persona drift."
+
+Best copy hook:
+
+> My favorite AI agent eval asks every agent how to bake sourdough bread.
+
+Message:
+
+- A deployment agent should not become a recipe assistant.
+- A model update caused 3 of 8 agents to fail this in the first-party/original eval system.
+- Simple repeatable tests become team language.
+
+CTA:
+
+> If your team has agents with different roles, add one off-topic control per agent this week.
+
+### 3. One-Page Framework — Tech Lead Angle
+
+**Asset:** `x-card-04.png`, `medium-inline-02.png`, or `slide-07-step3.png`  
+**Persona:** Tech lead / AI team lead  
+**Angle:** "You do not need a giant eval platform to start."
+
+Use the four-layer structure:
+
+1. Task suite
+2. Behavior graders
+3. CI gate
+4. Regression history
+
+Best copy hook:
+
+> The first production agent eval system does not need to be huge. It needs four layers.
+
+CTA:
+
+> Start with two tasks: one happy-path workflow and one behavior-boundary test.
+
+### 4. Executive Exhibit — Executive / Decision-Maker Angle
+
+**Asset:** `linkedin-exhibit-01.png`  
+**Persona:** AI team decision-maker / executive  
+**Angle:** "Leaderboard confidence is not release confidence."
+
+Best copy hook:
+
+> A high benchmark score can still hide production risk.
+
+Message:
+
+- Presenc May 2026 snapshot: top coding agents at 74-78% SWE-bench Verified.
+- Presenc May 2026 estimate: real-world PR acceptance closer to 35-50%.
+- Sentrial May 2026 analysis: 78% of analyzed failures were behavioral/silent rather than clean crashes/timeouts.
+- Treat all vendor numbers as vendor-reported point-in-time signals.
+
+CTA:
+
+> Ask your team: what behavior must never regress before an agent ships?
+
+### 5. Platform Excerpt — Tech Lead / Executive Angle
+
+**Asset:** `content/platform-excerpt-agent-eval-visual-first.md`  
+**Persona:** Tech lead, AI team decision-maker  
+**Angle:** "The visual summary for people who need the framework, not the full implementation history."
+
+Use for:
+
+- Medium import after canonical page exists.
+- Substack Note, not newsletter.
+- LinkedIn Article with unique framing.
+
+CTA:
+
+> Full visual guide: https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html
 
 ## Cross-Promotion Plan
 
-| From | References | How |
-|------|-----------|-----|
-| LinkedIn post | Blog | "I wrote up the full failure taxonomy, the YAML configs, and the regex table → [link]" |
-| LinkedIn post | X/Twitter thread | "I broke down the Sourdough Test in a thread earlier today — the visual walkthrough is there" (no explicit link needed; drives profile visits) |
-| X/Twitter thread | Blog | Tweet 10/12: "Full deep-dive with all the YAML, the regex table, and the grader decision tree → [link]" |
-| X/Twitter thread | Reel (when live) | Quote-tweet or reply-to-thread on Day 1-2: "Made a 60-sec version of the Sourdough Test concept → [reel link]" |
-| Reel/Short | Blog | Voiceover closing: "Link to the full write-up in the description" + description link |
-| Substack Note | Blog | Direct link as primary CTA |
-| LinkedIn Article | Blog + Part 2 tease | "Part 1 covered the gap. Part 2 (coming [date]) goes into the three-layer grading system → [Part 1 link]" |
-
-**Rule**: Every platform drives back to the blog as canonical source. No platform is a dead end.
-
----
-
-## Part 1-Specific Hooks
-
-### The 5 Best Hooks (ranked by platform fit)
-
-| # | Hook | Best Platform | Why It Works |
-|---|------|---------------|-------------|
-| 1 | "Your AI agent scores 78% on SWE-bench. It also just told a developer it deployed their infrastructure — without calling a single tool." | LinkedIn | Data + visceral story. Stops the scroll for engineering leaders. |
-| 2 | "Your agent just lied to you. Not a hallucination — a fabrication. It described work it never performed." | X/Twitter (Tweet 1) | Punchy, provocative, under 280 chars. Thread-starter energy. |
-| 3 | "We ask every one of our 8 AI agents: 'How do I bake sourdough bread?' Three of them answered." | LinkedIn + Reel | Absurdity drives curiosity. Works spoken (reel) and written (LinkedIn). |
-| 4 | "78% of agent failures return HTTP 200 and a coherent response." | X/Twitter | Data-forward, surprising, tweet-sized. |
-| 5 | "Two tasks per agent. $0 grader cost. Catches the two most common regressions. Start here." | LinkedIn CTA + Substack | Quick-win framing. Low barrier to action. |
-
----
+- LinkedIn carousel drives to canonical guide in the first comment.
+- X/Twitter thread uses the benchmark gap and Sourdough Test as thread anchors; canonical URL appears only in the final tweet.
+- Reddit is not selected for this package; do not generate or publish a Reddit post from this run.
+- Medium/Substack/LinkedIn Article should use the visual assets inline and point back to the canonical page.
+- LinkedIn follow-up should reuse the comic/storyboard to catch people who skipped the carousel.
 
 ## Platform-Specific Notes
 
-### For @social-linkedin:
+### For @social-linkedin
 
-**Angle**: Thought leadership from a practitioner. Lead with the Fabrication Without Action story, pivot to the benchmark gap data, land on the Sourdough Test as the memorable takeaway.
+Use the already generated visual-first post as the starting point:
 
-**Recommended hook** (from strategy doc):
-> "Your AI agent scores 78% on SWE-bench. It also just told a developer it deployed their infrastructure — without calling a single tool. I call this Fabrication Without Action, and it's the scariest failure mode nobody's testing for."
+- `content/linkedin-post-agent-eval-visual-first.md`
 
-**Formatting guidance**:
-- Use 𝗕𝗼𝗹𝗱 for named concepts: 𝗙𝗮𝗯𝗿𝗶𝗰𝗮𝘁𝗶𝗼𝗻 𝗪𝗶𝘁𝗵𝗼𝘂𝘁 𝗔𝗰𝘁𝗶𝗼𝗻, 𝗧𝗵𝗲 𝗦𝗼𝘂𝗿𝗱𝗼𝘂𝗴𝗵 𝗧𝗲𝘀𝘁, 𝗧𝗵𝗲 𝗕𝗲𝗻𝗰𝗵𝗺𝗮𝗿𝗸 𝗚𝗮𝗽
-- Use ━━━ separator before CTA
-- Emoji anchors: ⚠️ for failure modes, 📊 for data points, 🎯 for actionable takeaways
-- End with clear CTA to blog + tease Part 2
-- Hashtags (end of post, max 3-5): #AIAgents #AgentEvals #SoftwareEngineering #AIReliability
+Required upload order:
 
-**Structure (1,200-1,500 chars)**:
-1. Hook: Fabrication Without Action story (2-3 lines)
-2. The benchmark gap stat (74-78% → 35-50%)
-3. The Sourdough Test — brief, punchy intro
-4. Quick-win: minimum viable eval (2 tasks, $0)
-5. CTA: link to blog + "Part 2 coming [day]"
+1. `visuals/distilled/agent-eval-visual-first-practitioner/slide-01-hook.png`
+2. `visuals/distilled/agent-eval-visual-first-practitioner/slide-02-promise.png`
+3. `visuals/distilled/agent-eval-visual-first-practitioner/slide-03-problem.png`
+4. `visuals/distilled/agent-eval-visual-first-practitioner/slide-04-framework.png`
+5. `visuals/distilled/agent-eval-visual-first-practitioner/slide-05-step1.png`
+6. `visuals/distilled/agent-eval-visual-first-practitioner/slide-06-step2.png`
+7. `visuals/distilled/agent-eval-visual-first-practitioner/slide-07-step3.png`
+8. `visuals/distilled/agent-eval-visual-first-practitioner/slide-08-interrupt.png`
+9. `visuals/distilled/agent-eval-visual-first-practitioner/slide-09-recap.png`
+10. `visuals/distilled/agent-eval-visual-first-practitioner/slide-10-cta.png`
 
-**Tone**: First-person practitioner sharing. "I built evals for 8 agents. Here's the scariest thing I found." NOT "We're excited to share our latest blog post."
+First comment must include:
 
----
+`https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html`
 
-### For @social-twitter:
+Hashtags:
 
-**Angle**: Technical quick-hits. Lead with provocation, deliver data, land on actionable concepts. Thread format.
+`#AIAgents #AgentEvals #SWEbench #AIEngineering`
 
-**Thread structure (10-12 tweets)**:
+### For @social-twitter
 
-| Tweet | Content | Theme | Char Target |
-|-------|---------|-------|-------------|
-| 1/12 | Hook: "Your agent just lied to you" — Fabrication Without Action teaser | Theme 2 | 250 |
-| 2/12 | The benchmark gap: 74-78% SWE-bench → 35-50% PR acceptance | Theme 1 | 260 |
-| 3/12 | "The gap isn't intelligence — it's behavior" + 78% of failures are behavioral stat | Theme 1 | 270 |
-| 4/12 | Compounding error: 97% per step → 72% end-to-end (10 steps) | Theme 1 | 240 |
-| 5/12 | The 3 silent failure modes (fabrication, persona erosion, safety gate skipping) | Theme 2 | 280 |
-| 6/12 | The Sourdough Test intro: "We ask every agent how to bake bread" | Theme 3 | 260 |
-| 7/12 | Sourdough payoff: 3 of 8 failed after model bump → model-wide regression, not agent-specific | Theme 3 | 280 |
-| 8/12 | Why regex, not LLM judge: refusals are linguistically constrained. $0 vs $$ | Theme 4 | 260 |
-| 9/12 | Minimum viable eval: 2 tasks per agent, tool_constraint grader, $0 cost | Theme 4 | 270 |
-| 10/12 | The full system: 8 agents, 38 tasks, 3 grader types, $3-8/run | Theme 4 | 250 |
-| 11/12 | CTA: "Full write-up with YAML configs, regex tables, and grader decision tree → [link]" | — | 240 |
-| 12/12 | Series tease: "Part 2 next week: Three Graders, 38 Tasks, Zero Trust — the grading deep dive" | — | 200 |
+Use the generated visual-first X/Twitter thread at `content/x-twitter-thread.md`. Existing `x-twitter-thread-part1.md` and `x-twitter-thread-part2.md` are stale because they predate the visual-first reset and canonical slug.
 
-**Standalone single-tweet variant** (for quote-tweets and reposts):
-> "78% of AI agent failures return HTTP 200 and a coherent response. No crash. No error. Just quietly wrong. That's why agent eval ≠ model benchmarks. [link]"
+Thread structure:
 
-**Visual suggestions**:
-- Tweet 2: Benchmark Gap bar chart (from blog visual)
-- Tweet 5: Failure taxonomy 3-column visual
-- Tweet 6: Sourdough Test grid (8 agents, 3 red)
+1. Hook: SWE-bench is not your production eval
+2. Benchmark gap: 74-78% SWE-bench Verified vs 35-50% PR acceptance
+3. Why the gap is behavioral
+4. Fabrication Without Action
+5. Sourdough Test
+6. 3 of 8 agents failed after model update
+7. Four-layer eval system
+8. CI gate
+9. What to test first
+10. Canonical URL
 
-**Formatting**: Unicode 𝗕𝗼𝗹𝗱 for named concepts. Each tweet self-contained (works if someone sees only one via retweet).
+Use visuals sparingly and match the generated thread:
 
----
+- Tweet 1: `x-card-01.png`
+- Tweet 3: `x-card-02.png`
+- Tweet 5: `x-card-03.png`
+- Tweet 7: `x-card-04.png`
 
-### For @social-reel:
+Canonical URL only in final tweet.
 
-**Concept**: The Sourdough Test — 60-90 second explainer
+### For @social-reddit
 
-**Why this concept for reel?** It's the most visually distinct, inherently absurd (bread + code = scroll-stopping), and self-contained. You can explain it without any prior context.
+Reddit is not currently selected in pipeline config, but if Step 4c adds it:
 
-**Script skeleton (60-90 sec)**:
+Target subreddits from config:
 
-| Time | Visual | Voiceover |
-|------|--------|-----------|
-| 0-5s | Hook text on screen: "We ask our AI agents to bake bread 🍞" | "Every one of our 8 AI agents gets asked the exact same question..." |
-| 5-15s | Screen recording: the sourdough prompt being sent | "...How do I bake sourdough bread?" |
-| 15-25s | Split screen: good response (redirect) vs bad response (bread recipe) | "A well-behaved agent says 'I handle Azure deployments, not recipes.' A broken agent? Full essay on hydration ratios." |
-| 25-35s | Text overlay: "3 of 8 agents failed — simultaneously" | "After a model update, 3 of our 8 agents started baking bread instead of deploying code. The Sourdough Test caught it instantly." |
-| 35-50s | Simple visual: "Same prompt → all agents → compare results → model-wide vs agent-specific" | "Because every agent gets the identical prompt, we can immediately tell if it's a model problem or an agent problem. Cross-agent consistency is the killer feature." |
-| 50-60s | Text: "The Sourdough Test" + blog link | "It's called the Sourdough Test. Link to the full write-up in the description." |
+- r/MachineLearning
+- r/ExperiencedDevs
+- r/artificial
+- r/programming
+- r/ChatGPTCoding
+- r/CopilotForDevs
 
-**Key production notes**:
-- Background music: upbeat, tech-forward (low volume under voiceover)
-- Text overlays: use design token palette (ACCENT blue for highlights, WARN red for failures)
-- Screen recordings should show actual terminal/editor aesthetic (not mock-ups)
-- Captions mandatory (most social video watched without sound)
+Best framing:
 
----
+> How are you testing AI agent behavior beyond coding benchmarks?
 
-### For YouTube (long-form — after full series):
+Avoid:
 
-**Note**: YouTube script is produced AFTER all 3 parts publish. These are Part 1 notes for the eventual script.
+- "I wrote a blog"
+- Image-first promotion
+- Link-first post
 
-**Part 1 segment in YouTube video (~3 min of 8-12 min total)**:
-- Open with the Fabrication Without Action story (the hook)
-- Walk through the benchmark gap visually (animated bar chart)
-- The Sourdough Test demo: show the prompt, show the responses, show the regression
-- Close Part 1 segment with the minimum viable eval (YAML on screen)
+Suggested post structure:
 
-**Thumbnail hook**: Split image — bread on one side, code terminal on the other. Text: "The Sourdough Test"
+- TL;DR
+- Problem: benchmarks do not test production behavior
+- Example: tool-call log empty while response claims work was done
+- Question: what are teams using for behavior regressions?
+- Optional resource link at end only
 
----
+## Canonical Alignment and Legacy Artifacts
 
-## Series Anticipation (Teasing Part 2)
+Canonical URL now must be:
 
-### How to tease Part 2 across platforms:
+`https://sendtoshailesh.github.io/blog/ai-agent-evals-production-readiness.html`
 
-| Platform | Tease Placement | Tease Content |
-|----------|----------------|---------------|
-| LinkedIn post | Final line before CTA | "Part 2 drops [day]: the three-layer grading system, the grader decision tree, and the `continue_session: true` gotcha that causes 90% of false failures." |
-| X/Twitter thread | Tweet 12/12 | "Part 2 next week: 𝗧𝗵𝗿𝗲𝗲 𝗚𝗿𝗮𝗱𝗲𝗿𝘀, 𝟯𝟴 𝗧𝗮𝘀𝗸𝘀, 𝗭𝗲𝗿𝗼 𝗧𝗿𝘂𝘀𝘁 — the practitioner's reference for grader design and CI architecture." |
-| Reel/Short | Description text (not voiceover) | "This is Part 1 of 2. Part 2: the grading system that catches what benchmarks miss → [profile link]" |
-| Substack Note | Closing line | "Next in the series: the three grader types, why binary grading is a feature, and the 4 task patterns that cover the full behavioral surface." |
-| LinkedIn Article | Closing paragraph | Deeper tease — name the three grader types (text, tool_constraint, prompt) and hint at the cost difference ($0 vs $$). |
+### Current visual-first artifacts
 
-### Tease formula:
-1. **Name the Part 2 title** — "Three Graders, 38 Tasks, Zero Trust"
-2. **Name one specific thing they'll get** — "the grader decision tree" or "the YAML configs for all three grader types"
-3. **Name one gotcha** — "the `continue_session: true` bug that causes 90% of false failures"
+| Artifact | Status |
+|---|---|
+| `content/agent-eval-visual-first-series.md` | Uses the new SEO slug, canonical URL, and redesigned visual pack |
+| `content/linkedin-post-agent-eval-visual-first.md` | Uses the new canonical URL and visual-first carousel order |
+| `content/platform-excerpt-agent-eval-visual-first.md` | Uses the new canonical URL and visual-first inline assets |
+| `content/x-twitter-thread.md` | Uses the new canonical URL and selected redesigned assets |
+| `content/reel-script.md` | Uses the new canonical URL and redesigned visual cues |
+| `content/youtube-script.md` | Uses the new canonical URL and redesigned visual cues |
+| `content/visuals/distilled/agent-eval-visual-first/manifest.md` | Asset manifest is slug-independent for URL purposes |
 
-This creates curiosity through specificity. Vague teases ("more great content coming!") don't drive follow-through.
+### Legacy part-specific artifacts not used in this package
 
----
+| Artifact | Status |
+|---|---|
+| `content/x-twitter-thread-part1.md` / `content/x-twitter-thread-part2.md` | Legacy part-series artifacts; do not use for this visual-first package |
+| `content/reel-script-part1.md` / `content/reel-script-part2.md` | Legacy part-series artifacts; do not use for this visual-first package |
+| `content/linkedin-post-part1.md` / `content/linkedin-post-part2.md` and formatted variants | Legacy part-series artifacts; do not use for this visual-first package |
 
-## Engagement Playbook (Post-Publication)
+## Engagement Playbook
 
-### Day 0-2: Active engagement window
+### LinkedIn
 
-| Platform | Action | Timing |
-|----------|--------|--------|
-| LinkedIn | Reply to every comment within 4 hours. Add data points from the blog that weren't in the post. | Day 0-2 |
-| LinkedIn | If someone asks about grader types or CI pipeline → "That's exactly what Part 2 covers — dropping [day]" | Day 0-2 |
-| X/Twitter | Pin the thread. Like/reply to quote-tweets. | Day 0-1 |
-| X/Twitter | If a tweet goes viral, reply with the standalone single-tweet variant linking to blog | Day 0-3 |
+- Reply to every comment within the first 4 hours.
+- If someone asks "why not just use SWE-bench?", respond with the capability-vs-behavior distinction.
+- If someone asks for implementation detail, point to the one-page framework and canonical guide.
+- Use the comic as a follow-up comment if discussion turns to persona drift.
 
-### Day 3-5: Content recycling
+### X/Twitter
 
-| Action | Details |
-|--------|---------|
-| Best LinkedIn comment → Twitter insight | If a commenter raises a great point, turn it into a standalone tweet with credit |
-| Engagement data → Part 2 angle | Track which theme got most engagement. Lead Part 2 LinkedIn post with the theme that resonated most |
-| Substack Note publishes | Day 3-4, excerpt format with hero image |
+- Pin the thread for 48 hours.
+- Reply to technical objections with concrete examples: tool-call assertions, off-topic tests, CI gates.
+- If the Sourdough Test gets traction, create a standalone follow-up tweet with the comic visual.
 
-### Day 7+: LinkedIn Article
+### Reddit, if selected
 
-- Unique angle (>30% new material vs the original post)
-- Suggested angles: "Why I chose regex over LLM judges for agent evals" or "The behavioral gap nobody's benchmarking"
-- Cross-link to original blog post and tease Part 2
+- Do not defend the blog. Discuss the problem.
+- Ask commenters what failure modes they are seeing.
+- Only share the canonical link when it directly answers a question or at the end as an optional resource.
 
----
+### Recycling
 
-## Dimension × Platform Matrix (Part 1)
-
-From the strategy document's multi-dimensional analysis, these are the Part 1 angles per audience:
-
-| Dimension | LinkedIn Angle | X/Twitter Angle | Reel Angle |
-|-----------|---------------|-----------------|------------|
-| **Developer (IC)** | Minimum viable eval — 2 tasks, YAML ready | Sourdough Test + tool_constraint grader details | The Sourdough Test visual demo |
-| **Tech Lead** | Failure taxonomy — 3 modes, 3 graders | Thread structure: data → taxonomy → quick-win | — |
-| **AI Team Decision-Maker** | Benchmark gap (74-78% → 35-50%) + Gartner 40% cancellation | — | — |
-| **Reliability (WAF)** | Silent failures = reliability risk. 78% behavioral failures. | Compounding error: 97% → 72% over 10 steps | — |
-| **Cost Optimization (WAF)** | $3-8/run vs $47K agent loop | Cost of NOT testing: $47K loop, 264 hours | — |
-
----
-
-## Quality Checklist
-
-Before any platform post goes live, verify:
-
-- [ ] Opens with a story or data point, NOT "I wrote a blog post"
-- [ ] Contains at least 1 specific number from the blog
-- [ ] Names at least 1 named concept (Sourdough Test, Fabrication Without Action, Benchmark Gap)
-- [ ] Includes link to canonical blog URL
-- [ ] Teases Part 2 with a specific detail (not vague "more coming")
-- [ ] Uses correct Unicode formatting (𝗕𝗼𝗹𝗱 for LinkedIn/X, no Unicode for Reddit)
-- [ ] CTA is clear and singular per post
-- [ ] Tone is first-person practitioner, not corporate announcement
+- Best Reddit objection -> LinkedIn follow-up post.
+- Best LinkedIn implementation question -> X/Twitter mini-thread.
+- Best X/Twitter quote-tweet -> add to future LinkedIn Article angle.
