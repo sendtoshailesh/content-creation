@@ -22,3 +22,7 @@ readability-lxml>=0.8.1
 
 # Visual rendering — infographic-style layouts with pixel-precise text placement
 Pillow>=10.0.0
+
+# AI image generation — hero/illustrative imagery + vision grounding (hybrid visual family)
+# Works for both OpenAI and Azure OpenAI image/vision models via one SDK.
+openai>=1.40.0

@@ -13,6 +13,12 @@ argument-hint: 'Describe the visuals needed (e.g., "comparison matrix for 5 mode
 - Building Mermaid flowcharts or timelines
 - Rebuilding or updating existing visual assets
 
+> **Not for AI-generated imagery.** This skill renders visuals **deterministically**. The one
+> exception in the pipeline — AI-generated hero/illustrative imagery — is out of scope here and
+> is handled by the `image-content-agent` (via the `vision-grounding` skill and
+> `scripts.visuals.generated`), gated behind `image_generation: on`. Diagrams, infographics,
+> charts, and exhibits are **always** programmatic and never AI-generated.
+
 ## Prerequisites
 
 - Python 3.x with matplotlib installed

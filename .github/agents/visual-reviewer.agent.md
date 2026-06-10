@@ -99,11 +99,36 @@ It deterministically fails on the defects most often missed by eyeballing: off-s
 - **Text-slide smell**: Would the asset still make sense if most text were removed? If not, it is probably a text slide, not an infographic.
 - **Layout innovation**: Does the asset use a meaningful pattern such as broken bridge, dual gauge, factory line, control tower, circuit board, radar, annotated scene, snake path, or timeline when appropriate?
 
+### 9. AI-Generated Imagery (Critical — only for `content/visuals/generated/`)
+
+Applies to hero/illustrative images produced by `image-content-agent`. Deterministic
+diagrams/infographics/exhibits are covered by sections 1–8 and the automated inspector; this
+section never applies to them.
+
+- **No embedded text** (`image-no-text`): zoom in — any legible text, words, letters,
+  numbers, logos, or watermarks baked into the image is a **critical** defect (text belongs
+  in a programmatic overlay over the negative space, never in the generated pixels).
+- **Brand-color fidelity** (`image-fidelity`): brand-critical colors match the token palette;
+  hue substitution is **critical**, minor saturation/lighting drift is **important**.
+- **Negative space**: ~30% clean area exists for the text overlay; otherwise **important**.
+- **Safety** (`safety`): sensitive/unsafe scenes are **critical**; unintended real-person
+  likeness needing sign-off is **important**.
+- **Intent match**: the image matches the creative brief §7 visual guidelines (subject, mood,
+  composition); a material mismatch is **important**.
+- **Sidecar present**: a `<image>.json` sidecar exists (provider/model/prompt/seed). Missing
+  sidecar is **important** (reproducibility gap).
+
 ## Procedure
 
 1. **Enumerate visuals**: Read the blog post(s) and extract all `![alt](path)` image references. Also scan `content/visuals/` for any unlinked assets.
 2. **View each visual**: Use the image viewing tool to inspect each rendered PNG/SVG.
-3. **Apply checklist**: For each visual, run through all 8 review categories.
+3. **Apply checklist**: For each visual, run through all review categories (sections 1–8; add section 9 for any asset in `content/visuals/generated/`).
+3b. **Vision verify for AI images**: For each `content/visuals/generated/` image, run
+    `python -m scripts.visuals.generated.describe --image <png>` and compare the returned
+    description against the creative brief §7 — confirm no text was described, colors match the
+    brand palette, and the subject/composition matches intent. The deterministic inspector
+    remains the primary gate for programmatic assets; this vision pass is the primary check for
+    generated images.
 4. **Produce findings report**: Output a structured report with:
    - **File**: the visual filename
    - **Severity**: `critical` (blocks publishing), `important` (should fix), `minor` (nice to fix)
@@ -137,6 +162,11 @@ It deterministically fails on the defects most often missed by eyeballing: off-s
 
 **Verdict**: PASS / FAIL (fail if any critical findings)
 ```
+
+> **Severity vocabulary** maps to the shared compliance schema in
+> `.github/instructions/shared/compliance-severity.md`: `critical` = **Error** (blocks
+> publishing), `important` = **Warning** (fix or justify), `minor` = **Info** (advisory). A
+> FAIL verdict blocks Steps 10/11 and triggers the orchestrator rollback/redo protocol.
 
 ## Handoff
 

@@ -77,6 +77,12 @@ For all files in `content/visuals/`:
 - [ ] SVGs generated via Python (not heredoc)
 - [ ] Color palette consistent across all visuals
 
+For AI-generated imagery in `content/visuals/generated/` (when present):
+- [ ] `image-no-text`: no legible text/letterforms baked into the image (**Error** if present)
+- [ ] `image-fidelity`: brand-critical colors match the token palette (**Error** on hue substitution; **Warning** on minor drift)
+- [ ] `safety`: no sensitive/unsafe scenes (**Error**); no unintended real-person likeness needing sign-off (**Warning**)
+- [ ] Sidecar JSON exists next to each image (provider/model/prompt/seed)
+
 ### Step 5: Platform Format Check
 - [ ] LinkedIn: Unicode bold/italic formatting (not Markdown)
 - [ ] Reddit: Standard Markdown only (no Unicode bold/italic)
@@ -94,29 +100,30 @@ If brand fixes require changing source blog, visuals, social posts, or scripts a
 
 ## Output Format
 
-Produce a brand audit report as a summary in chat:
+Emit a **severity-categorized, gated** report using the shared schema in
+`.github/instructions/shared/compliance-severity.md`. One row per finding; close with an
+explicit GATE verdict.
 
 ```
 ## Brand Audit Report
 
-### Overall: ✅ Consistent / ⚠️ Issues Found / ❌ Major Problems
+| Severity | Category | Asset / location | Finding | Required fix |
+|----------|----------|------------------|---------|--------------|
+| Error    | brand-color | content/visuals/generated/part1-hero.png | Accent rendered #2563eb, not ACCENT #1f6feb | Regenerate with corrected color guidance |
+| Warning  | messaging | content/part1.md §3 vs LinkedIn post | Claim phrased differently across pieces | Align wording or justify |
+| Info     | voice | content/part1.md §5 | Slightly formal phrasing | Optional: loosen to practitioner voice |
 
-### Voice & Tone
-- [findings per file]
-
-### Data Consistency
-- [any mismatched numbers or claims]
-
-### Visual Identity
-- [design token compliance]
-
-### Cross-Content Alignment
-- [consistency findings]
-
-### Fixes Required
-1. [specific fix with file and location]
-2. ...
+GATE: PASS | FAIL
 ```
+
+Rules:
+- **Error** blocks publishing (Steps 10/11). **Warning** needs a fix or a written
+  justification before the gate passes. **Info** never blocks.
+- `GATE: FAIL` returns assets to the responsible producer agent (`visual-renderer`,
+  `image-content-agent`, `blog-writer`, social agents) and triggers the orchestrator's
+  rollback/redo protocol before any publishing step proceeds.
+- Categories: `voice` `tone` `messaging` `claim-citation` `design-token` `brand-color`
+  `typography` `layout` `image-no-text` `image-fidelity` `safety` `accessibility`.
 
 ## Integration with Pipeline
 

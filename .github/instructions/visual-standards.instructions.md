@@ -92,6 +92,26 @@ For any chart element that occupies < 15% of total width/height:
 - Only short values (numbers) go inside narrow segments; descriptive labels go outside
 - For pie chart slices < 5%, use a legend table
 
+## AI-Generated Imagery (scoped exception to programmatic-only rendering)
+
+Visuals in this pipeline are rendered **deterministically/programmatically** (HTML/CSS+Chromium,
+SVG, matplotlib, Pillow). The **only** exception is the `AI-generated imagery` visual family,
+used **solely** for hero / backdrop / scene / conceptual-illustration assets that carry mood,
+not information. It is produced by `image-content-agent` via `scripts.visuals.generated` and the
+`vision-grounding` + `creative-brief` skills, and is gated behind `image_generation: on` in
+`content/pipeline-config.md`.
+
+Hard rules for AI-generated images (all enforced at `visual-reviewer`):
+- **Never** use AI generation for diagrams, charts, infographics, comparison matrices,
+  comic/storyboards, card packs, or executive exhibits — those stay programmatic and keep their
+  inspector gates.
+- **No embedded text** of any kind in the generated pixels. Text/labels are overlaid
+  programmatically over the reserved ~30% negative space.
+- **Brand-color fidelity**: honor the design-token palette; no hue substitution.
+- Every generated image lives in `content/visuals/generated/` with a sidecar JSON (provider,
+  model, prompt, size, quality, cache key/seed) for reproducibility, and must pass
+  `visual-reviewer` section 9 (`image-no-text`, `image-fidelity`, `safety`) before publishing.
+
 ## Tool Selection
 
 | Visual type | Tool | When |

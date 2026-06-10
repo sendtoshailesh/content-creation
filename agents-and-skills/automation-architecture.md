@@ -13,7 +13,8 @@ The 8-step content strategy pipeline is automated as GitHub Copilot custom agent
 │   ├── content-pipeline.agent.md              # Orchestrator — coordinates all agents
 │   ├── content-strategist.agent.md            # Steps 1-2: interview + outline
 │   ├── blog-writer.agent.md                   # Step 3: long-form blog
-│   ├── visual-renderer.agent.md               # Step 3b: PNGs, SVGs, Mermaid
+│   ├── visual-renderer.agent.md               # Step 3b: PNGs, SVGs, Mermaid (deterministic)
+│   ├── image-content-agent.agent.md           # Step 3b-img: AI hero/illustrative imagery (optional)
 │   ├── quality-reviewer.agent.md              # Step 3c: audit + fixes
 │   ├── social-linkedin.agent.md               # Step 4: LinkedIn posts
 │   ├── social-twitter.agent.md                # Step 5: Twitter thread
@@ -22,9 +23,13 @@ The 8-step content strategy pipeline is automated as GitHub Copilot custom agent
 │   └── video-scriptwriter.agent.md            # Step 8: YouTube script
 ├── skills/
 │   ├── visual-rendering/
-│   │   ├── SKILL.md                           # Multi-step visual generation workflow
+│   │   ├── SKILL.md                           # Multi-step visual generation workflow (deterministic)
 │   │   └── references/
 │   │       └── design-tokens.md               # Color palette, typography, DPI standards
+│   ├── creative-brief/
+│   │   └── SKILL.md                           # Structured creative-brief front door (Step 1)
+│   ├── vision-grounding/
+│   │   └── SKILL.md                           # Vision-grounded prompt grammar for AI imagery
 │   ├── unicode-formatting/
 │   │   └── SKILL.md                           # Unicode bold/italic procedure for social posts
 │   └── reference-analysis/
@@ -32,17 +37,26 @@ The 8-step content strategy pipeline is automated as GitHub Copilot custom agent
 ├── instructions/
 │   ├── content-quality.instructions.md        # Auto-loads for content/**/*.md files
 │   ├── visual-standards.instructions.md       # Auto-loads for content/visuals/** files
-│   └── social-formatting.instructions.md      # On-demand for social media tasks
+│   ├── social-formatting.instructions.md      # On-demand for social media tasks
+│   └── shared/
+│       └── compliance-severity.md             # Error/Warning/Info findings schema + gate
 └── prompts/
     ├── new-content-pipeline.prompt.md         # Quick-start: /new-content-pipeline
     ├── quality-review.prompt.md               # Quick-start: /quality-review
     └── configure-model.prompt.md              # Discover + choose Copilot models
 
 content/
-├── pipeline-config.md                         # User-editable: reference URLs, model prefs, output prefs
+├── pipeline-config.md                         # User-editable: references, model prefs, output prefs, image-gen settings
+├── creative-brief.md                          # Structured creative brief (front door for every run)
 ├── reference-brief.md                         # Auto-generated: synthesized reference analysis
 ├── *.md                                       # Blog, social posts, scripts
 └── visuals/                                   # PNGs, SVGs, Mermaid files, Python renderers
+    └── generated/                             # AI hero/illustrative imagery + sidecar JSON (optional)
+
+scripts/visuals/generated/                     # AI image generation: provider, generate, describe, cache
+
+agents-and-skills/
+└── image-provider-comparison.md               # AI image provider comparison + decision
 ```
 
 ## How It Works
@@ -186,6 +200,7 @@ Agents do **not** hardcode a model. The user selects the model via the VS Code m
 | content-strategist | read, search, web | Research + reference fetching, no file editing |
 | blog-writer | read, edit, search, web | Writes content, fetches references |
 | visual-renderer | read, edit, search, execute | Needs terminal to run Python scripts |
+| image-content-agent | read, edit, search, execute | Runs the AI image-generation/vision scripts; hero/illustrative imagery only |
 | quality-reviewer | read, edit, search, execute | Needs to verify rendered output |
 | social-linkedin | read, edit, search | Content adaptation only |
 | social-twitter | read, edit, search | Content adaptation only |
@@ -204,6 +219,34 @@ Procedure for converting plain text to Unicode Mathematical Bold/Italic for Link
 
 ### reference-analysis
 Fetches and synthesizes online reference URLs listed in `content/pipeline-config.md`. Produces `content/reference-brief.md` with per-source summaries, cross-source analysis, consensus/contradictions, and extractable data points. Used by the orchestrator in Phase 0 before content creation begins.
+
+### creative-brief
+Turns the topic and clarifying-question answers into a structured `content/creative-brief.md` (overview, objectives, audience, key message, tone, deliverables, visual guidelines, CTA, guardrails). It is the single source of visual/voice direction for all downstream agents. Adapted from the reference accelerator's Creative Brief Interpretation.
+
+### vision-grounding
+Describes reference images with a vision model and assembles the consolidated image-prompt grammar (subject + brief + brand + constraints: no-text, color fidelity, ~30% negative space). Backs the `image-content-agent`.
+
+## AI Imagery & Adopted Methodologies
+
+Three methodologies are adapted from Microsoft's
+[content-generation-solution-accelerator](https://github.com/microsoft/content-generation-solution-accelerator)
+(MIT). The reference repo's Azure infrastructure is intentionally **not** used — only the
+methodology.
+
+1. **Structured Creative Brief** (`creative-brief` skill → `content/creative-brief.md`) — a
+   rigorous front door at Step 1 that all agents read.
+2. **Vision-grounded AI imagery (hybrid)** — `image-content-agent` (Step 3b-img) generates
+   **hero/illustrative** images only, via `scripts/visuals/generated/` (provider-agnostic
+   adapter over OpenAI / Azure OpenAI). Gated behind `image_generation: on`. Diagrams,
+   infographics, and exhibits stay deterministic in `visual-renderer`. Every image is written
+   with a sidecar JSON (provider/model/prompt/seed) and a prompt-hash cache for reproducibility
+   and cost control. Hard constraint: **no embedded text** — overlays are added programmatically.
+3. **Severity-categorized compliance** (`.github/instructions/shared/compliance-severity.md`) —
+   `brand-guardian` and `visual-reviewer` emit Error/Warning/Info findings with a PASS/FAIL gate;
+   any Error blocks Steps 10/11 and triggers the rollback/redo protocol.
+
+Provider selection guidance lives in `agents-and-skills/image-provider-comparison.md`; keys are
+configured in `.env` (see `.env.example`).
 
 ## Prompts
 

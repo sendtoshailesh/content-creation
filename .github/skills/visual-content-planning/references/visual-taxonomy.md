@@ -11,6 +11,7 @@ This taxonomy defines the approved visual families for the mandatory visual edit
 | Comic explainer / storyboard | Human scenarios, failure stories, before/after behavior, memorable analogies | Broad technical audience | Blog, LinkedIn | Pillow, SVG via Python |
 | LinkedIn social card pack | Swipeable framework, checklist, teardown, or narrative sequence | Practitioners | LinkedIn | Pillow |
 | Executive exhibit | ROI, risk, cost, operational decision-making, evidence | Leaders, decision-makers | Blog, LinkedIn Article, Medium | matplotlib, Pillow |
+| AI-generated imagery (hero/illustrative) | Hero/backdrop shots, scene-setting, conceptual illustration, mood — never data | Broad audience | Blog hero, LinkedIn, Medium/Substack hero | `scripts.visuals.generated` (AI image model) |
 
 ## Follow-On Families
 
@@ -28,6 +29,7 @@ This taxonomy defines the approved visual families for the mandatory visual edit
 - Choose comic/storyboards when the insight depends on human behavior, failure modes, or a before/after moment.
 - Choose LinkedIn card packs when the asset is meant to drive dwell time and saves.
 - Choose executive exhibits when the message is a decision, risk, cost, ROI, or leadership trade-off.
+- Choose AI-generated imagery **only** for hero/backdrop/scene/illustration slots that carry mood, not information. It is gated behind `image_generation: on`, must contain **no embedded text**, must honor brand colors, and goes through `image-content-agent` + `vision-grounding`. Never use it for diagrams, charts, infographics, or exhibits.
 
 ## Anti-Patterns
 
@@ -35,5 +37,6 @@ This taxonomy defines the approved visual families for the mandatory visual edit
 - Do not use a comic when the concept requires precise architecture.
 - Do not use an executive exhibit for emotional storytelling.
 - Do not use an infographic as a dumping ground for every section.
+- Do not use AI-generated imagery for any data-bearing or structural visual (diagram, chart, infographic, exhibit); it is for mood/hero/illustration only, and must never contain embedded text.
 - Do not render any data-bearing visual without a visible source line.
 

@@ -112,10 +112,12 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | -1 | `@feed-curator` | _(Optional)_ Discover content ideas from blog rolls, RSS feeds, newsletters |
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
 | 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
+| 1 | `@content-strategist` (`creative-brief` skill) | Structured creative brief (`content/creative-brief.md`) |
 | 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline |
 | 2d | `@visual-strategist` / `visual-content-planning` skill | Mandatory visual opportunity map before writing |
 | 3 | `@blog-writer` | Long-form blog (~3,000 words) |
-| 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams |
+| 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams (deterministic) |
+| 3b-img | `@image-content-agent` | AI hero/illustrative imagery — optional, only if `image_generation: on` |
 | 3c | `@quality-reviewer` | Quality audit with fixes |
 | 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
 | 4a | `@social-strategist` | Cross-platform social distribution strategy |
@@ -145,8 +147,11 @@ First-milestone visual families:
 | Comic explainers / storyboards | Human scenarios, failure stories, before/after lessons | Blog, LinkedIn |
 | LinkedIn social card packs | Swipeable visual thought leadership | LinkedIn |
 | Executive exhibits | ROI, risk, cost, and decision evidence | Blog, Medium, LinkedIn Article |
+| AI-generated imagery (hero/illustrative) | Hero/backdrop/scene/conceptual shots that carry mood, never data | Blog hero, LinkedIn, Medium/Substack |
 
-Comic/storyboard visuals are generated programmatically with Python/Pillow/SVG primitives only. The pipeline does not require external image generation.
+Comic/storyboard visuals are generated programmatically with Python/Pillow/SVG primitives only. The pipeline does not require external image generation for diagrams, infographics, or exhibits.
+
+**Optional AI imagery (hybrid):** the `AI-generated imagery` family is the one place the pipeline calls an image model — **only** for hero/backdrop/illustrative slots, gated behind `image_generation: on` in `content/pipeline-config.md`. It is produced by `@image-content-agent` via the `vision-grounding` + `creative-brief` skills, must contain **no embedded text**, must honor brand colors, and passes `@visual-reviewer` like any other asset. This methodology is adapted from [`microsoft/content-generation-solution-accelerator`](https://github.com/microsoft/content-generation-solution-accelerator); see [`agents-and-skills/image-provider-comparison.md`](agents-and-skills/image-provider-comparison.md) to choose a provider.
 
 ## Visual-First Distribution
 
@@ -232,10 +237,13 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 21 specialist agents
-├── skills/                          # 9 reusable skills
-│   ├── visual-rendering/            #   PNG/SVG/Mermaid generation
+├── agents/                          # 22 specialist agents
+├── skills/                          # 12 reusable skills
+│   ├── visual-rendering/            #   PNG/SVG/Mermaid generation (deterministic)
 │   ├── visual-content-planning/      #   Mandatory visual opportunity mapping
+│   ├── infographic-design-system/   #   Research-backed infographic design briefs
+│   ├── creative-brief/              #   Structured creative-brief front door
+│   ├── vision-grounding/            #   Vision-grounded prompts for AI imagery
 │   ├── unicode-formatting/          #   Bold/italic for social posts
 │   ├── reference-analysis/          #   Fetch + synthesize online sources
 │   ├── feed-curation/               #   Classify, extract, rank feed articles
@@ -251,13 +259,15 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 
 content/
 ├── pipeline-config.md               # ← Edit this before each run
+├── creative-brief.md                # Structured creative brief (front door for every run)
 ├── visual-opportunity-map.md         # Mandatory visual backlog and renderer handoff
 ├── feed-sources.md                  # ← Feed sources + subject area config (persistent)
 ├── idea-queue.md                    # Curated content ideas (persistent)
 ├── reference-brief.md               # Auto-generated from reference URLs
 ├── *.md                             # Blog, social posts, scripts
 └── visuals/
-    ├── *.png / *.svg                 # Blog visuals from visual-renderer
+    ├── *.png / *.svg                 # Blog visuals from visual-renderer (deterministic)
+    ├── generated/                   # AI hero/illustrative imagery + sidecar JSON (optional)
     └── distilled/                   # Visual packs from visual-pack-generator
         ├── {slug}-practitioner/     #   10-slide LinkedIn carousel (1080×1080px)
         └── {slug}-executive/        #   3-5 exhibit charts (1200×627px)
@@ -269,6 +279,7 @@ archive/                             # Past content runs (max 3 kept)
 
 scripts/
 ├── visuals/                          # Reusable visual rendering primitives
+│   └── generated/                   # AI image generation: provider, generate, describe, cache
 ├── archive-content.sh               # Archive + rotate content runs
 ├── pipeline/
 │   ├── feed_reader.py               # Multi-format blog roll / RSS ingestion
@@ -279,7 +290,8 @@ scripts/
 └── Validate-DocsReadme.ps1          # Validate all docs/ subfolders have README.md
 
 agents-and-skills/
-└── automation-architecture.md       # Detailed architecture documentation
+├── automation-architecture.md       # Detailed architecture documentation
+└── image-provider-comparison.md     # AI image provider comparison + decision
 ```
 
 ## Design System
@@ -336,6 +348,8 @@ This will:
 ## Attribution
 
 Five agents in this pipeline are adapted from the [agency-agents](https://github.com/msitarzewski/agency-agents) project (MIT License) — `trend-researcher`, `brand-guardian`, `seo-optimizer`, `social-strategist`, and `content-repurposer`. See individual agent files for source details.
+
+Three methodologies — the **structured creative brief**, **vision-grounded AI image generation**, and **severity-categorized (Error/Warning/Info) brand compliance** — are adapted from Microsoft's [content-generation-solution-accelerator](https://github.com/microsoft/content-generation-solution-accelerator) (MIT License). Only the methodology is borrowed; the reference repo's Azure infrastructure (Agent Framework, Foundry, Cosmos, AI Search) is intentionally not used.
 
 ## Contributing
 

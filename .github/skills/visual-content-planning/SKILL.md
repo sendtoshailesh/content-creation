@@ -99,6 +99,7 @@ Each P0/P1 row must also have an art-direction brief from the `infographic-desig
 - Use **comic/storyboard explainers** for human scenarios, production failures, misuse cases, before/after moments, and "why this matters" stories.
 - Use **LinkedIn social card packs** for swipeable thought leadership, practitioner frameworks, and high-save content.
 - Use **executive exhibits** for ROI, risk, cost, operational decision-making, and leadership-facing evidence.
+- Use **AI-generated imagery** only for hero/backdrop/scene/illustration slots that carry mood, not information. It is gated behind `image_generation: on` in `pipeline-config.md`, runs through `image-content-agent` + `vision-grounding`, must contain **no embedded text**, and must honor brand colors. Never use it for diagrams, charts, infographics, or exhibits — those stay deterministic.
 
 ## Quality Rules
 
