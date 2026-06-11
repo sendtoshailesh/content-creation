@@ -19,15 +19,19 @@ infographics, flows, comparison matrices, and executive exhibits stay determinis
 
 ## Step 1 — Describe reference images (grounding)
 
-For each reference image in the creative brief (`§7 Visual guidelines → Reference images`):
+**Prefer your own Copilot vision.** As the `image-content-agent`, open each reference image in
+the creative brief (`§7 Visual guidelines → Reference images`) with the `viewImage` tool and
+write the description yourself (dominant colors with approximate hex, materials, shapes,
+composition, lighting, style). This needs **no external API key or network**.
+
+Use the script only as a **non-interactive / CI fallback** when you cannot view images directly:
 
 ```
 python -m scripts.visuals.generated.describe --image <path-or-url> \
     --append content/visuals/generated/reference-descriptions.md --label "<label>"
 ```
 
-The vision model returns dominant colors, materials, shapes, composition, lighting, and
-style. Skip this step only when there is no reference image (then ground on the brief alone).
+Skip this step only when there is no reference image (then ground on the brief alone).
 
 ## Step 2 — Assemble the consolidated prompt (the grammar)
 
@@ -64,7 +68,7 @@ REQUIREMENTS (hard constraints):
 4. **Safety.** No real-person likeness, no sensitive scenes; flag anything borderline for the
    compliance gate.
 
-## Step 3 — Generate
+## Step 3 — Generate (ai mode)
 
 Pass the consolidated prompt to:
 
@@ -73,10 +77,35 @@ python -m scripts.visuals.generated.generate --prompt "<consolidated prompt>" \
     --out content/visuals/generated/<slug>-hero.png
 ```
 
-Each output carries a sidecar JSON (provider, model, prompt, size, quality, cache key).
+Each output carries a sidecar JSON (provider, model, prompt, size, quality, cache key, plus
+`mode`, `license`, and `safety_reviewed` provenance fields).
+
+> For the **`programmatic`** mode (the default), there is no prompt grammar — render the backdrop
+> directly with `scripts.visuals.generated.programmatic` (see `image-content-agent`). It is
+> license-clean by construction and cannot bake in text.
+
+## Step 4 — Deterministic QA pre-screen (mandatory, both modes)
+
+Before the manual/vision review, run the objective inspector:
+
+```
+python -m scripts.visuals.generated.inspect_image content/visuals/generated/<slug>-hero.png --theme <theme>
+```
+
+It checks **no embedded text** (OCR), **brand-color fidelity** (palette distance), and
+**negative-space** ratio, and prints a `GATE: PASS/FAIL`. A FAIL (Error) must be fixed before
+handoff.
+
+## License & safety checklist (record in the sidecar)
+
+- `license`: `programmatic` mode is `generated-own (no third-party assets)`; `ai` mode records
+  the provider/model and must respect that provider's commercial-use terms.
+- `safety_reviewed`: confirm no real-person likeness, no sensitive/unsafe scene. Flag borderline
+  cases to the compliance gate rather than publishing.
 
 ## Handoff
 
-Generated images go to `visual-reviewer` for the `image-no-text`, `image-fidelity`, and
-`safety` checks (see `.github/instructions/shared/compliance-severity.md`). Any **Error**
-blocks publishing until regenerated.
+After the deterministic pre-screen passes, generated images go to `visual-reviewer` for the
+section-9 `image-no-text`, `image-fidelity`, and `safety` checks (see
+`.github/instructions/shared/compliance-severity.md`). Any **Error** blocks publishing until
+regenerated.

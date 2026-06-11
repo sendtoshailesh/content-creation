@@ -27,7 +27,7 @@
 - [x] Step 2e: Infographic art direction
 - [x] Step 3: Blog post refresh for visual-first strategy
 - [x] Step 3b: Visual assets
-- [ ] Step 3b-img: AI hero/illustrative imagery (optional — enable via Image Generation block below)
+- [ ] Step 3b-img: hero/illustrative imagery (optional — `programmatic` default / `ai` opt-in, see Image Generation block)
 - [x] Step 3c: Quality review
 - [x] Step 3d: SEO optimization
 - [x] Step 4a: Social distribution strategy refresh
@@ -148,25 +148,32 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 ### Image Generation (hybrid AI imagery)
 
-> Controls the optional AI image-generation step (Step 3b-img). Scope is **hero / backdrop /
-> scene / conceptual-illustration** assets only — diagrams, infographics, flows, comparison
-> matrices, and executive exhibits stay deterministic/programmatic. Provider keys live in
-> `.env` (see `.env.example`). Choose a provider in
-> `agents-and-skills/image-provider-comparison.md`.
+> Controls the optional image step (Step 3b-img). Scope is **hero / backdrop / scene /
+> conceptual-illustration** assets only — diagrams, infographics, flows, comparison
+> matrices, and executive exhibits stay deterministic/programmatic.
+>
+> **Two modes, default is free + offline:**
+> - `programmatic` — deterministic hero/backdrop rendered by `scripts.visuals.generated.programmatic`
+>   (HTML/CSS+Chromium, brand tokens, reserved negative space). **No API key, no network, no
+>   cost, fully reproducible.** This is the default.
+> - `ai` — calls an external image model (OpenAI/Azure) for a photoreal/illustrative look.
+>   Opt-in only; needs a key + network + spend. See `agents-and-skills/image-provider-comparison.md`.
+> - `off` — skip image generation entirely.
 
 | Field | Value |
 |-------|-------|
-| **image_generation** | `off` |
-| **provider** | `openai` |
-| **model** | `gpt-image-1` |
+| **mode** | `programmatic` |
+| **provider** (ai mode only) | `openai` |
+| **model** (ai mode only) | `gpt-image-1` |
 | **size** | `1024x1024` |
-| **quality** | `medium` |
+| **quality** (ai mode only) | `medium` |
 | **max_images_per_run** | `3` |
-| **reference_images** | _(paths/URLs for vision grounding, optional)_ |
+| **reference_images** | _(paths/URLs for grounding, optional)_ |
 
-> Set `image_generation: on` to enable. Every generated image is written to
-> `content/visuals/generated/` with a sidecar JSON (provider, model, full prompt, size,
-> quality, seed) and must pass `visual-reviewer` like any other asset.
+> Every generated image (either mode) is written to `content/visuals/generated/` with a sidecar
+> JSON (mode, license, safety, and for `ai` the provider/model/prompt/seed), must pass the
+> deterministic `scripts.visuals.generated.inspect_image` pre-screen (no-text, brand-color
+> fidelity, negative-space), and then `visual-reviewer`.
 
 ### Series Configuration
 

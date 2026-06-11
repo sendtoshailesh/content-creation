@@ -12,6 +12,9 @@ build/
 venv/
 ENV/
 
+# Node (JS-charting bridge vendors echarts here; do not commit)
+node_modules/
+
 # OS files
 .DS_Store
 Thumbs.db

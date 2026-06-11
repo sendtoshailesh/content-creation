@@ -98,11 +98,15 @@ def generate_image(
 
     meta = {
         "cache_key": key,
+        "mode": "ai",
         "provider": settings.provider,
         "model": settings.image_model,
         "prompt": prompt,
         "size": size,
         "quality": quality,
+        "license": f"ai/{settings.provider}:{settings.image_model} (respect provider commercial-use terms)",
+        "safety_reviewed": "pending (confirm no real-person likeness / sensitive scene before publishing)",
+        "deterministic": False,
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "family": "ai-generated-imagery",
         "constraints": ["no-embedded-text", "brand-color-fidelity", "~30% negative space"],

@@ -53,7 +53,11 @@ content/
 └── visuals/                                   # PNGs, SVGs, Mermaid files, Python renderers
     └── generated/                             # AI hero/illustrative imagery + sidecar JSON (optional)
 
-scripts/visuals/generated/                     # AI image generation: provider, generate, describe, cache
+scripts/visuals/generated/                     # Hero imagery: programmatic.py (default, deterministic),
+                                               #   generate.py/provider.py/describe.py/cache.py (ai opt-in),
+                                               #   inspect_image.py (deterministic QA), selftest.py (offline)
+scripts/visuals/charts_js/                     # Opt-in JS chart bridge: echarts_render.py (ECharts -> Chromium PNG)
+                                               #   for advanced charts only (sankey/treemap/network/heatmap)
 
 agents-and-skills/
 └── image-provider-comparison.md               # AI image provider comparison + decision
@@ -235,18 +239,56 @@ methodology.
 
 1. **Structured Creative Brief** (`creative-brief` skill → `content/creative-brief.md`) — a
    rigorous front door at Step 1 that all agents read.
-2. **Vision-grounded AI imagery (hybrid)** — `image-content-agent` (Step 3b-img) generates
-   **hero/illustrative** images only, via `scripts/visuals/generated/` (provider-agnostic
-   adapter over OpenAI / Azure OpenAI). Gated behind `image_generation: on`. Diagrams,
-   infographics, and exhibits stay deterministic in `visual-renderer`. Every image is written
-   with a sidecar JSON (provider/model/prompt/seed) and a prompt-hash cache for reproducibility
-   and cost control. Hard constraint: **no embedded text** — overlays are added programmatically.
+2. **Hero/illustrative imagery (hybrid), free-and-offline by default** — `image-content-agent`
+   (Step 3b-img) generates **hero/illustrative** images only, in one of two modes set in
+   `content/pipeline-config.md`:
+   - `programmatic` (**default**): deterministic backdrops via
+     `scripts/visuals/generated/programmatic.py` (HTML/CSS + Chromium, brand tokens, reserved
+     negative space). **No key, no network, no cost, reproducible** — the model parameterizes a
+     render exactly as it does for diagrams.
+     - `ai` (opt-in): external image model via `scripts/visuals/generated/` (provider-agnostic
+       adapter over OpenAI / Azure OpenAI) for a true photoreal look; trades determinism, cost,
+       and licensing simplicity for realism.
+   Both modes: **no embedded text** (overlays added programmatically), sidecar JSON
+   (mode/license/safety + provider/model/prompt/seed for `ai`), a prompt-hash cache, and a
+   **deterministic QA pre-screen** (`scripts/visuals/generated/inspect_image.py`: OCR no-text +
+   brand-color fidelity + negative-space) before the `visual-reviewer` gate. Reference-image
+   grounding and output verification prefer the agent's **own Copilot vision** (`viewImage`);
+   `describe.py` is a non-interactive/CI fallback. A key-free self-test
+   (`python -m scripts.visuals.generated.selftest`) exercises the default path offline. Diagrams,
+   infographics, and exhibits stay deterministic in `visual-renderer`.
 3. **Severity-categorized compliance** (`.github/instructions/shared/compliance-severity.md`) —
    `brand-guardian` and `visual-reviewer` emit Error/Warning/Info findings with a PASS/FAIL gate;
    any Error blocks Steps 10/11 and triggers the rollback/redo protocol.
 
 Provider selection guidance lives in `agents-and-skills/image-provider-comparison.md`; keys are
 configured in `.env` (see `.env.example`).
+
+## Visual Tech Stack Decision (Python vs JS)
+
+Decided via web research **and** an empirical head-to-head render test (matplotlib vs ECharts of
+the same branded chart). Output is **static-only** (every visual pre-rendered to PNG/SVG;
+published GitHub Pages load no client JS), so JS frameworks enter only as a server-side
+pre-render step.
+
+| Visual type | Stack | Module |
+|---|---|---|
+| Standard charts (bar/line/scatter/pie) | matplotlib | (renderers) |
+| Advanced charts (sankey/treemap/network/heatmap) | ECharts → Chromium PNG (opt-in) | `scripts/visuals/charts_js/echarts_render.py` |
+| Infographics / exhibits / tables / layouts | HTML/CSS + Chromium | `scripts/visuals/html/` |
+| Diagrams | Mermaid → PNG; Graphviz/DOT for dense | `scripts/visuals/html/render_mermaid.py` |
+| Hero / illustrative + text overlay | programmatic backdrop + CSS overlay | `scripts/visuals/generated/programmatic.py` |
+| Comics / storyboards | HTML/CSS + Chromium (text); SVG/CSS shapes | `scripts/visuals/html/`, `scripts/visuals/svg/` |
+
+**Key empirical finding:** both matplotlib and a JS lib produce excellent branded static charts,
+but the JS path required `npm install` + an inlined bundle + a Playwright harness, and the first
+render was **silently wrong** — the screenshot caught the bars mid entrance-animation. The bridge
+therefore **forces `animation:false`** as a deterministic guard. matplotlib remains the default
+for standard charts; the JS bridge is reserved for chart types matplotlib handles poorly.
+
+**Hard rules:** static-only (no client JS on Pages); JS charts disable animation; text-heavy uses
+browser text (HTML/CSS+Chromium), never Pillow/hand-SVG; hero text is composited as a CSS layer.
+Full matrix in `.github/instructions/visual-standards.instructions.md` → Stack Selection.
 
 ## Prompts
 

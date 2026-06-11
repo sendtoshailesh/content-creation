@@ -1,0 +1,9 @@
+{
+  "name": "charts-js-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vendors ECharts for the opt-in advanced-chart bridge. Run `npm install` here, then render via `python -m scripts.visuals.charts_js.echarts_render`.",
+  "dependencies": {
+    "echarts": "^5.5.0"
+  }
+}

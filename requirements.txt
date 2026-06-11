@@ -23,6 +23,11 @@ readability-lxml>=0.8.1
 # Visual rendering — infographic-style layouts with pixel-precise text placement
 Pillow>=10.0.0
 
-# AI image generation — hero/illustrative imagery + vision grounding (hybrid visual family)
+# HTML/CSS visuals + programmatic hero backdrops rendered via headless Chromium
+# After install run: python -m playwright install chromium
+playwright>=1.40.0
+
+# AI image generation — OPTIONAL photoreal/illustrative path (image_generation mode = ai).
+# The default mode is `programmatic` (deterministic, free, offline) and does NOT need this.
 # Works for both OpenAI and Azure OpenAI image/vision models via one SDK.
 openai>=1.40.0

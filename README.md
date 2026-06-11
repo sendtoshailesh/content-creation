@@ -117,7 +117,7 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 2d | `@visual-strategist` / `visual-content-planning` skill | Mandatory visual opportunity map before writing |
 | 3 | `@blog-writer` | Long-form blog (~3,000 words) |
 | 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams (deterministic) |
-| 3b-img | `@image-content-agent` | AI hero/illustrative imagery — optional, only if `image_generation: on` |
+| 3b-img | `@image-content-agent` | Hero/illustrative imagery — optional; `programmatic` (free/offline, default) or `ai` (opt-in) |
 | 3c | `@quality-reviewer` | Quality audit with fixes |
 | 3d | `@seo-optimizer` | SEO metadata, keyword optimization, heading structure |
 | 4a | `@social-strategist` | Cross-platform social distribution strategy |
@@ -151,7 +151,12 @@ First-milestone visual families:
 
 Comic/storyboard visuals are generated programmatically with Python/Pillow/SVG primitives only. The pipeline does not require external image generation for diagrams, infographics, or exhibits.
 
-**Optional AI imagery (hybrid):** the `AI-generated imagery` family is the one place the pipeline calls an image model — **only** for hero/backdrop/illustrative slots, gated behind `image_generation: on` in `content/pipeline-config.md`. It is produced by `@image-content-agent` via the `vision-grounding` + `creative-brief` skills, must contain **no embedded text**, must honor brand colors, and passes `@visual-reviewer` like any other asset. This methodology is adapted from [`microsoft/content-generation-solution-accelerator`](https://github.com/microsoft/content-generation-solution-accelerator); see [`agents-and-skills/image-provider-comparison.md`](agents-and-skills/image-provider-comparison.md) to choose a provider.
+**Hero/illustrative imagery — two modes, free-and-offline by default:** the `AI-generated imagery` family is the one place the pipeline may make a "photo-like" visual — **only** for hero/backdrop/illustrative slots, produced by `@image-content-agent`. It has two modes (set in `content/pipeline-config.md` → Image Generation → `mode`):
+
+- **`programmatic` (default):** deterministic backdrops rendered by `scripts.visuals.generated.programmatic` (HTML/CSS + Chromium, brand tokens, reserved negative space) — **no API key, no network, no cost, fully reproducible.** This is how the pipeline already makes diagrams, extended to hero art.
+- **`ai` (opt-in):** calls an external image model (OpenAI/Azure) for a true photoreal look — needs a key + spend. See [`agents-and-skills/image-provider-comparison.md`](agents-and-skills/image-provider-comparison.md).
+
+Either way the image must contain **no embedded text**, honor brand colors, pass the deterministic `scripts.visuals.generated.inspect_image` pre-screen (OCR no-text, color fidelity, negative-space), and then `@visual-reviewer`. This methodology is adapted from [`microsoft/content-generation-solution-accelerator`](https://github.com/microsoft/content-generation-solution-accelerator).
 
 ## Visual-First Distribution
 
@@ -279,7 +284,8 @@ archive/                             # Past content runs (max 3 kept)
 
 scripts/
 ├── visuals/                          # Reusable visual rendering primitives
-│   └── generated/                   # AI image generation: provider, generate, describe, cache
+│   └── generated/                   # Hero imagery: programmatic (default) + AI (opt-in), inspector, self-test
+│   └── charts_js/                   # Opt-in JS chart bridge: ECharts -> Chromium PNG (advanced charts)
 ├── archive-content.sh               # Archive + rotate content runs
 ├── pipeline/
 │   ├── feed_reader.py               # Multi-format blog roll / RSS ingestion
@@ -307,6 +313,24 @@ All visuals use a shared token system for consistent branding:
 | SUCCESS | `#16a34a` | Positive green |
 
 Full token reference: [`.github/skills/visual-rendering/references/design-tokens.md`](.github/skills/visual-rendering/references/design-tokens.md)
+
+## Visual Tech Stack (Python vs JS)
+
+All visuals are **pre-rendered to static PNG/SVG** — published pages load no client JS. The
+stack is chosen per visual type (decided via web research + an empirical render test):
+
+| Visual type | Stack |
+|-------------|-------|
+| Standard charts (bar/line/scatter/pie) | **matplotlib** |
+| Advanced charts (sankey, treemap, network, heatmap) | **ECharts → Chromium PNG** via `scripts/visuals/charts_js/` (`animation:false`, opt-in) |
+| Infographics / exhibits / tables / layouts | **HTML/CSS + headless Chromium** (best text fidelity) |
+| Diagrams | **Mermaid → PNG**; **Graphviz/DOT** for dense ones |
+| Hero / illustrative + text overlay | `scripts/visuals/generated/programmatic.py` (CSS text overlay) |
+| Comics / storyboards | **HTML/CSS + Chromium** for caption text; SVG/CSS shapes |
+
+JS frameworks are used **only** as a server-side pre-render step to static images — never shipped
+to GitHub Pages. JS charts must disable animation (an animated chart screenshotted mid-flight
+exports silently-wrong bars). One-time setup for the chart bridge: `cd scripts/visuals/charts_js && npm install`.
 
 ## Content Quality Standards
 

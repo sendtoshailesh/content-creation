@@ -123,12 +123,17 @@ section never applies to them.
 1. **Enumerate visuals**: Read the blog post(s) and extract all `![alt](path)` image references. Also scan `content/visuals/` for any unlinked assets.
 2. **View each visual**: Use the image viewing tool to inspect each rendered PNG/SVG.
 3. **Apply checklist**: For each visual, run through all review categories (sections 1–8; add section 9 for any asset in `content/visuals/generated/`).
-3b. **Vision verify for AI images**: For each `content/visuals/generated/` image, run
-    `python -m scripts.visuals.generated.describe --image <png>` and compare the returned
-    description against the creative brief §7 — confirm no text was described, colors match the
-    brand palette, and the subject/composition matches intent. The deterministic inspector
-    remains the primary gate for programmatic assets; this vision pass is the primary check for
-    generated images.
+3b. **Generated-image QA (for any `content/visuals/generated/` asset):**
+    - **Deterministic pre-screen first (mandatory):** run
+      `python -m scripts.visuals.generated.inspect_image content/visuals/generated/<png> --theme <theme>`.
+      It objectively checks no-embedded-text (OCR), brand-color fidelity, and negative-space and
+      prints `GATE: PASS/FAIL`. A FAIL is a blocking Error — hand back before any further review.
+    - **Then verify with your own Copilot vision:** open the PNG with `viewImage` and compare it
+      against the creative brief §7 — confirm no text, colors match the brand palette, and the
+      subject/composition matches intent. Prefer your own vision; the external
+      `scripts.visuals.generated.describe` is only a non-interactive/CI fallback.
+    - The deterministic HTML/SVG inspector remains the primary gate for programmatic diagrams;
+      these two steps are the primary gate for generated images.
 4. **Produce findings report**: Output a structured report with:
    - **File**: the visual filename
    - **Severity**: `critical` (blocks publishing), `important` (should fix), `minor` (nice to fix)

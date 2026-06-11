@@ -1,9 +1,14 @@
 # AI Image Provider Comparison & Decision
 
-> Decision input for the **hybrid AI imagery** capability (hero / backdrop / scene /
-> conceptual-illustration assets only). Diagrams, infographics, flows, comparison
-> matrices, and executive exhibits remain deterministic/programmatic and are out of scope
-> for image generation.
+> Decision input for the **`ai` mode** of the hero/illustrative imagery capability (hero /
+> backdrop / scene / conceptual-illustration assets only). Diagrams, infographics, flows,
+> comparison matrices, and executive exhibits remain deterministic/programmatic and are out of
+> scope for image generation.
+>
+> **You only need this doc if you opt into `ai` mode.** The **default** is
+> `mode: programmatic` — deterministic backdrops rendered by
+> `scripts.visuals.generated.programmatic` with no API key, no network, and no cost. Choose `ai`
+> only when you need a true photoreal/illustrative look that CSS backdrops cannot deliver.
 >
 > **Methodology source:** adapted from
 > [`microsoft/content-generation-solution-accelerator`](https://github.com/microsoft/content-generation-solution-accelerator)

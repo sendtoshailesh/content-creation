@@ -112,17 +112,36 @@ Hard rules for AI-generated images (all enforced at `visual-reviewer`):
   model, prompt, size, quality, cache key/seed) for reproducibility, and must pass
   `visual-reviewer` section 9 (`image-no-text`, `image-fidelity`, `safety`) before publishing.
 
-## Tool Selection
+## Stack Selection (Python vs JS, per visual type)
 
-| Visual type | Tool | When |
-|------------|------|------|
-| Data charts (bar, line, scatter, pie) | **matplotlib** | Quantitative data with axes |
-| Infographic layouts, dashboards, cards | **Pillow (PIL)** | Pixel-precise text, complex multi-panel layouts |
-| Simple flow diagrams (< 10 nodes) | **matplotlib** patches | Decision trees, process flows |
-| Complex flowcharts (10+ nodes) | **Mermaid** (.mmd) | Architecture diagrams, dependency graphs |
-| Comparison tables, matrices | **Pillow (PIL)** | Precise column alignment, cell backgrounds |
+> Decided by web research + an empirical head-to-head render test (see plan/session evidence).
+> The pipeline already renders via headless Chromium, so JS frameworks are allowed **only** as a
+> server-side pre-render to static PNG/SVG — **never** as client JS on published pages.
 
-### Pillow (PIL) Usage
+| Visual type | Primary stack | Notes |
+|------------|---------------|-------|
+| Data charts (bar, line, scatter, pie) | **matplotlib** | Convention; native export; no animation trap |
+| Advanced charts (sankey, treemap, network/graph, calendar/heatmap, non-gauge radial) | **JS bridge** — `scripts.visuals.charts_js.echarts_render` (ECharts → Chromium PNG) | Opt-in; `animation:false` enforced; matplotlib does these poorly |
+| Infographics / one-pagers / exhibits / layouts | **HTML/CSS + Chromium** (`scripts/visuals/html/`) | Best text fidelity; not Pillow |
+| Comparison tables, matrices | **HTML/CSS + Chromium** | CSS grid/flex; not hand-math |
+| Architecture / flow / sequence diagrams | **Mermaid (.mmd) → PNG**; **Graphviz (DOT) → PNG** for dense/complex | D3 never (interactive only) |
+| Hero / backdrop / illustrative | **`scripts.visuals.generated.programmatic`** (default) or AI (opt-in) | Text overlay composited as a CSS layer, not baked into pixels |
+| Comics / storyboards | **HTML/CSS + Chromium** for caption/speech text; SVG/CSS shapes for panels | Pillow only for pure raster shape work |
+
+### Hard rules
+
+- **Static-only:** every visual is pre-rendered to PNG/SVG; published GitHub Pages load no client JS (Mermaid is pre-rendered, never shipped as a live `mermaid` fence).
+- **JS charts must set `animation:false`** (an animated chart screenshotted mid-flight exports silently-wrong bar heights) and pass the deterministic guard in the bridge.
+- **Text-heavy → browser text** (HTML/CSS + Chromium). Do not place complex text with Pillow or hand-authored SVG math.
+- **Compositing:** overlay hero/illustrative text as a CSS layer in the same Chromium render (e.g. `programmatic.render_hero(..., title=...)`), never re-typeset over a raster with Pillow.
+- **matplotlib stays the default** for standard quantitative charts.
+
+### Diagrams: Mermaid vs Graphviz
+
+- **Mermaid** (`.mmd` → PNG via `scripts.visuals.html.render_mermaid`): default for standard flowcharts/sequence/architecture; quick and version-controllable.
+- **Graphviz/DOT** (`dot -Tpng`): use for **dense or complex** static graphs where Mermaid's layout control is insufficient. Requires the `graphviz` system package (`brew install graphviz` / `apt-get install graphviz`). Author the `.dot`, render to PNG, then gate through `visual-reviewer`.
+
+## Legacy tool notes (Pillow / matplotlib)
 
 Use Pillow when text placement precision is critical. Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, preventing overflow.
 

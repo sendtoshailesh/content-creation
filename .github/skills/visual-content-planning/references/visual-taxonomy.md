@@ -6,11 +6,11 @@ This taxonomy defines the approved visual families for the mandatory visual edit
 
 | Visual family | Best for | Primary audience | Primary platforms | Renderer |
 |---|---|---|---|---|
-| Architecture / flow diagram | Systems, agent workflows, API/data flow, governance loops | Practitioners, platform engineers | Blog, LinkedIn, Medium/LinkedIn Article | Mermaid, Pillow |
-| Infographic / one-pager | Saveable summaries, key metrics, checklists, frameworks | Practitioners, decision-makers | Blog, LinkedIn, Substack Note | Pillow |
-| Comic explainer / storyboard | Human scenarios, failure stories, before/after behavior, memorable analogies | Broad technical audience | Blog, LinkedIn | Pillow, SVG via Python |
-| LinkedIn social card pack | Swipeable framework, checklist, teardown, or narrative sequence | Practitioners | LinkedIn | Pillow |
-| Executive exhibit | ROI, risk, cost, operational decision-making, evidence | Leaders, decision-makers | Blog, LinkedIn Article, Medium | matplotlib, Pillow |
+| Architecture / flow diagram | Systems, agent workflows, API/data flow, governance loops | Practitioners, platform engineers | Blog, LinkedIn, Medium/LinkedIn Article | Mermaid (Graphviz/DOT for dense) |
+| Infographic / one-pager | Saveable summaries, key metrics, checklists, frameworks | Practitioners, decision-makers | Blog, LinkedIn, Substack Note | HTML/CSS + Chromium |
+| Comic explainer / storyboard | Human scenarios, failure stories, before/after behavior, memorable analogies | Broad technical audience | Blog, LinkedIn | HTML/CSS + Chromium (text); SVG/CSS shapes |
+| LinkedIn social card pack | Swipeable framework, checklist, teardown, or narrative sequence | Practitioners | LinkedIn | HTML/CSS + Chromium |
+| Executive exhibit | ROI, risk, cost, operational decision-making, evidence | Leaders, decision-makers | Blog, LinkedIn Article, Medium | matplotlib; JS bridge (ECharts) for advanced charts |
 | AI-generated imagery (hero/illustrative) | Hero/backdrop shots, scene-setting, conceptual illustration, mood — never data | Broad audience | Blog hero, LinkedIn, Medium/Substack hero | `scripts.visuals.generated` (AI image model) |
 
 ## Follow-On Families

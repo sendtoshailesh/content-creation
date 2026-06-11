@@ -19,6 +19,26 @@ argument-hint: 'Describe the visuals needed (e.g., "comparison matrix for 5 mode
 > `scripts.visuals.generated`), gated behind `image_generation: on`. Diagrams, infographics,
 > charts, and exhibits are **always** programmatic and never AI-generated.
 
+## Stack selection (which tool per visual type)
+
+Decided by web research + an empirical render test (static-only output; JS allowed only as a
+server-side pre-render to PNG, never client JS on published pages):
+
+- **Standard data charts** (bar/line/scatter/pie) → **matplotlib**.
+- **Advanced charts** (sankey, treemap, network/graph, calendar/heatmap, non-gauge radial) →
+  **JS bridge** `python -m scripts.visuals.charts_js.echarts_render --spec <option.json> --out <png> --theme <theme>`
+  (ECharts → Chromium PNG; `animation:false` enforced). Run `npm install` once in
+  `scripts/visuals/charts_js/`.
+- **Infographics / exhibits / comparison tables / layouts / comic captions** → **HTML/CSS +
+  Chromium** (`scripts/visuals/html/`). Best text fidelity; never Pillow for text-heavy.
+- **Diagrams** → **Mermaid** (`.mmd` → PNG) for standard; **Graphviz/DOT** (`dot -Tpng`) for
+  dense/complex (needs the `graphviz` system package).
+- **Hero/illustrative + text overlay** → `scripts.visuals.generated.programmatic` (compose title
+  via the CSS overlay, e.g. `render_hero(..., title=..., subtitle=...)`), not Pillow.
+
+See `.github/instructions/visual-standards.instructions.md` → **Stack Selection** for the full
+matrix and hard rules.
+
 ## Prerequisites
 
 - Python 3.x with matplotlib installed
