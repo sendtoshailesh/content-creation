@@ -42,12 +42,29 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 
 ## Orchestration Protocol
 
+### Topic-Scoped Runs (check before Status Check)
+
+This pipeline can run either against the repo-root `content/` files **or** against an isolated
+**topic workspace** under `content/topics/<slug>/` (see `content/topics/README.md`).
+
+- If invoked via `/topic-pipeline <slug>`, or the user names a configured topic slug, or you are
+  already working inside a `content/topics/<slug>/` workspace, then for the **entire run** use:
+  - `content/topics/<slug>/pipeline-config.md` in place of `content/pipeline-config.md`
+  - `content/topics/<slug>/feed-sources.md` and `content/topics/<slug>/idea-queue.md`
+  - `content/topics/<slug>/` as the output root (blog, social, scripts), with visuals under
+    `content/topics/<slug>/visuals/`
+- Never touch other topics' workspaces or the repo-root `content/` files during a topic-scoped
+  run. Topics are independent and may run in parallel.
+- All phases, gates, and the rollback/redo protocol below apply unchanged — just rooted at the
+  topic workspace. Wherever this document says `content/pipeline-config.md` or `content/...`,
+  substitute the topic workspace path for a topic-scoped run.
+
 ### Status Check (Always First)
-1. Read `content/pipeline-config.md` — check the **Pipeline Status** section at the top
+1. Read the active `pipeline-config.md` (topic workspace if topic-scoped; else `content/pipeline-config.md`) — check the **Pipeline Status** section at the top
 2. If Status is `completed`, ask user if they want to archive and start fresh (suggest `/archive-content`)
 3. If Status is `in-progress`, identify the first unchecked step in the Step Checklist and resume from that phase
 4. If Status is `not-started`:
-   - If **Topic** is empty, suggest content discovery first: "No topic set. Would you like to discover ideas from your blog rolls? Run `@feed-curator` to curate content ideas, or use `/select-idea` to pick from the existing idea queue."
+   - If **Topic** is empty, suggest content discovery first: "No topic set. Would you like to discover ideas from your blog rolls? Run `@feed-curator` to curate content ideas, or use `/select-idea` to pick from the existing idea queue." (For a topic workspace, the **Topic** is preset — proceed.)
    - If **Topic** is set, proceed to set Status to `in-progress`, fill in **Started** date, and begin Phase 0
 5. Update **Current Step** in the status section as you move through phases
 

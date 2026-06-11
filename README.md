@@ -233,9 +233,35 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 | Command | Description |
 |---------|-------------|
 | `/new-content-pipeline` | Start a full pipeline run |
+| `/topic-pipeline <slug>` | Run the pipeline scoped to a topic workspace (`content/topics/<slug>/`) |
 | `/select-idea` | Pick a content idea from the curated queue |
 | `/quality-review` | Run quality audit on existing content |
 | `/archive-content` | Archive current content and prepare for a new run |
+
+## Multi-Topic Pipelines
+
+Run isolated content pipelines per subject so you can work several topics in parallel. Each
+topic has its own workspace under `content/topics/<slug>/` (config + feed sources + idea queue +
+outputs). Configured topics: **postgresql, agentic-ai, ai-general, machine-learning, python,
+azure-ms-ai, ai-native-dev, cloud-databases** — see [`content/topics/README.md`](content/topics/README.md).
+
+```bash
+# (re)generate topic workspaces and seed each idea queue from Apple Notes + Chrome bookmarks
+python scripts/pipeline/scaffold_topics.py
+```
+
+Then in Copilot Chat:
+
+```
+/topic-pipeline postgresql      # run the pipeline scoped to the PostgreSQL workspace
+```
+
+The scaffolder clusters your Apple Notes + Chrome bookmarks + Chrome reading list into each
+topic's `idea-queue.md` (employer-internal and personal links are filtered out). The Chrome
+reading list is read from the signed-in **Sync Data LevelDB** (modern Chrome no longer stores it
+in the Bookmarks file). Run `@feed-curator` inside a topic workspace to turn the seeded
+candidates into ranked, scored ideas. Re-running the scaffolder refreshes idea queues but never
+overwrites an in-flight `pipeline-config.md`.
 
 ## Project Structure
 
@@ -257,18 +283,25 @@ The pipeline fetches these in Step 0 and produces `content/reference-brief.md` �
 │   ├── multi-dimensional-analysis/  #   Persona × best-practice × WAF dimension analysis
 │   └── content-scope-assessment/    #   Single-post vs. multi-part series scoring
 ├── instructions/                    # 3 auto-loading instruction files
-├── prompts/                         # 5 prompt shortcuts
+├── prompts/                         # 6 prompt shortcuts
 ├── ISSUE_TEMPLATE/                  # Bug report & feature request templates
 ├── PULL_REQUEST_TEMPLATE.md         # PR checklist
 └── CODEOWNERS                       # Review assignments
 
 content/
-├── pipeline-config.md               # ← Edit this before each run
+├── pipeline-config.md               # ← Edit this before each run (single-topic, root)
 ├── creative-brief.md                # Structured creative brief (front door for every run)
 ├── visual-opportunity-map.md         # Mandatory visual backlog and renderer handoff
 ├── feed-sources.md                  # ← Feed sources + subject area config (persistent)
 ├── idea-queue.md                    # Curated content ideas (persistent)
 ├── reference-brief.md               # Auto-generated from reference URLs
+├── topics/                          # Per-topic pipeline workspaces (parallel content streams)
+│   ├── README.md                    #   Topic registry + how-to
+│   └── <slug>/                      #   e.g. postgresql/, agentic-ai/, python/ ...
+│       ├── pipeline-config.md       #     topic-scoped config (Topic preset)
+│       ├── feed-sources.md          #     topic-scoped feeds + subject filters
+│       ├── idea-queue.md            #     seeded from Notes + bookmarks (internal/personal filtered)
+│       └── visuals/                 #     topic outputs land here
 ├── *.md                             # Blog, social posts, scripts
 └── visuals/
     ├── *.png / *.svg                 # Blog visuals from visual-renderer (deterministic)
@@ -289,6 +322,9 @@ scripts/
 ├── archive-content.sh               # Archive + rotate content runs
 ├── pipeline/
 │   ├── feed_reader.py               # Multi-format blog roll / RSS ingestion
+│   ├── reading_list_reader.py       # Chrome reading list / bookmarks ingestion
+│   ├── apple_notes_reader.py        # Apple Notes ingestion
+│   ├── scaffold_topics.py           # Generate per-topic workspaces + seed idea queues
 │   ├── critic_review.py             # Cross-model adversarial review
 │   ├── grounded_review.py           # Fact-check against reference brief
 │   ├── generate_social.py           # Generate social posts from blog

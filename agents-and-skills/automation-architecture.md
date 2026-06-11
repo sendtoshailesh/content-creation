@@ -298,6 +298,25 @@ Full matrix in `.github/instructions/visual-standards.instructions.md` → Stack
 | `/quality-review` | Run quality audit with `@quality-reviewer` |
 | `/configure-model` | Discover available Copilot models and get task recommendations |
 
+## Multi-Topic Pipelines
+
+Beyond the single root pipeline, the system supports **isolated per-topic workspaces** under
+`content/topics/<slug>/`, each with its own `pipeline-config.md`, `feed-sources.md`,
+`idea-queue.md`, and outputs (`visuals/` subfolder). Topics run independently and in parallel.
+
+- **Scaffolding:** `scripts/pipeline/scaffold_topics.py` defines the topic set, reads Apple Notes
+  (`apple_notes_reader.py`) + Chrome bookmarks + Chrome reading list (`reading_list_reader.py`,
+  which falls back to the signed-in **Sync Data LevelDB** since modern Chrome no longer keeps the
+  reading list in the Bookmarks file), filters out employer-internal/personal links, clusters
+  candidates by keyword, and generates each workspace + a `content/topics/README.md` registry.
+  Idempotent: it refreshes idea queues but never overwrites an in-flight `pipeline-config.md`
+  (status ≠ `not-started`).
+- **Running:** `/topic-pipeline <slug>` (or naming a topic to `@content-pipeline`). The
+  orchestrator's **Topic-Scoped Runs** rule substitutes the topic workspace for the repo-root
+  `content/` paths for the entire run; all gates/phases apply unchanged.
+- **Seeding flow:** seeded `idea-queue.md` candidates → `@feed-curator` (scoped to the topic) to
+  synthesize ranked ideas → pipeline writes outputs into the topic workspace.
+
 ## Pipeline Configuration
 
 The user-editable config lives at `content/pipeline-config.md` and controls:

@@ -146,6 +146,71 @@ def extract_full_text(url: str) -> Optional[str]:
     return None
 
 
+def read_reading_list_from_leveldb(profile: str = "Default") -> list:
+    """Fallback: extract the reading list from Chrome's signed-in Sync Data LevelDB.
+
+    Modern Chrome stores the account reading list in ``<profile>/Sync Data/LevelDB`` rather
+    than the local ``Bookmarks`` JSON. Entries are keyed ``reading_list-dt-<url>``. We copy the
+    DB (Chrome may hold a lock) and regex-extract the URLs from the keys. Titles are derived
+    from the URL because the protobuf value title field is not reliably delimited.
+    """
+    import glob
+    import shutil
+    import tempfile
+    from urllib.parse import urlparse
+
+    ldb_dir = get_chrome_profile_path(profile) / "Sync Data" / "LevelDB"
+    if not ldb_dir.is_dir():
+        return []
+
+    tmp = Path(tempfile.mkdtemp(prefix="rl_ldb_"))
+    try:
+        for f in ldb_dir.iterdir():
+            if f.suffix in (".ldb", ".log") or f.name.startswith("MANIFEST"):
+                try:
+                    shutil.copy2(f, tmp / f.name)
+                except OSError:
+                    pass
+        blob = b""
+        for f in sorted(glob.glob(str(tmp / "*.ldb"))) + sorted(glob.glob(str(tmp / "*.log"))):
+            try:
+                blob += Path(f).read_bytes()
+            except OSError:
+                pass
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    # Keys look like: reading_list-dt-https://example.com/path
+    urls = re.findall(rb"reading_list-dt-(https?://[^\x00-\x20\"'\\]+)", blob)
+    seen = set()
+    items = []
+    for raw in urls:
+        url = raw.decode("utf-8", "ignore").rstrip(".,)")
+        if url in seen:
+            continue
+        seen.add(url)
+        domain = urlparse(url).netloc
+        # Derive a readable title from the path slug or the domain.
+        path = urlparse(url).path.rstrip("/")
+        slug = path.rsplit("/", 1)[-1] if path else ""
+        title = re.sub(r"[-_]+", " ", slug).strip() or domain
+        items.append({
+            "title": title[:120],
+            "url": url,
+            "date_added": None,
+            "date_last_used": None,
+            "read_status": "unknown",
+            "domain": domain,
+            "full_text": None,
+            "source_name": "Chrome Reading List",
+            "source_url": "chrome://reading-list",
+            "source_tags": [],
+            "published": None,
+            "summary": "",
+        })
+    return items
+
+
 def read_chrome_reading_list(
     profile: str = "Default",
     time_range: Optional[timedelta] = None,
@@ -182,6 +247,19 @@ def read_chrome_reading_list(
     children = reading_list_node.get("children", [])
 
     if not children:
+        # Modern Chrome (signed-in) keeps the reading list in Sync Data/LevelDB, not Bookmarks.
+        ldb_items = read_reading_list_from_leveldb(profile)
+        if ldb_items:
+            return {
+                "fetched_at": datetime.now(timezone.utc).isoformat(),
+                "source": "chrome-reading-list",
+                "profile": profile,
+                "time_range": "all (LevelDB has no reliable per-item dates)",
+                "total_items": len(ldb_items),
+                "filtered_items": len(ldb_items),
+                "storage": "sync-leveldb",
+                "items": ldb_items,
+            }
         return {
             "fetched_at": datetime.now(timezone.utc).isoformat(),
             "source": "chrome-reading-list",
@@ -190,7 +268,7 @@ def read_chrome_reading_list(
             "total_items": 0,
             "filtered_items": 0,
             "items": [],
-            "note": "Reading list is empty or the 'reading_list' key was not found in Bookmarks.",
+            "note": "Reading list is empty in Bookmarks and no entries found in Sync Data/LevelDB.",
         }
 
     now = datetime.now(timezone.utc)
