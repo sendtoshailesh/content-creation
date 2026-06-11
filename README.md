@@ -6,6 +6,9 @@ An automated content creation pipeline powered by GitHub Copilot custom agents. 
 
 - **VS Code** (or VS Code Insiders) with **GitHub Copilot Chat** extension
 - **Python 3.10+** (for visual rendering and feed ingestion)
+- **Playwright + Chromium** for HTML/CSS and programmatic-hero rendering: `pip install -r requirements.txt` then `python -m playwright install chromium`
+- **Node.js 18+** — only if you use the opt-in JS chart bridge (`scripts/visuals/charts_js/`, ECharts → PNG)
+- **tesseract** (optional) — enables the deterministic no-text check in the generated-image QA (`brew install tesseract`)
 - A GitHub Copilot subscription with [custom agents support](https://docs.github.com/en/copilot/customizing-copilot)
 
 ## Quick Start
@@ -126,7 +129,7 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts; visual-first carousel/exhibit posts when visual pack exists |
 | 5 | `@social-twitter` | Single tweet (≤ 280 chars) with visual attachment; references x-card or x-exhibit from visual pack when available |
 | 6 | `@social-reddit` | Markdown Reddit post |
-| 7 | `@brand-guardian` | Brand consistency audit across all content |
+| 7 | `@brand-guardian` | Brand consistency audit — severity-gated (Error/Warning/Info); an Error blocks publishing |
 | 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
 | 9 | `@content-repurposer` | Newsletter, slide deck, podcast, infographic |
@@ -206,6 +209,8 @@ You don't have to run the full pipeline. Use any agent directly:
 @platform-distiller Distill content/my-blog.md into Medium, Substack, and LinkedIn Article
 @quality-reviewer Review content/my-blog.md
 @visual-renderer Create visuals for content/my-blog.md
+@image-content-agent Create a hero/illustrative image for content/my-blog.md (programmatic by default)
+@visual-reviewer Review rendered visuals (deterministic inspector + severity findings)
 @trend-researcher Research market landscape for [topic]
 @seo-optimizer Optimize content/my-blog.md for search
 @brand-guardian Audit all content for brand consistency
@@ -268,7 +273,7 @@ overwrites an in-flight `pipeline-config.md`.
 ```
 .github/
 ├── copilot-instructions.md          # Workspace-wide rules (tokens, quality, tone)
-├── agents/                          # 22 specialist agents
+├── agents/                          # 27 specialist agents
 ├── skills/                          # 12 reusable skills
 │   ├── visual-rendering/            #   PNG/SVG/Mermaid generation (deterministic)
 │   ├── visual-content-planning/      #   Mandatory visual opportunity mapping
@@ -283,7 +288,7 @@ overwrites an in-flight `pipeline-config.md`.
 │   ├── multi-dimensional-analysis/  #   Persona × best-practice × WAF dimension analysis
 │   └── content-scope-assessment/    #   Single-post vs. multi-part series scoring
 ├── instructions/                    # 3 auto-loading instruction files
-├── prompts/                         # 6 prompt shortcuts
+├── prompts/                         # 9 prompt shortcuts
 ├── ISSUE_TEMPLATE/                  # Bug report & feature request templates
 ├── PULL_REQUEST_TEMPLATE.md         # PR checklist
 └── CODEOWNERS                       # Review assignments
@@ -404,6 +409,9 @@ This will:
 - **Adjust quality rules**: Edit [`.github/instructions/content-quality.instructions.md`](.github/instructions/content-quality.instructions.md)
 - **Change social formatting**: Edit [`.github/instructions/social-formatting.instructions.md`](.github/instructions/social-formatting.instructions.md)
 - **Configure feed sources**: Edit [`content/feed-sources.md`](content/feed-sources.md) to add/remove blog rolls, set subject areas
+- **Enable AI image generation**: Set `mode: ai` in the Image Generation block of `pipeline-config.md` and pick a provider in [`agents-and-skills/image-provider-comparison.md`](agents-and-skills/image-provider-comparison.md) (default is free, offline `programmatic`)
+- **Visual stack rules**: See the Stack Selection table in [`.github/instructions/visual-standards.instructions.md`](.github/instructions/visual-standards.instructions.md) (Python vs JS per visual type)
+- **Add / re-seed topics**: Edit the topic set in `scripts/pipeline/scaffold_topics.py` and re-run it; see [`content/topics/README.md`](content/topics/README.md)
 
 ## Attribution
 
