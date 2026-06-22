@@ -13,14 +13,21 @@ You are a visual asset generator for technical content. Your job is to produce p
 
 ## Procedure
 
-1. **Identify assets needed** from the outline or request
-2. **Require infographic art direction** from `infographic-design-system` for every infographic, comic/storyboard, card pack, one-pager, or executive exhibit. Do not render from a vague "make it visual" prompt.
-3. **For diagrams/flows/infographics/exhibits — author as HTML/CSS** using `scripts/visuals/html/design.py` (`page()`, `css()`, `data-role` typography, `.bar-row` for magnitude, `.flow`/`.connector` for steps). This is the default path; CSS layout prevents distorted/inverted geometry, misaligned arrows, overlapping/clipped text, and oversized type. **Gauges and hand-computed arcs are banned — show magnitude with horizontal bars.** Keep diagram text article-proportionate (Inter; largest non-focal text ≈ the `title` role, close to the blog's headings, not towering over the 17px body). SVG (`scripts/visuals/svg/`) is the secondary path when explicit vector control is needed.
-4. **Gate every asset through the automated inspector** `python3 -m scripts.visuals.html.inspect <file.html>` (Playwright/Chromium DOM checks: off-scale/too-many text sizes, >1 focal number, text overflow/clipping, stray labels, missing flow connectors). The inspector MUST report PASS before you rasterize. Rendering a PNG before the inspector passes is a process failure.
-5. **Rasterize via Chromium** with `scripts/visuals/html/render.py` (`render_many`, device scale 2). Reference renderer: `content/visuals/distilled/agent-eval-visual-first/render_html_pack.py`.
-6. **Use the legacy Pillow renderer only** for comic/storyboard panels and matplotlib only for true quantitative charts.
-7. **Create Mermaid files** at `content/visuals/<name>.mmd` for flowcharts when a code-embeddable diagram is wanted
-8. **Verify output**: open every generated PNG; confirm crisp arrows, uniform type, no stray labels.
+1. **Identify assets needed** from the outline or request, and read the assigned **`style_id`** per asset from `content/visual-style-map.md` (written by `visual-research` + `visual-style-router`).
+2. **Dispatch by style id** using the `style-rendering` skill and the adapter registry `scripts.visuals.styles.STYLE_REGISTRY` (`style_id -> {renderer, module, entrypoints}`). Do **not** hard-default every asset to the HTML/CSS exhibit:
+   - `data-exhibit` → `scripts/visuals/html` (the default exhibit path below)
+   - `typographic` → `scripts.visuals.styles.typographic`
+   - `hand-drawn` → `scripts.visuals.styles.sketch_rough` (Rough.js) / `sketch_mpl` (xkcd)
+   - `blueprint` → `scripts.visuals.styles.blueprint`
+   - `editorial-illustration` → `scripts.visuals.styles.editorial` (text overlaid, never baked)
+   - `diagram-as-code` → `scripts.visuals.styles.diagram_as_code` (opt-in D2/Mermaid/Graphviz; pre-render to PNG)
+3. **Require infographic art direction** from `infographic-design-system` for every infographic, comic/storyboard, card pack, one-pager, or executive exhibit. Do not render from a vague "make it visual" prompt.
+4. **For `data-exhibit` assets — author as HTML/CSS** using `scripts/visuals/html/design.py` (`page()`, `css()`, `data-role` typography, `.bar-row` for magnitude, `.flow`/`.connector` for steps). This is the default path for exhibits; CSS layout prevents distorted/inverted geometry, misaligned arrows, overlapping/clipped text, and oversized type. **Gauges and hand-computed arcs are banned — show magnitude with horizontal bars.** Keep diagram text article-proportionate (Inter; largest non-focal text ≈ the `title` role, close to the blog's headings, not towering over the 17px body). SVG (`scripts/visuals/svg/`) is the secondary path when explicit vector control is needed.
+5. **Gate every HTML/SVG-sourced asset through the automated inspector** `python3 -m scripts.visuals.html.inspect <file.html>` (Playwright/Chromium DOM checks: off-scale/too-many text sizes, >1 focal number, text overflow/clipping, stray labels, missing flow connectors). The inspector MUST report PASS before you rasterize. Rendering a PNG before the inspector passes is a process failure.
+6. **Rasterize via Chromium** with `scripts/visuals/html/render.py` (`render_many`, device scale 2). Reference renderer: `content/visuals/distilled/agent-eval-visual-first/render_html_pack.py`. Style adapters (`scripts.visuals.styles.*`) already rasterize at device scale 2.
+7. **Use the legacy Pillow renderer only** for comic/storyboard panels and matplotlib only for true quantitative charts.
+8. **Create Mermaid/D2 files** for `diagram-as-code` assets and pre-render to PNG via `scripts.visuals.styles.diagram_as_code.render_diagram`; never ship a raw fence to a published page.
+9. **Verify output**: open **every** generated PNG; confirm crisp arrows, uniform type, no stray labels, **and that the package is multi-style** (the assigned `style_id`s actually rendered in distinct mediums; no two adjacent visuals share style + theme).
 
 ## Pipeline Status Hygiene
 

@@ -13,20 +13,21 @@
 | **Status** | `in-progress` |
 | **Topic** | From Prompts to Harness Engineering — The Workflow Shift in AI-Native Development |
 | **Started** | 2026-06-20 |
-| **Current Step** | Step 3b redo — rebuilding visuals with the Visual Versatility System (2026-06-22, visuals rejected as single-style / text-heavy) |
+| **Current Step** | Step 3c — quality review of rebuilt multi-style visual pack (2026-06-22; Step 3b visuals rebuilt across 5 styles via the Visual Versatility System) |
 | **Series** | `no` |
 | **Current Part** | _(n/a)_ |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
+- [ ] Step 1b: Content research (STORM) — new stage (`content-researcher`); not run for this in-flight content
 - [x] Steps 1-2: Strategy + outline
 - [x] Step 2b: Scope assessment (single vs. series) — 5/14, single post
 - [x] Step 2c: Multi-dimensional analysis
 - [x] Step 2d: Visual opportunity mapping
 - [x] Step 2e: Infographic art direction
 - [x] Step 3: Blog post draft
-- [ ] Step 3b: Visual assets — REDO: re-render across multiple styles via the Visual Versatility System (pilot proven: typographic, sketch, rough.js)
+- [x] Step 3b: Visual assets — REBUILT across 5 styles (typographic, hand-drawn, blueprint, data-exhibit, editorial-illustration) via the Visual Versatility System; no adjacent repeats, hand-drawn 37.5% < 50% floor; see content/visual-style-map.md
 - [x] Step 3b-img: hero/illustrative imagery (optional — skipped; no separate hero slot planned)
 - [ ] Step 3c: Quality review — re-run after visuals rebuilt
 - [ ] Step 3d: SEO optimization — re-confirm after visuals rebuilt
@@ -36,6 +37,7 @@
 - [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video only
 - [x] Step 5: X/Twitter thread — skipped by user selection
 - [ ] Step 6b: Reel/Short video — STALE: references rejected visuals, regenerate
+- [ ] Step 6c: Slide deck (PPTX + PDF, humor + intellectual speaker notes) — new optional stage (`deck-builder`); not run for this in-flight content
 - [ ] Step 7: Brand audit — re-run after visuals rebuilt
 - [ ] Step 7b: Grounded content review — re-run after visuals rebuilt
 - [x] Step 8: YouTube script — skipped by user selection
@@ -206,6 +208,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 - [ ] Reddit post
 - [x] Reel/Short video (60-90 sec)
 - [ ] YouTube long-form script (8-12 min)
+- [ ] Slide deck (PPTX + PDF, humor + intellectual speaker notes) — optional, after blog + LinkedIn finalized
 
 > **Note:** Pipeline will ask for confirmation at Step 4c. Pre-check platforms above to skip the prompt.
 
@@ -278,6 +281,7 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 | Step 5 | social-twitter | Manual | X/Twitter thread generation. Output: `content/x-twitter-thread.md` |
 | Step 6 | social-reddit | Manual | Reddit post generation (if selected). Output: `content/reddit-post.md` |
 | Step 6b | reel-video | Manual | Short video script (60-90 sec). Output: `content/reel-script.md` |
+| Step 6c | deck-builder | Optional | Slide deck with humor + intellectual speaker notes; exports PPTX + PDF after user finalizes. Outputs: `content/deck/<topic>-deck.{md,pptx,pdf}` |
 | Step 7 | brand-guardian | Manual | Brand audit across all generated content pieces |
 | Step 10 | web-publisher | Manual | Publish to GitHub Pages; establish canonical URL; update index |
 | Step 11 | social-publisher | Manual | Publish to social platforms (per publishing mode + approved platforms) |

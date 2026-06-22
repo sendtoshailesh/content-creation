@@ -141,6 +141,38 @@ Hard rules for AI-generated images (all enforced at `visual-reviewer`):
 - **Mermaid** (`.mmd` → PNG via `scripts.visuals.html.render_mermaid`): default for standard flowcharts/sequence/architecture; quick and version-controllable.
 - **Graphviz/DOT** (`dot -Tpng`): use for **dense or complex** static graphs where Mermaid's layout control is insufficient. Requires the `graphviz` system package (`brew install graphviz` / `apt-get install graphviz`). Author the `.dot`, render to PNG, then gate through `visual-reviewer`.
 
+## Visual Style Axis (how it looks, not just what it says)
+
+Every visual carries **two independent choices**: the infographic **TYPE** (process, comparison,
+timeline, hierarchy, statistical, concept, checklist, quote — the existing router) **×** the
+visual **STYLE / MEDIUM**. Type and style are decoupled: a process diagram can render as a clean
+exhibit, a hand-drawn sketch, or an isometric blueprint. The `visual-style-router` skill assigns
+a `style_id` per asset; the `visual-renderer` dispatches via `scripts.visuals.styles.STYLE_REGISTRY`.
+See `agents-and-skills/visual-versatility-system.md`.
+
+| `style_id` | Renderer / adapter | Best for | Hard rule |
+|---|---|---|---|
+| `data-exhibit` | `scripts/visuals/html` (Chromium) | hard numbers, scorecards | bars not gauges; one focal number |
+| `typographic` | `scripts.visuals.styles.typographic` | quotes, single big ideas, hooks | `display` TYPE_SCALE role; ≤ 12 words |
+| `hand-drawn` | `sketch_rough` (Rough.js) + `sketch_mpl` (xkcd) | concepts, napkin explainers | crisp digits (`patheffects.Normal()`); edge-to-edge arrows |
+| `blueprint` | `scripts.visuals.styles.blueprint` | system anatomy, "how it's built" | mono labels; no baked slide numbers |
+| `editorial-illustration` | `scripts.visuals.styles.editorial` | mood, openers, metaphors | **NO baked text — overlay only**; ~30% negative space |
+| `diagram-as-code` | `scripts.visuals.styles.diagram_as_code` | pipelines, dependency graphs | opt-in engine; **pre-render to PNG**, no live JS |
+
+### Style rules (blocking at `visual-reviewer`)
+
+- **Adjacent visuals must differ in style**, not just theme. A package may **not** be all
+  `data-exhibit` (single-style is a critical failure).
+- A series picks a **style palette of 2–4** and rotates; it never uses one.
+- Two **near-duplicate compositions** (same grid/bar/card skeleton) are blocked even across
+  different styles — force a re-style (STORM polish / Co-STORM `reorganize()`).
+- `diagram-as-code` engines are **opt-in / offline once installed** (`brew install d2` /
+  `brew install graphviz` / `npm install -g @mermaid-js/mermaid-cli`); the adapter raises a clear
+  install hint rather than silently changing the look.
+- The Rough.js bridge loads its ES module as a base64 `data:` URL (file:// module imports are
+  CORS-blocked); the xkcd path-filter corrupts isolated bold digits, so disable the sketch
+  per-digit with `text.set_path_effects([matplotlib.patheffects.Normal()])`.
+
 ## Legacy tool notes (Pillow / matplotlib)
 
 Use Pillow when text placement precision is critical. Key advantage: `textbbox()` measures exact pixel dimensions BEFORE rendering, preventing overflow.

@@ -15,6 +15,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 0c | Reading List Curation | `reading-list-curator` | ✅ Implemented |
 | 0d | Apple Notes Curation | `apple-notes-curator` | ✅ Implemented |
 | 1 | Clarifying Questions | `content-strategist` | ✅ Implemented |
+| 1b | Content Research (STORM) | `content-researcher` + `content-research` skill | ✅ Implemented |
 | 2 | Strategy & Outline | `content-strategist` | ✅ Implemented |
 | 2b | Scope Assessment (single vs. series) | `content-scope-assessment` skill | ✅ Implemented |
 | 2c | Multi-Dimensional Analysis (persona, practice, WAF) | `multi-dimensional-analysis` skill | ✅ Implemented |
@@ -31,6 +32,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | 5 | X/Twitter Thread (if selected) | `social-twitter` | ✅ Implemented |
 | 6 | Reddit Post (if selected) | `social-reddit` | ✅ Implemented |
 | 6b | Reel/Short Video (if selected) | `reel-video` | ✅ Implemented |
+| 6c | Slide Deck — PPTX + PDF (optional, after blog + LinkedIn) | `deck-builder` + `deck-builder` skill | ✅ Implemented |
 | 7 | Brand Audit | `brand-guardian` | ✅ Implemented |
 | 8 | YouTube Script (if selected) | `video-scriptwriter` | ✅ Implemented |
 | 9 | Content Repurposing (optional) | `content-repurposer` | ✅ Implemented |
@@ -47,10 +49,12 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 | `content-scope-assessment` | Score topic comprehensiveness (0-16 scale), recommend single post vs. multi-part series |
 | `multi-dimensional-analysis` | Analyze topic across persona, best practice, and Azure WAF pillar dimensions |
 | `reference-analysis` | Fetch and synthesize online reference URLs into a reference brief |
+| `content-research` | STORM content pre-stage: discover perspectives, map source/persona contradictions into a thesis, rank arguments by confidence, self-review for bias, write the outline tree (`content/content-research-map.md`) |
 | `unicode-formatting` | Format text with Unicode Mathematical Bold/Italic for LinkedIn and X/Twitter |
 | `visual-rendering` | Generate PNG (matplotlib), SVG (Python), and Mermaid diagrams |
 | `visual-content-planning` | Create the mandatory visual opportunity map for diagrams, infographics, comic/storyboards, LinkedIn cards, and executive exhibits |
 | `infographic-design-system` | Choose infographic type, visual metaphor, state-change plan, text budget, and review criteria before rendering |
+| `deck-builder` | Build a topic-organized Marp deck with humor + intellectual speaker notes from finalized blog + LinkedIn, then export PPTX + PDF (optional, follows the Marp playbook) |
 
 ### Mandatory Visual Editorial System
 

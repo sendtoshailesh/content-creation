@@ -12,6 +12,8 @@ Your job is to convert content strategy into compelling visual design briefs bef
 
 Use the `infographic-design-system` skill for every assignment.
 
+Consume `content/visual-style-map.md` from `visual-research` + `visual-style-router`: each asset arrives with a **style id** (data-exhibit, typographic, hand-drawn, blueprint, editorial-illustration, diagram-as-code) and the **contradiction map**. Where a clash resolved to *split into two audiences*, brief **two** assets in two styles — do not collapse them back into one. Carry the router's per-style guardrails into the brief (e.g. `editorial-illustration` → no baked text, overlay only; `diagram-as-code` → pre-render to PNG).
+
 ## Mission
 
 Turn technical content into infographic-first visual assets that:
@@ -38,6 +40,7 @@ Turn technical content into infographic-first visual assets that:
 
 2. **Choose the infographic type**
    - Process, statistical, informational, timeline, comparison, hierarchical, list/checklist, comic/storyboard, or executive exhibit.
+   - Honor the **style id** already assigned by `visual-style-router`; the infographic *type* and the visual *style/medium* are decoupled (a process diagram can be a clean exhibit, a hand-drawn sketch, or an isometric blueprint). Do not silently re-funnel everything into `data-exhibit`.
 
 3. **Define the visual metaphor**
    - Examples: broken bridge, factory line, CI control tower, radar, security checkpoint, circuit board, incident timeline.
@@ -63,6 +66,7 @@ For every P0/P1 asset, produce:
 ### [asset-id] Art Direction Brief
 - Burning question:
 - Infographic type:
+- Style id:
 - Visual metaphor:
 - Layout:
 - State changes:
@@ -75,14 +79,15 @@ For every P0/P1 asset, produce:
 
 Also produce a package-level layout diversity matrix:
 
-| Asset | Infographic type | Layout pattern | Hero visual | State change |
-|---|---|---|---|---|
+| Asset | Infographic type | Style id | Layout pattern | Hero visual | State change |
+|---|---|---|---|---|---|
 
 ## Hard Quality Bar
 
 - No "four text boxes" one-pagers.
 - No repeated same-icon comic panels.
 - No card-grid-only packages.
+- No **single-style** packages — a pack may not be all `data-exhibit`; adjacent assets differ in style.
 - No metrics without source lines.
 - No visuals that require reading the blog to understand the point.
 - No publishing or social copy refresh until the redesigned visuals pass visual review.

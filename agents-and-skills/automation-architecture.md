@@ -1,5 +1,8 @@
 # Content Strategy Pipeline — Automation Architecture
 
+> For the phase-by-phase **run flow** (every agent, skill, input, output, and gate, with a full
+> diagram and worked example), see [content-pipeline-flow.md](content-pipeline-flow.md).
+
 ## Overview
 
 The 8-step content strategy pipeline is automated as GitHub Copilot custom agents, skills, instructions, and prompts following VS Code Copilot customization standards.
@@ -85,7 +88,10 @@ Read pipeline-config.md (reference URLs?)
 reference-analysis skill ──► content/reference-brief.md
         │
         ▼
-@content-strategist ──► Strategy doc + outline (uses reference brief)
+@content-researcher ───► content/content-research-map.md (STORM: perspectives, contradiction map, ranked arguments, self peer-review, outline tree)
+        │
+        ▼
+@content-strategist ──► Strategy doc + outline (uses reference brief + content-research map)
         │
         ▼
 @blog-writer ──────────► Long-form blog (uses reference brief)
@@ -223,6 +229,9 @@ Procedure for converting plain text to Unicode Mathematical Bold/Italic for Link
 
 ### reference-analysis
 Fetches and synthesizes online reference URLs listed in `content/pipeline-config.md`. Produces `content/reference-brief.md` with per-source summaries, cross-source analysis, consensus/contradictions, and extractable data points. Used by the orchestrator in Phase 0 before content creation begins.
+
+### content-research
+STORM-inspired four-phase content pre-stage (run by `@content-researcher`, the content-track twin of `visual-strategist`/`visual-research`). Discovers reader-perspectives, builds a contradiction map that resolves into the post's thesis, ranks arguments by confidence, self-reviews the plan for source/persona bias **before** drafting, and writes a hierarchical outline tree to `content/content-research-map.md`. `content-strategist` consumes the map as its outline backbone and pre-write gate.
 
 ### creative-brief
 Turns the topic and clarifying-question answers into a structured `content/creative-brief.md` (overview, objectives, audience, key message, tone, deliverables, visual guidelines, CTA, guardrails). It is the single source of visual/voice direction for all downstream agents. Adapted from the reference accelerator's Creative Brief Interpretation.

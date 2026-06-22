@@ -23,17 +23,23 @@ Transform text-heavy strategy, outline, or blog content into a visual editorial 
 3. `content/reference-brief.md` and `content/trend-research.md` if present.
 4. Existing `content/visuals/` assets, if any.
 
-## Required Skill
+## Required Skills
 
 Use the `visual-content-planning` skill. It defines the visual opportunity map schema, approved visual families, prioritization rules, and rendering handoff format.
 
 Use the `infographic-design-system` skill for every P0/P1 asset. It defines infographic type selection, visual metaphors, state-change planning, text budgets, and anti-patterns.
 
+Use the `visual-research` skill **first** — the STORM four-phase pre-stage (perspective discovery + simulated questioning → contradiction map → ranked synthesis → self peer-review → hierarchical mind map). It writes `content/visual-style-map.md` and is what prevents every visual from looking the same.
+
+Use the `visual-style-router` skill to assign a **style id** (data-exhibit, typographic, hand-drawn, blueprint, editorial-illustration, diagram-as-code) and renderer to each planned asset, enforce package-level style diversity, and run the **moderator move** (one overlooked style worth trying).
+
 ## Procedure
 
 1. Read the source artifact and config.
-2. Identify dense text, frameworks, workflows, before/after stories, case studies, quantified claims, and opinionated insights.
-3. Classify each opportunity into the first-milestone visual families:
+2. Run the `visual-research` skill (all four phases + mind map). Write `content/visual-style-map.md` with the discovered perspectives, contradiction map, ranked visual plan, **self peer-review**, and hierarchical mind map. The bias/dominance check in the self peer-review is a blocking pre-render gate — if one style or one audience dominates the plan, fix the plan before proceeding.
+3. Run the `visual-style-router` skill over the planned assets to assign `style_id` + renderer per asset, produce the package style matrix, and record the moderator move. Adjacent visuals must differ in style; a series uses a palette of 2–4 styles, never one.
+4. Identify dense text, frameworks, workflows, before/after stories, case studies, quantified claims, and opinionated insights.
+5. Classify each opportunity into the first-milestone visual families:
    - Architecture / flow diagram.
    - Infographic / one-pager.
    - Comic explainer / storyboard.
@@ -66,10 +72,14 @@ Each planned visual must state:
 - Audience.
 - Platform.
 - Visual family.
+- **Style id** (from `visual-style-router`) and renderer.
+- **Confidence score** and the perspective(s) / contradiction it traces to (from `visual-research`).
 - Standalone potential.
 - Required source data.
 - Rendering approach.
 - Priority.
+
+The ranked style matrix + self peer-review from `content/visual-style-map.md` must be reflected in the opportunity map so `visual-reviewer` can run its pre-render diversity gate.
 
 ## Constraints
 

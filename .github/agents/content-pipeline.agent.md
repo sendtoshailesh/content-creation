@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full visual-first content strategy pipeline. Coordinates specialist agents from clarifying questions through mandatory visual planning, blog, visuals, social posts, and video script."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [feed-curator, reference-discovery, content-strategist, visual-strategist, infographic-art-director, blog-writer, visual-renderer, image-content-agent, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
+agents: [feed-curator, reference-discovery, content-researcher, content-strategist, visual-strategist, infographic-art-director, blog-writer, visual-renderer, image-content-agent, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, deck-builder, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -15,7 +15,8 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 0a | `reference-discovery` | Curated reference URLs in pipeline config |
 | 0b | `trend-researcher` | Market intelligence + data points |
 | 1 | `content-strategist` (`creative-brief` skill) | Structured creative brief (`content/creative-brief.md`) |
-| 1-2 | `content-strategist` | Strategy doc + outline |
+| 1b | `content-researcher` (`content-research` skill) | STORM content plan → `content/content-research-map.md` (thesis, contradiction map, ranked arguments, self peer-review, outline tree) |
+| 1-2 | `content-strategist` | Strategy doc + outline (uses content-research map as backbone) |
 | 2b | (scope assessment) | Series vs. single post decision |
 | 2c | (dimension analysis) | Persona, practice, WAF pillar dimensions |
 | 2d | `visual-strategist` | Mandatory visual opportunity map |
@@ -33,6 +34,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 | 5 | `social-twitter` | Tweet thread + summary (if selected) |
 | 6 | `social-reddit` | Reddit post (if selected) |
 | 6b | `reel-video` | Short-form video script (if selected) |
+| 6c | `deck-builder` | Optional slide deck — PPTX + PDF with humor + intellectual speaker notes (if selected; after blog + LinkedIn finalized) |
 | 7 | `brand-guardian` | Brand consistency audit |
 | 8 | `video-scriptwriter` | YouTube script + slide map (if selected) |
 | 9 | `content-repurposer` | Newsletter, slides, podcast, infographic |
@@ -107,7 +109,8 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
    (overview, objectives, audience, key message, tone, deliverables, visual guidelines, CTA,
    guardrails). All downstream agents read this brief. Do not proceed until §7 Visual
    guidelines is filled.
-2. Delegate to `content-strategist` with the user's topic (and reference brief + trend research paths if they exist) to produce the strategy doc + outline, building on the creative brief
+   - **Content Research (Step 1b)**: After the creative brief is written, delegate to `content-researcher` to run the `content-research` STORM skill and write `content/content-research-map.md` (thesis, contradiction map, ranked arguments, self peer-review, outline tree). The **bias/dominance check** in its self peer-review is a pre-write gate — if it FAILs, have `content-researcher` rebalance the plan before continuing.
+2. Delegate to `content-strategist` with the user's topic (and reference brief + trend research + content-research map paths if they exist) to produce the strategy doc + outline, building on the creative brief and using the content-research map's outline tree as the backbone
 3. Wait for strategy doc and outline to be saved to `content/`
 4. **Scope Assessment (Step 2b)**: Use the `content-scope-assessment` skill to evaluate whether the topic should be a single post or multi-part series:
    - Score the strategy against comprehensiveness signals (pillar count, data density, audience breadth, technical depth, word count, visual complexity, distribution fragmentation, dimension breadth)
@@ -215,12 +218,14 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
     - [ ] Reddit post (for configured subreddits)
     - [ ] Reel/Short video (60-90 sec script with screen recording cues)
     - [ ] YouTube long-form script (8-12 min with slide map)
+    - [ ] Slide deck — PPTX + PDF with humor + intellectual speaker notes (optional; requires finalized blog + LinkedIn)
     - [ ] All of the above
 15. Based on user selection:
     - If X/Twitter selected: delegate to `social-twitter` with blog path
     - If Reddit selected: delegate to `social-reddit` with blog path and target subreddits
     - If Reel selected: delegate to `reel-video` with blog path and visuals directory
     - If YouTube selected: delegate to `video-scriptwriter` with blog path and visuals directory
+    - If Slide deck selected: confirm the blog **and** LinkedIn post are finalized, then delegate to `deck-builder` with the blog path. It builds `content/deck/<topic>-deck.md` with topic-tagged, humor + intellectual speaker notes, has the user finalize it, then exports **both** PPTX and PDF. This step is optional and never blocks publishing.
 
 ### Phase 5: Brand Audit + Final Review
 16. Delegate to `brand-guardian` to audit all content for brand consistency. It emits a
@@ -281,6 +286,10 @@ content/
 ├── reddit-post.md                # (if selected)
 ├── reel-script.md                # (if selected)
 ├── youtube-script.md             # (if selected)
+├── deck/                         # (if selected — optional deck)
+│   ├── <topic>-deck.md           #   Marp source + speaker notes
+│   ├── <topic>-deck.pptx         #   PPTX export
+│   └── <topic>-deck.pdf          #   PDF export
 └── visuals/
     ├── render_<topic>.py
     ├── write_svgs.py

@@ -33,6 +33,8 @@ def blueprint_hub_and_beams(
     center_label: str,
     beams: list[tuple[str, str, str]],
     source: str,
+    eyebrow: str = "building blocks",
+    center_sub: str = "the core generator",
     theme: str = "default",
     width: int = 1600,
     height: int = 760,
@@ -127,14 +129,14 @@ def blueprint_hub_and_beams(
     <div class="corner c-tl"></div><div class="corner c-tr"></div>
     <div class="corner c-bl"></div><div class="corner c-br"></div>
     <div class="head">
-      <div class="eyebrow">building blocks</div>
+      <div class="eyebrow">{esc(eyebrow)}</div>
       <div class="title">{esc(title)}</div>
       <div class="subtitle">{esc(subtitle)}</div>
     </div>
     {boxes}
     <div class="hub">
       <div class="h-label">{esc(center_label)}</div>
-      <div class="h-sub">the core generator</div>
+      <div class="h-sub">{esc(center_sub)}</div>
     </div>
     <div class="src">{esc(source)}</div>
   </div>

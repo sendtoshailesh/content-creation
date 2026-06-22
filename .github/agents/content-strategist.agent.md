@@ -21,7 +21,12 @@ If invoked to redo strategy, scope assessment, dimensions, part count, title/ang
 Before asking questions, check for reference material:
 1. Read `content/pipeline-config.md` — note any reference URLs listed
 2. If `content/reference-brief.md` exists, read it for pre-analyzed reference data
-3. Use reference data to inform your questions and strategy (e.g., ask about positioning relative to competitors found in references)
+3. If `content/content-research-map.md` exists (produced by `content-researcher`, the STORM content pre-stage), read it. It is the backbone for this strategy:
+   - Use its **content thesis** as the content angle/key differentiator.
+   - Use its **outline tree** (`topic → sections → claims`) as the section-by-section outline backbone in Phase 3.
+   - Treat its **self peer-review** as a pre-write gate: if the bias/dominance check is `FAIL`, the plan is unbalanced — ask `content-researcher` to rebalance (or rebalance the outline yourself) before proceeding.
+   - Use its **discovered perspectives** to inform Phase 1 questions and the multi-dimensional analysis instead of hardcoding personas.
+4. Use reference data to inform your questions and strategy (e.g., ask about positioning relative to competitors found in references)
 
 ### Phase 1: Clarifying Questions (8-12 questions)
 
@@ -53,6 +58,8 @@ Create a detailed outline with:
 - Key points per section (2-3 bullets each)
 - Visual placement markers: `[VISUAL: description of chart/diagram]`
 - Distribution tags: which sections feed which social posts
+
+If `content/content-research-map.md` exists, build this outline from its **outline tree**: map each `topic → section → claim` node to a heading and its key points, carry the confidence and persona tags through, and lead with the **content thesis**. Do not flatten or contradict the ranked argument plan without noting why.
 
 ### Phase 4: Scope Assessment
 

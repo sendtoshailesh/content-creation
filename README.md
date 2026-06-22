@@ -116,7 +116,8 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 0 | `@content-pipeline` | Fetches and analyzes reference URLs from config |
 | 0b | `@trend-researcher` | Market intelligence, competitive landscape, data points |
 | 1 | `@content-strategist` (`creative-brief` skill) | Structured creative brief (`content/creative-brief.md`) |
-| 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline |
+| 1b | `@content-researcher` (`content-research` skill) | STORM content pre-stage: discovers perspectives, maps source/persona contradictions into a thesis, ranks arguments by confidence, self-reviews for bias, writes `content/content-research-map.md` |
+| 1-2 | `@content-strategist` | Clarifying questions → strategy doc + outline (uses content-research map as outline backbone) |
 | 2d | `@visual-strategist` / `visual-content-planning` skill | Mandatory visual opportunity map before writing |
 | 3 | `@blog-writer` | Long-form blog (~3,000 words) |
 | 3b | `@visual-renderer` | PNGs, SVGs, and Mermaid diagrams (deterministic) |
@@ -129,6 +130,7 @@ The feed curation feature automates the process of reading blog rolls, newslette
 | 4b | `@social-linkedin` | Plain + Unicode formatted LinkedIn posts; visual-first carousel/exhibit posts when visual pack exists |
 | 5 | `@social-twitter` | Single tweet (≤ 280 chars) with visual attachment; references x-card or x-exhibit from visual pack when available |
 | 6 | `@social-reddit` | Markdown Reddit post |
+| 6c | `@deck-builder` | Optional slide deck — PPTX + PDF with humor + intellectual speaker notes (after blog + LinkedIn finalized) |
 | 7 | `@brand-guardian` | Brand consistency audit — severity-gated (Error/Warning/Info); an Error blocks publishing |
 | 7b | `@grounded-content-reviewer` | Web-search-grounded fact-checking and gap analysis |
 | 8 | `@video-scriptwriter` | YouTube script with slide map |
@@ -212,11 +214,13 @@ You don't have to run the full pipeline. Use any agent directly:
 @image-content-agent Create a hero/illustrative image for content/my-blog.md (programmatic by default)
 @visual-reviewer Review rendered visuals (deterministic inspector + severity findings)
 @trend-researcher Research market landscape for [topic]
+@content-researcher Build a STORM content plan (thesis, ranked arguments, outline tree) for [topic]
 @seo-optimizer Optimize content/my-blog.md for search
 @brand-guardian Audit all content for brand consistency
 @grounded-content-reviewer Validate content against web sources
 @social-strategist Create social distribution plan for content/my-blog.md
 @content-repurposer Repurpose content/my-blog.md into newsletter, slides, podcast
+@deck-builder Build an optional slide deck (PPTX + PDF) from content/my-blog.md with humor + intellectual speaker notes
 ```
 
 ## Adding Reference URLs
