@@ -1,177 +1,193 @@
-# Visual Opportunity Map: AI Agent Evals Series
+---
+title: "Visual Opportunity Map - From Prompts to Harness Engineering"
+description: "Visual planning contract for blog, LinkedIn, and Reel assets in the harness engineering content run"
+author: Shailesh Mishra
+ms.date: 2026-06-20
+ms.topic: concept
+keywords:
+  - visual planning
+  - harness engineering
+  - infographic
+  - LinkedIn visuals
+estimated_reading_time: 8
+---
 
-## Summary
+<!-- markdownlint-disable MD013 -->
 
-**Source content:** AI Agent Evals: Why SWE-bench Isn't Enough Before Production  
-**Pipeline mode:** mandatory visual-first strategy  
-**Platform scope:** Blog/GitHub Pages, LinkedIn, Medium, Substack, LinkedIn Article  
-**Rendering policy:** programmatic-only visuals using Python, Pillow, Mermaid, matplotlib, and SVG via Python  
+## Visual Opportunity Map
 
-This map turns the current AI Agent Evals series into blog companion visuals and standalone visual assets. It is the handoff contract for `visual-renderer`, `social-linkedin`, `platform-distiller`, `content-repurposer`, and `visual-reviewer`.
+> Source artifacts: `content/harness-engineering-strategy.md`, `content/reference-brief.md`, `content/pipeline-config.md`  
+> Visual mode: `programmatic`  
+> Platforms in scope: Blog, LinkedIn, Reel/Short video  
+> Platforms out of scope: X/Twitter, Reddit, YouTube
 
-> **Redesign status (2026-06-09):** Infographic-first redesign rendered and passed visual QA with no critical blockers. Remaining findings are polish items, not publication blockers: avoid orphan title wraps, strengthen a few connectors/annotations, and continue improving character differentiation in future passes.
+## Visual Strategy
+
+The visual package should make one idea instantly clear: the model is not the whole agent. The harness around it carries the context, feedback, routing, and governance that make AI-native development repeatable.
+
+The package avoids generic AI imagery. It uses deterministic diagrams, exhibits, and saveable cards that can be inspected, cited, and reused across the blog and LinkedIn.
 
 ## Blog Companion Visuals
 
 | ID | Source section | Concept type | Audience persona | Visual family | Platform fit | Standalone potential | Required source data | Rendering approach | Priority | Status |
-|---|---|---|---|---|---|---|---|---|---|---|
-| v01-benchmark-gap | Part 1: SWE-bench gap | Comparison / evidence | AI team decision-maker | Executive exhibit | Blog, LinkedIn Article, Medium | High | SWE-bench score, production acceptance gap, cited benchmark URLs | Pillow or matplotlib | P0 | rendered; QA passed |
-| v02-failure-taxonomy | Part 1: production failure modes | Taxonomy | Tech lead, platform engineer | Infographic / one-pager | Blog, LinkedIn | High | Failure mode labels and source URLs | Pillow | P0 | covered by `linkedin-card-03-taxonomy.png` |
-| v03-sourdough-test | Part 1: Sourdough Test | Narrative / mental model | Practitioner | Comic explainer / storyboard | Blog, LinkedIn | High | Test criteria from article | Pillow comic panels | P0 | rendered; QA passed |
-| v04-minimum-viable-eval | Part 1: minimum viable eval | Checklist / framework | IC engineer, tech lead | Infographic / one-pager | Blog, LinkedIn | Medium | Eval checklist, grader categories | Pillow | P0 | covered by `one-page-eval-system.png` and `linkedin-card-04-framework.png` |
-| v05-eval-pipeline | Part 2: build the eval system | Architecture / flow | Platform engineer | Architecture / flow diagram | Blog, Medium | High | Pipeline stages and CI gates | Mermaid or Pillow | P0 | rendered as `eval-ci-architecture.mmd` |
-| v06-grading-decision-tree | Part 2: graders | Decision guidance | IC engineer, tech lead | Architecture / flow diagram | Blog, LinkedIn | Medium | Grader types and decision rules | Mermaid | P1 | follow-on optional |
-| v07-regression-timeline | Part 2: regression control | Process / timeline | Tech lead | Infographic / one-pager | Blog, LinkedIn | Medium | Regression stages, CI/release gates | Pillow | P1 | follow-on optional |
+|----|----------------|--------------|------------------|---------------|--------------|----------------------|----------------------|--------------------|----------|--------|
+| v01-harness-quote | H2 1. The hook | narrative | Practitioner | Infographic / one-pager | Blog, LinkedIn | high | Böckeler quote, InfoQ podcast URL | HTML/CSS + Chromium | P1 | rendered |
+| v02-maturity-arc | H2 2. The maturity arc | timeline | Practitioner | Infographic / one-pager | Blog, LinkedIn | high | Autocomplete, vibe coding, context engineering, harness engineering dates | HTML/CSS + Chromium | P0 | rendered |
+| v03-harness-anatomy | H2 3. What a harness is | architecture | Practitioner | Architecture / flow diagram | Blog, LinkedIn | high | Feed-forward and feedback definitions, InfoQ URL | HTML/CSS + Chromium | P0 | rendered |
+| v04-building-blocks | H2 4. Four building blocks | framework | Practitioner, tech lead | Infographic / one-pager | Blog, LinkedIn | high | 23%, 27%, 18%, 72.5%, 70.8%, 3.3x | HTML/CSS + Chromium | P0 | rendered |
+| v05-context-switch-cost | H2 5. Why ad-hoc prompting does not scale | data | AI team decision-maker | Executive exhibit | Blog, LinkedIn Article | medium | Up to 40% efficiency loss, TDS/APA source | HTML/CSS + Chromium | P1 | rendered |
+| v06-pipeline-case-study | H2 6. First-party case study | architecture | Tech lead | Architecture / flow diagram | Blog, Reel | high | `.github/agents/`, `.github/skills/`, `scripts/`, `pipeline-config.md` | HTML/CSS + Chromium | P0 | rendered |
+| v07-risk-limits | H2 7. The honest limits | governance | Tech lead, decision-maker | Executive exhibit | Blog, LinkedIn | medium | Risk = probability × impact × detectability; behavior-harness gap | HTML/CSS + Chromium | P1 | rendered |
+| v08-playbook-checklist | H2 8. Build-your-own playbook | checklist | Practitioner | Infographic / one-pager | Blog, LinkedIn | high | Five-step playbook, OpenAI harness-first discipline | HTML/CSS + Chromium | P0 | rendered |
 
 ## Standalone Distribution Visuals
 
 | ID | Source section | Concept type | Audience persona | Visual family | Platform fit | Standalone potential | Required source data | Rendering approach | Priority | Status |
-|---|---|---|---|---|---|---|---|---|---|---|
-| s01-linkedin-card-pack-gap | Series thesis | Visual argument | Practitioner | LinkedIn social card pack | LinkedIn | High | Benchmark vs production claim, sources | Pillow card pack | P0 | rendered; QA passed |
-| s02-comic-agent-prod-fail | Part 1 failure story | Human scenario | Broad technical audience | Comic explainer / storyboard | LinkedIn, Blog | High | Failure taxonomy and eval lesson | Pillow comic panels | P0 | rendered; QA passed |
-| s03-executive-risk-exhibits | Series leadership angle | Risk / ROI | AI team decision-maker | Executive exhibit set | LinkedIn Article, Medium | High | Benchmark gap, production risk, regression cost | Pillow or matplotlib | P0 | rendered; QA passed |
-| s04-one-page-eval-system | Part 2 implementation | Saveable framework | Tech lead | Infographic / one-pager | LinkedIn, Substack | High | Eval system layers, grader examples, CI gates | Pillow | P0 | rendered; QA passed |
-| s05-architecture-eval-ci | Part 2 CI architecture | System design | Platform engineer | Architecture / flow diagram | Blog, Medium | Medium | CI flow, task suite, graders, dashboard | Mermaid or Pillow | P1 | rendered; QA passed |
+|----|----------------|--------------|------------------|---------------|--------------|----------------------|----------------------|--------------------|----------|--------|
+| s01-linkedin-card-pack | Whole post | narrative sequence | Practitioner, tech lead | LinkedIn social card pack | LinkedIn | high | Böckeler quote, 23%, 72.5%, 40%, repo harness proof | HTML/CSS + Chromium | P0 | planned |
+| s02-reel-storyboard | Whole post | narrative | Practitioner | Comic explainer / storyboard | Reel planning | high | Maturity arc, repo folders, one CTA | SVG via Python | P1 | planned |
+
+## Art Direction Briefs
+
+### v02-maturity-arc
+
+* Burning question: How did AI coding mature from autocomplete into harness engineering?
+* Audience: AI-fluent IC engineers and tech leads
+* Platform: Blog + LinkedIn
+* Infographic type: Timeline infographic
+* Visual metaphor: A four-stage rail that moves from single suggestion to engineered control loop
+* Narrative arc: Assistance expands from completion to context to repeatable workflow
+* Data/source inputs: InfoQ podcast, Jun 8 2026; QCon London 2025 timing; context engineering around Jun 2025
+* Primary visual element: Horizontal milestone rail with four labeled stations
+* State change or motion cue: Each station adds one new layer around the model
+* Text budget: Hero title <= 8 words; each milestone <= 12 words
+* Layout pattern: Milestone rail with compact date labels
+* Icon/illustration plan: Cursor, prompt bubble, context folder, harness loop
+* Source line: Source: InfoQ, "From MCP and Vibe Coding to Harness Engineering", Jun 8 2026
+* Failure modes to avoid: Dense chronology, decorative icons without progression, unsupported exact dates
+* Visual-reviewer acceptance criteria: Reader can name the four stages in order in 3 seconds on mobile
+
+### v03-harness-anatomy
+
+* Burning question: What parts make an AI agent more than a model?
+* Audience: Practitioners
+* Platform: Blog + LinkedIn
+* Infographic type: Informational architecture diagram
+* Visual metaphor: Model core wrapped by two active rails: feed-forward into the model and feedback back into the harness
+* Narrative arc: Context improves first generation; feedback improves correction without waiting for a human
+* Data/source inputs: Böckeler definition; feed-forward and feedback descriptions from InfoQ podcast
+* Primary visual element: Center model node with two colored loops
+* State change or motion cue: Input enters as conventions/specs, output returns through tests/types/static analysis
+* Text budget: Title <= 7 words; node labels <= 4 words; callouts <= 14 words
+* Layout pattern: Hub-and-loop system diagram
+* Icon/illustration plan: Model core, knowledge stack, compiler/test gauges, review loop
+* Source line: Source: InfoQ, Jun 8 2026
+* Failure modes to avoid: Confusing feed-forward with feedback, too many tool logos, unreadable arrows
+* Visual-reviewer acceptance criteria: Feed-forward and feedback are visually distinct and readable without the blog text
+
+### v04-building-blocks
+
+* Burning question: What should a team actually build around the model?
+* Audience: Practitioners and tech leads
+* Platform: Blog + LinkedIn
+* Infographic type: Framework one-pager
+* Visual metaphor: Four structural beams around a central model: agents, skills, routing, orchestration
+* Narrative arc: Prompt habit becomes engineered system through reusable workflows, lazy context, routing, and validation
+* Data/source inputs: GitHub custom agents post; Angular skills post; HyDRA routing post; delegation A/B post
+* Primary visual element: Four-beam frame around the model
+* State change or motion cue: Each beam adds one measurable capability
+* Text budget: Title <= 9 words; each beam <= 16 words; one metric badge per beam
+* Layout pattern: Framed system, not a plain four-card grid
+* Icon/illustration plan: File, skill drawer, router, subagent loop
+* Source line: Sources: GitHub Blog Jun 9, Jun 12, Jun 17 2026; InfoQ Angular skills Jun 12 2026
+* Failure modes to avoid: Text-heavy cards, metric crowding, missing source line
+* Visual-reviewer acceptance criteria: Each building block has one metric or named source and the whole frame reads as one harness
+
+### v06-pipeline-case-study
+
+* Burning question: What does a real harness look like in this repository?
+* Audience: Tech leads and practitioners
+* Platform: Blog + Reel planning
+* Infographic type: Architecture / flow diagram
+* Visual metaphor: Content pipeline control room: config contract routes work to agents, skills, scripts, and review gates
+* Narrative arc: The model is interchangeable; the harness determines the run sequence and quality gates
+* Data/source inputs: `agents-and-skills/automation-architecture.md`, `agents-and-skills/content-strategy-pipeline.md`, local repo structure
+* Primary visual element: Config node feeding agents, skills, scripts, and publishing/review outputs
+* State change or motion cue: Topic enters; reference brief, strategy, blog, visuals, LinkedIn, and Reel exit through gates
+* Text budget: Title <= 8 words; node labels <= 5 words; gate labels <= 3 words
+* Layout pattern: Directed flow with control node and review gates
+* Icon/illustration plan: Config document, agent group, skill shelf, script gear, gate checkmarks
+* Source line: Source: this repository, current run, 2026-06-20
+* Failure modes to avoid: Overstating automation, hiding pause gates, unreadable repo filenames
+* Visual-reviewer acceptance criteria: A reader can identify `pipeline-config.md` as the contract and understand why this is a harness
+
+### v08-playbook-checklist
+
+* Burning question: What can I ship this week to start harness engineering?
+* Audience: Practitioners
+* Platform: Blog + LinkedIn
+* Infographic type: Checklist infographic
+* Visual metaphor: Five-step workbench from repeated task to reviewed harness
+* Narrative arc: A vague repeated task becomes a versioned agent with one feedback signal
+* Data/source inputs: OpenAI harness-first discipline from InfoQ podcast; playbook from strategy
+* Primary visual element: Step ladder with a feedback loop returning from breakage to harness improvement
+* State change or motion cue: Step 5 loops back to Step 2 when something breaks
+* Text budget: Title <= 8 words; each step <= 10 words
+* Layout pattern: Step ladder + loopback arrow
+* Icon/illustration plan: Repeat task, agent file, test signal, code review, improve harness
+* Source line: Source: InfoQ, Jun 8 2026; practitioner playbook from this run
+* Failure modes to avoid: Generic productivity checklist, no loopback, vague verbs
+* Visual-reviewer acceptance criteria: The CTA is unmistakable: encode one repeated task and wire one feedback signal
+
+### s01-linkedin-card-pack
+
+* Burning question: Why should a busy engineer save and share this idea?
+* Audience: Practitioners and tech leads
+* Platform: LinkedIn
+* Infographic type: LinkedIn social card pack
+* Visual metaphor: Seven-card mini-argument from quote to playbook
+* Narrative arc: You were the harness; now make the harness explicit
+* Data/source inputs: Böckeler quote, 23% fewer tool failures, 72.5% savings, 40% context-switch tax, repo harness proof
+* Primary visual element: Card sequence with one idea per card
+* State change or motion cue: Cards progress from pain to framework to proof to CTA
+* Text budget: Card title <= 8 words; body <= 22 words; source footnote <= 10 words
+* Layout pattern: Mixed sequence: quote, timeline, frame, stat exhibit, repo map, risk card, checklist
+* Icon/illustration plan: Same visual language as blog assets, cropped for 1080x1350
+* Source line: Per-card source footer where metrics appear
+* Failure modes to avoid: Repeating the blog verbatim, dense paragraphs, identical card layouts
+* Visual-reviewer acceptance criteria: Each card stands alone and the whole pack drives to one CTA
 
 ## Rendering Handoff
 
-## Infographic Art Direction Briefs
+### Required P0 assets before blog draft review
 
-### Package Layout Diversity Matrix
+* `v02-maturity-arc`: 1600x900 SVG/PNG, timeline infographic, blog companion
+* `v03-harness-anatomy`: 1600x900 SVG/PNG, architecture diagram, blog companion
+* `v04-building-blocks`: 1600x900 SVG/PNG, framework one-pager, blog companion + LinkedIn crop candidate
+* `v06-pipeline-case-study`: 1600x900 SVG/PNG, architecture map, blog companion + Reel screen cue
+* `v08-playbook-checklist`: 1600x900 SVG/PNG, checklist infographic, blog close + LinkedIn
 
-| Asset | Infographic type | Layout pattern | Hero visual | Required state change |
-|---|---|---|---|---|
-| v01 / s03 benchmark gap | Statistical executive exhibit | Broken bridge or dual gauge | Vendor-reported May 2026: 74-78% capability vs 35-50% acceptance gap | Confidence drops into production-risk gap |
-| v03 / s02 Sourdough Test | Comic/storyboard | Four-panel incident story | Off-topic prompt causing persona drift | Neutral prompt -> wrong recipe -> correct redirect -> CI block |
-| s04 eval system | Process / hierarchy infographic | Factory line or CI control tower | Task enters eval system and passes through checks | Input task -> grader scan -> gate pass/fail -> history update |
-| s01 LinkedIn pack | Visual essay / carousel | Mixed layouts, one per card | Capability-vs-behavior thesis | Each card changes pattern: split, checklist, map, process, worksheet |
-| s05 CI architecture | Process infographic | Annotated CI loop | PR change flows through eval gate | PR change -> tests -> fail branch -> debug trace -> rerun |
+### P1 assets after blog text stabilizes
 
-### v01-benchmark-gap / s03-executive-risk-exhibits Art Direction Brief
+* `v01-harness-quote`: quote card for blog opener and LinkedIn crop
+* `v05-context-switch-cost`: executive exhibit with 40% efficiency-loss callout
+* `v07-risk-limits`: risk formula exhibit for honest-limits section
+* `s01-linkedin-card-pack`: 7-card LinkedIn carousel after blog approval
+* `s02-reel-storyboard`: storyboard after blog approval
 
-- Burning question: Why does a high SWE-bench score not equal production readiness?
-- Infographic type: Statistical / comparison executive exhibit.
-- Visual metaphor: Broken bridge between "benchmark capability" and "production acceptance", or dual gauges with a red risk gap.
-- Layout: One hero headline, two large numerical anchors, central red gap zone, source strip.
-- State changes: High confidence on benchmark side drops into lower PR acceptance; red gap is the story.
-- Icon/illustration plan: Left gauge labeled capability signal; right gauge labeled behavior risk; bridge/gap marker in the middle.
-- Text budget: Title <= 9 words; each side <= 8 words; one caveat line.
-- Source line: Presenc May 2026; official SWE-bench source; vendor-reported point-in-time caveat.
-- Renderer notes: Avoid a table. Use numbers as shapes, not text blocks.
-- Visual-reviewer acceptance criteria: Reader understands "capability score != release confidence" in under 3 seconds.
+## Layout Diversity Matrix
 
-### v03-sourdough-test / s02-comic-agent-prod-fail Art Direction Brief
+| Asset | Layout pattern | Avoids repeating |
+|-------|----------------|------------------|
+| v02-maturity-arc | Timeline rail | Card grid |
+| v03-harness-anatomy | Hub-and-loop | Timeline |
+| v04-building-blocks | Structural frame | Plain four-card board |
+| v05-context-switch-cost | Hero-number exhibit | Framework diagram |
+| v06-pipeline-case-study | Directed flow map | Hub-and-loop |
+| v07-risk-limits | Formula + gauge | Timeline |
+| v08-playbook-checklist | Step ladder + loopback | Plain checklist |
+| s01-linkedin-card-pack | Mixed narrative sequence | Identical slide templates |
 
-- Burning question: How can one absurd prompt reveal persona drift?
-- Infographic type: Comic/storyboard.
-- Visual metaphor: Incident strip: prompt enters all agents, one deployment agent drifts into recipe mode, CI blocks the release.
-- Layout: Four panels with changing environment: prompt card, chat failure, expected redirect, CI dashboard.
-- State changes: Character/agent changes from neutral -> confidently wrong -> corrected -> blocked by CI. Use expression, color badge, and panel background changes.
-- Icon/illustration plan: Do not repeat one human icon. Use distinct states: confused engineer, recipe-spewing agent, scope-aware agent, CI gate with 3 red cells out of 8.
-- Text budget: Panel caption <= 14 words; speech bubble <= 12 words.
-- Source line: First-party original Sourdough Test implementation, 3 of 8 agents failed.
-- Renderer notes: Add visible "3/8 failed" grid and a red "persona drift" badge. Use bread icon only as the off-topic object, not as decoration.
-- Visual-reviewer acceptance criteria: Panels must show setup, wrong behavior, expected behavior, and resolution without relying on surrounding blog text.
+## Strategy Markers To Preserve
 
-### s04-one-page-eval-system Art Direction Brief
-
-- Burning question: What does a minimum production agent eval system look like?
-- Infographic type: Process / hierarchy infographic.
-- Visual metaphor: CI factory line or control tower.
-- Layout: Task enters from left/top, moves through four stations: task suite, behavior graders, CI gate, regression history.
-- State changes: Work item moves through scanners; CI gate opens for pass and blocks for fail; history panel accumulates incident dots.
-- Icon/illustration plan: Use station icons with state: task stack, scanner/magnifier, gate/barrier, dashboard timeline. Add pass/fail branch.
-- Text budget: Four station labels <= 3 words each; station captions <= 10 words.
-- Source line: First-party original implementation: 8 agents, 38 tasks, 14 suites, 3 grader types.
-- Renderer notes: Do not render as four text boxes. Use a path, connectors, gates, and a history dashboard.
-- Visual-reviewer acceptance criteria: Reader sees a working eval system, not a checklist.
-
-### s01-linkedin-card-pack-gap Art Direction Brief
-
-- Burning question: What should teams test beyond benchmark capability?
-- Infographic type: Visual essay / card pack.
-- Visual metaphor: Journey from capability signal to behavior contract.
-- Layout: Five varied cards:
-  1. Split-screen or broken bridge.
-  2. Empty tool-log annotated scene.
-  3. Failure taxonomy map.
-  4. CI factory/control tower process.
-  5. Action worksheet.
-- State changes: Each card changes visual pattern and moves the reader from problem to action.
-- Icon/illustration plan: Use icons only for state/category: empty log, drift, gate, history, action.
-- Text budget: Card title <= 8 words; body <= 24 words.
-- Source line: Manifest-level source links plus visible caveat on metric cards.
-- Renderer notes: Avoid same frame with different text. Each card needs a different composition.
-- Visual-reviewer acceptance criteria: Carousel should feel like a visual argument, not a slide deck.
-
-### s05-architecture-eval-ci Art Direction Brief
-
-- Burning question: Where should production agent evals run?
-- Infographic type: Process / architecture infographic.
-- Visual metaphor: PR control loop.
-- Layout: PR change enters, task suite runs, graders inspect output and trace, gate decides, fail branch returns debug trace, pass branch continues.
-- State changes: Gate pass/fail branch must be visible; regression history updates after each run.
-- Icon/illustration plan: PR icon, task stack, grader scanner, gate, debug trace, history timeline.
-- Text budget: Node labels <= 4 words each.
-- Source line: First-party original implementation; canonical guide.
-- Renderer notes: Mermaid may be source-only; for social/blog hero, render a polished Pillow infographic version.
-- Visual-reviewer acceptance criteria: Reader understands PR-level eval loop without reading implementation text.
-
-### v01-benchmark-gap
-
-- Visual family: Executive exhibit
-- Platform: Blog + LinkedIn Article + Medium
-- Size: 1200x627
-- Renderer: Pillow or matplotlib
-- Message: SWE-bench proves coding capability, not production behavior.
-- Layout: conclusion-as-title, two-column comparison, source line.
-- Must stand alone: yes
-
-### v03-sourdough-test
-
-- Visual family: Comic explainer / storyboard
-- Platform: Blog + LinkedIn
-- Size: 1080x1350 for LinkedIn, 3200x2080 for blog variant
-- Renderer: `scripts/visuals/comic.py`
-- Story arc: an off-topic "How do I bake sourdough?" prompt exposes persona drift, contrasts the wrong bread answer with the expected Azure-scope redirect, and shows CI blocking the regression before release.
-- Panels: 4-panel escalation.
-- Must stand alone: yes
-
-### s01-linkedin-card-pack-gap
-
-- Visual family: LinkedIn social card pack
-- Platform: LinkedIn
-- Size: 1080x1350
-- Renderer: Pillow helpers from `scripts/visuals/`
-- Message: "Benchmarks are table stakes; behavior contracts decide production readiness."
-- Structure: split benchmark-vs-production contrast, pass/fail checklist, 2x3 failure taxonomy, four-layer eval stack, action worksheet.
-- Must stand alone: yes
-
-### s03-executive-risk-exhibits
-
-- Visual family: Executive exhibit set
-- Platform: LinkedIn Article + Medium
-- Size: 1200x627
-- Renderer: Pillow or matplotlib
-- Exhibits:
-  1. Context: benchmark gap creates false confidence.
-  2. Evidence: failure taxonomy shows what benchmarks miss.
-  3. Framework: production eval system catches behavior drift.
-- Must stand alone: yes
-
-### s04-one-page-eval-system
-
-- Visual family: Infographic / one-pager
-- Platform: LinkedIn + Substack
-- Size: 1080x1350 for LinkedIn, 1200x630 for Substack hero
-- Renderer: `scripts/visuals/infographic.py`
-- Message: "A production eval system needs tasks, graders, CI gates, and regression history."
-- Must stand alone: yes
-
-## Deferred / Follow-On Visuals
-
-| ID | Visual idea | Reason deferred |
-|---|---|---|
-| f01-editorial-cartoon-benchmark-theater | Newspaper-style cartoon about leaderboard confidence | Editorial cartoons are follow-on scope |
-| f02-interactive-eval-dashboard | Interactive GitHub Pages dashboard | Interactive visuals are follow-on scope |
-| f03-x-visual-thread | 4-card X/Twitter thread | X/Twitter is outside first implementation scope unless selected later |
+The strategy already includes `\[VISUAL: ...]` markers for all blog companion P0/P1 assets. Blog writing should preserve or refine these markers but should not replace them with final image links until rendered assets exist.

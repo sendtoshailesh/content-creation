@@ -2,7 +2,7 @@
 
 The screenshot is clipped to the ``#stage`` element so output dimensions are
 exactly the authored width/height. ``device_scale_factor=2`` yields crisp,
-high-DPI output. Fonts are awaited so Inter is fully loaded before capture.
+high-DPI output. Fonts are awaited before capture so text metrics are final.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 
 def _shoot(page, out_path: Path) -> None:
     page.wait_for_load_state("networkidle")
-    # Make sure web fonts (Inter) are ready so text metrics are final.
+    # Make sure fonts are ready so text metrics are final.
     page.evaluate("async () => { if (document.fonts) { await document.fonts.ready; } }")
     stage = page.query_selector("#stage")
     if stage is None:

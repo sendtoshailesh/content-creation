@@ -2,9 +2,11 @@
 
 > **Curated content ideas** extracted from configured feed sources. Run `@feed-curator` to discover fresh ideas. Pick an idea and run `@content-pipeline` or use `/select-idea` to auto-populate the pipeline config.
 
-Last curated: 2026-06-09 (All sources — Feeds: 98 articles from 6 live sources + Apple Notes: 170 notes + Chrome Reading List: 0 items. 10 new ideas queued, total now 18)
+Last curated: 2026-06-19 (Feeds only — 92 articles from 7 live sources; 61 published since the 06-15 run. 5 new ideas queued ([23]–[27]) + 7 existing ideas reinforced with fresh articles; total now 27)
 
-> **Source health (2026-06-09 run):** GitHub Blog ✅ 5 · DeepLearning.AI Batch ✅ 20 · Towards Data Science ✅ 20 · Simon Willison ✅ 30 · TLDR AI ✅ 2 · InfoQ ✅ 15 · PostgreSQL Weekly ⚠️ no parseable articles (nav-only page) · The Pragmatic Engineer ⚠️ empty (paywall/login) · Chrome Reading List ⚠️ 0 items (Chrome was running — data may be stale).
+> **Source health (2026-06-19 run):** GitHub Blog ✅ 6 · DeepLearning.AI Batch ✅ 20 · Towards Data Science ✅ 20 · Simon Willison ✅ 23 · InfoQ ✅ 15 · PostgreSQL Weekly ✅ 6 · TLDR AI ✅ 2 · The Pragmatic Engineer ⚠️ empty (paywall/login — persistent). 7 of 8 sources live.
+>
+> **Previous (2026-06-15 run):** GitHub Blog ✅ 8 · DeepLearning.AI Batch ✅ 20 · Towards Data Science ✅ 20 · Simon Willison ✅ 30 · InfoQ ✅ 15 (14 dated) · PostgreSQL Weekly ✅ 6 (recovered — issue #652 now parses; was nav-only on 06-09) · TLDR AI ✅ 2 · The Pragmatic Engineer ⚠️ empty (paywall/login — persistent). 7 of 8 sources live.
 
 ---
 
@@ -274,6 +276,169 @@ Last curated: 2026-06-09 (All sources — Feeds: 98 articles from 6 live sources
 - **Timeliness**: Spec-driven/"plan then build" workflows are heavily promoted but under-examined
 - **Scope hypothesis**: `single-post candidate`
 - **Status**: `queued`
+
+<!-- ───────── New ideas from 2026-06-15 feeds-only run (articles since 06-09) ───────── -->
+
+### [19] When Your Model Gets Pulled Overnight — Hidden Safeguards, Export Controls & Vendor Risk in the Agent Era
+- **Score**: 22/25 (R:4 D:4 T:5 G:5 V:4)
+- **Subject areas**: AI & LLM, Solution Architecture, DevOps & Platform Engineering
+- **Source**: RSS feeds (Simon Willison's Weblog ×4, InfoQ, DeepLearning.AI Batch)
+- **Source articles**:
+  - [Statement on the US government directive to suspend access to Fable 5 and Mythos 5](https://simonwillison.net/2026/Jun/13/us-government-directive-to-suspend-access/) — US export-control directive (received 5:21pm ET) forced Anthropic to **abruptly disable Fable 5 and Mythos 5 for all customers**, citing a jailbreak technique; other Anthropic models unaffected
+  - [Anthropic Releases and Temporarily Suspends Claude Fable 5](https://www.infoq.com/news/2026/06/claude-5-release/) — released Jun 9, offline within **3 days**; $10/M input, $50/M output (**2× Opus 4.8**), 1M-token context, 128K output; shipped same day on Claude API, AWS, and **Microsoft Foundry**
+  - [Anthropic Walks Back Policy That Could Have 'Sabotaged' AI Researchers Using Claude](https://simonwillison.net/2026/Jun/11/anthropic-walks-back-policy/) — Anthropic had a system-card policy to silently "limit effectiveness" of flagged requests; after outcry, flagged requests now **visibly** fall back to Opus 4.8 ("we made the wrong tradeoff")
+  - [Claude Fable is relentlessly proactive](https://simonwillison.net/2026/Jun/11/fable-is-relentlessly-proactive/) — frontier autonomy: the model will deploy "pretty much any trick" to reach a goal unsupervised, raising the stakes of behavioral changes
+  - [Initial impressions of Claude Fable 5](https://simonwillison.net/2026/Jun/9/claude-fable-5/) — new API mechanisms to signal guardrail hits and **auto-fall-back to another model** when a request is rejected
+- **Content angle**: "A frontier model you build on can be made invisible to you — or pulled offline overnight by a government directive. Here's why production agents need model abstraction, multi-provider fallback, and governance for silent behavioral changes, illustrated by the Fable 5 / Mythos 5 saga."
+- **Key data points**: Fable 5 live→offline in 3 days, export directive 5:21pm ET, $10/$50 per M tokens (2× Opus 4.8), 1M context / 128K output, invisible→visible safeguard reversal, automatic model fallback as a new API primitive
+- **Timeliness**: Breaking 06-09 → 06-14; the suspension and policy reversal are days old — peak relevance for a "vendor risk / model abstraction" thesis
+- **Scope hypothesis**: `single-post candidate` — strong opinion/architecture thought-leadership angle
+- **Status**: `queued`
+
+### [20] Enterprise Document Intelligence — The PDF Parsing Layer That Makes or Breaks RAG
+- **Score**: 21/25 (R:5 D:5 T:4 G:4 V:3)
+- **Subject areas**: AI & LLM, Databases, Machine Learning
+- **Note**: ⚠️ Complements queued ideas [14] (10 RAG mistakes), [6] (pgvector), and [7] (search generations) — but distinct: this is the **ingestion/parsing** brick, upstream of retrieval. Scope assessment should decide whether to fold into a retrieval mega-series.
+- **Source**: RSS feeds (Towards Data Science — "Enterprise Document Intelligence" series, 5+ parts)
+- **Source articles**:
+  - [Stop Returning Flat Text from a PDF: The Relational Tables RAG Needs](https://towardsdatascience.com/stop-returning-flat-text-from-a-pdf-the-relational-shape-rag-needs/) — `text = extract_text(pdf)` is where RAG breaks; a good parser emits **7-8 relational tables** (toc/line/table/image…), not one flat string, so a page-14 table keeps its columns
+  - [Beyond extract_text: The Two Layers of a PDF That Drive RAG Quality](https://towardsdatascience.com/beyond-extract_text-the-two-layers-of-a-pdf-that-drive-rag-quality/) — born-digital vs scanned detection; OCR-quality-0.3 turns "Renewal fee EUR 250" into "Renewa1 fee EUR 25O" and keyword retrieval silently misses
+  - [When PyMuPDF Can't See the Table: Parse PDFs for RAG with Azure Layout](https://towardsdatascience.com/when-pymupdf-cant-see-the-table-parse-pdfs-for-rag-with-azure-layout/) — fitz goes blind in 3 places (tables, scanned pages, text-in-figures); **Azure Document Intelligence** prebuilt-layout recovers cells, OCR, figures, and paragraph roles in one call
+  - [Parse PDFs for RAG Locally with Docling: Rich Tables, No Cloud Upload](https://towardsdatascience.com/parse-pdfs-for-rag-locally-with-docling-rich-tables-no-cloud-upload/) — **Docling** (IBM Research, MIT license, TableFormer) gives the same relational output fully offline for compliance-sensitive data
+  - [Vision LLMs are PDF Parsers Too: Reading Charts and Diagrams for RAG](https://towardsdatascience.com/vision-llms-are-pdf-parsers-too-reading-charts-and-diagrams-for-rag/) — vision models read charts text-parsers see as empty boxes; **gpt-4.1 reads a chart gpt-4o-mini half-misses** — use selectively for picture-heavy pages
+  - [Larger Context Windows Don't Fix RAG — So I Built a System That Does](https://towardsdatascience.com/larger-context-windows-dont-fix-rag-so-i-built-a-system-that-does/) — measured across **7 query types × 5 context sizes on 100,000 rows**; the fix is routing computation queries away from RAG entirely
+- **Content angle**: "Most RAG failures are blamed on the model, but they start at `extract_text()`. A practitioner's tour of the parsing layer — relational table extraction, OCR-quality gates, Azure Document Intelligence vs. Docling (cloud vs. on-prem), and when to reach for a vision LLM — because retrieval can only be as good as what you fed it."
+- **Key data points**: 7-8 relational tables per doc, OCR quality 0.3 corruption example, fitz blind in 3 places, Azure DI prebuilt-layout one-call enrichment, Docling MIT/TableFormer offline, gpt-4.1 vs gpt-4o-mini chart reading, 7×5×100K benchmark
+- **Timeliness**: TDS "Enterprise Document Intelligence" series publishing through 06-10→06-14; document parsing is the under-covered half of the RAG conversation
+- **Scope hypothesis**: `possible series` — parsing → retrieval → generation map naturally onto parts; overlaps existing retrieval ideas
+- **Status**: `queued`
+
+### [21] MCP Goes Operational — Agents Reach Into Your Infrastructure and Data
+- **Score**: 21/25 (R:4 D:4 T:5 G:4 V:4)
+- **Subject areas**: Cloud & Infrastructure, AI & LLM, DevOps & Platform Engineering
+- **Note**: ⚠️ Distinct from queued idea [2] (WebMCP — *browser* actuation). This idea is about **backend infrastructure and data-plane** MCP servers.
+- **Source**: RSS feeds (InfoQ ×3)
+- **Source articles**:
+  - [Terraform MCP Server Enables AI Assistants to Interact with Terraform Infrastructure](https://www.infoq.com/news/2026/06/terraform-mcp-server-ga/) — HashiCorp ships **GA** of an open-source MCP server over Terraform Registry APIs; agents discover approved modules and enforce org policy instead of engineers manually searching private registries
+  - [Pinecone Brings AI Agents Directly to Enterprise Data with Microsoft OneLake Integration](https://www.infoq.com/news/2026/06/pinecone-ai-agents-onelake/) — Pinecone Nexus + OneLake serves pre-built knowledge artifacts; Pinecone claims **>95% lower LLM token consumption** and **up to 30× faster** task execution vs. traditional retrieval (Build 2026)
+  - [Google Launches Colab CLI for Developers, Automation, and AI Agents](https://www.infoq.com/news/2026/06/google-colab-cli/) — agents provision remote **GPU/TPU** runtimes and run jobs from the terminal, exposing cloud accelerators to agentic workflows
+- **Content angle**: "WebMCP put agents into the browser; this wave puts them into your control plane. Terraform, OneLake, and Colab all shipped MCP/CLI surfaces in one week — here's the emerging pattern for governed, policy-enforcing agent access to infrastructure and enterprise data (and the token-cost math that makes it worth it)."
+- **Key data points**: Terraform MCP Server GA (Registry APIs, policy/module governance), Pinecone+OneLake >95% token cut / up to 30× faster, Colab CLI GPU/TPU provisioning for agents
+- **Timeliness**: All three landed 06-12→06-13 around Build 2026; "MCP for infra/data" is crystallizing into a category now
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [22] AI-Assisted Legacy Modernization — Migrating in Weeks, Not Years
+- **Score**: 18/25 (R:4 D:3 T:4 G:4 V:3)
+- **Subject areas**: Architecture, Solution Architecture, DevOps & Platform Engineering
+- **Note**: ⚠️ Complements queued idea [17] (design patterns for AI-native / brownfield modernization) — this is the **case-study / execution** angle with real numbers.
+- **Source**: RSS feeds (InfoQ ×2)
+- **Source articles**:
+  - [Presentation: Moving Mountains: Migrating Legacy Code in Weeks Instead of Years](https://www.infoq.com/presentations/refactoring-ai-agents/) — ServiceTitan Principal AI Engineer David Stein on using AI agents to compress migrations that "plan out to take months, quarters, years" into weeks
+  - [Slack Eliminates SSH in EMR Pipelines, Migrates 700+ Jobs to Rest-Based Architecture](https://www.infoq.com/news/2026/06/slack-ssh-rest-quarry-migration/) — Slack moved **700+ Airflow operators** off direct-SSH EMR execution to a centralized REST job-submission layer across **8 data regions**, improving security and observability
+- **Content angle**: "Migrations have always been the work everyone dreads. Two 2026 case studies — ServiceTitan compressing legacy migrations from years to weeks with AI agents, and Slack retiring SSH across 700+ jobs — show the new modernization playbook: agent-assisted refactoring plus a governed orchestration layer."
+- **Key data points**: ServiceTitan AI-driven migrations (months/quarters/years → weeks), Slack 700+ Airflow operators SSH→REST across 8 regions
+- **Timeliness**: Both published 06-12; AI-assisted modernization is the dominant enterprise question of 2026
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+<!-- ───────── New ideas from 2026-06-19 feeds-only run (articles since 06-15) ───────── -->
+
+### [23] The AI-Era Software Supply Chain — Cooldowns, Coalitions, and the Hours-Not-Months Window
+- **Score**: 23/25 (R:5 D:5 T:5 G:4 V:4)
+- **Subject areas**: DevOps & Platform Engineering, Architecture, AI & LLM
+- **Source**: RSS feeds (InfoQ ×3)
+- **Source articles**:
+  - [VS Code 1.123 Adds Two-Hour Extension Update Delay to Limit Supply Chain Attacks](https://www.infoq.com/news/2026/06/vscode-extension-update-delay/) — newly published extensions wait **2 hours** before auto-update; mirrors **pip 26.1's 7-day cooldown** (research found a 7-day cooldown would have stopped **8 of 10** analyzed supply-chain attacks); npm/pnpm/Yarn/Bun/RubyGems all added minimum-release-age settings. Catch: the delay exempts "trusted publishers" (Microsoft, GitHub, OpenAI) — the highest-value compromise targets
+  - [Athena Coalition Brings Coordinated Defence to Open Source Security](https://www.infoq.com/news/2026/06/athena-security-coalition/) — Chainguard-led coalition of **24+ founders** (BNY, JPMorgan Chase, Cisco, Cloudflare, Docker, Kyndryl, PwC) using frontier AI to find/fix OSS vulns before attackers; the discovery→exploit gap has shrunk from **months/years to hours**; already running in production with findings in ~1 month
+  - [GitLab 19.0 Embeds Agentic AI in Secrets, Merge Requests, and Supply Chain Security](https://www.infoq.com/news/2026/06/gitlab-19-agentic-ai/) — **SBOM dependency scanning GA** + Secrets Manager public beta (scoped per-job, audit-traceable, integrates Vault/AWS/Azure/GCP rather than replacing them)
+- **Content angle**: "Frontier models can now read a whole dependency graph and chain flaws that survived years of human review — and the attacker gets there in hours, not months. The defensive playbook that emerged this month: package-manager cooldowns (pip's 7-day window would have stopped 8/10 attacks), IDE-extension delays, SBOM-by-default, and AI-vs-AI coalitions like Athena. Here's how to wire cooldowns, SBOM gating, and scoped secrets into your own supply chain."
+- **Key data points**: 7-day cooldown stops 8/10 attacks, VS Code 2-hr delay (trusted-publisher carve-out), Athena 24+ members, discovery→exploit months→hours, GitLab SBOM GA, per-job-scoped secrets
+- **Timeliness**: All three landed 06-18→06-19; package-ecosystem cooldowns are crystallizing into a cross-tooling norm right now
+- **Scope hypothesis**: `single-post candidate` — could split into "attack side (AI finds vulns fast)" vs "defense side (cooldowns/SBOM/coalitions)" if it grows
+- **Status**: `queued`
+
+### [24] Agents With Their Own Identity — Continuous Authorization and OS-Level Trust for Autonomous Agents
+- **Score**: 22/25 (R:5 D:4 T:5 G:4 V:4)
+- **Subject areas**: AI & LLM, Solution Architecture, DevOps & Platform Engineering
+- **Note**: ⚠️ Distinct from queued idea [10] (Containing the Agent — *runtime sandboxing / prompt-injection*). This idea is about **identity and runtime authorization** — who the agent is and whether each action should be allowed *right now* — not about boxing the process.
+- **Source**: RSS feeds (InfoQ ×3)
+- **Source articles**:
+  - [Windows Platform Security and the Race to Secure AI Agents](https://www.infoq.com/news/2026/06/windows-security-agents/) — Microsoft positions Windows as the trustworthy OS for agents via the **Microsoft Execution Containers (MXC) SDK**: a policy-driven layer (JSON or TypeScript SDK) spanning process/session isolation → planned micro-VMs → Linux containers, with **identity and manageability built into the OS** (centrally managed via **Entra ID + Intune**, observed via **Defender + Purview**)
+  - [Article: Designing Continuous Authorization for Sensitive Cloud Systems](https://www.infoq.com/articles/continuous-authorization-cloud/) — login-time RBAC leaves an active session unchecked (worked example: a rep with valid perms exports **5,000 patient records at 10 AM**, file hits personal email by 10:15, SIEM alerts hours later). Fix: evaluate **each sensitive operation as its own decision point** with behavioral baselines, selective evaluation + caching, and audit-ready evidence that doesn't expose the underlying data
+  - [Microsoft Scout, New Enterprise Autopilot Built on OpenClaw](https://www.infoq.com/news/2026/06/microsoft-scout-openclaw-build/) — "Autopilot" agents run always-on **with their own identity**, executing privileged local ops (file read/write, shell, code patches, browser automation) — raising the stakes for per-action authorization
+- **Content angle**: "When an agent acts with its own identity and runs unsupervised, login-time RBAC is the wrong abstraction — it authorizes the session, not the 5,000th record export at 10 AM. A practitioner's guide to runtime trust for agents: OS-level execution containers (MXC) with Entra/Intune governance, continuous per-action authorization with behavioral baselines, and audit evidence that survives a privacy review."
+- **Key data points**: MXC isolation spectrum (process→session→micro-VM→Linux container), Entra ID/Intune/Defender/Purview governance, continuous-authz worked example (5,000 records / 10:00 / 10:15 exfil), per-operation decision points + behavioral baselines, agents acting with own identity
+- **Timeliness**: All published 06-17→06-19 around Build 2026; agent identity/authorization is the next security frontier after sandboxing
+- **Scope hypothesis**: `possible series` — OS-level containment+identity vs application-level continuous authorization are natural parts
+- **Status**: `queued`
+
+### [25] Event-Driven and Always-On Agents — Serverless Hosting Moves Agents from Chat to Continuous Work
+- **Score**: 21/25 (R:5 D:4 T:5 G:4 V:3)
+- **Subject areas**: Cloud & Infrastructure, AI & LLM, Architecture
+- **Note**: ⚠️ Complements queued idea [16] (Foundry production capabilities) but distinct: this is specifically the **serverless / event-triggered hosting model** and the always-on paradigm shift, not the Foundry capability catalog.
+- **Source**: RSS feeds (InfoQ ×2)
+- **Source articles**:
+  - [Azure Functions Ships Serverless Agents Runtime at Build 2026](https://www.infoq.com/news/2026/06/azure-functions-serverless-agent/) — agents declared in **`.agent.md`** files (markdown-first: instructions, tools, connections in one doc); **any trigger spawns an agent** (HTTP/Timer/Service Bus/Event Hubs/SQL/Cosmos DB + new Teams/Outlook/calendar/SharePoint triggers); **Flex Consumption scale-to-zero, per-second billing**; sandboxed code + browser via **ACA dynamic sessions**; **1,400+ managed connectors**; "no extra cold start beyond normal Functions"
+  - [Microsoft Scout, New Enterprise Autopilot Built on OpenClaw](https://www.infoq.com/news/2026/06/microsoft-scout-openclaw-build/) — "Autopilots": **always-on agents** that act autonomously on your behalf without per-task prompting; the shift "from single exchanges to something more continuous" where the system "holds your priorities and acts on them"
+- **Content angle**: "Agents are escaping the chat box. With serverless agent runtimes, any event — a Service Bus message, an Outlook mail, a calendar entry — can wake an agent that reasons, calls MCP tools, and acts through 1,400+ connectors, then scales back to zero. Pair that with always-on 'autopilot' agents and the architecture question flips from 'how do I answer' to 'what should fire when.' A practitioner's tour of event-driven + always-on agent hosting (and the cold-start/cost realities)."
+- **Key data points**: `.agent.md` markdown-first model, every Functions trigger can spawn an agent, scale-to-zero + per-second billing, ACA dynamic sessions sandbox, 1,400+ connectors, autopilot always-on with own identity
+- **Timeliness**: Both announced at/around Build 2026 (06-17→06-19); serverless agent hosting is a brand-new category
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [26] Stop Over-Engineering Your Agents — When Workflows, Plain Python, and MCP Beat Frameworks
+- **Score**: 21/25 (R:5 D:4 T:4 G:4 V:4)
+- **Subject areas**: AI & LLM, Architecture, Developer Productivity
+- **Source**: RSS feeds (Towards Data Science ×3)
+- **Source articles**:
+  - [You Probably Don't Need an Agent Framework](https://towardsdatascience.com/you-probably-dont-need-an-agent-framework/) — hours lost comparing CrewAI/LangGraph/Microsoft Agent Framework before writing any code; for many useful LLM apps what reliably ships is a **workflow**, built with **plain Python + structured outputs + the Responses API**, no framework
+  - [The Protocol That Cleaned Up Our Agent Architecture](https://towardsdatascience.com/the-protocol-that-cleaned-up-our-agent-architecture/) — LangGraph tool-calling is "a local concern": the same tool lived in **4 files** across orchestrator/validator/utility with a hand-wired human gate per tool; moving to a shared **MCP server** consolidated tools + put the human-in-the-loop at the protocol boundary
+  - [LLM Fallbacks Break Agent Pipelines — I Built the Missing Recovery Layer](https://towardsdatascience.com/llm-fallbacks-break-agent-pipelines-i-built-the-missing-recovery-layer/) — a naive fallback router shows **100% completion but 0% schema integrity**: the backup model gets a payload formatted for a different engine, drops the `confidence` key, and the Validator never knows. Fix: catch the error, **rebuild the payload for the backup model, save progress before the swap** (std Python 3.12, zero deps)
+- **Content angle**: "Everyone reaches for an agent framework and a multi-model fallback router on day one. Three practitioners independently found the opposite: a plain-Python workflow ships faster than an autonomous agent, an MCP server beats tool definitions scattered across four files, and a naive fallback that reads 100% green is silently emitting 0% valid schema. The 2026 correction — choose the simplest abstraction that survives production."
+- **Key data points**: workflow > autonomous agent for many apps, plain Python + structured outputs (no framework), MCP consolidates 4 tool copies → 1 server, fallback router 100% completion / 0% schema integrity, save-progress-before-swap recovery pattern
+- **Timeliness**: All three published 06-15→06-17; a clear counter-narrative forming against framework/agent over-engineering
+- **Scope hypothesis**: `single-post candidate` — strong opinion + first-party angle (this repo's own skills/scripts harness embodies the thesis)
+- **Status**: `queued`
+
+### [27] Structured Outputs With LLMs — JSON Mode vs Function Calling vs Structured Outputs (and the Fallback Schema Trap)
+- **Score**: 15/25 (R:4 D:3 T:3 G:3 V:2)
+- **Subject areas**: AI & LLM, Developer Productivity
+- **Note**: ⚠️ Shares the schema-integrity data point with idea [26]; keep as a tighter, evergreen explainer if [26] goes broad-thesis.
+- **Source**: RSS feeds (Towards Data Science ×2)
+- **Source articles**:
+  - [Structured Outputs with LLMs: JSON Mode, Function Calling, and When to Use Each](https://towardsdatascience.com/structured-outputs-with-llms-json-mode-function-calling-and-when-to-use-each/) — three commonly-confused mechanisms: **JSON Mode** (valid JSON, no schema guarantee), **Function Calling / tool use** (model picks a tool + args), and OpenAI's stricter **Structured Outputs** (hard schema enforcement); how each works under the hood and when to reach for which
+  - [LLM Fallbacks Break Agent Pipelines](https://towardsdatascience.com/llm-fallbacks-break-agent-pipelines-i-built-the-missing-recovery-layer/) — concrete failure mode when structured output is not re-validated across a model swap (schema integrity → 0%)
+- **Content angle**: "JSON Mode, Function Calling, and Structured Outputs get used interchangeably and they shouldn't be. A practitioner's decision guide to the three structured-output mechanisms — what each actually guarantees, how schema enforcement differs, and why your fallback model can quietly hand you 'valid' output that breaks the next stage."
+- **Key data points**: 3 structured-output mechanisms compared (JSON Mode / Function Calling / Structured Outputs), schema-enforcement differences, fallback schema-integrity failure
+- **Timeliness**: Published 06-18; foundational/evergreen rather than breaking
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+<!-- ───────── Fresh-article reinforcements (2026-06-15) — strengthen existing ideas, not new ───────── -->
+
+### Reinforcements to Existing Ideas (2026-06-15 feeds)
+
+> New articles since 06-09 that strengthen ideas already in the queue. No new idea created — use these as added sources when the idea goes to pipeline.
+
+- **Idea [2] WebMCP & Browser AI Agents** — reinforced by [WebMCP Standard Proposal for Agentic Web Actuation Now Available in Chrome (Origin Trials)](https://www.infoq.com/news/2026/06/webmcp-web-agent-standard-chrome/) (InfoQ, 06-12). First-party confirmation the Chrome origin trial is live — upgrades the timeliness claim from "entering" to "available now."
+- **Idea [6] pgvector Ecosystem** — reinforced by [Postgres 19 Beta 1 is here](https://postgresweekly.com/issues/652) (Postgres Weekly, issue #652, final ~late Sept/Oct). Postgres 19 adds **graph queries, faster inserts, pg_plan_advice, parallel-worker autovacuuming, online checksum toggling** — context for "where does the core engine go while the vector extensions mature."
+- **Idea [10] Containing the Agent (Sandboxing & Prompt-Injection)** — reinforced by [Run Untrusted AI Agent Code Safely with Azure Container Apps Sandboxes](https://www.infoq.com/news/2026/06/untrusted-ai-agents-sandboxes/) (InfoQ, 06-12): public preview of `Microsoft.App/SandboxGroups` — hardware-isolated, **OCI image starts in <1s, scales to thousands, zero idle cost**. A concrete managed-service primitive for the "sandbox the runtime" layer.
+- **Idea [11] From Prompts to Harness Engineering** — reinforced by four fresh sources: [How we made GitHub Copilot CLI more selective about delegation](https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/) ("delegation isn't free" — data-driven subagent tuning), [Give GitHub Copilot CLI real code intelligence with language servers](https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/) (LSP Setup skill), [A Harness for Every Task: Putting a Team of Claudes on One Job](https://towardsdatascience.com/a-harness-for-every-task-putting-a-team-of-claudes-on-one-job/), and [Angular's Official Agent Skills](https://www.infoq.com/news/2026/06/angular-agent-skills/) (Anthropic's open Skills format, load-on-demand). The "harness engineering" thesis is now corroborated across GitHub, Google/Angular, and Anthropic.
+- **Idea [13] Production-Grade Agentic Inference** — reinforced by [GPU Time-Slicing for Concurrent LLM Agents on Kubernetes](https://towardsdatascience.com/gpu-time-slicing-for-concurrent-llm-agents-on-kubernetes/) (this is literally **Part 2** of the same series; p99 jumps 3.68→6.10 ms ≈1.66×, jitter 1.02→1.70 when two agents share a time-sliced GPU) and [When GPU Utilization Lies](https://towardsdatascience.com/when-gpu-utilization-lies-the-hidden-systems-problem-slowing-modern-ai/) (79/82/84% GPU utilization masked a RAID-rebuild storage bottleneck starving inference). Adds an observability angle to the inference-cost story.
+- **Idea [14] 10 RAG Mistakes / Four Generations of Retrieval** — reinforced by the new [20] Document Intelligence cluster and [Larger Context Windows Don't Fix RAG](https://towardsdatascience.com/larger-context-windows-dont-fix-rag-so-i-built-a-system-that-does/) (7 query types × 5 context sizes × 100,000 rows; route computation queries away from RAG).
+
+### Reinforcements to Existing Ideas (2026-06-19 feeds)
+
+> New articles since 06-15 that strengthen ideas already in the queue. No new idea created — use these as added sources when the idea goes to pipeline.
+
+- **Idea [9] The AI Coding Cost Reckoning / FinOps** — reinforced by [Drilling Into AI's Financial Sustainability](https://towardsdatascience.com/drilling-into-ais-financial-sustainability/) (TDS, 06-16): "tokenmaxxing," internal token-usage leaderboards at Amazon, shocking quarterly AI token expense at Uber and others, and the pivot away from "use AI more" mandates because the spend is unsustainable *and* the business outcomes didn't materialize.
+- **Idea [10] Containing the Agent (Sandboxing & Prompt-Injection)** — reinforced by [Windows Platform Security and the Race to Secure AI Agents](https://www.infoq.com/news/2026/06/windows-security-agents/) (InfoQ, 06-19): the **MXC SDK** isolation spectrum (process → session → planned micro-VM → Linux container) is another concrete OS-native containment primitive alongside the ACA Sandboxes cited on 06-15. (Identity/continuous-authz angle split out into new idea [24].)
+- **Idea [11] From Prompts to Harness Engineering** — reinforced by four fresh GitHub/InfoQ sources: [Getting more from each token: How Copilot improves context handling and model routing](https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/) (prompt caching + **deferred tools** + Auto model routing — the harness, not the model, doing the work), [GitHub Copilot CLI for Beginners: common slash commands](https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/), [What are git worktrees, and why should I use them?](https://github.blog/ai-and-ml/github-copilot/what-are-git-worktrees-and-why-should-i-use-them/) (parallel agent workspaces), and [CircleCI Introduces Chunk Sidecars](https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/) (CI-style validation moved *into the agent's inner loop* so it self-corrects before commit).
+- **Idea [12] Local & On-Device Agents** — reinforced by [Run a Local LLM with OpenClaw on Your Mac Mini](https://towardsdatascience.com/run-a-local-llm-with-openclaw-on-your-mac-mini/) (TDS, 06-16: free local agent on an M2 / 24GB Mac Mini, "almost indistinguishable" for email/calendar/IoT/research with a cloud fallback for heavy coding) and [GLM-5.2 is probably the most powerful text-only open weights LLM](https://simonwillison.net/2026/Jun/17/glm-52/) (Simon, 06-17: **753B / 40-active MoE, MIT license, 1M-token context**, leads the Artificial Analysis open-weights Intelligence Index at 51, #2 on Code Arena WebDev behind Fable 5 — but token-hungry at **43k output tokens/task**).
+- **Idea [15] The Open-Source Trust Crisis in the Agent Era** — reinforced by [How pull request limits are cutting down the noise](https://github.blog/open-source/maintainers/how-pull-request-limits-are-cutting-down-the-noise/) (GitHub, 06-18): persistent, configurable per-repo PR caps for non-write contributors, **Copilot/AI-agent PRs count toward the limit** — a direct mechanism for the "a polished change and a rough draft look the same in the queue" problem the idea is built on.
+- **Idea [19] When Your Model Gets Pulled Overnight (Vendor Risk / Model Abstraction)** — reinforced by [LLM Fallbacks Break Agent Pipelines](https://towardsdatascience.com/llm-fallbacks-break-agent-pipelines-i-built-the-missing-recovery-layer/) (TDS, 06-16: the *mechanics* of safe model swapping — 100% completion / 0% schema integrity unless you rebuild the payload and save progress before the swap), [The Fable 5 Export Controls Harm US Cyber Defense](https://simonwillison.net/2026/Jun/16/fable-5-export-controls/) (Simon, 06-16: follow-on to the suspension saga), and [The Batch issue 358 — "Testing Mythos and Fable, Moving Beyond SWE-bench"](https://www.deeplearning.ai/the-batch/issue-358) (DeepLearning.AI, 06-19). *(Note: this article is also the third source for new idea [26].)*
+- **Idea [20] Enterprise Document Intelligence (PDF Parsing for RAG)** — reinforced by the TDS "question parsing" trilogy ([RAG Questions Need Parsing Too](https://towardsdatascience.com/question-parsing-in-rag-structure-before-you-search/) 06-16, [What the Question Parser Extracts](https://towardsdatascience.com/what-the-question-parser-extracts-from-a-user-string-keywords-scope-shape-decomposition-clarification/) 06-17, [Dispatching the Parsed RAG Question](https://towardsdatascience.com/dispatching-the-parsed-rag-question-chunk-strategy-model-tier-activations-audit/) 06-18) plus [Parse Scanned PDFs for RAG with EasyOCR](https://towardsdatascience.com/parse-scanned-pdfs-for-rag-with-easyocr-free-ocr-gives-you-words-not-a-document/) (06-19) and [GPU-Resident Top-K for Agentic RAG](https://towardsdatascience.com/gpu-resident-top-k-for-agentic-rag-i-built-a-cuda-kernel-so-my-retrieval-step-would-stop-bouncing-off-the-gpu/) (06-19). The series now spans **parse-the-document → parse-the-question → dispatch → retrieve**, extending the ingestion thesis upstream into query understanding (e.g., "name" on a CV resolves via doc profile, not literal grep).
 
 _(Run `@feed-curator`, `@apple-notes-curator`, or `@reading-list-curator` to refresh this queue from your configured sources.)_
 

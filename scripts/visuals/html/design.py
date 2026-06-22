@@ -13,7 +13,7 @@ This module replaces coordinate math with a browser layout engine:
   positioned by the browser, so they cannot drift or overlap.
 * Gauges are banned. Magnitude is shown with horizontal bars (a CSS width
   percentage) which is geometrically impossible to invert.
-* Typography uses Inter (the same font as the blog) and a restrained, fixed
+* Typography uses Helvetica Neue and a restrained, fixed
   ``TYPE_SCALE`` tuned so that, at the width an asset is displayed inside the
   article (~1000px), diagram text lands close to the article's own 17px body
   and ~24px headings instead of towering over them.
@@ -47,10 +47,7 @@ TYPE_SCALE = {
     "caption": 15,   # source line, footnotes
 }
 
-FONT_STACK = (
-    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, "
-    "'Helvetica Neue', Arial, sans-serif"
-)
+FONT_STACK = "'Helvetica Neue', Helvetica, Arial, sans-serif"
 
 
 def tokens(theme: str = "default") -> dict[str, str]:
@@ -75,7 +72,6 @@ def css(theme: str = "default", scale: float = 1.0) -> str:
         return round(TYPE_SCALE[role] * scale)
 
     return f"""
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 :root {{
   --scale: {scale};
   --bg: {t['BG']};

@@ -39,7 +39,7 @@ _HTML = """<!doctype html>
     display: inline-block;
     background: {bg};
     padding: 28px 32px;
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }}
   #out svg {{ display: block; }}
 </style>
@@ -51,7 +51,7 @@ _HTML = """<!doctype html>
     mermaid.initialize({{
       startOnLoad: false,
       theme: 'base',
-      fontFamily: "Inter, 'Helvetica Neue', Arial, sans-serif",
+      fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
       themeVariables: {{
         background: '{bg}',
         primaryColor: '{light}',

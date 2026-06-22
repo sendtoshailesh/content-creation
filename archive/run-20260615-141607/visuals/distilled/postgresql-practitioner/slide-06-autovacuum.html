@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --scale: 1.55;
+  --bg: #ffffff;
+  --text: #1e293b;
+  --text2: #475569;
+  --muted: #94a3b8;
+  --grid: #e5e7eb;
+  --light: #f8fafc;
+  --accent: #0ea5e9;
+  --accent2: #06b6d4;
+  --accent3: #155e75;
+  --warn: #f97316;
+  --success: #14b8a6;
+  --blue-bg: #e0f2fe;
+  --teal-bg: #ccfbf1;
+  --purple-bg: #cffafe;
+  --red-bg: #ffedd5;
+
+  --fs-display: 118px;
+  --fs-title: 46px;
+  --fs-value: 53px;
+  --fs-subtitle: 33px;
+  --fs-label: 31px;
+  --fs-body: 28px;
+  --fs-caption: 23px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.stage {
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Type roles (data-role drives the QA inspector) ---- */
+[data-role="display"]  { font-size: var(--fs-display);  font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; }
+[data-role="title"]    { font-size: var(--fs-title);    font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
+[data-role="value"]    { font-size: var(--fs-value);    font-weight: 800; line-height: 1.3; }
+[data-role="subtitle"] { font-size: var(--fs-subtitle); font-weight: 400; line-height: 1.35; color: var(--text2); }
+[data-role="label"]    { font-size: var(--fs-label);    font-weight: 600; line-height: 1.3; }
+[data-role="body"]     { font-size: var(--fs-body);     font-weight: 400; line-height: 1.5; color: var(--text2); }
+[data-role="caption"]  { font-size: var(--fs-caption);  font-weight: 500; line-height: 1.4; color: var(--muted); }
+
+/* ---- Card ---- */
+.card {
+  background: var(--light);
+  border: 1px solid var(--grid);
+  border-radius: calc(16px * var(--scale));
+  padding: calc(26px * var(--scale)) calc(30px * var(--scale));
+  display: flex;
+  flex-direction: column;
+  gap: calc(10px * var(--scale));
+}
+.card.accent { border-color: var(--accent); }
+.card.warn   { border-color: var(--warn); background: var(--red-bg); }
+.card.ok     { border-color: var(--success); background: var(--teal-bg); }
+
+/* ---- Eyebrow / kicker ---- */
+.eyebrow {
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---- Horizontal magnitude bar (replaces gauges) ---- */
+.bar-row { display: flex; align-items: center; gap: 18px; }
+.bar-row .bar-label { flex: 0 0 var(--bar-label-w, 240px); }
+.bar-track {
+  flex: 1 1 auto;
+  height: calc(var(--fs-label) * 1.5);
+  background: var(--grid);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.bar-fill.warn { background: var(--warn); }
+.bar-fill.ok   { background: var(--success); }
+.bar-row .bar-value { flex: 0 0 var(--bar-value-w, 150px); text-align: right; white-space: nowrap; }
+
+/* ---- Badge / pill ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: calc(var(--fs-label) * 2.2);
+  height: calc(var(--fs-label) * 2.2);
+  padding: 0 calc(14px * var(--scale));
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: var(--fs-label);
+}
+.badge.warn { background: var(--warn); }
+.badge.ok   { background: var(--success); }
+
+/* ---- Vertical flow connector (straight line + chevron, no arc math) ---- */
+.flow { display: flex; flex-direction: column; align-items: stretch; flex: 1 1 auto; }
+.flow > .card { flex: 1 1 0; justify-content: center; }
+.flow .connector {
+  align-self: center;
+  width: 0;
+  height: calc(26px * var(--scale));
+  border-left: 3px solid var(--accent);
+  position: relative;
+}
+.flow .connector::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 12px;
+  height: 12px;
+  border-right: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* ---- Delta bracket (shows the gap between two bar ends) ---- */
+.gap-callout {
+  display: flex;
+  align-items: center;
+  gap: calc(14px * var(--scale));
+  background: var(--purple-bg);
+  border: 1px solid var(--accent3);
+  border-radius: calc(14px * var(--scale));
+  padding: calc(18px * var(--scale)) calc(24px * var(--scale));
+}
+.gap-callout .gap-num { color: var(--accent3); font-weight: 800; }
+
+/* ---- Stat block (single focal number + label) ---- */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4px * var(--scale));
+}
+.stat .stat-num { font-size: var(--fs-display); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; }
+.stat.warn .stat-num { color: var(--warn); }
+.stat.accent .stat-num { color: var(--accent); }
+
+/* ---- Metric card (value-sized number; safe to use several side by side) ---- */
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8px * var(--scale));
+  padding: calc(22px * var(--scale)) calc(26px * var(--scale));
+  border-radius: calc(16px * var(--scale));
+  background: var(--light);
+  border: 1px solid var(--grid);
+}
+.metric.accent { background: var(--blue-bg); border-color: var(--accent); }
+.metric.warn   { background: var(--red-bg);  border-color: var(--warn); }
+.metric.purple { background: var(--purple-bg); border-color: var(--accent3); }
+.metric .m-num { font-size: var(--fs-value); font-weight: 800; line-height: 1.3; }
+.metric.accent .m-num { color: var(--accent); }
+.metric.warn   .m-num { color: var(--warn); }
+.metric.purple .m-num { color: var(--accent3); }
+
+/* ---- Equal-width grid for side-by-side cards ---- */
+.grid { display: grid; gap: calc(20px * var(--scale)); }
+.grid.two { grid-template-columns: 1fr 1fr; }
+.grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+/* ---- Big pull-quote ---- */
+.quote { font-size: var(--fs-title); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+
+.source {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: var(--pad);
+  color: var(--muted);
+}
+
+:root { --pad: 87px; }
+.stage { width: 1080px; height: 1080px; padding: var(--pad); gap: calc(22px * var(--scale)); justify-content: center; padding-bottom: calc(var(--pad) + var(--fs-caption) + calc(18px * var(--scale))); }
+</style></head>
+<body>
+<div class="stage" id="stage" data-scale="1.55">
+
+    <div class="eyebrow" data-role="caption">Autovacuum starvation</div>
+    <div data-role="title">AI names the knob. You own the value.</div>
+    <div data-role="subtitle">Dead tuples climbing? AI nails the mechanism: vacuum triggers at threshold + scale_factor x live rows.</div>
+    <div class="grid two"><div class="metric warn"><div class="m-num" data-role="value">0.2</div><div data-role="body">Default scale_factor — too high on large, hot tables.</div></div><div class="metric accent"><div class="m-num" data-role="value">0.02</div><div data-role="body">Your tuned per-table value — then watch n_dead_tup.</div></div></div>
+    <div data-role="body">The mechanism is textbook. The value is workload-dependent — set it, watch, and tune from there.</div>
+    <div class="source" data-role="caption">Source: PostgreSQL docs — routine vacuuming.</div>
+</div>
+</body></html>

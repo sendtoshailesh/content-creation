@@ -11,39 +11,37 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
-| **Topic** | AI Agent Evals: Why SWE-bench Isn't Enough Before Production |
-| **Started** | 2025-07-17 |
-| **Current Step** | DONE (LinkedIn carousel + Medium published 2026-06-09). LinkedIn: ugcPost 7470133668175433728. Medium: ai-agent-evals-production-readiness-guide (canonical = GitHub Pages). Visual pack live + QA-clean. Optional remaining: X/Twitter, Substack, LinkedIn Article, Reel, YouTube — not yet posted. |
-| **Series** | `yes (2 parts)` |
-| **Current Part** | 1 |
+| **Topic** | From Prompts to Harness Engineering — The Workflow Shift in AI-Native Development |
+| **Started** | 2026-06-20 |
+| **Current Step** | Step 3b redo — rebuilding visuals with the Visual Versatility System (2026-06-22, visuals rejected as single-style / text-heavy) |
+| **Series** | `no` |
+| **Current Part** | _(n/a)_ |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
 - [x] Steps 1-2: Strategy + outline
-- [x] Step 2b: Scope assessment (single vs. series)
+- [x] Step 2b: Scope assessment (single vs. series) — 5/14, single post
 - [x] Step 2c: Multi-dimensional analysis
 - [x] Step 2d: Visual opportunity mapping
 - [x] Step 2e: Infographic art direction
-- [x] Step 3: Blog post refresh for visual-first strategy
-- [x] Step 3b: Visual assets
-- [ ] Step 3b-img: hero/illustrative imagery (optional — `programmatic` default / `ai` opt-in, see Image Generation block)
-- [x] Step 3c: Quality review
-- [x] Step 3d: SEO optimization
-- [x] Step 4a: Social distribution strategy refresh
-- [x] Step 4a-visual: Visual-first asset pack
-- [x] Step 4: LinkedIn post
-- [x] Step 4c: Social platform selection
-- [x] Step 5: X/Twitter thread
-- [x] Step 6b: Reel/Short video
-- [x] Step 7: Brand audit
-- [x] Step 7b: Grounded content review
-- [x] Step 8: YouTube script
-- [x] Step 10: Web publishing refresh
+- [x] Step 3: Blog post draft
+- [ ] Step 3b: Visual assets — REDO: re-render across multiple styles via the Visual Versatility System (pilot proven: typographic, sketch, rough.js)
+- [x] Step 3b-img: hero/illustrative imagery (optional — skipped; no separate hero slot planned)
+- [ ] Step 3c: Quality review — re-run after visuals rebuilt
+- [ ] Step 3d: SEO optimization — re-confirm after visuals rebuilt
+- [ ] Step 4a: Social distribution strategy refresh — re-run after visuals rebuilt
+- [ ] Step 4a-visual: Visual-first asset pack — STALE: regenerate from new visuals
+- [ ] Step 4: LinkedIn post — STALE: references rejected visuals, regenerate
+- [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video only
+- [x] Step 5: X/Twitter thread — skipped by user selection
+- [ ] Step 6b: Reel/Short video — STALE: references rejected visuals, regenerate
+- [ ] Step 7: Brand audit — re-run after visuals rebuilt
+- [ ] Step 7b: Grounded content review — re-run after visuals rebuilt
+- [x] Step 8: YouTube script — skipped by user selection
+- [ ] Step 10: Web publishing refresh — blocked until visuals rebuilt
 - [ ] Step 11: Social publishing
-- [x] Step 12: Platform distillation draft
-
-> **Visual-first reset note (2026-06-08):** The content strategy changed materially from text-led to visual-first. Existing Part 1/Part 2 blog posts, LinkedIn posts, X/Twitter threads, reel scripts, YouTube/platform excerpts, and previously published pages must be considered stale until regenerated from `content/visual-opportunity-map.md` and the new visual asset pack.
+- [ ] Step 12: Platform distillation draft
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -112,31 +110,27 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 <!-- Add your reference URLs below. Format: - [description](URL) -->
 
-**Agent Evaluation Frameworks & Platforms:**
-- https://platform.openai.com/docs/guides/evals — OpenAI Evals: official guide for building custom evals with graders (text, model-graded, tool-constraint patterns)
-- https://github.com/openai/evals — OpenAI Evals open-source framework — eval registry, YAML task definitions, community benchmarks
-- https://www.anthropic.com/research/building-effective-agents — Anthropic's guide on building effective agents: workflows vs agents, composability, validation gates between steps
+**Harness Engineering — Core Thesis & Workflow Shift:**
+- https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/ — Thoughtworks' Birgitta Böckeler: monolithic context files and MCP servers giving way to lazy-loaded skills, CLIs, and scripts; the "harness engineering" framing
+- https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/ — Custom agents turn repeatable prompts into reusable terminal workflows
+- https://towardsdatascience.com/how-to-navigate-the-shift-from-prompt-based-tools-to-workflow-driven-ai/ — The cost of constant tool/context switching and how workflows fix it
+- https://towardsdatascience.com/automate-writing-your-llm-prompts/ — Writing robust, reliable prompts for unattended LLM applications (prompt-as-code)
 
-**Coding Agent Benchmarks (contrast with agent behavioral evals):**
-- https://www.swebench.com/ — SWE-bench leaderboard: SOTA ~88% on Verified, but tests capability not behavior contracts
-- https://presenc.ai/research/coding-agent-benchmarks-2026 — Coding Agent Benchmarks 2026: SWE-bench, TerminalBench, live PR acceptance rates (35-50% gap between benchmark and real-world)
-- https://explainx.ai/blog/ai-benchmarks-complete-guide-2026 — Complete guide to AI benchmarks in 2026: MMLU, GPQA, SWE-bench — why they don't catch behavioral regressions
+**Skills, Lazy-Loading & Tooling Primitives:**
+- https://docs.github.com/en/copilot/concepts/agents/about-agent-skills — About agent skills: folder format, instructions/scripts/resources, load-on-demand
+- https://www.infoq.com/news/2026/06/angular-agent-skills/ — Angular's official Agent Skills using Anthropic's open Skills format (load-on-demand)
+- https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/ — LSP Setup skill: giving the CLI real code intelligence via language servers
+- https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/ — Prompt caching + deferred tools + Auto model routing: the harness, not the model, doing the work
 
-**Agent Failures & Silent Regressions:**
-- https://github.com/vectara/awesome-agent-failures — Awesome Agent Failures: curated list of real production failure modes with mitigations and war stories
-- https://softcery.com/lab/why-ai-agent-prototypes-fail-in-production-and-how-to-fix-it — Why AI Agents Fail in Production: 6 architecture patterns and fixes for common failure modes
-- https://dev.to/thedailyagent/5-ai-agent-failures-in-production-and-how-to-fix-them-2nm0 — 5 AI Agent Failures in Production: hallucinations, incorrect tool use, plan generation failures
-- https://www.sentrial.com/blog/ai-agent-regression-testing-that-catches-silent-failures — AI Agent Regression Testing: catching silent failures, 78% of regressions undetected by common approaches
-- https://callsphere.ai/blog/regression-testing-ai-agents-silent-breakage — Regression Testing for AI Agents: trace-driven debugging, semantic regression tests, pre/post-deploy gates
+**Harness Mechanics — Delegation, Parallelism, Inner-Loop Validation:**
+- https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/ — "Delegation isn't free": data-driven subagent tuning
+- https://towardsdatascience.com/a-harness-for-every-task-putting-a-team-of-claudes-on-one-job/ — A harness for every task: orchestrating a team of agents on one job
+- https://github.blog/ai-and-ml/github-copilot/what-are-git-worktrees-and-why-should-i-use-them/ — Git worktrees for parallel agent workspaces
+- https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/ — CircleCI Chunk Sidecars: CI-style validation moved into the agent's inner loop so it self-corrects before commit
+- https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/ — Copilot CLI slash commands overview (workflow surface)
 
-**GitHub Copilot Agent & Skills Documentation:**
-- https://docs.github.com/en/copilot/concepts/agents/about-agent-skills — About agent skills: skill folder format, instructions/scripts/resources, project-specific and personal skills
-- https://docs.github.com/en/copilot/reference/custom-agents-configuration — Custom agents configuration: YAML frontmatter, agent personas, tool access, invocation rules
-- https://github.blog/ai-and-ml/github-copilot/how-to-maximize-github-copilots-agentic-capabilities/ — Maximizing Copilot agentic capabilities: custom agents, skills, advanced workflows
-
-**Industry Context & Market Data:**
-- https://uptimerobot.com/knowledge-hub/monitoring/ai-agent-monitoring-best-practices-tools-and-metrics/ — AI Agent Monitoring: best practices, tools, behavioral metrics (step count, tool usage anomalies)
-- https://agentmarketcap.ai/blog/2026/04/06/agent-failure-diagnosis-production-silent-failures-braintrust-arize-langsmith — Agent Failure Diagnosis: MAST taxonomy (NeurIPS 2025), 14 distinct failure modes in production
+**First-Party Reference (this repo's own harness):**
+- Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/agent-definitions.md`, `agents-and-skills/content-strategy-pipeline.md` — the agent/skill/instruction harness that runs this very content pipeline
 
 ---
 
@@ -181,12 +175,12 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Is Series** | `yes` |
-| **Total Parts** | 2 |
-| **Current Part** | 2 |
-| **Part 1 Focus** | The Gap Nobody's Testing For — benchmark gap, failure taxonomy, Sourdough Test, minimum viable eval |
-| **Part 2 Focus** | Build the Eval System — graders, task patterns, CI architecture, regressions, cost, gotchas, playbook |
-| **Publishing Cadence** | 3-5 days between parts |
+| **Is Series** | `pending-assessment` |
+| **Total Parts** | _(tbd)_ |
+| **Current Part** | _(tbd)_ |
+| **Part 1 Focus** | _(tbd — set by scope assessment)_ |
+| **Part 2 Focus** | _(tbd — set by scope assessment)_ |
+| **Publishing Cadence** | _(tbd)_ |
 
 ### Dimension Analysis
 
@@ -194,12 +188,12 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Persona count** | 5 |
-| **Personas** | IC Engineer, Tech Lead, Engineering Manager, Platform Engineer, AI Team Decision-Maker |
-| **Technology practices** | 10 |
-| **Governance practices** | 6 |
-| **Total practices** | 16 |
-| **Primary WAF pillars** | Reliability, Security, Operational Excellence |
+| **Persona count** | _(tbd)_ |
+| **Personas** | _(tbd — set by dimension analysis)_ |
+| **Technology practices** | _(tbd)_ |
+| **Governance practices** | _(tbd)_ |
+| **Total practices** | _(tbd)_ |
+| **Primary WAF pillars** | _(tbd — set by dimension analysis)_ |
 | **Secondary WAF pillars** | Cost Optimization |
 | **Dimension breadth score** | 6/6 |
 
@@ -208,10 +202,10 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 > The pipeline always generates LinkedIn. For other platforms, select which to include:
 
 - [x] LinkedIn (always included)
-- [x] X/Twitter thread
+- [ ] X/Twitter thread
 - [ ] Reddit post
 - [x] Reel/Short video (60-90 sec)
-- [x] YouTube long-form script (8-12 min)
+- [ ] YouTube long-form script (8-12 min)
 
 > **Note:** Pipeline will ask for confirmation at Step 4c. Pre-check platforms above to skip the prompt.
 

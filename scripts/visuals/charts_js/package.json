@@ -4,6 +4,7 @@
   "private": true,
   "description": "Vendors ECharts for the opt-in advanced-chart bridge. Run `npm install` here, then render via `python -m scripts.visuals.charts_js.echarts_render`.",
   "dependencies": {
-    "echarts": "^5.5.0"
+    "echarts": "^5.5.0",
+    "roughjs": "^4.6.6"
   }
 }

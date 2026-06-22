@@ -1,0 +1,18 @@
+{
+  "mode": "programmatic",
+  "deterministic": true,
+  "license": "generated-own (no third-party assets)",
+  "safety_reviewed": "n/a (abstract backdrop, no people/scenes)",
+  "style": "gradient-mesh",
+  "theme": "ocean",
+  "size": "1536x1024",
+  "negative_space": "right",
+  "has_overlay": true,
+  "created_utc": "2026-06-11T15:34:28Z",
+  "family": "ai-generated-imagery",
+  "renderer": "scripts.visuals.generated.programmatic",
+  "constraints": [
+    "brand-color-fidelity",
+    "reserved negative space"
+  ]
+}

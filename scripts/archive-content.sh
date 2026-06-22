@@ -21,7 +21,7 @@ if [ ! -d "$CONTENT_DIR" ] || [ -z "$(ls -A "$CONTENT_DIR" 2>/dev/null)" ]; then
 fi
 
 # Skip pipeline-config.md and feed-sources.md from the "has content" check
-content_files=$(find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' ! -name 'feed-sources.md' ! -name 'idea-queue.md' | head -1)
+content_files=$(find "$CONTENT_DIR" -type f ! -name 'pipeline-config.md' ! -name 'feed-sources.md' ! -name 'idea-queue.md' | head -1 || true)
 if [ -z "$content_files" ]; then
   echo "Nothing to archive — content/ only has pipeline-config.md."
   exit 0

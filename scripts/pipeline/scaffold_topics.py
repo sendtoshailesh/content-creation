@@ -293,11 +293,16 @@ def render_config(slug: str, meta: dict) -> str:
 - [ ] Step 3: Blog post
 - [ ] Step 3b: Visual assets
 - [ ] Step 3b-img: Hero/illustrative imagery (optional)
-- [ ] Step 3c-3d: Quality review + SEO
-- [ ] Step 4: Social distribution
+- [ ] Step 3c: Quality review
+- [ ] Step 3e: Grounded content review (web-verified)
+- [ ] Step 3d: SEO optimization
+- [ ] Step 4a: Social distribution strategy
+- [ ] Step 4a-visual: Visual-first pack (carousel/exhibit via visual-pack-generator)
+- [ ] Step 4: Social posts (LinkedIn always; visual-first + canonical link)
 - [ ] Step 7: Brand audit (severity-gated)
 - [ ] Step 10: Web publishing
 - [ ] Step 11: Social publishing
+- [ ] Step 12: Platform distillation (Medium / Substack / LinkedIn Article + canonical URL)
 
 **Status values:** `not-started` | `in-progress` | `completed` | `blocked`
 
@@ -313,6 +318,19 @@ def render_config(slug: str, meta: dict) -> str:
 | **size** | `1024x1024` |
 | **max_images_per_run** | `3` |
 
+## Visual-First Distribution
+
+> Step 4a-visual generates a visual asset pack before social/long-form distribution.
+> Read by: `visual-pack-generator` skill, `social-linkedin`, `social-twitter`, `platform-distiller`.
+
+| Field | Value |
+|-------|-------|
+| **distillation_persona_mode** | `practitioner` |
+| **distillation_slug** | `{slug}` |
+
+> `practitioner` = 10-slide LinkedIn carousel (1080×1080). `executive` = 3–5 exhibits (1200×627).
+> Output: `content/visuals/distilled/{slug}-{mode}/`.
+
 ## Output Preferences
 
 - **Blog target length**: ~3,000 words per part
@@ -320,11 +338,20 @@ def render_config(slug: str, meta: dict) -> str:
 
 ### Social Platform Selection
 
-- [x] LinkedIn (always)
+- [x] LinkedIn (always — visual-first when a pack exists, links to canonical blog)
 - [ ] X/Twitter
 - [ ] Reddit
 - [ ] Reel/Short video
 - [ ] YouTube
+
+### Long-Form Platform Distribution (Step 12)
+
+> `platform-distiller` produces ONE unified excerpt for all three, pointing to the GitHub Pages
+> canonical URL. Visual-first when a distilled pack exists; text-only otherwise.
+
+- [x] Medium (700–900 words; Import tool sets canonical — SEO safe)
+- [x] Substack (300–500-word excerpt / Note)
+- [x] LinkedIn Article (700–900 words, distinct angle — not a republish of the LinkedIn post)
 
 ## Online References
 
