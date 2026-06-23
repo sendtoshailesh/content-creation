@@ -52,6 +52,14 @@ If multi-dimensional analysis has not been run yet, omit this signal and use the
 
 Do not recommend a series from score alone. First decide whether the topic can be consolidated into one useful post.
 
+### Per-Part Word Floor (hard precondition — check this FIRST)
+
+Before applying any gate below, estimate the **substantive word count of each candidate part** from the outline (sum the per-section word estimates assigned to that part — do not count padding, restated intros, or cross-link boilerplate).
+
+- **If any candidate part would fall below 2,400 words of substantive content, a series is DISALLOWED.** Default to a single comprehensive post regardless of the numeric score or how many gate conditions are met.
+- A high score with a low total means "dense but short" — that is a single post, not a series. Splitting a ~3,000-word topic into two ~1,500-word parts is the exact failure this precondition prevents.
+- Only proceed to the gates below once every candidate part clears the 2,400-word floor on its own.
+
 ### Single-Post Feasibility Gate
 
 Recommend a **single comprehensive post** when all are true:
@@ -62,11 +70,13 @@ Recommend a **single comprehensive post** when all are true:
 4. Visual count can stay at **6 or fewer** without making dense sections unreadable.
 5. Social distribution can promote one clear CTA without cherry-picking unrelated angles.
 
-If this gate passes, choose a single post even if the numeric score is high. High score means "dense topic"; it does not automatically mean "series."
+Also choose a single post whenever splitting would push any part under the **2,400-word floor**, even if some series-gate conditions are met. High score means "dense topic"; it does not automatically mean "series."
 
 ### Required Series Gate
 
-Recommend a **multi-part series** only when at least two are true:
+**Precondition (mandatory):** every candidate part must independently clear the **2,400-word floor** above. If any part would fall short, stop here and recommend a single post — do not evaluate the conditions below.
+
+Once the floor is cleared, recommend a **multi-part series** only when at least two are true:
 
 1. The outline contains **2+ independent reader jobs** that would each make a complete article.
 2. Proper coverage would exceed **4,500 words** or require **7+ visuals** in one post.
@@ -74,7 +84,7 @@ Recommend a **multi-part series** only when at least two are true:
 4. The topic naturally separates by practice group, lifecycle stage, persona, or WAF pillar.
 5. Combining everything would bury the highest-impact takeaway below the fold.
 
-If only one condition is true, present a choice to the user: single comprehensive post vs. short series.
+If only one condition is true (and the word floor is cleared), present a choice to the user: single comprehensive post vs. short series.
 
 ## Series Planning Procedure
 
@@ -89,7 +99,7 @@ When recommending a series:
 3. **Define part boundaries** — Each part must:
    - Stand alone (reader gets value without reading other parts)
    - Have its own hook and CTA
-   - Be 2,500-3,500 words
+   - Be 2,500-3,500 words, and **never below the 2,400-word floor** — if a drafted part lands under 2,400 substantive words, abandon the split and consolidate into a single post
    - Have 2-3 dedicated visuals
 4. **Plan the series arc**:
    - Part 1: Problem framing + highest-impact strategy (the "quick win")
@@ -112,6 +122,7 @@ Add a `## Series Plan` section to the strategy document:
 ## Series Plan
 
 **Assessment score**: X/16 (or X/14 if dimension analysis was omitted)
+**Per-part word floor (≥2,400)**: Pass/Fail — [smallest candidate part = N words]
 **Single-post feasibility**: Pass/Fail — [why]
 **Required series gate**: [conditions met]
 **Recommendation**: Single post OR Multi-part series (N parts)
@@ -151,7 +162,8 @@ When a series is recommended:
 ## Constraints
 
 - DO NOT automatically split every topic — many fit well in a single post
-- DO NOT recommend a series from score alone; apply the single-post feasibility gate and required series gate
+- DO NOT recommend a series unless EACH part independently clears the **2,400-word substantive floor**; word-thin parts MUST be consolidated into a single post
+- DO NOT recommend a series from score alone; apply the per-part word floor, the single-post feasibility gate, and the required series gate
 - DO NOT default to 3 parts; choose 2, 3, 4, or 5 based on natural boundaries
 - DO NOT create artificial splits that break the reader's flow
 - Each part MUST deliver standalone value (not a cliffhanger with no resolution)

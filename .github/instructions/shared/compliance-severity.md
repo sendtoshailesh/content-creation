@@ -31,6 +31,33 @@ Every audit emits a table; one row per finding:
 `voice` · `tone` · `messaging` · `claim-citation` · `design-token` · `brand-color` ·
 `typography` · `layout` · `image-no-text` · `image-fidelity` · `safety` · `accessibility`
 
+## Confidence and risk (required for LLM-tier reviewers)
+
+LLM-based reviewers (Tier 1 rubric critic, Tier 2 jury) append two fields to every row so the
+escalation controller can route by **how sure** the critic is and **how costly** a miss is.
+Deterministic Tier 0 checks (`preflight_check.py`) are inherently high-confidence and may omit
+these fields.
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| **Confidence** | `high` / `medium` / `low` | How certain the reviewer is that the finding is real (not a critic hallucination). Anchor to a checkable signal where possible. |
+| **Risk** | `high` / `medium` / `low` | Blast radius if the issue ships unfixed. `high` = pricing, attribution, factual claims, thesis, safety; `medium` = supporting data, structure; `low` = polish. |
+
+Extended row format (superset of the base table; base columns stay identical):
+
+```
+| Severity | Category | Asset / location | Finding | Required fix | Confidence | Risk | Source signal |
+|----------|----------|------------------|---------|--------------|------------|------|---------------|
+| Error | claim-citation | content/part1.md §4 | "$0.002/1K tokens" not in reference brief | Cite source or remove | high | high | grounded-review: UNVERIFIED |
+| Warning | layout | content/visuals/part1-stack.png | 3rd card grid in a row | Vary composition | medium | low | visual-reviewer rubric |
+```
+
+Routing rule (consumed by the escalation controller):
+
+- **Auto-apply / auto-approve** when `Confidence: high` **and** `Risk: low|medium` and the fix is mechanical.
+- **Escalate to the human** when `Risk: high`, **or** when `Confidence: low` on any `Error`.
+- `ABSTAIN` is a valid reviewer output (no confident verdict) and always escalates rather than guessing.
+
 ## Gate verdict (required footer)
 
 End every audit with an explicit verdict line:
@@ -44,6 +71,40 @@ GATE: FAIL        # >=1 Error, or an unjustified Warning
   `image-content-agent`, `blog-writer`, social agents) and triggers the orchestrator's
   rollback/redo protocol before any publishing step proceeds.
 - `Info` findings never affect the verdict.
+
+## Escalation digest (one consolidated exception list)
+
+Instead of reading N separate audit artifacts, the human sees **one** digest aggregating every
+reviewer's findings across all artifacts in the run. The orchestrator writes it to
+`content/escalation-digest.md` after the review tiers run.
+
+Required structure:
+
+```
+## Escalation Digest - <run id>
+
+GATE: PASS | FAIL
+Auto-approved: N artifacts   Escalated: M findings   Auto-fixed: K findings
+
+### Needs your decision (Risk: high or Confidence: low)
+| Severity | Risk | Conf. | Asset / location | Finding | Proposed fix | Decision |
+|----------|------|-------|------------------|---------|--------------|----------|
+| Error | high | low | content/part1.md §4 | Uncited "$0.002/1K" price | Cite or remove | [ ] approve  [ ] revise |
+
+### Auto-fixed (high confidence, low risk) - FYI only
+- content/visuals/part1-stack.png: repeated card grid -> recomposed (visual-renderer)
+
+### Jury splits (where reviewers disagreed)
+- content/part2.md §2: 2 of 3 jurors flagged tone drift; moderator note included
+```
+
+Rules:
+
+- The digest lists **only** the escalated residue in the decision table; auto-approved and
+  auto-fixed items are summarized, not enumerated for action.
+- Each decision row offers a one-click `approve` / `revise` so the human stays an *editor of
+  exceptions*, not a re-reviewer of everything.
+- A run-level `GATE: FAIL` holds publishing until every decision row is resolved.
 
 ## AI-image-specific checks (apply when auditing `content/visuals/generated/`)
 

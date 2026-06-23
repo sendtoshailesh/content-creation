@@ -1,231 +1,161 @@
----
-title: "Visual Style Map — From Prompts to Harness Engineering"
-description: "STORM visual-research output plus visual-style-router style matrix for the harness engineering blog visual rebuild (Step 3b)"
-author: Shailesh Mishra
-ms.date: 2026-06-22
-ms.topic: concept
-keywords:
-  - visual research
-  - STORM
-  - style router
-  - harness engineering
-  - visual versatility
-estimated_reading_time: 9
----
-
-<!-- markdownlint-disable MD013 -->
-
 # Visual Style Map
 
-> Stage: Step 3b redo — visuals rejected as single-style / text-heavy, rebuilt across the
-> Visual Versatility System.
-> Source artifacts: `content/from-prompts-to-harness-engineering.md` (blog draft),
-> `content/harness-engineering-strategy.md`, `content/visual-opportunity-map.md`,
-> `content/reference-brief.md`, `content/pipeline-config.md`.
-> Style evidence: `content/visuals/harness-engineering/pilot/` (8 PNGs, 5 styles proven to render).
-> Router: `scripts/visuals/styles/router.py` via `scripts/visuals/styles/route_harness.py`.
-> No PNGs rendered in this stage.
+> STORM pre-stage for the 2-part series *From Prompts to Loop Engineering*. Written by
+> `visual-strategist` using the `visual-research` + `visual-style-router` skills before any
+> rendering. Source: `content/prompts-to-loop-engineering-strategy.md`,
+> `content/creative-brief.md` (§7), `content/trend-research.md`, `content/pipeline-config.md`.
+> Created 2026-06-22. Grounding ids reference `content/trend-research.md` §3 data table (D1–D12)
+> and reference-brief themes A–E.
 
 ## Visual thesis
 
-The model is not the agent — the *harness* is. The visual pack must make that one reframe
-unmistakable by rotating mediums so the look itself signals the argument: a typographic hook,
-a hand-drawn maturity arc and napkin flows, a blueprint anatomy of "how it's built", a
-data-exhibit metric board, and an editorial metaphor for the honest limits. The medium changes
-every adjacent slot; the palette and the harness motif stay constant.
+Draw the **leverage point physically moving up a level** — every visual should make a reader
+feel the climb (word -> context -> rig -> loop) and then *see* the loop as a governed cycle, not
+a vibe. Two structural heroes (the staircase, the loop) anchor the series; everything else is
+proof, mechanism, or a posture decision hung off those two spines.
 
-## Perspectives discovered
+## Perspectives discovered (Phase 1)
 
-Seeded from the run audiences (AI-fluent IC engineer, tech lead, engineering manager) and
-expanded into reader-perspectives that change what a visual must *do*:
+| Perspective | What it needs first | Style that earns trust | Baked-in assumption that fails it | Grounding |
+|---|---|---|---|---|
+| **The reframe-seeker** (IC dev, primary) | The arc as one picture before any number | A crisp staircase they can locate themselves on | "Everyone already knows the eras" — they don't see them as *one* climb | Brief §4; trend §1 |
+| **The chart-skeptic** (senior dev) | The *mechanism*, not a dashboard | Clean labeled flow + held-constant-harness framing | Pretty bars without the "same harness, different model" caveat | D4–D8; theme E |
+| **The scanner** (3-sec skim on mobile) | One hero number / one shape | Big-type quote + single dominant chart | Dense multi-insight cards | Brief §5; infographic rule 6 |
+| **The governance reader** (tech lead) | "Where should a human sit?" decision | A posture panel that flags the bottleneck | A flat 4-box grid with no state change | Morris, theme A; D-? |
+| **The economics reader** (manager) | Per-task cost + the honest caveat | Before/after metric card + subsidy flag | Triumphant numbers with no cost-realism line | D1,D2,D8,D12 |
+| **The accessibility / print reader** (6th, surfaced Phase 4) | Standalone captions, no color-only meaning, mono-safe | Labeled shapes + WARN/SUCCESS encoded by icon *and* text | Color-only pass/fail; tokens that vanish in grayscale | Brief §7; infographic rule 7 |
 
-- **The scanner (3-second skim)** — needs one focal idea per asset, no paragraph cards.
-  (brief: v01 quote card; v05 hero-number exhibit.)
-- **The chart-skeptic / mechanism reader (developer)** — distrusts dashboards, wants the
-  feed-forward/feedback mechanism and the real repo wiring. (brief: v03 anatomy; v06 case study.)
-- **The economics reader (manager/exec)** — wants the hard numbers: 40% context-switch tax,
-  72.5% routing savings, 23% fewer tool failures. (brief: v04 building blocks; v05 cost exhibit.)
-- **The visual learner** — needs a metaphor and a sketch, not a spec. (brief: v02 maturity arc;
-  v07 risk/limits metaphor.)
-- **The accessibility-first / print reader** — needs contrast, standalone captions, no
-  color-only meaning, mono-readable. (blueprint + typographic carry the print case.)
-- **The doer (practitioner)** — wants the one shippable step. (brief: v08 playbook checklist.)
+Simulated writer<->design-expert exchanges (condensed): the reframe-seeker and the chart-skeptic
+**collide** — one wants a memorable napkin climb, the other distrusts anything that looks
+hand-wavy. Resolution: the *hero staircase stays crisp/structural* (diagram-as-code), and the
+*mechanism* of each era's ceiling goes hand-drawn (napkin) where precision is not the point.
 
-### Simulated questioning (condensed writer ↔ design-expert)
-
-- *Scanner → v01:* "What do I see first?" → the Böckeler line as type-as-art, nothing else.
-  Style that earns trust: **typographic**. Failing assumption: a decorated card buries the quote.
-- *Mechanism reader → v03:* "Show me how it's built, not a logo soup." → centred model core
-  with two labelled rails. Style: **blueprint** (schematic, mono labels). Hand-drawn would read
-  as too casual for "anatomy".
-- *Economics reader → v04/v05:* "Where are the numbers?" → v04 holds four metric badges
-  (data-exhibit precision); v05 isolates a single 40% (oversized type beats a one-bar chart).
-- *Visual learner → v02/v06:* "Give me a napkin." → hand-drawn maturity rail and a hand-drawn
-  repo flow; the sketch medium signals "mental model", not "dashboard".
-- *Doer → v08:* "What do I ship?" → hand-drawn step ladder with a loop-back arrow.
-
-## Contradiction map
+## Contradiction map (Phase 2)
 
 | Clash | Need A | Need B | Resolution | Hero? | Blind spot |
-|-------|--------|--------|------------|-------|------------|
-| Quick-scan vs. mechanism | Exec wants one number (v05) | Developer wants the loop (v03) | Split by asset + medium: v05 **typographic** hero-number, v03 **blueprint** mechanism | — | — |
-| Warmth vs. precision | Napkin/hand-drawn concept | Hard-number exactness | Reserve **hand-drawn** for concept/flow/checklist (v02, v06, v08); use **data-exhibit** for the metric board (v04) | — | — |
-| Pilot's hand-drawn dominance | Pilot used 4/8 hand-drawn | Anti-sameness adjacency rule | Spread hand-drawn to **non-adjacent** slots; reassign v03 anatomy to **blueprint** | — | — |
-| Ideal flow vs. installed engine | v06 wants a real graph (diagram-as-code) | d2/dot/mmdc **not installed** | Render v06 as **hand-drawn flow** (pilot-proven `v06-rough-flow`); diagram-as-code **blocked** | — | v06 |
-| Hook universality | Every reader needs the reframe | — | v01 quote is the **hero** — first thing every perspective sees | **v01** | — |
-| Limits credibility | Skeptic wants honesty shown | Data readers want a formula | v07 **editorial-illustration** metaphor with the risk formula overlaid (no baked text) | — | s02 storyboard / cover summary not yet planned |
+|---|---|---|---|---|---|
+| Memorable vs. precise | Napkin warmth (reframe-seeker) | Exact rising-leverage axis (chart-skeptic) | Hero = crisp diagram-as-code; ceilings = hand-drawn | **Staircase hero** | — |
+| Quick-scan vs. mechanism | Big number (scanner) | The cycle's gate + stop logic (chart-skeptic) | Loop hero shows the *whole* cycle but labels exactly one gate + one stop | **Loop hero** | — |
+| Triumph vs. honesty | "76.8%! 1,300 PRs!" (economics) | "still subsidized; it still fails" (skeptic) | SWE-bench/Stripe carry the cost band; a dedicated limits card carries laziness/bias/drift | — | The **subsidy caveat** is a number no one wants to illustrate — make it a visible flag |
+| Where-am-I vs. what-is-it | Posture decision (governance) | Definition of the loop (reframe-seeker) | Split: loop hero = *what it is*; four-posture panel = *where you sit* | — | "in the loop = you are the bottleneck" is the unillustrated punchline — flag it red |
+| Universal agreement | Everyone needs to *see the climb* and *see the cycle* | — | The two heroes | **Both heroes** | — |
 
-- **Universal agreement → hero:** v01 typographic quote — the one asset every perspective needs.
-- **Blind spot → missing visual:** a cohesive cover/summary and the `s02` reel storyboard are
-  not in the blog companion set; flagged for the standalone pass, not this rebuild.
+**Blind spot added (STORM unknown-unknown):** no source draws the *validation inversion* itself
+— generation throughput rising while validation stays flat. That mechanism is the "why now," so
+it earns its own asset (P2-03).
 
-## Ranked visual plan
+## Ranked visual plan (Phase 3)
 
-Five key style decisions, ranked by confidence, each traced to a perspective / contradiction
-and cross-checked against the pilot's proven renders.
+One-line pack thesis: *the leverage point climbs, then the loop becomes the unit of work.*
 
 | # | Slot | Type | Style | Renderer | Audience | Confidence | Supports / Challenges |
-|---|------|------|-------|----------|----------|------------|-----------------------|
-| 1 | v01-harness-quote | quote | typographic | html-css-chromium | broad | 9 | Supports scanner + hero agreement; pilot `v01-typographic` proven. No challenge. |
-| 2 | v02-maturity-arc | timeline | hand-drawn | rough.js / matplotlib-xkcd | developer | 9 | Supports visual learner; pilot `v02-sketch` proven. Challenged by print reader (mono) — caption mitigates. |
-| 3 | v08-playbook-checklist | checklist | hand-drawn | rough.js / matplotlib-xkcd | developer | 9 | Supports doer; pilot `v08-sketch-checklist` proven. |
-| 4 | v06-pipeline-case-study | concept/flow | hand-drawn | rough.js / matplotlib-xkcd | developer | 9 | Supports mechanism reader; pilot `v06-rough-flow` proven. Ideal diagram-as-code **blocked** (no engine). |
-| 5 | v03-harness-anatomy | architecture | blueprint | html-css-chromium+svg | architect | 8 | Supports mechanism reader; blueprint renderer proven on pilot `v04-blueprint`. Diverges from pilot's `v03-rough` to break hand-drawn adjacency. |
-| 6 | v04-building-blocks | comparison | data-exhibit | html-css-chromium | tech-lead | 8 | Supports economics reader (four hard numbers); data-exhibit proven on pilot `v05-exhibit`. Diverges from pilot `v04-blueprint`. |
-| 7 | v05-context-switch-cost | statistical | typographic | html-css-chromium | exec | 8 | Single 40% as type-as-art; typographic proven. Router forced off data-exhibit by adjacency with v04 — defensible (one dramatic stat). Weakest-justified choice. |
-| 8 | v07-risk-limits | mood/metaphor | editorial-illustration | html-css-chromium+svg | tech-lead | 8 | Supports skeptic; pilot `v07-editorial` proven. Guardrail: NO baked text — overlay the risk formula. |
+|---|---|---|---|---|---|---|---|
+| 1 | Four-era staircase (HERO) | concept/process | diagram-as-code | matplotlib/SVG (clean schematic) | broad | 9 | Supports reframe-seeker, scanner; challenges chart-skeptic (must stay precise) |
+| 2 | Loop diagram (HERO) | process (cycle) | diagram-as-code | matplotlib/SVG cycle graph | developer | 9 | Supports chart-skeptic, reframe-seeker; gate+stop label required |
+| 3 | SWE-bench trajectory + cost band | statistical | data-exhibit | matplotlib | tech-lead/manager | 8 | Supports economics, skeptic; needs "same harness" caption |
+| 4 | Stripe before/after | statistical | data-exhibit | matplotlib/Pillow | manager | 8 | Supports economics; challenged by honesty (pair with caveat) |
+| 5 | Harness-vs-loop clarifier | comparison | editorial-illustration | SVG (gym/coach metaphor) | broad | 7 | Supports reframe-seeker; moderator-move variety pick |
+| 6 | Four-posture panel | comparison/concept | hand-drawn | sketch (Rough.js/xkcd) | tech-lead | 8 | Supports governance; flag "in = bottleneck" red |
+| 7 | Validation inversion (bottleneck) | statistical/flow | data-exhibit | matplotlib | manager | 7 | Supports economics; the added blind-spot asset |
+| 8 | Era ceilings small-multiple | comparison | hand-drawn | sketch | developer | 7 | Supports skeptic on *why* each era capped |
+| 9 | First-loop checklist | checklist | hand-drawn | sketch/Pillow | developer | 8 | Supports CTA; must show 4 ticked levers, not prose |
+| 10 | Honest-limits card | list/statistical | hand-drawn | sketch/Pillow | broad | 7 | Supports honesty guardrail; subsidy flag visible |
+| 11 | Pull-quote ("leverage point is moving") | quote | typographic | `styles.typographic` | broad | 8 | Supports scanner; the hook everywhere |
 
-- **Hidden connection (the motif):** the harness loop + the shared design-token palette
-  (ACCENT blue, ACCENT_2 teal, ACCENT_3 purple, WARN red) recur across every medium, so the
-  pack reads as one argument despite five looks.
-- **One actionable style decision:** rotate the medium on every adjacent slot; never let two
-  neighbours share a look — the exact failure the rejected single-style pass had.
-- **Frontier / experimental:** v07 editorial metaphor (flat-vector "honest limits" scene with
-  the risk formula overlaid) is the highest-variance bet; pilot evidence de-risks it.
+**Hidden connection (motif):** a single rising leverage axis / upward motion recurs — the
+staircase rises, the loop tightens, the bottleneck chart diverges upward. Reuse the four-era
+color ramp (ACCENT_3 word -> ACCENT_2 context -> ACCENT rig -> SUCCESS loop) as the through-line
+palette so any asset signals "which era" by color alone (paired with text labels for a11y).
 
-## Self peer-review
+**One actionable style decision:** keep the two **heroes crisp (diagram-as-code)** and route the
+*mental-model* assets (ceilings, posture, checklist, limits) **hand-drawn** so the pack reads as
+"precise where it proves, sketchy where it teaches."
 
-- **Weakest link:** v05 → typographic. It is the router's *diversity-forced* choice (first-pick
-  was data-exhibit, displaced because v04 is data-exhibit and adjacents must differ). Justified
-  because v05 carries a single hero number (up to **40%** context-switch tax), which reads
-  strongest as oversized type rather than a one-bar chart; typographic is pilot-proven. What
-  would raise confidence to 9: a one-line trend sub-label under the 40% so the exec gets
-  direction, not just magnitude.
-- **Bias / dominance check: PASS.** hand-drawn is the most-used style at 3/8 (37.5%), well under
-  the >50% single-style failure threshold. Five distinct styles are represented and **no two
-  adjacent visuals share a style** (typographic → hand-drawn → blueprint → data-exhibit →
-  typographic → hand-drawn → editorial-illustration → hand-drawn). No audience dominates: the
-  matrix spans broad, developer, architect, tech-lead, and exec.
-- **Missing perspective:** the accessibility-first / print reader is the 6th angle that most
-  changes the plan. Mitigation: every asset ships a standalone caption, blueprint and
-  typographic carry the mono/print case, and no asset encodes meaning by colour alone.
-- **Overall grade: A−.** Every style choice traces to a perspective, a contradiction
-  resolution, a confidence score, and a pilot-proven renderer. The one soft spot (v05) is
-  documented and de-risked. Top fixes before render: (1) add the v05 trend sub-label; (2) keep
-  v07 text as overlay only; (3) confirm v03/v04 divergence from the pilot is intentional (it is —
-  to break hand-drawn adjacency).
+**Frontier / experimental:** the harness-vs-loop clarifier as **editorial-illustration** (gym +
+equipment vs. coach + rep-scheme) — the one metaphor-led asset; highest payoff-per-pixel for the
+"nouns vs. verbs" idea, and the deliberate variety injection.
 
-## Style matrix (router.py — verbatim)
+## Self peer-review (Phase 4)
 
-Produced by `PYTHONPATH=. python3 scripts/visuals/styles/route_harness.py`, which builds one
-`AssetRequest` per blog visual from the opportunity-map briefs and calls `route()`,
-`style_matrix()`, `moderator_move()`, and `available_engine()` from
-`scripts/visuals/styles/router.py`:
+- **Weakest link:** the validation-inversion asset (P2-03, conf 7) — "throughput up / validation
+  flat" risks looking invented. Justify with CircleCI's *directional* claim (D11) and label it
+  explicitly as directional, not a measured y-axis. If it can't be grounded cleanly, demote to a
+  flow diagram of "verification pulled into the inner loop" (no fake quantities).
+- **Bias / dominance check:** **PASS.** Style histogram across the 10 blog companions:
+  diagram-as-code ×2, data-exhibit ×3, hand-drawn ×3, typographic ×1, editorial-illustration ×1.
+  No single style dominates; hand-drawn = 3/10 = 30% (< 50% cap). Audience histogram: developer
+  ×4, tech-lead/manager ×4, broad ×3 — balanced across the three personas, no single audience
+  owns the pack.
+- **Missing perspective:** the **accessibility / print reader** (added above) changed two rules —
+  every WARN/SUCCESS state must be encoded by icon **and** text, and the era color ramp must be
+  paired with labels (never color-only).
+- **Overall grade: A-.** Two strong structural heroes, a clean precise/sketchy split, balanced
+  audiences. Top fixes before rendering: (1) ground or demote P2-03; (2) ensure both heroes carry
+  exactly one labeled gate/step-axis so they don't bloat into multi-insight diagrams; (3) pair
+  every triumphant data asset (SWE-bench, Stripe) with its cost/subsidy caveat in the source line.
 
-```text
-=== Per-asset style decisions ===
-asset id                 style_id               renderer
-------------------------------------------------------------------------------
-v01-harness-quote        typographic            html-css-chromium
-v02-maturity-arc         hand-drawn             rough.js / matplotlib-xkcd
-v03-harness-anatomy      blueprint              html-css-chromium+svg
-v04-building-blocks      data-exhibit           html-css-chromium
-v05-context-switch-cost  typographic            html-css-chromium
-v06-pipeline-case-study  hand-drawn             rough.js / matplotlib-xkcd
-v07-risk-limits          editorial-illustration html-css-chromium+svg
-v08-playbook-checklist   hand-drawn             rough.js / matplotlib-xkcd
+## Package style matrix (Phase / router output)
 
-=== Package style matrix (histogram) ===
-blueprint                1
-data-exhibit             1
-editorial-illustration   1
-hand-drawn               3
-typographic              2
+> Adjacent visuals differ in style; series palette = {diagram-as-code, data-exhibit, hand-drawn,
+> typographic} core + editorial-illustration once (moderator move). Single-style: avoided.
 
-styles represented: 5 of 6
+| Asset id | style_id | renderer | rationale | guardrails |
+|---|---|---|---|---|
+| P1-01 staircase (HERO) | diagram-as-code | matplotlib/SVG schematic | crisp 4-step climb + rising leverage axis | pre-render to PNG @320 DPI; label every step + date; color ramp + text labels (a11y) |
+| P1-02 era ceilings | hand-drawn | sketch (Rough.js/xkcd) | "why each era capped" is a napkin idea | crisp digits via path-effect; edge-to-edge arrows; 3 panels, visible differing limit |
+| P1-03 harness-vs-loop | editorial-illustration | SVG editorial | gym/equipment vs. coach/rep-scheme metaphor | NO baked text — overlay labels only; keep nouns/verbs split obvious |
+| P1-04 SWE-bench trajectory | data-exhibit | matplotlib | hard benchmark numbers + cost band | "same harness, different model" caption; ASCII glyphs; visible source line + dataset date |
+| P1-05 pull-quote | typographic | `styles.typographic` | one big hook idea | <= 12 words; one accent word in ACCENT |
+| P2-01 loop diagram (HERO) | diagram-as-code | matplotlib/SVG cycle | the plan->act->observe->verify->correct cycle | label exactly one verification gate + one stop condition; ASCII arrows |
+| P2-02 four-posture panel | hand-drawn | sketch | "where do you sit?" decision | flag "in = bottleneck" in WARN + text; 4 panels, posture visibly changes |
+| P2-03 validation inversion | data-exhibit | matplotlib | the "why now" mechanism | label as DIRECTIONAL (CircleCI qualitative); no fabricated y-axis; or demote to flow |
+| P2-04 Stripe before/after | data-exhibit | matplotlib/Pillow | before/after case-study metric | pair with subsidy caveat in source line; ~1,000 -> 1,300+ PRs/week + $1T+ |
+| P2-05 first-loop checklist | hand-drawn | sketch/Pillow | 4 ticked levers, shippable CTA | `[x]` ASCII ticks; 4 items max; not prose |
+| (std) honest-limits | hand-drawn | sketch/Pillow | laziness/bias/drift + subsidy flag | WARN encoded by icon + text; subsidy flag visible; standalone caption |
 
-=== Moderator move (overlooked style) ===
-diagram-as-code
+**Moderator move (Co-STORM):** the one *overlooked* style is **editorial-illustration** — used
+exactly once (P1-03) as the metaphor-led variety win. **`blueprint`** is intentionally unused:
+considered for the loop hero "how it's built" anatomy, but rejected because the dark schematic
+look would fight the rising-leverage color ramp that ties the pack together. Recorded as the
+considered-and-declined option.
 
-=== diagram-as-code engine availability ===
-None installed (d2 / dot / mmdc all absent)
-```
-
-### Diversity verdict (reviewer pre-render gate)
-
-- **Not single-style:** PASS — 5 distinct styles.
-- **No adjacent repeats:** PASS — every neighbouring pair differs (verified above).
-- **Palette of 2–4 styles for a series:** N/A (single post); the package rotates 5 styles, well
-  above the 2-style floor.
-- **6 styles represented?** No — **5 of 6**, justified: the 6th is `diagram-as-code`, which the
-  router itself surfaces as the moderator move but which is **blocked** because no engine
-  (d2 / graphviz / mermaid) is installed. We deliberately do **not** assign it.
-
-### Moderator move (Co-STORM)
-
-The router's overlooked style is **`diagram-as-code`** — the natural fit would be v06
-(the repository harness flow). **Rejected for this rebuild: blocked — install engine**
-(`brew install d2` / `brew install graphviz` / `npm i -g @mermaid-js/mermaid-cli`). Until an
-engine is installed, v06 stays **hand-drawn flow**, which the pilot already proved renders
-(`v06-rough-flow.png`). Revisit diagram-as-code for v06 only after an engine is wired.
-
-## Final per-visual style assignments
-
-| ID | style_id | Confidence | Renderer | Guardrails (carry to art-direction) | Pilot evidence |
-|----|----------|------------|----------|-------------------------------------|----------------|
-| v01-harness-quote | typographic | 9 | html-css-chromium | TYPE_SCALE display role; ≤12 words | `v01-typographic.png` (match) |
-| v02-maturity-arc | hand-drawn | 9 | rough.js / matplotlib-xkcd | crisp digits (path-effect Normal); edge-to-edge arrows | `v02-sketch.png` (match) |
-| v03-harness-anatomy | blueprint | 8 | html-css-chromium+svg | mono labels; no baked slide numbers | `v04-blueprint.png` (renderer proven) |
-| v04-building-blocks | data-exhibit | 8 | html-css-chromium | bars not gauges; one focal number per beam | `v05-exhibit.png` (renderer proven) |
-| v05-context-switch-cost | typographic | 8 | html-css-chromium | one focal number (40%); add trend sub-label | `v01-typographic.png` (renderer proven) |
-| v06-pipeline-case-study | hand-drawn | 9 | rough.js / matplotlib-xkcd | edge-to-edge arrows; readable repo filenames | `v06-rough-flow.png` (match) |
-| v07-risk-limits | editorial-illustration | 8 | html-css-chromium+svg | NO baked text — overlay formula only; ~30% negative space | `v07-editorial.png` (match) |
-| v08-playbook-checklist | hand-drawn | 9 | rough.js / matplotlib-xkcd | crisp digits; loop-back arrow Step 5 → Step 2 | `v08-sketch-checklist.png` (match) |
-
-### Standalone visuals (noted, not in this blog rebuild)
-
-- **s01-linkedin-card-pack** — mixed narrative sequence; reuses the blog assets' style language
-  cropped to 1080×1350. Style is per-card (typographic quote → hand-drawn arc → blueprint frame →
-  data-exhibit stat → hand-drawn repo map → editorial risk → hand-drawn checklist). Planned for
-  the LinkedIn pass after blog visuals are rebuilt.
-- **s02-reel-storyboard** — SVG storyboard; deferred to the Reel pass. Candidate **blind-spot
-  cover/summary** visual also belongs here.
-
-## Mind map
+## Mind map (Phase 5)
 
 ```text
-From Prompts to Harness Engineering (visual pack)
-├── Reframe the model is not the agent
-│   ├── v01 hook            {quote,        typographic,            html-css-chromium,      broad,     conf 9}  [HERO]
-│   └── v05 cost of ad-hoc  {statistical,  typographic,            html-css-chromium,      exec,      conf 8}
-├── How we got here / mental models
-│   ├── v02 maturity arc    {timeline,     hand-drawn,             rough.js/mpl-xkcd,      developer, conf 9}
-│   └── v06 repo case study {concept/flow, hand-drawn,             rough.js/mpl-xkcd,      developer, conf 9}  [ideal diagram-as-code BLOCKED]
-├── How it is built
-│   ├── v03 harness anatomy {architecture, blueprint,              html-css-chromium+svg,  architect, conf 8}
-│   └── v04 building blocks {comparison,   data-exhibit,           html-css-chromium,      tech-lead, conf 8}
-├── Honest limits
-│   └── v07 risk & limits   {mood/metaphor,editorial-illustration, html-css-chromium+svg,  tech-lead, conf 8}
-├── Do this now
-│   └── v08 playbook        {checklist,    hand-drawn,             rough.js/mpl-xkcd,      developer, conf 9}
-└── Standalone (later passes)
-    ├── s01 LinkedIn cards  {sequence,     mixed per-card,         html-css-chromium,      broad}
-    └── s02 reel storyboard {narrative,    editorial/diagram TBD,  svg,                    practitioner}  [+ cover/summary blind spot]
+From Prompts to Loop Engineering (2-part series)
+├── Part 1 — The Staircase and the Rig (Eras 1-3 + harness)  [IC practitioner]
+│   ├── Reframe (the hook)
+│   │   └── P1-05 pull-quote {quote, typographic, broad, conf 8}
+│   ├── The climb (the arc)
+│   │   └── P1-01 four-era staircase {concept/process, diagram-as-code, broad, conf 9}  ★HERO
+│   ├── Why each era capped
+│   │   └── P1-02 era ceilings small-multiple {comparison, hand-drawn, developer, conf 7}
+│   ├── Nouns vs. verbs (define the rig)
+│   │   └── P1-03 harness-vs-loop clarifier {comparison, editorial-illustration, broad, conf 7}
+│   └── Proof the rig matters
+│       └── P1-04 SWE-bench trajectory + cost band {statistical, data-exhibit, tech-lead, conf 8}
+└── Part 2 — Engineering the Loop (Era 4 payoff)  [tech lead / manager]
+    ├── What the loop is
+    │   └── P2-01 loop diagram {process/cycle, diagram-as-code, developer, conf 9}  ★HERO
+    ├── Where the human sits
+    │   └── P2-02 four-posture panel {comparison/concept, hand-drawn, tech-lead, conf 8}
+    ├── Why now (the inversion)
+    │   └── P2-03 validation inversion {statistical/flow, data-exhibit, manager, conf 7}
+    ├── Proof at scale
+    │   └── P2-04 Stripe before/after {statistical, data-exhibit, manager, conf 8}
+    ├── The honest counterweight
+    │   └── (std) honest-limits card {list, hand-drawn, broad, conf 7}
+    └── Your first loop
+        └── P2-05 first-loop checklist {checklist, hand-drawn, developer, conf 8}
 ```
+
+Near-duplicate watch (post-render dedup): P1-04 and P2-04 are both data-exhibit charts — keep
+P1-04 a **line/slope** (trajectory) and P2-04 a **before/after pair** (two bars) so they don't
+read as the same composition. Optional series **cover** visual = a reduced staircase-with-nested-
+loops motif tying both parts (defer unless the blog index needs it).
 
 ## Handoff
 
-Pass this file to `infographic-art-director` (briefs inherit each `style_id` + guardrails) and
-to `style-rendering` (dispatches the adapter by `style_id`). `visual-reviewer` reads the
-**Self peer-review** and **Diversity verdict** above as its pre-render gate. Reproduce the
-matrix at any time with `PYTHONPATH=. python3 scripts/visuals/styles/route_harness.py`.
+`content/visual-opportunity-map.md` carries the per-asset briefs, the rendering handoff, and the
+deferred list. `visual-reviewer` reads this **self peer-review** (Phase 4) and the **package style
+matrix** for its pre-render diversity gate before `visual-renderer` rasterizes anything.

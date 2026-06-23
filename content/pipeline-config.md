@@ -11,37 +11,52 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
-| **Topic** | From Prompts to Harness Engineering — The Workflow Shift in AI-Native Development |
-| **Started** | 2026-06-20 |
-| **Current Step** | Step 3c — quality review of rebuilt multi-style visual pack (2026-06-22; Step 3b visuals rebuilt across 5 styles via the Visual Versatility System) |
-| **Series** | `no` |
-| **Current Part** | _(n/a)_ |
+| **Topic** | From Prompts to Harness Engineering to Loop Engineering — The Workflow Shift in AI-Native Development |
+| **Started** | 2026-06-22 |
+| **Current Step** | STEP 3c QUALITY REVIEW COMPLETE (2026-06-23) — `quality-reviewer` audited `content/from-prompts-to-loop-engineering.md` against the content quality bar: verdict PASS. One surgical fix applied (moved `p1-02-ceilings.png` to the end of the Eras 1–3 section so all three ceilings are described before the three-ceiling visual, plus a one-line setup sentence). No banned word "leverage"; all real data preserved; first-person practitioner voice intact. Tier 0 preflight re-run: GATE PASS (0/0/0). Two known publish-time residuals still tracked (SWE-bench re-pull; OpenAI harness page 403). Next: Step 3d SEO optimization. |
+| **Series** | `no (single comprehensive post)` |
+| **Current Part** | n/a — single post `content/from-prompts-to-loop-engineering.md` |
 
 ### Step Checklist
 
 - [x] Step 0: Reference analysis
-- [ ] Step 1b: Content research (STORM) — new stage (`content-researcher`); not run for this in-flight content
+- [ ] Step 1b: Content research (STORM) — `content-researcher`
 - [x] Steps 1-2: Strategy + outline
-- [x] Step 2b: Scope assessment (single vs. series) — 5/14, single post
-- [x] Step 2c: Multi-dimensional analysis
-- [x] Step 2d: Visual opportunity mapping
-- [x] Step 2e: Infographic art direction
-- [x] Step 3: Blog post draft
-- [x] Step 3b: Visual assets — REBUILT across 5 styles (typographic, hand-drawn, blueprint, data-exhibit, editorial-illustration) via the Visual Versatility System; no adjacent repeats, hand-drawn 37.5% < 50% floor; see content/visual-style-map.md
-- [x] Step 3b-img: hero/illustrative imagery (optional — skipped; no separate hero slot planned)
-- [ ] Step 3c: Quality review — re-run after visuals rebuilt
-- [ ] Step 3d: SEO optimization — re-confirm after visuals rebuilt
-- [ ] Step 4a: Social distribution strategy refresh — re-run after visuals rebuilt
-- [ ] Step 4a-visual: Visual-first asset pack — STALE: regenerate from new visuals
-- [ ] Step 4: LinkedIn post — STALE: references rejected visuals, regenerate
-- [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video only
-- [x] Step 5: X/Twitter thread — skipped by user selection
-- [ ] Step 6b: Reel/Short video — STALE: references rejected visuals, regenerate
-- [ ] Step 6c: Slide deck (PPTX + PDF, humor + intellectual speaker notes) — new optional stage (`deck-builder`); not run for this in-flight content
-- [ ] Step 7: Brand audit — re-run after visuals rebuilt
-- [ ] Step 7b: Grounded content review — re-run after visuals rebuilt
-- [x] Step 8: YouTube script — skipped by user selection
-- [ ] Step 10: Web publishing refresh — blocked until visuals rebuilt
+- [x] Step 2b: Scope assessment (single vs. series) — 13/16 → ran series test → **per-part word floor FAILED** (drafted Part 1 ~1,600w < 2,400w) → **single comprehensive post**. Skill fixed to enforce the 2,400-word floor.
+- [x] Step 2c: Multi-dimensional analysis — 3 personas, 8 practices, WAF: OpsExcellence+Cost primary
+- [x] Step 2d: Visual opportunity mapping — 10 blog companions (5/part); heroes = staircase + loop diagram; `content/visual-opportunity-map.md` + `content/visual-style-map.md`
+- [ ] Step 2e: Infographic art direction
+- [x] Step 3: Blog post draft — merged single post written and cascade-validated (`content/from-prompts-to-loop-engineering.md`, ~2,800 words, all 10 sections). Supersedes the deleted ~1,600-word Part 1 draft. Full four-tier cascade re-run against the merged post (2026-06-23):
+  - Tier 0 preflight → `content/preflight-report.md` — GATE: PASS (0 Error / 0 Warning, exit 0)
+  - Tier 1 critic + fact-check → `content/tier1-critic-review.md` — GATE: FAIL → escalate (2 high-risk-class claim-citation Warnings; 15/15 load-bearing claims grounded, 0 Errors)
+  - Tier 2 diverse jury → `content/tier2-jury-verdict.md` — 3 disjoint jurors, 2–1 approve-with-residual on each item → Tier 3
+  - Tier 3 escalation gate → `content/escalation-digest.md` — 2 rows, both defensible as written; residual = publish-time source re-pull only (no draft-time change)
+  - Phase D metrics → `content/critique-metrics.md` + `content/cascade-metrics-report.md` — 2 runs; escalation rate 100%, escalation precision 50%, GATE: PASS (exit 0)
+  - Residual human action before publish: re-pull the SWE-bench figures (12.47%→76.8%, $0.05–$0.96) and the OpenAI harness-engineering page (currently 403). Böckeler "guides and sensors" already paraphrased — no edit needed.
+- [x] Step 3b: Visual assets — 9 companions rendered at 320 DPI by `content/visuals/render_loop_engineering.py` and embedded into the post (markers replaced; Tier 0 preflight GATE PASS, all paths resolve). Style diversity holds across the set:
+  - `p1-05-pull-quote.png` (typographic) — the reframe pull-quote [line 9]
+  - `p1-01-staircase.png` (diagram-as-code ★HERO) — four-era staircase [line 17]
+  - `p1-02-ceilings.png` (hand-drawn) — three ceiling cards [line 36]
+  - `p2-01-loop.png` (diagram-as-code ★HERO, d2 vertical) — plan→act→observe→verify→correct [line 50]
+  - `p1-03-harness-vs-loop.png` (editorial-illustration) — nouns vs. verbs [line 60]
+  - `p2-02-postures.png` (hand-drawn) — outside/in/on the loop + flywheel [line 77]
+  - `p2-03-bottleneck.png` (data-exhibit, directional) — generation vs. validation [line 87]
+  - `p2-04-stripe-swebench.png` (data-exhibit) — Stripe before/after + SWE-bench trajectory + cost band [line 95]
+  - `p2-05-first-loop-checklist.png` (hand-drawn) — your first loop checklist [line 116]
+- [ ] Step 3b-img: hero/illustrative imagery (optional)
+- [x] Step 3c: Quality review — `quality-reviewer` verdict PASS; 1 surgical fix (p1-02-ceilings.png repositioned to end of Eras 1–3 with setup sentence); no "leverage"; data preserved; Tier 0 preflight GATE PASS
+- [ ] Step 3d: SEO optimization
+- [ ] Step 4a: Social distribution strategy
+- [ ] Step 4a-visual: Visual-first asset pack
+- [ ] Step 4: LinkedIn post
+- [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video + Slide deck (PPTX + PDF)
+- [ ] Step 5: X/Twitter thread — skipped by user selection
+- [ ] Step 6b: Reel/Short video
+- [ ] Step 6c: Slide deck (PPTX + PDF, humor + intellectual speaker notes) — `deck-builder`
+- [ ] Step 7: Brand audit
+- [ ] Step 7b: Grounded content review
+- [ ] Step 8: YouTube script — skipped by user selection
+- [ ] Step 10: Web publishing
 - [ ] Step 11: Social publishing
 - [ ] Step 12: Platform distillation draft
 
@@ -112,27 +127,35 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 <!-- Add your reference URLs below. Format: - [description](URL) -->
 
-**Harness Engineering — Core Thesis & Workflow Shift:**
-- https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/ — Thoughtworks' Birgitta Böckeler: monolithic context files and MCP servers giving way to lazy-loaded skills, CLIs, and scripts; the "harness engineering" framing
-- https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/ — Custom agents turn repeatable prompts into reusable terminal workflows
-- https://towardsdatascience.com/how-to-navigate-the-shift-from-prompt-based-tools-to-workflow-driven-ai/ — The cost of constant tool/context switching and how workflows fix it
-- https://towardsdatascience.com/automate-writing-your-llm-prompts/ — Writing robust, reliable prompts for unattended LLM applications (prompt-as-code)
+> Verified 2026-06-22 (Phase 0 trend research). Full synthesis + quantified data table in `content/trend-research.md`.
 
-**Skills, Lazy-Loading & Tooling Primitives:**
-- https://docs.github.com/en/copilot/concepts/agents/about-agent-skills — About agent skills: folder format, instructions/scripts/resources, load-on-demand
-- https://www.infoq.com/news/2026/06/angular-agent-skills/ — Angular's official Agent Skills using Anthropic's open Skills format (load-on-demand)
-- https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/ — LSP Setup skill: giving the CLI real code intelligence via language servers
-- https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/ — Prompt caching + deferred tools + Auto model routing: the harness, not the model, doing the work
+**Loop Engineering — Core (definition & the skill):**
+- https://simonwillison.net/2025/Sep/30/designing-agentic-loops/ — Simon Willison "Designing agentic loops": names loop design as a discrete skill; "runs tools in a loop to achieve a goal"; the four design levers
+- https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html — Kief Morris (Thoughtworks): inner/middle/outer loops, why-loop vs how-loop, humans outside/in/on the loop, "fix the artefact vs. fix the loop"
+- https://www.anthropic.com/engineering/building-effective-agents — Anthropic: evaluator-optimizer loop, gates, stop conditions ("maximum number of iterations to maintain control")
+- https://simonwillison.net/2025/Oct/7/vibe-engineering/ — Willison "Vibe engineering" (updated to "Agentic Engineering" Feb 2026): lists "designing agentic loops" as a core senior skill
 
-**Harness Mechanics — Delegation, Parallelism, Inner-Loop Validation:**
-- https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/ — "Delegation isn't free": data-driven subagent tuning
-- https://towardsdatascience.com/a-harness-for-every-task-putting-a-team-of-claudes-on-one-job/ — A harness for every task: orchestrating a team of agents on one job
-- https://github.blog/ai-and-ml/github-copilot/what-are-git-worktrees-and-why-should-i-use-them/ — Git worktrees for parallel agent workspaces
-- https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/ — CircleCI Chunk Sidecars: CI-style validation moved into the agent's inner loop so it self-corrects before commit
-- https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/ — Copilot CLI slash commands overview (workflow surface)
+**Inner-loop Validation / Self-correction:**
+- https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/ — CircleCI Chunk Sidecars: validation pulled into the agent's inner loop; "validation, not generation, is the bottleneck"
+- https://www.infoq.com/news/2026/06/claude-code-harnesses/ — Anthropic Dynamic Workflows: named self-correction failure modes (agentic laziness, self-preferential bias, goal drift) + adversarial verification loops
+- https://martinfowler.com/articles/build-own-coding-agent.html — Ben O'Mahony (Thoughtworks): buildable act->observe->verify loop with test-result-as-feedback
 
-**First-Party Reference (this repo's own harness):**
-- Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/agent-definitions.md`, `agents-and-skills/content-strategy-pipeline.md` — the agent/skill/instruction harness that runs this very content pipeline
+**Harness vs. Loop distinction:**
+- https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html — Böckeler: harness = "everything except the model"; feed-forward vs feedback; quotes OpenAI on "environments, feedback loops, and control systems"
+- https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/ — Böckeler podcast: one-year evolution narrative; harness = guides + sensors so the agent can self-correct
+- https://martinfowler.com/articles/harness-engineering.html — Böckeler considered article: harness elements as "guides and sensors" + harness templates
+
+**Eras / arc framing:**
+- https://martinfowler.com/articles/exploring-gen-ai.html — Fowler "Exploring Generative AI" index: dated chronological map from autocomplete -> context -> harness -> loops
+- https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html — Böckeler: the context-engineering middle era (lazy-loaded skills, MCP decline)
+- https://openai.com/index/harness-engineering/ — OpenAI "Harness engineering": 1M-LOC / 5-month / no-typed-code case study (⚠ 403 to fetcher; corroborated indirectly, re-verify before direct citation)
+
+**Quantified data & case studies:**
+- https://www.infoq.com/news/2026/03/stripe-autonomous-coding-agents/ — Stripe "Minions": 1,300+ PRs/week, zero human-written code, "blueprints = deterministic code + flexible agent loops"; underpins $1T+ payment volume
+- https://www.swebench.com/ — SWE-bench: 12.47% (Mar 2024) -> 76.8% (Claude 4.5 Opus, Feb 2026) under the same harness; mini-SWE-agent 65% in ~100 lines; per-task cost ~$0.05-$0.96
+
+**First-Party Reference (this repo's own harness/loop):**
+- Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/content-pipeline-flow.md`, `agents-and-skills/agent-definitions.md` — the agent/skill/instruction harness + review-gate loops that run this very content pipeline (a working loop-engineering example)
 
 ---
 
@@ -177,12 +200,11 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Is Series** | `pending-assessment` |
-| **Total Parts** | _(tbd)_ |
-| **Current Part** | _(tbd)_ |
-| **Part 1 Focus** | _(tbd — set by scope assessment)_ |
-| **Part 2 Focus** | _(tbd — set by scope assessment)_ |
-| **Publishing Cadence** | _(tbd)_ |
+| **Is Series** | `no` — consolidated to a single post on 2026-06-22 (drafted Part 1 fell below the 2,400-word per-part floor) |
+| **Total Parts** | 1 |
+| **Current Part** | n/a — single post `content/from-prompts-to-loop-engineering.md` |
+| **Single-post focus** | The full four-era staircase (word → context → rig → loop) + the loop-engineering payoff in one ~2,800-word post; IC practitioner through tech lead |
+| **Publishing Cadence** | n/a — single post |
 
 ### Dimension Analysis
 
@@ -190,14 +212,14 @@ List URLs below that agents should fetch, analyze, and synthesize during content
 
 | Field | Value |
 |-------|-------|
-| **Persona count** | _(tbd)_ |
-| **Personas** | _(tbd — set by dimension analysis)_ |
-| **Technology practices** | _(tbd)_ |
-| **Governance practices** | _(tbd)_ |
-| **Total practices** | _(tbd)_ |
-| **Primary WAF pillars** | _(tbd — set by dimension analysis)_ |
-| **Secondary WAF pillars** | Cost Optimization |
-| **Dimension breadth score** | 6/6 |
+| **Persona count** | 3 |
+| **Personas** | AI-native practitioner (IC/senior dev), tech lead/staff engineer, engineering manager |
+| **Technology practices** | 5 (agentic loop design, inner-loop validation, evaluator-optimizer, stop conditions, harness construction) |
+| **Governance practices** | 3 (human posture outside/in/on, cost+subsidy awareness, failure-mode defense) |
+| **Total practices** | 8 |
+| **Primary WAF pillars** | Operational Excellence, Cost Optimization |
+| **Secondary WAF pillars** | Reliability |
+| **Dimension breadth score** | 2/2 |
 
 ### Social Platform Selection
 

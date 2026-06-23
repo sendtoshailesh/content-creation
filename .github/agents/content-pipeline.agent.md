@@ -189,11 +189,27 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
    - This step can also run **independently** via `@visual-reviewer [path]` for ad-hoc visual QA
 
 ### Phase 3: Quality Gate + SEO (Steps 3c-3d)
-7. **Rubber-duck review gate**: Before running remediation reviewers, run GitHub Copilot's `rubber-duck` review feature as the adversarial critic:
-   - Do **not** ask the user to switch model families.
-   - Ask rubber-duck to challenge assumptions, detect hallucinated specificity, find logical gaps, check tone drift, verify internal consistency, and review visuals for reader comprehension.
-   - Record the review method in `content/pipeline-config.md` under `Current Run > Review method` as `GitHub Copilot rubber-duck`.
-8. Delegate rubber-duck findings to `quality-reviewer` to audit blog + visuals and fix confirmed issues
+6b. **Tier 0 deterministic preflight gate** (zero-cost, no LLM — runs *before* any LLM review tier):
+   - Run `python3 scripts/pipeline/preflight_check.py -o content/preflight-report.md` (add `--strict` to also block on Warnings).
+   - It auto-discovers `content/*.md` + visual renderers and emits the shared compliance-severity findings table with a `GATE: PASS/FAIL` footer (exit `0` PASS, `1` FAIL).
+   - On **FAIL** (exit 1): route the Error rows back to the responsible producer (`blog-writer`, `visual-renderer`, social agents) for mechanical fixes, then re-run. Do **not** spend LLM tiers on artifacts that fail deterministic checks.
+   - On **PASS**: proceed to the Tier 1 critic gate. Record the preflight result (Error/Warning/Info counts, gate verdict) in `content/pipeline-config.md`.
+6c. **Tier 1 rubric critic + fact-check gate** (one grounded LLM critic — runs *after* Tier 0 PASS, *before* the Tier 2 jury):
+   - Apply the `critic-review` skill (`.github/skills/critic-review/SKILL.md`) to each artifact that passed Tier 0.
+   - It runs the G-Eval-style constitution judge (chain-of-thought + form-filling against `content-quality`/`writing-style`/`social-formatting`) and the reference-grounded fact-check desk (each load-bearing claim needs ≥1 citation from `content/reference-brief.md`), then emits the compliance-severity rows plus `confidence`/`risk`/`source signal` fields and a `DECISION` verdict.
+   - **Auto-approve** (zero Errors, all Warnings `confidence:high` + `risk:low|medium` with mechanical fixes) clears the artifact with no jury or human.
+   - **Revise-in-loop**: route the findings rows back to the producing agent (`blog-writer`, social agents, `visual-renderer`), re-run Tier 1, **max 3 iterations**, then escalate.
+   - **Escalate** (any Error `risk:high`, any `confidence:low`, or `ABSTAIN: yes`) to the Tier 2 jury below. Record the Tier 1 result and decision in `content/pipeline-config.md`.
+7. **Tier 2 diverse jury (PoLL) gate** — runs *only* on the residue Tier 1 escalates, never on auto-approved artifacts. Apply the Tier 2 section of the `critic-review` skill:
+   - Seat three disjoint jurors: GitHub Copilot's `rubber-duck` review feature (do **not** ask the user to switch model families), the reference-grounded fact-check desk, and one of the brand/tone or visual/layout desk per the artifact's risk class. Each casts an independent ballot (`approve | revise | escalate`) with compliance-severity rows.
+   - Run the Co-STORM moderator pass to dedupe findings, surface the splitting decision, and compute the vote spread.
+   - **Unanimous approve** (low spread) -> auto-approve. **Unanimous fail** -> auto-return to the producer with merged findings (loop, max 3 iterations). **Split vote / high spread** -> pass to the Tier 3 gate.
+   - Record the jury result, vote spread, and method (`GitHub Copilot rubber-duck` + disjoint desks) in `content/pipeline-config.md` under `Current Run > Review method`.
+7b. **Tier 3 confidence x risk escalation gate** (the stop condition before any human sees content):
+   - Compute **confidence** = jury agreement x Tier 1 self-consistency spread, and **risk** = `probability x impact x detectability` for the artifact class (pricing/benchmark and named attribution = high; body prose/captions = low).
+   - **high confidence x low|medium risk** -> auto-approve (no human). **low confidence OR high risk OR any `ABSTAIN: yes`** -> escalate to the human editor via the escalation digest (Step 18).
+   - When a confirmed miss recurs across runs, append it to `content/critique-memory.md` (Reflexion) and, if it recurs 3+ times, promote the rule into the relevant `*.instructions.md` so the loop is fixed, not the artifact.
+8. Delegate any upheld jury findings to `quality-reviewer` to audit blog + visuals and fix confirmed issues
 9. If issues found, coordinate fixes before proceeding
 10. **Source freshness check (Step 3e)**: Delegate to `grounded-content-reviewer` with the blog path. This agent:
    - Re-fetches live source URLs (pricing pages, announcement posts, documentation)
@@ -236,6 +252,16 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 17. Run `quality-reviewer` on all social posts
 18. If brand or quality issues found, coordinate fixes. **Do not enter Phase 7 (publishing) or
     Step 11 (social publishing) while any compliance Error or unresolved visual FAIL remains.**
+    Consolidate every escalated finding from the preflight (Tier 0), Tier 1 critic, Tier 2 jury,
+    Tier 3 gate, brand-guardian, and quality reviewers into a single `content/escalation-digest.md`
+    (format in `.github/instructions/shared/compliance-severity.md`) so the human resolves one
+    exception list — approving or revising each decision row — rather than re-reviewing every artifact.
+18b. **Phase D observability + sampled audit** (run as the cascade closes, after the digest is resolved):
+    - Append one row of this run's cascade outcomes to `content/critique-metrics.md` under `## Runs`:
+      `run_id`, `artifacts`, `auto_approved`, `escalated`, `human_changed`, `audited`, `audit_flagged`.
+    - **Sampled audit:** before recording, have the human spot-check ~10-20% of the auto-approved artifacts and count how many the audit flags as misses (`audit_flagged`). This is the anti-over-trust check against automation complacency.
+    - Run `python3 scripts/pipeline/cascade_metrics.py -o content/cascade-metrics-report.md` to compute the rolling auto-approve rate, escalation rate, escalation precision, miss rate, and judge-human agreement. Use `--window N` for the drift view.
+    - **Self-regulating stop condition:** exit code 1 means the miss rate crossed the threshold — tighten the gate (lower the Tier 1/Tier 3 auto-approve bar, widen the audit sample) until it recovers. Record the metrics result in `content/pipeline-config.md`. Treat any published judge-human agreement number as a ceiling, not a guarantee.
 19. Produce a summary of all generated files
 20. Update Pipeline Status: set Status to `completed`, check the "Final review complete" box
 
