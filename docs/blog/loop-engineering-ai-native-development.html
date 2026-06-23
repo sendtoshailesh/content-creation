@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loop Engineering: The AI-Native Development Shift | Shailesh Mishra</title>
+  <meta name="description" content="Prompt, context, harness, loop engineering: the four-era arc of AI-native development, and why in 2026 the unit of work you own is the iteration loop.">
+  <meta name="author" content="Shailesh Mishra">
+  <meta name="keywords" content="loop engineering, harness engineering, AI-native development, agentic loops, context engineering, prompt engineering">
+  <meta property="og:title" content="Loop Engineering: The AI-Native Development Shift">
+  <meta property="og:description" content="Prompt, context, harness, loop engineering: the four-era arc of AI-native development, and why in 2026 the unit of work you own is the iteration loop.">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="logo">Shailesh Mishra</a>
+  <nav>
+    <a href="../">Blog</a>
+    <a href="https://github.com/sendtoshailesh">GitHub</a>
+  </nav>
+</header>
+
+<main class="container">
+  <a href="../" class="back-link">&larr; Back to all posts</a>
+
+  <article>
+    <div class="post-header">
+      <h1>From Prompts to Loop Engineering: The Workflow Shift in AI-Native Development</h1>
+      <div class="meta">Shailesh Mishra &middot; June 23, 2026 &middot; 12 min read</div>
+      <div style="margin-top: 0.75rem;">
+        <span class="tag">loop-engineering</span>
+        <span class="tag">harness-engineering</span>
+        <span class="tag">ai-native-development</span>
+        <span class="tag">agentic-loops</span>
+      </div>
+    </div>
+
+    <div class="post-content">
+
+      <p><em>The four-era arc of AI-native development &mdash; prompt, context, harness, loop engineering &mdash; and why, in 2026, the unit of work you own has moved all the way up to the iteration loop.</em></p>
+
+      <p>You're not getting better at prompting. I know that sounds backwards, because most of us have spent the last two years collecting prompt tricks like trading cards &mdash; "act as a senior engineer," few-shot examples, chain-of-thought, the whole drawer of them. And they worked, for a while. But here is what I keep seeing when I sit with teams shipping real software with agents: the people getting the most out of these tools are not the ones with the cleverest wording. They're the ones who stopped optimizing the sentence and started optimizing everything around it.</p>
+
+      <p>The skill didn't get better. The skill moved. And the reason it keeps moving is the quiet inversion underneath all of this: code generation has gotten cheap, so <em>validation</em> &mdash; not generation &mdash; is now the bottleneck (CircleCI via InfoQ, Jun 2026). That single fact is what pushes the work up the stack, and it's why this post walks the whole arc instead of treating each new buzzword as a separate fad.</p>
+
+      <img src="visuals/p1-05-pull-quote.png" alt="The reframe: you're not getting better at prompting — the level you work at is moving up the stack">
+
+      <p>Prompt engineering, context engineering, harness engineering, loop engineering &mdash; these are not four trends competing for your attention. They're one staircase. Each step automates the craft of the step below it and pushes you up to govern a bigger unit of work. By the end you'll know which step you're standing on, and how to ship your first real loop this week.</p>
+
+      <h2>The staircase: four eras of AI-native development, one moving target</h2>
+
+      <p>Here's the pattern that makes the four eras click into one picture. <strong>As the model absorbs more of the work, the place where your effort actually matters moves up a level.</strong> You used to engineer a word. Then you engineered the context. Then the rig the agent runs inside. Now, increasingly, the loop the agent runs.</p>
+
+      <img src="visuals/p1-01-staircase.png" alt="The four-era staircase: prompt → context → harness → loop engineering, with the unit of work rising at each step">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Era</th>
+            <th>What you engineer</th>
+            <th>What you're actually doing</th>
+            <th>Representative moment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Prompt engineering</td>
+            <td>The wording of one request</td>
+            <td>Crafting the input to a single LLM call</td>
+            <td>ChatGPT / Copilot autocomplete (2022&ndash;2024)</td>
+          </tr>
+          <tr>
+            <td>Context engineering</td>
+            <td>What the model <em>sees</em></td>
+            <td>Curating conventions, architecture, skills, lazy-loaded files</td>
+            <td>Term gained traction ~June 2025 (per B&ouml;ckeler)</td>
+          </tr>
+          <tr>
+            <td>Harness engineering</td>
+            <td>Everything <em>around</em> the model</td>
+            <td>Building the rig: skills, CLIs, scripts, MCP, linters, tests, guardrails</td>
+            <td>OpenAI harness-engineering work (as cited by B&ouml;ckeler) + B&ouml;ckeler memo (Feb 2026)</td>
+          </tr>
+          <tr>
+            <td>Loop engineering</td>
+            <td>The control loop <em>itself</em></td>
+            <td>Designing plan &rarr; act &rarr; observe &rarr; verify &rarr; correct, with stop conditions</td>
+            <td>Willison "Designing agentic loops" (Sep 2025); Morris (Mar 2026)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The practitioners naming this arc are saying the same thing in different words. The InfoQ/Thoughtworks podcast that maps the year is literally titled <em>"From MCP and Vibe Coding to Harness Engineering: How AI Native Engineering Evolved in One Year"</em> (Jun 2026). Simon Willison narrates his own version of the climb &mdash; "vibe coding" to "vibe engineering" to, in his Feb 2026 update, "agentic engineering." Different vocabularies, one direction of travel: up.</p>
+
+      <p>The useful thing about seeing it as a staircase is that it tells you where to spend your next hour. If you're still tuning sentences, the next floor up is waiting and it's where the wins are.</p>
+
+      <h2>Eras 1&ndash;3: prompt, context, and harness engineering in fast-forward</h2>
+
+      <p>Let me run the first three steps quickly, because the interesting argument lives at the top &mdash; but you can't appreciate the top step without watching the ground shift underneath it.</p>
+
+      <p><strong>Step one &mdash; the prompt, and its ceiling.</strong> Prompt engineering was real and it mattered. The ceiling showed up fast: there's only so much you can fix by rewording a single request when the model can't see your codebase, your conventions, or what you tried five minutes ago. You can phrase the question perfectly and still get a confident answer to the wrong problem, because the model is missing the room it's standing in.</p>
+
+      <p><strong>Step two &mdash; the context, and its ceiling.</strong> So the effort moved to what the model sees. Context engineering &mdash; coding conventions, architecture docs, lazy-loaded skills, progressive disclosure, the slow death of stuffing everything through MCP &mdash; got the right information into the window at the right time (B&ouml;ckeler, "Context Engineering for Coding Agents," Feb 2026). This was a genuine step up. But a well-fed model still can't <em>act</em>. It can read your repo and still have no way to run the tests, see the type error, and try again. Curating the input hits its own ceiling the moment the work requires iteration.</p>
+
+      <p><strong>Step three &mdash; the rig.</strong> This is where it gets concrete. Harness engineering is building everything the agent operates inside: the skills and CLIs it calls, the scripts and language servers, the linters and type checkers and test suites that tell it whether it just made things better or worse. Birgitta B&ouml;ckeler's definition is the cleanest I've found &mdash; a harness is <em>"everything except the model"</em> (B&ouml;ckeler, "Harness Engineering &mdash; first thoughts," Feb 2026). Feed-forward context on one side, feedback sensors on the other.</p>
+
+      <p>And here's the number that made me take this step seriously. On SWE-bench Verified &mdash; a benchmark of 500 human-filtered real GitHub issues &mdash; a minimal harness called mini-SWE-agent resolves <strong>65% of tasks in about 100 lines of Python</strong> (swebench.com, Jul 2025). A hundred lines. Most of the win wasn't a bigger model or a cleverer prompt; it was a small, well-built rig that let the model run, observe, and retry. The rig is doing real work &mdash; but a rig still needs a <em>cycle</em> to run in, and that cycle is the next floor up.</p>
+
+      <p>Stack the three eras and each one hits a wall: rewording hits diminishing returns, a curated context window still can't act, and even a 100-line rig has no cycle to run in. Lining those ceilings up side by side is what makes the climb obvious.</p>
+
+      <img src="visuals/p1-02-ceilings.png" alt="Three ceilings: diminishing returns on wording, a static context window that can't act, and a great rig with no cycle to run in">
+
+      <h2>What loop engineering actually is</h2>
+
+      <p>Loop engineering is the discipline of designing and governing the agent's <strong>iteration cycle</strong> &mdash; plan &rarr; act &rarr; observe &rarr; verify &rarr; correct &mdash; so it can self-correct <em>without a human standing in the inner loop</em>. The unit of work is no longer the word, the window, or even the rig. It's the loop: its goal, its tools, its feedback signal, and the condition that makes it stop.</p>
+
+      <p>Simon Willison gives the working definition: an agent is something that "runs tools in a loop to achieve a goal," and his sharp claim is that <strong>"designing agentic loops" is a distinct, new skill</strong> &mdash; he points out Claude Code only shipped in February 2025, so this is genuinely fresh ground, not repackaged folklore (Willison, "Designing agentic loops," Sep 2025). The art, he says, is reducing a problem "to a clear goal and a set of tools that can iterate towards that goal" &mdash; then letting the agent brute-force its way to a working solution.</p>
+
+      <img src="visuals/p2-01-loop.png" alt="The loop: plan → act → observe → verify → correct, with the verification gate and stop condition called out">
+
+      <p>Anthropic supplies the primitives. Their <strong>evaluator-optimizer</strong> loop is "one LLM generates while another evaluates and gives feedback in a loop," and &mdash; this is the part people skip &mdash; it needs a stop condition, "a maximum number of iterations to maintain control" (Anthropic, "Building Effective Agents," Dec 2024). A loop without a stop condition isn't autonomy; it's a way to burn tokens. So the four levers you actually engineer are: a clear goal with a success criterion, the right tools to iterate, one feedback signal the agent can read, and a stop condition that ends the cycle.</p>
+
+      <h2>Harness engineering vs. loop engineering: nouns vs. verbs</h2>
+
+      <p>Now the distinction that took me too long to see clearly, because almost every source blurs it: <strong>the harness and the loop are not the same thing.</strong></p>
+
+      <p>The harness is the <em>rig</em> &mdash; the equipment. It's nouns. The skills, the CLIs, the test suite, the static analysis, the type checker, the guardrails. B&ouml;ckeler's later framing describes these elements as guides and sensors &mdash; the things that point the agent in a direction and the things that tell it what just happened. That's the gym and the equipment.</p>
+
+      <img src="visuals/p1-03-harness-vs-loop.png" alt="Harness vs. loop: the harness is the nouns (gym and equipment) while the loop is the verbs (rep-scheme and coach)">
+
+      <p>The loop is the <em>cycle</em> &mdash; the verbs. It's what <em>uses</em> the rig: act, then observe the sensors, then verify against the goal, then decide whether to retry or stop. Harness engineering asks <em>"what tools and sensors does the agent have?"</em> Loop engineering asks <em>"how does the agent iterate against those sensors, and what makes it stop?"</em> Mature setups in production are both at once &mdash; Stripe's "blueprints" and Anthropic's "Dynamic Workflows" are each a harness <em>plus</em> an explicit, code-defined loop with verification and stop logic.</p>
+
+      <p>Here's the test that separates them. When you're inside the work and you don't like what the agent produced, do you fix <em>the output</em>, or do you change <em>the thing that produced it</em>? Fixing the output is editing. Changing the producer &mdash; the rig, and the cycle that runs against it &mdash; is engineering.</p>
+
+      <h2>Who sits where: humans outside, in, and on the loop</h2>
+
+      <p>Kief Morris gives the clearest map of where a human actually belongs (Morris, "Humans and Agents in Software Engineering Loops," Mar 2026). He splits the work into a <strong>"why loop"</strong> &mdash; idea to working software, which humans own because we're the ones who want the outcome &mdash; and a <strong>"how loop"</strong> over the interim artefacts: specs, code, tests. The how-loop nests: an <strong>outer</strong> loop on a feature, a <strong>middle</strong> loop on a story, an <strong>inner</strong> loop that generates and tests code.</p>
+
+      <p>That gives four postures, and naming yours is the most useful diagnostic in this whole post:</p>
+
+      <ul>
+        <li><strong>Outside the loop</strong> &mdash; vibe coding. You own only the why and let the agent run. Fast, until it isn't.</li>
+        <li><strong>In the loop</strong> &mdash; you gatekeep every line. This feels responsible, and it's the trap: <em>you become the bottleneck</em> the moment the agent can generate faster than you can read.</li>
+        <li><strong>On the loop</strong> &mdash; you build and tune the how-loop instead of inspecting every output. This is where loop engineering lives.</li>
+        <li><strong>The agentic flywheel</strong> &mdash; you direct agents to improve the loop itself.</li>
+      </ul>
+
+      <img src="visuals/p2-02-postures.png" alt="Four postures: humans outside, in, and on the loop plus the flywheel, with the bottleneck flagged on the 'in' posture">
+
+      <p>The pivot Morris draws is the whole game: when you're <em>in</em> the loop and you dislike the output, you fix the artefact; when you're <em>on</em> the loop, you change the harness and the cycle that produced it. That shift &mdash; from fixing the output to fixing the loop that produces the output &mdash; <em>is</em> loop engineering.</p>
+
+      <h2>Why now: validation, not generation, is the bottleneck</h2>
+
+      <p>So why has this become the job in 2026 specifically? Because the economics inverted. For years, generating code was the hard, slow part and review was a formality. That flipped. CircleCI's internal data shows feature-branch activity surging while production deployments lag behind &mdash; and the reason is blunt: "by the time conventional CI discovers an issue, the AI agent has already moved on, losing valuable context" (CircleCI via InfoQ, Jun 2026). The agent out-runs your pipeline.</p>
+
+      <p>The industry's response is to pull verification <em>into the inner loop</em> rather than waiting for it downstream &mdash; CircleCI's Chunk Sidecars (which they literally call "inner-loop validation"), Dropbox Nova, Claude Code's iterative validation. When verification moves inside the loop, loop engineering stops being a blog-post idea and becomes a product category. OpenAI frames its own hardest problems the same way: as cited by B&ouml;ckeler, their challenges now "center on designing environments, feedback loops, and control systems" &mdash; which is loop engineering by another name.</p>
+
+      <img src="visuals/p2-03-bottleneck.png" alt="The bottleneck: generation throughput rising while validation stays flat, with the fix being to pull verification into the inner loop">
+
+      <h2>Proof at scale: Stripe Minions and the SWE-bench trajectory</h2>
+
+      <p>Two pieces of evidence anchor this, and they pull in the same direction.</p>
+
+      <p><strong>Stripe Minions</strong> is the before/after case study. Stripe's autonomous coding agents produce <strong>1,300+ pull requests a week</strong> (up from roughly 1,000), with <strong>zero human-written code</strong> &mdash; every PR is machine-generated and human-reviewed &mdash; underpinning <strong>more than $1 trillion</strong> in annual payment volume (InfoQ &rarr; Stripe, Mar 2026). The architecture is exactly the harness-plus-loop pattern: "blueprints" that interweave deterministic code with flexible agent loops, with CI/CD, automated tests, and static analysis acting as the verification harness <em>before</em> a human ever looks. This is loop engineering in production, at a scale where being wrong is expensive.</p>
+
+      <img src="visuals/p2-04-stripe-swebench.png" alt="Proof at scale: Stripe Minions moving from ~1,000 to 1,300+ PRs per week beside the SWE-bench Verified trajectory from 12.47% to 76.8%">
+
+      <p><strong>SWE-bench Verified</strong> is the cleaner natural experiment, because it holds the harness constant. Same 500 instances, same mini-SWE-agent scaffold; you swap the model underneath. Under that fixed rig, the score has climbed from <strong>12.47% (SWE-agent, Mar 2024) to 76.8% (Claude 4.5 Opus, Feb 2026)</strong> &mdash; roughly a 6x improvement on identical infrastructure in about two years (swebench.com, Feb 2026). Read it two ways and both land: a stable, well-built rig let every model gain flow through instead of capping it; and because the harness is identical across the table, the rig and the loop are isolated as real, separate variables from the model. It isn't free, either &mdash; per-task cost on that leaderboard runs roughly <strong>$0.05 to $0.96 per instance</strong> depending on the model, which is the first sign that the loop has an economics problem worth taking seriously.</p>
+
+      <h2>The honest counterweight: agentic loop failure modes, not a victory lap</h2>
+
+      <p>I don't want to sell you a finished story, because the sources I trust most are the ones that name what still breaks. Self-correcting loops fail in specific, documented ways: <strong>agentic laziness</strong> (the agent declares done too early), <strong>self-preferential bias</strong> (it rates its own work too highly), and <strong>goal drift</strong> (it wanders off the original target) &mdash; all named by Anthropic via InfoQ (Jun 2026). Those failure modes are precisely <em>why</em> you engineer verification gates and stop conditions instead of trusting the loop to police itself. The defenses are loop patterns too: adversarial verification, fan-out-and-synthesize, classifier routing.</p>
+
+      <p>And the economics carry an asterisk. Today's flat-rate and per-token agent pricing is, in B&ouml;ckeler's words, "still very subsidized" (InfoQ podcast, Jun 2026) &mdash; so the $0.05&ndash;$0.96 per-task numbers above are a snapshot, not a forecast. Cite them with their dataset date and re-pull before you make a budget decision on them. Loop engineering is a discipline you practice against known failure modes, not a victory lap.</p>
+
+      <h2>Your first agentic loop: where to start this week</h2>
+
+      <p>Here's the shippable part. Take one task where you currently babysit the agent line-by-line &mdash; where you're <em>in</em> the loop. Give it four things:</p>
+
+      <ol>
+        <li><strong>A clear goal with a success criterion</strong> the agent can aim at.</li>
+        <li><strong>The tools to iterate</strong> &mdash; the CLI, the test runner, the linter it needs.</li>
+        <li><strong>One machine-checkable feedback signal</strong> &mdash; tests passing, types clean, the linter green.</li>
+        <li><strong>A stop condition</strong> &mdash; a max iteration count or a definition of done &mdash; so the loop ends on purpose.</li>
+      </ol>
+
+      <p>Then step <em>on</em> the loop. The next time it produces something wrong, resist fixing the output by hand. Fix the loop that produced it &mdash; tighten the success criterion, add a sensor, adjust the stop condition. That single habit is the entire shift from editing to engineering.</p>
+
+      <img src="visuals/p2-05-first-loop-checklist.png" alt="Your first loop checklist: a clear goal, the tools to iterate, one machine-checkable feedback signal, and a stop condition">
+
+      <p>If you want a worked example, this content pipeline runs the same pattern on itself: plan &rarr; draft &rarr; rubber-duck review &rarr; fix &rarr; re-review, with a deterministic preflight and a tiered critic gate as the verification sensors and an iteration cap as the stop condition. It's an inspectable loop, and writing this post ran through it.</p>
+
+      <div class="callout">
+        <p>So locate your step on the staircase &mdash; word, context, rig, or loop &mdash; and take the next one. The point where your effort matters will keep moving up as models absorb more of the work; the durable skill isn't any one era's trick, it's learning to govern whatever the next-larger unit of work turns out to be. Right now, that unit is the loop. Go ship one with a stop condition.</p>
+      </div>
+
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  &copy; 2026 Shailesh Mishra. Built with GitHub Pages.
+</footer>
+
+</body>
+</html>

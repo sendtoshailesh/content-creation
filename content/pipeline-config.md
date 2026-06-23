@@ -13,7 +13,7 @@
 | **Status** | `in-progress` |
 | **Topic** | From Prompts to Harness Engineering to Loop Engineering — The Workflow Shift in AI-Native Development |
 | **Started** | 2026-06-22 |
-| **Current Step** | STEP 3c QUALITY REVIEW COMPLETE (2026-06-23) — `quality-reviewer` audited `content/from-prompts-to-loop-engineering.md` against the content quality bar: verdict PASS. One surgical fix applied (moved `p1-02-ceilings.png` to the end of the Eras 1–3 section so all three ceilings are described before the three-ceiling visual, plus a one-line setup sentence). No banned word "leverage"; all real data preserved; first-person practitioner voice intact. Tier 0 preflight re-run: GATE PASS (0/0/0). Two known publish-time residuals still tracked (SWE-bench re-pull; OpenAI harness page 403). Next: Step 3d SEO optimization. |
+| **Current Step** | STEP 10 COMPLETE (2026-06-23) — Web publishing done. Converted `content/from-prompts-to-loop-engineering.md` to `docs/blog/loop-engineering-ai-native-development.html` (SEO title as `<title>`, 151-char meta description, slug `loop-engineering-ai-native-development`), matching existing `docs/` site structure/styling/design tokens — no new frameworks. All 9 visuals embedded as `visuals/pX-XX-*.png` relative paths (PNGs copied into `docs/blog/visuals/`; filenames unchanged). Linked the post at the top of `docs/index.html` blog list. Canonical URL recorded in `content/publishing-log.md`: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html. Next: Step 4a social distribution strategy. |
 | **Series** | `no (single comprehensive post)` |
 | **Current Part** | n/a — single post `content/from-prompts-to-loop-engineering.md` |
 
@@ -33,9 +33,9 @@
   - Tier 3 escalation gate → `content/escalation-digest.md` — 2 rows, both defensible as written; residual = publish-time source re-pull only (no draft-time change)
   - Phase D metrics → `content/critique-metrics.md` + `content/cascade-metrics-report.md` — 2 runs; escalation rate 100%, escalation precision 50%, GATE: PASS (exit 0)
   - Residual human action before publish: re-pull the SWE-bench figures (12.47%→76.8%, $0.05–$0.96) and the OpenAI harness-engineering page (currently 403). Böckeler "guides and sensors" already paraphrased — no edit needed.
-- [x] Step 3b: Visual assets — 9 companions rendered at 320 DPI by `content/visuals/render_loop_engineering.py` and embedded into the post (markers replaced; Tier 0 preflight GATE PASS, all paths resolve). Style diversity holds across the set:
+- [x] Step 3b: Visual assets — 9 companions rendered at 320 DPI by `content/visuals/render_loop_engineering.py` and embedded into the post (markers replaced; Tier 0 preflight GATE PASS, all paths resolve). Re-rendered 2026-06-23 after migrating the p1-01 staircase HERO from hand-placed matplotlib to D2 (auto-layout, `direction: up`) to end the hand-geometry defect class; deep QA via image view confirms clean cards/arrows/title/sources, no overlap / overflow / occlusion. Style diversity across the set:
   - `p1-05-pull-quote.png` (typographic) — the reframe pull-quote [line 9]
-  - `p1-01-staircase.png` (diagram-as-code ★HERO) — four-era staircase [line 17]
+  - `p1-01-staircase.png` (diagram-as-code ★HERO, d2 vertical climb) — four-era staircase [line 17]
   - `p1-02-ceilings.png` (hand-drawn) — three ceiling cards [line 36]
   - `p2-01-loop.png` (diagram-as-code ★HERO, d2 vertical) — plan→act→observe→verify→correct [line 50]
   - `p1-03-harness-vs-loop.png` (editorial-illustration) — nouns vs. verbs [line 60]
@@ -44,8 +44,8 @@
   - `p2-04-stripe-swebench.png` (data-exhibit) — Stripe before/after + SWE-bench trajectory + cost band [line 95]
   - `p2-05-first-loop-checklist.png` (hand-drawn) — your first loop checklist [line 116]
 - [ ] Step 3b-img: hero/illustrative imagery (optional)
-- [x] Step 3c: Quality review — `quality-reviewer` verdict PASS; 1 surgical fix (p1-02-ceilings.png repositioned to end of Eras 1–3 with setup sentence); no "leverage"; data preserved; Tier 0 preflight GATE PASS
-- [ ] Step 3d: SEO optimization
+- [x] Step 3c: Quality review — `quality-reviewer` verdict PASS; 1 surgical fix (p1-02-ceilings.png repositioned to end of Eras 1–3 with setup sentence); no "leverage"; data preserved; Tier 0 preflight GATE PASS. Re-validated 2026-06-23 after migrating the p1-01 staircase HERO to D2 (re-rendered + deep-QA via image view, preflight GATE PASS).
+- [x] Step 3d: SEO optimization — in-place on `content/from-prompts-to-loop-engineering.md` (2026-06-23). Primary keyword "loop engineering" + 5 secondary; added `seo:` frontmatter (title 50 chars / meta 151 chars / slug `loop-engineering-ai-native-development`); front-loaded primary keyword in subtitle; optimized 5 H2s with secondary keywords (reader-first); verified descriptive alt text on all 9 images (paths unchanged). Tier 0 preflight deterministically validated GATE: PASS (0/0/0).
 - [ ] Step 4a: Social distribution strategy
 - [ ] Step 4a-visual: Visual-first asset pack
 - [ ] Step 4: LinkedIn post
@@ -56,7 +56,7 @@
 - [ ] Step 7: Brand audit
 - [ ] Step 7b: Grounded content review
 - [ ] Step 8: YouTube script — skipped by user selection
-- [ ] Step 10: Web publishing
+- [x] Step 10: Web publishing — `content/from-prompts-to-loop-engineering.md` → `docs/blog/loop-engineering-ai-native-development.html` (2026-06-23). 9 visuals copied to `docs/blog/visuals/` and referenced via relative `visuals/` paths; linked from `docs/index.html`; canonical URL logged to `content/publishing-log.md`.
 - [ ] Step 11: Social publishing
 - [ ] Step 12: Platform distillation draft
 

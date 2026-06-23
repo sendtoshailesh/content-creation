@@ -71,114 +71,130 @@ def _crisp_font() -> None:
 
 
 # ---------------------------------------------------------------------------
-# #2  p1-01 — The four-era staircase  (HERO, diagram-as-code: crisp schematic)
+# Auto-fit text helpers — measure rendered text in DATA units so labels are
+# wrapped and shrunk to fit a fixed-width card instead of overflowing it.
+# This is the root-cause fix for text spilling outside its box.
 # ---------------------------------------------------------------------------
+def _text_width_data(ax, fig, s: str, fontsize: float, weight: str = "normal") -> float:
+    """Width of string ``s`` in axis DATA units at the given font."""
+    t = ax.text(0, 0, s, fontsize=fontsize, fontweight=weight)
+    fig.canvas.draw()
+    bb = t.get_window_extent(renderer=fig.canvas.get_renderer())
+    inv = ax.transData.inverted()
+    (x0, _), (x1, _) = inv.transform([(bb.x0, bb.y0), (bb.x1, bb.y1)])
+    t.remove()
+    return abs(x1 - x0)
+
+
+def _wrap_words(ax, fig, s: str, fontsize: float, max_w: float, weight: str = "normal"):
+    """Greedy word-wrap so each line fits ``max_w`` data units."""
+    lines, cur = [], []
+    for w in s.split():
+        trial = " ".join(cur + [w])
+        if cur and _text_width_data(ax, fig, trial, fontsize, weight) > max_w:
+            lines.append(" ".join(cur))
+            cur = [w]
+        else:
+            cur.append(w)
+    if cur:
+        lines.append(" ".join(cur))
+    return lines
+
+
+def _fit_text_lines(ax, fig, s: str, max_w: float, *, base: float,
+                    min_size: float, max_lines: int, weight: str = "normal"):
+    """Shrink the font until the wrapped text fits ``max_w`` and ``max_lines``.
+
+    Returns ``(lines, fontsize)``. Falls back to ``min_size`` if nothing fits.
+    """
+    fs = base
+    lines = [s]
+    while fs >= min_size:
+        lines = _wrap_words(ax, fig, s, fs, max_w, weight)
+        if len(lines) <= max_lines:
+            widest = max(_text_width_data(ax, fig, ln, fs, weight) for ln in lines)
+            if widest <= max_w:
+                return lines, fs
+        fs -= 0.5
+    return lines, max(fs, min_size)
+
+
+# ---------------------------------------------------------------------------
+# #2  p1-01 — The four-era staircase  (HERO, diagram-as-code via d2)
+# ---------------------------------------------------------------------------
+# Migrated from hand-placed matplotlib to D2 (auto-layout) to eliminate the
+# hand-geometry defect class. `direction: up` makes the four eras read as an
+# ascending staircase: WORD (base) -> CONTEXT -> RIG -> LOOP (top), with the
+# upward arrows + numbering carrying the rise.
 def staircase(out_path: Path) -> Path:
-    _crisp_font()
-    fig, ax = plt.subplots(figsize=(13.0, 7.6), dpi=DPI)
-    ax.set_xlim(0, 16)
-    ax.set_ylim(0, 9.4)
-    ax.axis("off")
-    fig.patch.set_facecolor(T["BG"])
+    edge = f'{{style.stroke: "{T["TEXT_2"]}"; style.stroke-width: 2}}'
+    src = f"""
+direction: up
 
-    eras = [
-        ("1", "WORD", "Prompt engineering", "engineer the wording of one call", "2022-2024", ERA["word"]),
-        ("2", "CONTEXT", "Context engineering", "engineer what the model sees", "~Jun 2025", ERA["context"]),
-        ("3", "RIG", "Harness engineering", "engineer everything around the model", "Feb 2026", ERA["rig"]),
-        ("4", "LOOP", "Loop engineering", "engineer the iteration cycle itself", "Sep 2025 -> Mar 2026", ERA["loop"]),
-    ]
+title: |md
+# The staircase: four eras, one moving target
+Each step automates the craft below it and pushes your effort up a level.
+|
+title.shape: text
+title.near: top-center
+title.style.font-size: 30
+title.style.font-color: "{T['TEXT']}"
 
-    n = len(eras)
-    card_w = 3.05
-    xs = [0.85 + i * 3.78 for i in range(n)]      # left edges, rising left->right
-    bys = [0.95 + i * 1.62 for i in range(n)]     # step base heights
-    card_h = 2.35
+word: |md
+### 1 · WORD
+**Prompt engineering** engineer the wording of one call
 
-    # Background rising "unit of work" axis arrow.
-    ax.add_patch(
-        FancyArrowPatch(
-            (0.7, 0.7), (15.5, 8.7),
-            arrowstyle="-|>", mutation_scale=26, lw=2.0,
-            color=T["MUTED"], linestyle=(0, (6, 4)), zorder=0,
-        )
-    )
-    ax.text(
-        15.45, 8.95, "the unit of work you own rises",
-        ha="right", va="bottom", fontsize=13.5, style="italic",
-        color=T["TEXT_2"], zorder=1,
-    )
+`2022-2024`
+|
+word.style.fill: "{T['PURPLE_BG']}"
+word.style.stroke: "{ERA['word']}"
+word.style.border-radius: 12
+word.style.font-color: "{T['TEXT']}"
 
-    # Staircase risers (light fill) so the climb reads as physical steps.
-    for i in range(n):
-        ax.add_patch(
-            Rectangle(
-                (xs[i], 0.55), card_w, bys[i] - 0.55,
-                facecolor=T["LIGHT_BG"], edgecolor=T["GRID"], lw=1.2, zorder=1,
-            )
-        )
+context: |md
+### 2 · CONTEXT
+**Context engineering** engineer what the model sees
 
-    # Connecting up-right arrows between cards.
-    for i in range(n - 1):
-        ax.add_patch(
-            FancyArrowPatch(
-                (xs[i] + card_w, bys[i] + card_h * 0.62),
-                (xs[i + 1], bys[i + 1] + card_h * 0.40),
-                arrowstyle="-|>", mutation_scale=22, lw=2.6,
-                color=eras[i + 1][5], zorder=4,
-            )
-        )
+`~Jun 2025`
+|
+context.style.fill: "{T['TEAL_BG']}"
+context.style.stroke: "{ERA['context']}"
+context.style.border-radius: 12
+context.style.font-color: "{T['TEXT']}"
 
-    for i, (num, big, title, doing, date, color) in enumerate(eras):
-        x, y = xs[i], bys[i]
-        # Card body.
-        ax.add_patch(
-            FancyBboxPatch(
-                (x, y), card_w, card_h,
-                boxstyle="round,pad=0.0,rounding_size=0.10",
-                facecolor=T["BG"], edgecolor=color, lw=3.0, zorder=3,
-            )
-        )
-        # Colored header strip.
-        ax.add_patch(
-            Rectangle((x, y + card_h - 0.62), card_w, 0.62, facecolor=color, zorder=3)
-        )
-        ax.text(
-            x + 0.22, y + card_h - 0.31, f"{num}  {big}",
-            ha="left", va="center", fontsize=20, fontweight="bold",
-            color="white", zorder=5,
-        )
-        ax.text(
-            x + 0.22, y + card_h - 1.02, title,
-            ha="left", va="center", fontsize=14.5, fontweight="bold",
-            color=T["TEXT"], zorder=5,
-        )
-        # Two-line "what you engineer".
-        words = doing.split()
-        mid = 4
-        l1, l2 = " ".join(words[:mid]), " ".join(words[mid:])
-        ax.text(x + 0.22, y + card_h - 1.42, l1, ha="left", va="center",
-                fontsize=11.5, color=T["TEXT_2"], zorder=5)
-        ax.text(x + 0.22, y + card_h - 1.74, l2, ha="left", va="center",
-                fontsize=11.5, color=T["TEXT_2"], zorder=5)
-        ax.text(x + 0.22, y + 0.26, date, ha="left", va="center",
-                fontsize=11, fontweight="bold", color=color, zorder=5)
+rig: |md
+### 3 · RIG
+**Harness engineering** engineer everything around the model
 
-    ax.text(
-        0.2, 9.25, "The staircase: four eras, one moving target",
-        ha="left", va="top", fontsize=23, fontweight="bold", color=T["TEXT"],
-    )
-    ax.text(
-        0.2, 8.62, "Each step automates the craft below it and pushes your effort up a level: word -> context -> rig -> loop.",
-        ha="left", va="top", fontsize=13, color=T["TEXT_2"],
-    )
-    ax.text(
-        0.2, 0.16, "Sources: trend-research §1; Fowler 'Exploring Gen AI' index; Bockeler (Feb 2026); Willison (Sep 2025).",
-        ha="left", va="bottom", fontsize=10.5, color=T["MUTED"],
-    )
+`Feb 2026`
+|
+rig.style.fill: "{T['BLUE_BG']}"
+rig.style.stroke: "{ERA['rig']}"
+rig.style.border-radius: 12
+rig.style.font-color: "{T['TEXT']}"
 
-    fig.savefig(out_path, dpi=DPI, bbox_inches="tight", facecolor=T["BG"], pad_inches=0.16)
-    plt.close(fig)
-    return out_path
+loop: |md
+### 4 · LOOP
+**Loop engineering** engineer the iteration cycle itself
+
+`Sep 2025 -> Mar 2026`
+|
+loop.style.fill: "#dcfce7"
+loop.style.stroke: "{ERA['loop']}"
+loop.style.border-radius: 12
+loop.style.font-color: "{T['TEXT']}"
+
+word -> context: automates the craft below {edge}
+context -> rig: automates the craft below {edge}
+rig -> loop: automates the craft below {edge}
+
+sources: "Sources: trend-research; Fowler 'Exploring Gen AI' index; Bockeler (Feb 2026); Willison (Sep 2025)."
+sources.shape: text
+sources.near: bottom-center
+sources.style.font-size: 18
+sources.style.font-color: "{T['MUTED']}"
+"""
+    return render_diagram(out_path, source=src, lang="d2", sketch=False, theme="default")
 
 
 # ---------------------------------------------------------------------------
@@ -332,11 +348,17 @@ def ceilings(out_path: Path) -> Path:
                          fill=False, edgecolor=ERA["rig"], lw=2.8))
             ax.text(5.0, 5.4, "the rig", ha="center", va="center",
                     fontsize=12.5, fontweight="bold", color=ERA["rig"])
-            # broken / open loop: an arc that stops short with a gap marker
-            ax.add_patch(Arc((5.0, 5.4), 5.6, 4.6, theta1=300, theta2=210,
+            # broken / open loop: an arc that stops short, its arrowhead anchored
+            # to the arc's lower-left terminus so the stroke reads as continuous.
+            cx, cy, aw, ah = 5.0, 5.4, 5.6, 4.6
+            ax.add_patch(Arc((cx, cy), aw, ah, theta1=300, theta2=210,
                              edgecolor=T["TEXT_2"], lw=2.6))
-            ax.add_patch(FancyArrowPatch((2.2, 4.1), (2.9, 3.4),
-                         arrowstyle="-|>", mutation_scale=20, lw=2.4, color=T["TEXT_2"]))
+            ex = cx + (aw / 2) * np.cos(np.radians(210))
+            ey = cy + (ah / 2) * np.sin(np.radians(210))
+            px = cx + (aw / 2) * np.cos(np.radians(204))
+            py = cy + (ah / 2) * np.sin(np.radians(204))
+            ax.add_patch(FancyArrowPatch((px, py), (ex, ey),
+                         arrowstyle="-|>", mutation_scale=20, lw=2.6, color=T["TEXT_2"]))
             ax.plot([6.9, 7.7], [3.3, 4.0], color=T["WARN"], lw=3.0)
             ax.plot([7.7, 6.9], [3.3, 4.0], color=T["WARN"], lw=3.0)
             ax.text(7.0, 3.0, "no cycle", ha="center", va="top",
@@ -529,11 +551,12 @@ def stripe_swebench(out_path: Path) -> Path:
     axL.spines["bottom"].set_color(T["GRID"])
     axL.text(0, 1000 + 55, "~1,000", ha="center", fontsize=14,
              fontweight="bold", color=T["TEXT_2"])
-    axL.text(1, 1300 + 55, "1,300+", ha="center", fontsize=16,
+    axL.text(1, 1300 + 88, "1,300+", ha="center", fontsize=16,
              fontweight="bold", color=T["ACCENT"])
-    axL.annotate("", xy=(0.92, 1370), xytext=(0.22, 1130),
+    # Growth arrow ends at the top-left of the After bar, clear of the 1,300+ label.
+    axL.annotate("", xy=(0.80, 1300), xytext=(0.24, 1075),
                  arrowprops=dict(arrowstyle="-|>", color=T["SUCCESS"], lw=2.4))
-    axL.text(0.5, 1470, "+30%", ha="center", fontsize=13,
+    axL.text(0.44, 1430, "+30%", ha="center", fontsize=13,
              fontweight="bold", color=T["SUCCESS"])
     axL.set_title("Stripe Minions: PRs / week", fontsize=15.5,
                   fontweight="bold", color=T["TEXT"], loc="left", pad=10)
@@ -550,10 +573,17 @@ def stripe_swebench(out_path: Path) -> Path:
     plabels = ["SWE-agent\nMar 2024", "mini-SWE-agent\nJul 2025", "Claude 4.5 Opus\nFeb 2026"]
     axR.plot(px, py, color=T["ACCENT"], lw=3.6, marker="o", markersize=11,
              markerfacecolor=T["BG"], markeredgecolor=T["ACCENT"], markeredgewidth=3, zorder=4)
-    for xx, yy in zip(px, py):
-        axR.text(xx, yy + 5.5, f"{yy:.1f}%".replace(".0%", "%"),
-                 ha="center", fontsize=13, fontweight="bold", color=T["ACCENT"], zorder=5)
-    axR.set_xlim(-0.4, 2.4)
+    for i, (xx, yy) in enumerate(zip(px, py)):
+        txt = f"{yy:.1f}%".replace(".0%", "%")
+        if i == 0:
+            # First point sits low and the line climbs steeply up-and-right;
+            # place its label up-and-left so the line never crosses the text.
+            axR.text(xx - 0.06, yy + 6.0, txt, ha="right", va="center",
+                     fontsize=13, fontweight="bold", color=T["ACCENT"], zorder=5)
+        else:
+            axR.text(xx, yy + 5.5, txt, ha="center", va="center",
+                     fontsize=13, fontweight="bold", color=T["ACCENT"], zorder=5)
+    axR.set_xlim(-0.6, 2.4)
     axR.set_ylim(0, 100)
     axR.set_xticks(px)
     axR.set_xticklabels(plabels, fontsize=10.5, color=T["TEXT"])
@@ -566,12 +596,18 @@ def stripe_swebench(out_path: Path) -> Path:
     for sp in ("left", "bottom"):
         axR.spines[sp].set_color(T["GRID"])
 
-    # per-task cost band callout
-    axR.add_patch(FancyBboxPatch((0.05, 84), 1.55, 12,
-                  boxstyle="round,pad=0.1,rounding_size=2",
+    # per-task cost band callout -- box sized to the measured text so it never
+    # overflows; a plain rectangle avoids the distorted corners that mismatched
+    # x/y data scales produce with a rounded box.
+    band_txt = "per-task cost band: ~\\$0.05 - \\$0.96 / instance"
+    band_fs = 10.5
+    bx0, by0, bh = 0.05, 84.0, 12.0
+    bw = _text_width_data(axR, fig, band_txt, band_fs, "bold") + 0.20
+    axR.add_patch(Rectangle((bx0, by0), bw, bh,
                   facecolor=T["LIGHT_BG"], edgecolor=T["WARN"], lw=2.0, zorder=3))
-    axR.text(0.12, 90, "per-task cost band: ~\\$0.05 - \\$0.96 / instance",
-             ha="left", va="center", fontsize=11, fontweight="bold", color=T["WARN"], zorder=4)
+    axR.text(bx0 + 0.10, by0 + bh / 2, band_txt,
+             ha="left", va="center", fontsize=band_fs, fontweight="bold",
+             color=T["WARN"], zorder=4)
     axR.text(0.05, 7,
              "Same harness, different model -- 500 human-filtered instances.",
              ha="left", fontsize=11, style="italic", color=T["TEXT_2"])

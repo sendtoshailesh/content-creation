@@ -1,6 +1,21 @@
+---
+seo:
+  title: "Loop Engineering: The AI-Native Development Shift"
+  description: "Prompt, context, harness, loop engineering: the four-era arc of AI-native development, and why in 2026 the unit of work you own is the iteration loop."
+  slug: "loop-engineering-ai-native-development"
+  keywords:
+    primary: "loop engineering"
+    secondary:
+      - "harness engineering"
+      - "AI-native development"
+      - "agentic loops"
+      - "context engineering"
+      - "prompt engineering"
+---
+
 # From Prompts to Loop Engineering: The Workflow Shift in AI-Native Development
 
-*The four-era arc — word, context, rig, loop — and why, in 2026, the unit of work you own has moved all the way up to the iteration cycle.*
+*The four-era arc of AI-native development — prompt, context, harness, loop engineering — and why, in 2026, the unit of work you own has moved all the way up to the iteration loop.*
 
 You're not getting better at prompting. I know that sounds backwards, because most of us have spent the last two years collecting prompt tricks like trading cards — "act as a senior engineer," few-shot examples, chain-of-thought, the whole drawer of them. And they worked, for a while. But here is what I keep seeing when I sit with teams shipping real software with agents: the people getting the most out of these tools are not the ones with the cleverest wording. They're the ones who stopped optimizing the sentence and started optimizing everything around it.
 
@@ -10,7 +25,7 @@ The skill didn't get better. The skill moved. And the reason it keeps moving is 
 
 Prompt engineering, context engineering, harness engineering, loop engineering — these are not four trends competing for your attention. They're one staircase. Each step automates the craft of the step below it and pushes you up to govern a bigger unit of work. By the end you'll know which step you're standing on, and how to ship your first real loop this week.
 
-## The staircase: four eras, one moving target
+## The staircase: four eras of AI-native development, one moving target
 
 Here's the pattern that makes the four eras click into one picture. **As the model absorbs more of the work, the place where your effort actually matters moves up a level.** You used to engineer a word. Then you engineered the context. Then the rig the agent runs inside. Now, increasingly, the loop the agent runs.
 
@@ -27,7 +42,7 @@ The practitioners naming this arc are saying the same thing in different words. 
 
 The useful thing about seeing it as a staircase is that it tells you where to spend your next hour. If you're still tuning sentences, the next floor up is waiting and it's where the wins are.
 
-## Eras 1–3 in fast-forward
+## Eras 1–3: prompt, context, and harness engineering in fast-forward
 
 Let me run the first three steps quickly, because the interesting argument lives at the top — but you can't appreciate the top step without watching the ground shift underneath it.
 
@@ -53,7 +68,7 @@ Simon Willison gives the working definition: an agent is something that "runs to
 
 Anthropic supplies the primitives. Their **evaluator-optimizer** loop is "one LLM generates while another evaluates and gives feedback in a loop," and — this is the part people skip — it needs a stop condition, "a maximum number of iterations to maintain control" (Anthropic, "Building Effective Agents," Dec 2024). A loop without a stop condition isn't autonomy; it's a way to burn tokens. So the four levers you actually engineer are: a clear goal with a success criterion, the right tools to iterate, one feedback signal the agent can read, and a stop condition that ends the cycle.
 
-## Harness vs. loop: nouns vs. verbs
+## Harness engineering vs. loop engineering: nouns vs. verbs
 
 Now the distinction that took me too long to see clearly, because almost every source blurs it: **the harness and the loop are not the same thing.**
 
@@ -98,13 +113,13 @@ Two pieces of evidence anchor this, and they pull in the same direction.
 
 **SWE-bench Verified** is the cleaner natural experiment, because it holds the harness constant. Same 500 instances, same mini-SWE-agent scaffold; you swap the model underneath. Under that fixed rig, the score has climbed from **12.47% (SWE-agent, Mar 2024) to 76.8% (Claude 4.5 Opus, Feb 2026)** — roughly a 6x improvement on identical infrastructure in about two years (swebench.com, Feb 2026). Read it two ways and both land: a stable, well-built rig let every model gain flow through instead of capping it; and because the harness is identical across the table, the rig and the loop are isolated as real, separate variables from the model. It isn't free, either — per-task cost on that leaderboard runs roughly **$0.05 to $0.96 per instance** depending on the model, which is the first sign that the loop has an economics problem worth taking seriously.
 
-## The honest counterweight: a discipline, not a victory lap
+## The honest counterweight: agentic loop failure modes, not a victory lap
 
 I don't want to sell you a finished story, because the sources I trust most are the ones that name what still breaks. Self-correcting loops fail in specific, documented ways: **agentic laziness** (the agent declares done too early), **self-preferential bias** (it rates its own work too highly), and **goal drift** (it wanders off the original target) — all named by Anthropic via InfoQ (Jun 2026). Those failure modes are precisely *why* you engineer verification gates and stop conditions instead of trusting the loop to police itself. The defenses are loop patterns too: adversarial verification, fan-out-and-synthesize, classifier routing.
 
 And the economics carry an asterisk. Today's flat-rate and per-token agent pricing is, in Böckeler's words, "still very subsidized" (InfoQ podcast, Jun 2026) — so the $0.05–$0.96 per-task numbers above are a snapshot, not a forecast. Cite them with their dataset date and re-pull before you make a budget decision on them. Loop engineering is a discipline you practice against known failure modes, not a victory lap.
 
-## Your first loop: where to start this week
+## Your first agentic loop: where to start this week
 
 Here's the shippable part. Take one task where you currently babysit the agent line-by-line — where you're *in* the loop. Give it four things:
 
