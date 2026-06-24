@@ -1,7 +1,7 @@
 <!-- LinkedIn posts for: content/from-prompts-to-loop-engineering.md -->
 <!-- Canonical URL (FIRST COMMENT ONLY): https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html -->
 <!-- Sequence per content/social-strategy.md: Day 0 lead (staircase) → Day 4 follow-up (nouns vs verbs) → Day 7 data/leadership follow-up -->
-<!-- Voice: first-person practitioner. Never use the word "leverage". LinkedIn native formatting only. -->
+<!-- Voice: first-person practitioner. Avoid corporate filler verbs. LinkedIn native formatting only. -->
 
 # LinkedIn Post 1 — Day 0 Lead (Staircase angle)
 
@@ -37,9 +37,9 @@ Proof it scales: Stripe's agents ship 1,300+ PRs a week (up from ~1,000) with ze
 
 This window won't reverse. As models absorb more of the work, the unit of work you own keeps rising. Right now it's the loop.
 
-So which step are you standing on — word, context, rig, or loop? Tell me below.
+Don't just nod at this — close one loop this week. The lowest-friction start: point Aider at a repo with a test suite and let it run verify→correct on its own (`aider --test-cmd "pytest -q" --auto-test`). You'll know it worked when `pytest` exits 0 on a change you didn't write. Repo link + two harder projects (build the loop yourself, then run it on real GitHub issues) in the first comment.
 
-Link to the full four-era breakdown in the first comment. 👇
+So which step are you standing on — word, context, rig, or loop? Tell me below. 👇
 
 #AINativeDevelopment #LoopEngineering #HarnessEngineering #AgenticLoops #SoftwareEngineering
 
@@ -85,6 +85,8 @@ Here's what I keep seeing sitting with teams shipping real software with agents 
 
 The unit of work you own keeps rising. Right now it's 𝘁𝗵𝗲 𝗹𝗼𝗼𝗽.
 
+🔨 𝗖𝗹𝗼𝘀𝗲 𝗼𝗻𝗲 𝗹𝗼𝗼𝗽 𝘁𝗵𝗶𝘀 𝘄𝗲𝗲𝗸: point Aider at a repo with tests and let it run verify→correct itself — `aider --test-cmd "pytest -q" --auto-test`. You'll know it worked when 𝗽𝘆𝘁𝗲𝘀𝘁 𝗲𝘅𝗶𝘁𝘀 𝟬 on a change 𝘺𝘰𝘶 𝘥𝘪𝘥𝘯'𝘵 𝘸𝘳𝘪𝘵𝘦. Repo + two harder projects in the first comment.
+
 𝘞𝘩𝘪𝘤𝘩 𝘴𝘵𝘦𝘱 𝘢𝘳𝘦 𝘺𝘰𝘶 𝘴𝘵𝘢𝘯𝘥𝘪𝘯𝘨 𝘰𝘯 — word, context, rig, or loop? Tell me below. 👇
 
 #AINativeDevelopment #LoopEngineering #HarnessEngineering #AgenticLoops #SoftwareEngineering
@@ -96,6 +98,13 @@ The unit of work you own keeps rising. Right now it's 𝘁𝗵𝗲 𝗹𝗼𝗼�
 ── FIRST COMMENT COPY ──
 
 The full four-era breakdown — prompt → context → harness → loop, with the Stripe and SWE-bench data and the practitioners who named the arc (Willison, Böckeler, Morris, Anthropic): https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+
+Three build-it-yourself projects from the post, beginner → advanced:
+• Run your first verify→correct loop with Aider: https://github.com/Aider-AI/aider
+• Build the loop yourself from agent patterns + a verifier: https://github.com/anthropics/claude-cookbooks
+• Close the loop on real GitHub issues and measure it: https://github.com/SWE-agent/mini-swe-agent
+
+Start with the first one — once you've watched a test suite close a loop you didn't babysit, the whole idea stops being abstract.
 #AINativeDevelopment #LoopEngineering
 
 ── END FIRST COMMENT COPY ──
@@ -208,6 +217,8 @@ Mature setups are both at once: Stripe's "blueprints" and Anthropic's "Dynamic W
 ── FIRST COMMENT COPY ──
 
 The full breakdown — harness vs. loop, the four postures (outside/in/on the loop + flywheel), and why "in the loop" is the bottleneck: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+
+Want to feel the nouns-vs-verbs distinction instead of just reading it? Build the loop yourself from Anthropic's agent patterns + a test-runner verifier (~150 lines, half a day): https://github.com/anthropics/claude-cookbooks — the `patterns/agents` recipes have the evaluator-optimizer loop and its stop-condition guidance.
 #LoopEngineering #HarnessEngineering
 
 ── END FIRST COMMENT COPY ──
@@ -304,6 +315,8 @@ For two weeks I've argued the unit of work moved up a staircase — prompt → c
 ── FIRST COMMENT COPY ──
 
 The full data and sources — Stripe Minions, the SWE-bench trajectory (12.47% → 76.8% on a fixed harness), per-task costs, and the failure modes worth budgeting for: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+
+Want your own read on the economics instead of trusting mine? Run mini-SWE-agent on a small SWE-bench subset and measure your own resolve-rate and cost-per-issue (a weekend): https://github.com/SWE-agent/mini-swe-agent
 #EngineeringLeadership #LoopEngineering
 
 ── END FIRST COMMENT COPY ──

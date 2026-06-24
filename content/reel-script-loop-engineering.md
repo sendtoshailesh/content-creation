@@ -36,7 +36,7 @@ status: draft
 | 0:12-0:30 | Use `p1-01-staircase.png` ★HERO. Slow vertical pan bottom-to-top, revealing one step at a time: prompt → context → harness → loop. | "It's one staircase, four eras. Prompt engineering: the wording. Context engineering: what the model sees. Harness engineering: the rig around it. Loop engineering: the cycle it runs." | "Prompt -> context -> harness -> loop" |
 | 0:30-0:42 | Use `p2-04-stripe-swebench.png`. Hard cut on each number; zoom into "1,300+ PRs/week", then the 12.47% → 76.8% trajectory. | "Why now? Generation got cheap, so validation is the bottleneck. Stripe ships 1,300-plus PRs a week with zero human-written code. On a fixed harness, SWE-bench climbed from 12 to 77 percent." | "Validation is the bottleneck" |
 | 0:42-0:58 | Use `p2-01-loop.png` ★HERO. Trace the cycle plan → act → observe → verify → correct; flash the verification gate and stop condition. | "So you stop tuning sentences and start owning the loop: plan, act, observe, verify, correct — with a gate that checks the work and a stop condition that ends it." | "Own the loop. Add a stop condition." |
-| 0:58-1:15 | Use `p2-05-first-loop-checklist.png`. Reveal each item as a checkmark; end on a clean title card with the blog CTA. | "Ship one this week. Take a task you babysit line-by-line. Give it four things: a clear goal, the tools to iterate, one feedback signal it can read, and a stop condition. Full four-era breakdown's in the blog." | "Ship one loop this week" |
+| 0:58-1:15 | Use `p2-05-first-loop-checklist.png`, then hard-cut to `p2-06-projects-ladder.png` showing the three projects climbing. End on a clean title card with the repo CTA. | "Ship one this week. Take a task you babysit line-by-line and give it four things: a clear goal, the tools to iterate, one feedback signal it can read, and a stop condition. Easiest start — point Aider at your test suite and let it loop. Repo and two harder projects in the description." | "Try the first one this week" |
 
 ## Screen Recording Notes
 
@@ -69,14 +69,15 @@ So you stop tuning sentences and start owning the loop: plan, act, observe, veri
 
 Ship one this week. Take a task you babysit line-by-line. Give it four things: a clear goal, the tools to iterate, one feedback signal it can read, and a stop condition.
 
-Full four-era breakdown's in the blog.
+Easiest start — point Aider at your test suite and let it loop. Repo and two harder projects are in the description.
 
 ## End-Card Text
 
 ```text
-Which step are you on?
+Try the first one this week
 prompt -> context -> harness -> loop
 
+Start: github.com/Aider-AI/aider
 Full breakdown:
 sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
 ```
@@ -102,7 +103,12 @@ The proof:
 
 Ship your first loop this week. Give it: a clear goal, the tools to iterate, one machine-checkable feedback signal, and a stop condition.
 
-Full four-era breakdown:
+Don't overthink the start. Three projects, beginner -> advanced:
+1. Run your first verify->correct loop with Aider: github.com/Aider-AI/aider
+2. Build the loop yourself from agent patterns + a verifier: github.com/anthropics/claude-cookbooks
+3. Close the loop on real GitHub issues and measure it: github.com/SWE-agent/mini-swe-agent
+
+Try the first one this week. Full four-era breakdown:
 https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
 
 #LoopEngineering #AINativeDevelopment #HarnessEngineering #AgenticAI #SoftwareEngineering
@@ -134,7 +140,12 @@ The proof at scale:
 
 Your move this week: take one task you babysit line-by-line and give it four things — a clear goal, the tools to iterate, one machine-checkable feedback signal, and a stop condition. Then step 𝘰𝘯 the loop instead of 𝘪𝘯 it.
 
-Full four-era breakdown:
+Don't just nod — close one loop this week. Three projects, beginner -> advanced:
+1. Run your first verify->correct loop with Aider: github.com/Aider-AI/aider
+2. Build the loop yourself from agent patterns + a verifier: github.com/anthropics/claude-cookbooks
+3. Close the loop on real GitHub issues and measure it: github.com/SWE-agent/mini-swe-agent
+
+Try the first one. Full four-era breakdown:
 https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
 
 #LoopEngineering #AINativeDevelopment #HarnessEngineering #AgenticAI #SoftwareEngineering
@@ -151,6 +162,7 @@ END COPY
 | `content/visuals/p2-04-stripe-swebench.png` | Validation-bottleneck proof (1,300+ PRs/week; 12.47% → 76.8%) |
 | `content/visuals/p2-01-loop.png` | ★HERO — plan → act → observe → verify → correct |
 | `content/visuals/p2-05-first-loop-checklist.png` | First-loop checklist + CTA frame |
+| `content/visuals/p2-06-projects-ladder.png` | Three build-it-yourself projects (beginner → advanced) + repo CTA |
 
 ## Thumbnail / Cover Frame
 

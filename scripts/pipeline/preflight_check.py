@@ -10,6 +10,7 @@ Checks (deterministic only):
   Markdown content (.md)
     - broken local links / image paths (claim-citation, accessibility)
     - empty image alt text (accessibility)
+    - source attributions without an inline link (claim-citation)
     - banned corporate phrases (voice)
     - heading hygiene: exactly one H1 (layout)
     - word-count band for blog posts (messaging)
@@ -77,6 +78,19 @@ HEX_RE = re.compile(r"#[0-9a-fA-F]{6}\b")
 MD_LINK_RE = re.compile(r"!?\[(?P<text>[^\]]*)\]\((?P<target>[^)\s]+)(?:\s+\"[^\"]*\")?\)")
 SAVEFIG_RE = re.compile(r"\.savefig\s*\(")
 STRING_LITERAL_RE = re.compile(r"(['\"])(?P<body>(?:\\.|(?!\1).)*)\1")
+
+# Source-attribution guard (claim-citation). Flags parenthetical citations that
+# name a publisher/author + year but carry NO inline link to the primary source.
+# Precise token list keeps false positives near zero; bare date parens like
+# "(Jun 2026)" or "(2022-2024)" are intentionally allowed.
+SOURCE_TOKENS: tuple[str, ...] = (
+    "infoq", "stripe", "anthropic", "openai", "böckeler", "bockeler",
+    "willison", "morris", "circleci", "swebench", "swe-bench", "fowler",
+    "thoughtworks", "dropbox", "github", "arxiv", "deepmind", "google",
+    "microsoft", "apple", "meta", "nvidia", "gartner", "mckinsey", "redmonk",
+    "stack overflow", "stackoverflow", "techcrunch", "the verge", "wired",
+)
+CITATION_PAREN_RE = re.compile(r"\(([^()]*?\b(?:19|20)\d{2}\b[^()]*?)\)")
 
 VISUAL_PATH_HINT = "visuals"
 
@@ -159,6 +173,23 @@ def check_markdown(path: Path) -> list[Finding]:
                 "Warning", "messaging", rel,
                 f"Blog post is {words} words (< {BLOG_MIN_WORDS} minimum)",
                 "Expand with concrete data, examples, or a case study",
+            ))
+
+    # Source attributions must carry an inline link to the primary source.
+    for m in CITATION_PAREN_RE.finditer(text):
+        start = m.start()
+        if start > 0 and text[start - 1] == "]":
+            continue  # this paren is a Markdown link target, e.g. [text](url)
+        inner = m.group(1)
+        if "](" in inner or "://" in inner:
+            continue  # already wraps an inline link / is a URL
+        low = inner.lower()
+        if any(tok in low for tok in SOURCE_TOKENS) or " via " in low or "et al" in low:
+            line = _line_for(text, start)
+            findings.append(Finding(
+                "Warning", "claim-citation", f"{rel}:{line}",
+                f"Source attribution without inline link: ({inner.strip()})",
+                "Wrap the citation in a Markdown link to the primary source URL",
             ))
 
     return findings

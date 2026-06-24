@@ -170,6 +170,15 @@ loop-engineering payoff through the progression; honest about limits; no corpora
 - `[VISUAL: "your first loop" checklist card — goal / tools / feedback signal / stop condition]`
 - **Distribution tag:** LinkedIn CTA; Reel closing line; deck final/CTA slide.
 
+### H2 11. Build it yourself: 3 projects to try this week `~450 words` (MANDATORY practitioner track)
+- Per the `practitioner-projects` skill: the post must hand readers something to **build**, not just synthesize sources. Three structured, GitHub-grounded projects laddering beginner -> intermediate -> advanced, each mapping to a concept the post already taught.
+- **Project 1 (Beginner) — Run your first verify->correct loop with Aider.** Maps to "the loop" + "validation is the gate." Use `--auto-test` so the model edits, runs your test suite as the verifier, and self-corrects. Success signal: `pytest` exits 0 on a model-made change. Start from: https://github.com/Aider-AI/aider
+- **Project 2 (Intermediate) — Build the loop yourself from agent patterns + a verifier.** Maps to "harness (nouns) vs. loop (verbs)." ~150-line plan->act->observe->verify->correct loop from the Claude Cookbooks agent patterns, test runner as the sensor, capped retries. Success signal: seeded bug fixed within retry budget, non-zero exit if not (no infinite loop). Start from: https://github.com/anthropics/claude-cookbooks
+- **Project 3 (Advanced) — Close the loop on real GitHub issues and measure it.** Maps to "on the loop" + the SWE-bench trajectory. Point mini-SWE-agent at a SWE-bench subset in a sandbox; measure resolve-rate + $/issue — your own 12.47%->76.8% / $0.05-$0.96 micro-experiment. Start from: https://github.com/SWE-agent/mini-swe-agent
+- **Each project carries:** Goal, Prerequisites, Steps, machine-checkable Success signal, Time, Stretch goal, verified "Start from" repo link.
+- `[VISUAL: projects ladder — three rungs beginner->advanced with repo + success-signal labels]`
+- **Distribution tag:** every channel's CTA names Project 1 as the on-ramp; LinkedIn/X close on the repo link; deck "Build it yourself" slide; reel "try the first one this week."
+
 ---
 
 ## Distribution-aware section -> asset map
@@ -186,6 +195,7 @@ loop-engineering payoff through the progression; honest about limits; no corpora
 | 8. Stripe + SWE-bench | core | data-proof post | "the numbers" | two data slides |
 | 9. Honest counterweight | core | credibility beat | — | "the caveats" |
 | 10. Your first loop | core | CTA | close | CTA slide |
+| 11. Build it yourself (3 projects) | core | Project 1 CTA + repo | "try the first one" | "Build it yourself" slide |
 
 ---
 

@@ -41,3 +41,6 @@ Desktop.ini
 
 # Rendered output caches
 *.pyc
+
+# Marp deck QA rasterization temp
+content/deck/_verify/

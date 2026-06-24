@@ -7,6 +7,8 @@
 *Voice: first-person practitioner — "sharing my learnings working with customers." Never use the word "leverage."*
 *Do not publish from this artifact, and do not write the platform posts here — this is the strategy only.*
 
+> **2026-06-24 practitioner-projects re-run.** Two channels added to the distribution set: **Medium/Substack distill** (`content/medium-substack-loop-engineering.md`) and an **X/Twitter single post** (`content/x-twitter-loop-engineering.md`). New permanent principle (per `.github/skills/practitioner-projects`): **every channel's CTA points to a concrete project the reader can build — "go build X," not "go read my blog."** The shippable CTA below now resolves to three real, GitHub-grounded projects (Aider → claude-cookbooks → mini-SWE-agent), with Project 1 as the universal entry point across all channels.
+
 ---
 
 ## Primary Narrative
@@ -30,8 +32,8 @@ Four angles, all drawn straight from the blog. Each maps to a best-fit platform 
 3. **Why now: validation, not generation, is the bottleneck** — the economics inverted. Stripe's agents ship 1,300+ PRs/week with zero human-written code underpinning $1T+ in payments; SWE-bench Verified climbed 12.47% → 76.8% on a *fixed* harness. Verification is being pulled into the inner loop because the agent out-runs the pipeline.
    - Best fit: **LinkedIn data/leadership follow-up** + supporting beat inside the **Reel** hook.
 
-4. **Your first agentic loop this week** *(the shippable CTA)* — take one task where you babysit the agent line-by-line and give it four things: a clear goal + success criterion, the tools to iterate, one machine-checkable feedback signal, and a stop condition. Then step *on* the loop: next time it's wrong, fix the loop, not the output.
-   - Best fit: **Reel/Short CTA close** + **LinkedIn lead-post CTA** (turns the idea into action).
+4. **Build it yourself: 3 projects to try this week** *(the shippable CTA)* — reading about loops doesn't build the instinct; closing one does. Three real, open-source starting points that ladder from an afternoon to a weekend: (1) run your first verify→correct loop with **Aider** (`github.com/Aider-AI/aider`); (2) build the loop yourself from **claude-cookbooks** `patterns/agents` + a verifier (`github.com/anthropics/claude-cookbooks`); (3) close the loop on real GitHub issues with **mini-SWE-agent** and measure resolve-rate + cost (`github.com/SWE-agent/mini-swe-agent`). Every channel closes on Project 1 as the entry point.
+   - Best fit: **every channel's CTA** — LinkedIn first comment (all 3 repos), Reel/Short close + description, deck "Build it yourself" slide, Medium/Substack full projects block, X post (Project 1 + repo).
 
 ## Grounding Notes
 

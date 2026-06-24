@@ -43,7 +43,7 @@
 
       <p>You're not getting better at prompting. I know that sounds backwards, because most of us have spent the last two years collecting prompt tricks like trading cards &mdash; "act as a senior engineer," few-shot examples, chain-of-thought, the whole drawer of them. And they worked, for a while. But here is what I keep seeing when I sit with teams shipping real software with agents: the people getting the most out of these tools are not the ones with the cleverest wording. They're the ones who stopped optimizing the sentence and started optimizing everything around it.</p>
 
-      <p>The skill didn't get better. The skill moved. And the reason it keeps moving is the quiet inversion underneath all of this: code generation has gotten cheap, so <em>validation</em> &mdash; not generation &mdash; is now the bottleneck (CircleCI via InfoQ, Jun 2026). That single fact is what pushes the work up the stack, and it's why this post walks the whole arc instead of treating each new buzzword as a separate fad.</p>
+      <p>The skill didn't get better. The skill moved. And the reason it keeps moving is the quiet inversion underneath all of this: code generation has gotten cheap, so <em>validation</em> &mdash; not generation &mdash; is now the bottleneck (<a href="https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/">CircleCI via InfoQ, Jun 2026</a>). That single fact is what pushes the work up the stack, and it's why this post walks the whole arc instead of treating each new buzzword as a separate fad.</p>
 
       <img src="visuals/p1-05-pull-quote.png" alt="The reframe: you're not getting better at prompting — the level you work at is moving up the stack">
 
@@ -75,24 +75,24 @@
             <td>Context engineering</td>
             <td>What the model <em>sees</em></td>
             <td>Curating conventions, architecture, skills, lazy-loaded files</td>
-            <td>Term gained traction ~June 2025 (per B&ouml;ckeler)</td>
+            <td>Term gained traction ~June 2025 (<a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">per B&ouml;ckeler</a>)</td>
           </tr>
           <tr>
             <td>Harness engineering</td>
             <td>Everything <em>around</em> the model</td>
             <td>Building the rig: skills, CLIs, scripts, MCP, linters, tests, guardrails</td>
-            <td>OpenAI harness-engineering work (as cited by B&ouml;ckeler) + B&ouml;ckeler memo (Feb 2026)</td>
+            <td>OpenAI harness-engineering work (as cited by B&ouml;ckeler) + <a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">B&ouml;ckeler memo (Feb 2026)</a></td>
           </tr>
           <tr>
             <td>Loop engineering</td>
             <td>The control loop <em>itself</em></td>
             <td>Designing plan &rarr; act &rarr; observe &rarr; verify &rarr; correct, with stop conditions</td>
-            <td>Willison "Designing agentic loops" (Sep 2025); Morris (Mar 2026)</td>
+            <td><a href="https://simonwillison.net/2025/Sep/30/designing-agentic-loops/">Willison "Designing agentic loops" (Sep 2025)</a>; <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Morris (Mar 2026)</a></td>
           </tr>
         </tbody>
       </table>
 
-      <p>The practitioners naming this arc are saying the same thing in different words. The InfoQ/Thoughtworks podcast that maps the year is literally titled <em>"From MCP and Vibe Coding to Harness Engineering: How AI Native Engineering Evolved in One Year"</em> (Jun 2026). Simon Willison narrates his own version of the climb &mdash; "vibe coding" to "vibe engineering" to, in his Feb 2026 update, "agentic engineering." Different vocabularies, one direction of travel: up.</p>
+      <p>The practitioners naming this arc are saying the same thing in different words. The <a href="https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/">InfoQ/Thoughtworks podcast that maps the year</a> is literally titled <em>"From MCP and Vibe Coding to Harness Engineering: How AI Native Engineering Evolved in One Year"</em> (Jun 2026). Simon Willison narrates his own version of the climb &mdash; "vibe coding" to "vibe engineering" to, in his <a href="https://simonwillison.net/2025/Oct/7/vibe-engineering/">Feb 2026 update, "agentic engineering"</a>. Different vocabularies, one direction of travel: up.</p>
 
       <p>The useful thing about seeing it as a staircase is that it tells you where to spend your next hour. If you're still tuning sentences, the next floor up is waiting and it's where the wins are.</p>
 
@@ -102,11 +102,11 @@
 
       <p><strong>Step one &mdash; the prompt, and its ceiling.</strong> Prompt engineering was real and it mattered. The ceiling showed up fast: there's only so much you can fix by rewording a single request when the model can't see your codebase, your conventions, or what you tried five minutes ago. You can phrase the question perfectly and still get a confident answer to the wrong problem, because the model is missing the room it's standing in.</p>
 
-      <p><strong>Step two &mdash; the context, and its ceiling.</strong> So the effort moved to what the model sees. Context engineering &mdash; coding conventions, architecture docs, lazy-loaded skills, progressive disclosure, the slow death of stuffing everything through MCP &mdash; got the right information into the window at the right time (B&ouml;ckeler, "Context Engineering for Coding Agents," Feb 2026). This was a genuine step up. But a well-fed model still can't <em>act</em>. It can read your repo and still have no way to run the tests, see the type error, and try again. Curating the input hits its own ceiling the moment the work requires iteration.</p>
+      <p><strong>Step two &mdash; the context, and its ceiling.</strong> So the effort moved to what the model sees. Context engineering &mdash; coding conventions, architecture docs, lazy-loaded skills, progressive disclosure, the slow death of stuffing everything through MCP &mdash; got the right information into the window at the right time (<a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">B&ouml;ckeler, "Context Engineering for Coding Agents," Feb 2026</a>). This was a genuine step up. But a well-fed model still can't <em>act</em>. It can read your repo and still have no way to run the tests, see the type error, and try again. Curating the input hits its own ceiling the moment the work requires iteration.</p>
 
-      <p><strong>Step three &mdash; the rig.</strong> This is where it gets concrete. Harness engineering is building everything the agent operates inside: the skills and CLIs it calls, the scripts and language servers, the linters and type checkers and test suites that tell it whether it just made things better or worse. Birgitta B&ouml;ckeler's definition is the cleanest I've found &mdash; a harness is <em>"everything except the model"</em> (B&ouml;ckeler, "Harness Engineering &mdash; first thoughts," Feb 2026). Feed-forward context on one side, feedback sensors on the other.</p>
+      <p><strong>Step three &mdash; the rig.</strong> This is where it gets concrete. Harness engineering is building everything the agent operates inside: the skills and CLIs it calls, the scripts and language servers, the linters and type checkers and test suites that tell it whether it just made things better or worse. Birgitta B&ouml;ckeler's definition is the cleanest I've found &mdash; a harness is <em>"everything except the model"</em> (<a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">B&ouml;ckeler, "Harness Engineering &mdash; first thoughts," Feb 2026</a>). Feed-forward context on one side, feedback sensors on the other.</p>
 
-      <p>And here's the number that made me take this step seriously. On SWE-bench Verified &mdash; a benchmark of 500 human-filtered real GitHub issues &mdash; a minimal harness called mini-SWE-agent resolves <strong>65% of tasks in about 100 lines of Python</strong> (swebench.com, Jul 2025). A hundred lines. Most of the win wasn't a bigger model or a cleverer prompt; it was a small, well-built rig that let the model run, observe, and retry. The rig is doing real work &mdash; but a rig still needs a <em>cycle</em> to run in, and that cycle is the next floor up.</p>
+      <p>And here's the number that made me take this step seriously. On SWE-bench Verified &mdash; a benchmark of 500 human-filtered real GitHub issues &mdash; a minimal harness called mini-SWE-agent resolves <strong>65% of tasks in about 100 lines of Python</strong> (<a href="https://www.swebench.com/">swebench.com, Jul 2025</a>). A hundred lines. Most of the win wasn't a bigger model or a cleverer prompt; it was a small, well-built rig that let the model run, observe, and retry. The rig is doing real work &mdash; but a rig still needs a <em>cycle</em> to run in, and that cycle is the next floor up.</p>
 
       <p>Stack the three eras and each one hits a wall: rewording hits diminishing returns, a curated context window still can't act, and even a 100-line rig has no cycle to run in. Lining those ceilings up side by side is what makes the climb obvious.</p>
 
@@ -116,11 +116,11 @@
 
       <p>Loop engineering is the discipline of designing and governing the agent's <strong>iteration cycle</strong> &mdash; plan &rarr; act &rarr; observe &rarr; verify &rarr; correct &mdash; so it can self-correct <em>without a human standing in the inner loop</em>. The unit of work is no longer the word, the window, or even the rig. It's the loop: its goal, its tools, its feedback signal, and the condition that makes it stop.</p>
 
-      <p>Simon Willison gives the working definition: an agent is something that "runs tools in a loop to achieve a goal," and his sharp claim is that <strong>"designing agentic loops" is a distinct, new skill</strong> &mdash; he points out Claude Code only shipped in February 2025, so this is genuinely fresh ground, not repackaged folklore (Willison, "Designing agentic loops," Sep 2025). The art, he says, is reducing a problem "to a clear goal and a set of tools that can iterate towards that goal" &mdash; then letting the agent brute-force its way to a working solution.</p>
+      <p>Simon Willison gives the working definition: an agent is something that "runs tools in a loop to achieve a goal," and his sharp claim is that <strong>"designing agentic loops" is a distinct, new skill</strong> &mdash; he points out Claude Code only shipped in February 2025, so this is genuinely fresh ground, not repackaged folklore (<a href="https://simonwillison.net/2025/Sep/30/designing-agentic-loops/">Willison, "Designing agentic loops," Sep 2025</a>). The art, he says, is reducing a problem "to a clear goal and a set of tools that can iterate towards that goal" &mdash; then letting the agent brute-force its way to a working solution.</p>
 
       <img src="visuals/p2-01-loop.png" alt="The loop: plan → act → observe → verify → correct, with the verification gate and stop condition called out">
 
-      <p>Anthropic supplies the primitives. Their <strong>evaluator-optimizer</strong> loop is "one LLM generates while another evaluates and gives feedback in a loop," and &mdash; this is the part people skip &mdash; it needs a stop condition, "a maximum number of iterations to maintain control" (Anthropic, "Building Effective Agents," Dec 2024). A loop without a stop condition isn't autonomy; it's a way to burn tokens. So the four levers you actually engineer are: a clear goal with a success criterion, the right tools to iterate, one feedback signal the agent can read, and a stop condition that ends the cycle.</p>
+      <p>Anthropic supplies the primitives. Their <strong>evaluator-optimizer</strong> loop is "one LLM generates while another evaluates and gives feedback in a loop," and &mdash; this is the part people skip &mdash; it needs a stop condition, "a maximum number of iterations to maintain control" (<a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic, "Building Effective Agents," Dec 2024</a>). A loop without a stop condition isn't autonomy; it's a way to burn tokens. So the four levers you actually engineer are: a clear goal with a success criterion, the right tools to iterate, one feedback signal the agent can read, and a stop condition that ends the cycle.</p>
 
       <h2>Harness engineering vs. loop engineering: nouns vs. verbs</h2>
 
@@ -136,7 +136,7 @@
 
       <h2>Who sits where: humans outside, in, and on the loop</h2>
 
-      <p>Kief Morris gives the clearest map of where a human actually belongs (Morris, "Humans and Agents in Software Engineering Loops," Mar 2026). He splits the work into a <strong>"why loop"</strong> &mdash; idea to working software, which humans own because we're the ones who want the outcome &mdash; and a <strong>"how loop"</strong> over the interim artefacts: specs, code, tests. The how-loop nests: an <strong>outer</strong> loop on a feature, a <strong>middle</strong> loop on a story, an <strong>inner</strong> loop that generates and tests code.</p>
+      <p>Kief Morris gives the clearest map of where a human actually belongs (<a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Morris, "Humans and Agents in Software Engineering Loops," Mar 2026</a>). He splits the work into a <strong>"why loop"</strong> &mdash; idea to working software, which humans own because we're the ones who want the outcome &mdash; and a <strong>"how loop"</strong> over the interim artefacts: specs, code, tests. The how-loop nests: an <strong>outer</strong> loop on a feature, a <strong>middle</strong> loop on a story, an <strong>inner</strong> loop that generates and tests code.</p>
 
       <p>That gives four postures, and naming yours is the most useful diagnostic in this whole post:</p>
 
@@ -153,9 +153,9 @@
 
       <h2>Why now: validation, not generation, is the bottleneck</h2>
 
-      <p>So why has this become the job in 2026 specifically? Because the economics inverted. For years, generating code was the hard, slow part and review was a formality. That flipped. CircleCI's internal data shows feature-branch activity surging while production deployments lag behind &mdash; and the reason is blunt: "by the time conventional CI discovers an issue, the AI agent has already moved on, losing valuable context" (CircleCI via InfoQ, Jun 2026). The agent out-runs your pipeline.</p>
+      <p>So why has this become the job in 2026 specifically? Because the economics inverted. For years, generating code was the hard, slow part and review was a formality. That flipped. CircleCI's internal data shows feature-branch activity surging while production deployments lag behind &mdash; and the reason is blunt: "by the time conventional CI discovers an issue, the AI agent has already moved on, losing valuable context" (<a href="https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/">CircleCI via InfoQ, Jun 2026</a>). The agent out-runs your pipeline.</p>
 
-      <p>The industry's response is to pull verification <em>into the inner loop</em> rather than waiting for it downstream &mdash; CircleCI's Chunk Sidecars (which they literally call "inner-loop validation"), Dropbox Nova, Claude Code's iterative validation. When verification moves inside the loop, loop engineering stops being a blog-post idea and becomes a product category. OpenAI frames its own hardest problems the same way: as cited by B&ouml;ckeler, their challenges now "center on designing environments, feedback loops, and control systems" &mdash; which is loop engineering by another name.</p>
+      <p>The industry's response is to pull verification <em>into the inner loop</em> rather than waiting for it downstream &mdash; CircleCI's Chunk Sidecars (which they literally call "inner-loop validation"), Dropbox Nova, Claude Code's iterative validation. When verification moves inside the loop, loop engineering stops being a blog-post idea and becomes a product category. OpenAI frames its own hardest problems the same way: as <a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">cited by B&ouml;ckeler</a>, their challenges now "center on designing environments, feedback loops, and control systems" &mdash; which is loop engineering by another name.</p>
 
       <img src="visuals/p2-03-bottleneck.png" alt="The bottleneck: generation throughput rising while validation stays flat, with the fix being to pull verification into the inner loop">
 
@@ -163,17 +163,17 @@
 
       <p>Two pieces of evidence anchor this, and they pull in the same direction.</p>
 
-      <p><strong>Stripe Minions</strong> is the before/after case study. Stripe's autonomous coding agents produce <strong>1,300+ pull requests a week</strong> (up from roughly 1,000), with <strong>zero human-written code</strong> &mdash; every PR is machine-generated and human-reviewed &mdash; underpinning <strong>more than $1 trillion</strong> in annual payment volume (InfoQ &rarr; Stripe, Mar 2026). The architecture is exactly the harness-plus-loop pattern: "blueprints" that interweave deterministic code with flexible agent loops, with CI/CD, automated tests, and static analysis acting as the verification harness <em>before</em> a human ever looks. This is loop engineering in production, at a scale where being wrong is expensive.</p>
+      <p><strong>Stripe Minions</strong> is the before/after case study. Stripe's autonomous coding agents produce <strong>1,300+ pull requests a week</strong> (up from roughly 1,000), with <strong>zero human-written code</strong> &mdash; every PR is machine-generated and human-reviewed &mdash; underpinning <strong>more than $1 trillion</strong> in annual payment volume (<a href="https://www.infoq.com/news/2026/03/stripe-autonomous-coding-agents/">InfoQ &rarr; Stripe, Mar 2026</a>). The architecture is exactly the harness-plus-loop pattern: "blueprints" that interweave deterministic code with flexible agent loops, with CI/CD, automated tests, and static analysis acting as the verification harness <em>before</em> a human ever looks. This is loop engineering in production, at a scale where being wrong is expensive.</p>
 
       <img src="visuals/p2-04-stripe-swebench.png" alt="Proof at scale: Stripe Minions moving from ~1,000 to 1,300+ PRs per week beside the SWE-bench Verified trajectory from 12.47% to 76.8%">
 
-      <p><strong>SWE-bench Verified</strong> is the cleaner natural experiment, because it holds the harness constant. Same 500 instances, same mini-SWE-agent scaffold; you swap the model underneath. Under that fixed rig, the score has climbed from <strong>12.47% (SWE-agent, Mar 2024) to 76.8% (Claude 4.5 Opus, Feb 2026)</strong> &mdash; roughly a 6x improvement on identical infrastructure in about two years (swebench.com, Feb 2026). Read it two ways and both land: a stable, well-built rig let every model gain flow through instead of capping it; and because the harness is identical across the table, the rig and the loop are isolated as real, separate variables from the model. It isn't free, either &mdash; per-task cost on that leaderboard runs roughly <strong>$0.05 to $0.96 per instance</strong> depending on the model, which is the first sign that the loop has an economics problem worth taking seriously.</p>
+      <p><strong>SWE-bench Verified</strong> is the cleaner natural experiment, because it holds the harness constant. Same 500 instances, same mini-SWE-agent scaffold; you swap the model underneath. Under that fixed rig, the score has climbed from <strong>12.47% (SWE-agent, Mar 2024) to 76.8% (Claude 4.5 Opus, Feb 2026)</strong> &mdash; roughly a 6x improvement on identical infrastructure in about two years (<a href="https://www.swebench.com/">swebench.com, Feb 2026</a>). Read it two ways and both land: a stable, well-built rig let every model gain flow through instead of capping it; and because the harness is identical across the table, the rig and the loop are isolated as real, separate variables from the model. It isn't free, either &mdash; per-task cost on that leaderboard runs roughly <strong>$0.05 to $0.96 per instance</strong> depending on the model, which is the first sign that the loop has an economics problem worth taking seriously.</p>
 
       <h2>The honest counterweight: agentic loop failure modes, not a victory lap</h2>
 
-      <p>I don't want to sell you a finished story, because the sources I trust most are the ones that name what still breaks. Self-correcting loops fail in specific, documented ways: <strong>agentic laziness</strong> (the agent declares done too early), <strong>self-preferential bias</strong> (it rates its own work too highly), and <strong>goal drift</strong> (it wanders off the original target) &mdash; all named by Anthropic via InfoQ (Jun 2026). Those failure modes are precisely <em>why</em> you engineer verification gates and stop conditions instead of trusting the loop to police itself. The defenses are loop patterns too: adversarial verification, fan-out-and-synthesize, classifier routing.</p>
+      <p>I don't want to sell you a finished story, because the sources I trust most are the ones that name what still breaks. Self-correcting loops fail in specific, documented ways: <strong>agentic laziness</strong> (the agent declares done too early), <strong>self-preferential bias</strong> (it rates its own work too highly), and <strong>goal drift</strong> (it wanders off the original target) &mdash; all named by <a href="https://www.infoq.com/news/2026/06/claude-code-harnesses/">Anthropic via InfoQ (Jun 2026)</a>. Those failure modes are precisely <em>why</em> you engineer verification gates and stop conditions instead of trusting the loop to police itself. The defenses are loop patterns too: adversarial verification, fan-out-and-synthesize, classifier routing.</p>
 
-      <p>And the economics carry an asterisk. Today's flat-rate and per-token agent pricing is, in B&ouml;ckeler's words, "still very subsidized" (InfoQ podcast, Jun 2026) &mdash; so the $0.05&ndash;$0.96 per-task numbers above are a snapshot, not a forecast. Cite them with their dataset date and re-pull before you make a budget decision on them. Loop engineering is a discipline you practice against known failure modes, not a victory lap.</p>
+      <p>And the economics carry an asterisk. Today's flat-rate and per-token agent pricing is, in B&ouml;ckeler's words, "still very subsidized" (<a href="https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/">InfoQ podcast, Jun 2026</a>) &mdash; so the $0.05&ndash;$0.96 per-task numbers above are a snapshot, not a forecast. Cite them with their dataset date and re-pull before you make a budget decision on them. Loop engineering is a discipline you practice against known failure modes, not a victory lap.</p>
 
       <h2>Your first agentic loop: where to start this week</h2>
 
@@ -192,9 +192,57 @@
 
       <p>If you want a worked example, this content pipeline runs the same pattern on itself: plan &rarr; draft &rarr; rubber-duck review &rarr; fix &rarr; re-review, with a deterministic preflight and a tiered critic gate as the verification sensors and an iteration cap as the stop condition. It's an inspectable loop, and writing this post ran through it.</p>
 
+      <h2>Build it yourself: 3 projects to try this week</h2>
+
+      <p>Reading about loops doesn't build the instinct &mdash; closing one does. So here are three projects that take the exact concepts above and turn them into something you can run on your own machine. They ladder from an afternoon to a weekend, and each one is grounded in a real, open-source repo so you're not starting from a blank file. Do the first one and the abstract &ldquo;plan &rarr; act &rarr; observe &rarr; verify &rarr; correct&rdquo; stops being a diagram and becomes muscle memory.</p>
+
+      <img src="visuals/p2-06-projects-ladder.png" alt="Three projects laddering from beginner to advanced: run a loop with Aider, build a loop from agent patterns, then close the loop on real GitHub issues with mini-SWE-agent">
+
+      <h3>Project 1 &mdash; Run your first verify&rarr;correct loop with Aider <em>(Beginner)</em></h3>
+      <p><strong>Goal.</strong> Watch a real plan &rarr; act &rarr; verify &rarr; correct loop close on your own repository, without writing the orchestration yourself &mdash; so the loop becomes concrete before you build one.<br>
+      <strong>Prerequisites.</strong> Python, a repo with a runnable test command (e.g. <code>pytest</code>), and one model API key (or a local model &mdash; Aider supports both).<br>
+      <strong>Steps.</strong> Install with <code>python -m pip install aider-install &amp;&amp; aider-install</code>; start Aider with the test suite wired in as the verifier, <code>aider --test-cmd "pytest -q" --auto-test</code>; ask it for a small change a test can judge; watch it edit, run the tests, read the failures, and try again on its own.<br>
+      <strong>Success signal.</strong> <code>pytest</code> exits 0 on a change the model made while you wrote no code &mdash; the test suite, not your judgement, closed the loop.<br>
+      <strong>Time.</strong> ~60&ndash;90 minutes. <strong>Stretch goal.</strong> Add <code>--lint-cmd</code> so the loop self-corrects style as well as correctness.<br>
+      <strong>Start from.</strong> <a href="https://github.com/Aider-AI/aider" target="_blank" rel="noopener">Aider-AI/aider</a> &mdash; open-source AI pair programming in your terminal, with built-in lint-and-test feedback.</p>
+
+      <h3>Project 2 &mdash; Build the loop yourself from agent patterns + a verifier <em>(Intermediate)</em></h3>
+      <p><strong>Goal.</strong> Write the loop instead of borrowing it: a ~150-line plan &rarr; act &rarr; observe &rarr; verify &rarr; correct cycle where <em>you</em> own the stop condition.<br>
+      <strong>Prerequisites.</strong> Project 1 done, a model API key, and the agent patterns from the Claude Cookbooks.<br>
+      <strong>Steps.</strong> Open the <code>patterns/agents</code> directory for the evaluator-optimizer primitive; wrap a tool-use call so the model can edit a file and run a command; add a <code>verify()</code> step that runs your tests and returns pass/fail; cap retries at <em>N</em> and log every iteration so the cycle is inspectable.<br>
+      <strong>Success signal.</strong> On a deliberately seeded bug, the loop returns a patch that makes the test pass within the retry budget &mdash; and exits non-zero (no infinite loop) when it can't. That stop condition is the whole point.<br>
+      <strong>Time.</strong> Half a day. <strong>Stretch goal.</strong> Add a second sensor &mdash; a type checker or linter &mdash; and make the loop weigh both signals before it decides it's done.<br>
+      <strong>Start from.</strong> <a href="https://github.com/anthropics/claude-cookbooks" target="_blank" rel="noopener">anthropics/claude-cookbooks</a> &mdash; the <code>patterns/agents</code> recipes, including the evaluator-optimizer loop and its stop-condition guidance.</p>
+
+      <h3>Project 3 &mdash; Close the loop on real GitHub issues and measure it <em>(Advanced)</em></h3>
+      <p><strong>Goal.</strong> Operate <em>on</em> the loop at small scale: point a minimal agent at real GitHub issues, run it end-to-end in a sandbox, and measure resolve-rate and cost &mdash; your own miniature version of the SWE-bench trajectory in this post.<br>
+      <strong>Prerequisites.</strong> Projects 1&ndash;2, Docker, and a model API key.<br>
+      <strong>Steps.</strong> Install mini-SWE-agent with <code>pip install mini-swe-agent</code> (~100 lines of agent code, scoring &gt;74% on SWE-bench Verified); run its SWE-bench batch mode on a small subset inside the sandbox; compute two numbers &mdash; percent of issues resolved, and dollars per resolved issue; read three trajectories by hand to spot the failure modes from earlier.<br>
+      <strong>Success signal.</strong> A generated results file shows at least one issue resolved by a passing test patch, plus a concrete cost-per-issue figure &mdash; your own small-scale read on the 12.47% &rarr; 76.8% / $0.05&ndash;$0.96 economics.<br>
+      <strong>Time.</strong> A weekend. <strong>Stretch goal.</strong> Swap the model tier and chart resolve-rate against cost to find your own efficiency frontier.<br>
+      <strong>Start from.</strong> <a href="https://github.com/SWE-agent/mini-swe-agent" target="_blank" rel="noopener">SWE-agent/mini-swe-agent</a> &mdash; the 100-line agent that solves GitHub issues, with SWE-bench batch mode built in.</p>
+
+      <p>Start with Project 1 this week. The point of all three isn't the finished artifact &mdash; it's that once you've watched a test suite close a loop you didn't babysit, you stop reaching for the next prompt trick and start reaching for the next sensor.</p>
+
       <div class="callout">
         <p>So locate your step on the staircase &mdash; word, context, rig, or loop &mdash; and take the next one. The point where your effort matters will keep moving up as models absorb more of the work; the durable skill isn't any one era's trick, it's learning to govern whatever the next-larger unit of work turns out to be. Right now, that unit is the loop. Go ship one with a stop condition.</p>
       </div>
+
+      <h2 id="references">References</h2>
+      <p>The sources behind every dated claim above, in order of first appearance. Each is linked inline at its first mention; this list is the consolidated index.</p>
+      <ol>
+        <li>CircleCI Chunk Sidecars &mdash; "validation, not generation, is the bottleneck" (InfoQ, Jun 2026): <a href="https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/">infoq.com/news/2026/06/circleci-chunk-sidecars</a></li>
+        <li>"From MCP and Vibe Coding to Harness Engineering" &mdash; B&ouml;ckeler podcast mapping the one-year arc (InfoQ/Thoughtworks, Jun 2026): <a href="https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/">infoq.com/podcasts/mcp-vibe-coding-harness-engineering</a></li>
+        <li>Simon Willison, "Vibe engineering" (updated to "Agentic Engineering," Feb 2026): <a href="https://simonwillison.net/2025/Oct/7/vibe-engineering/">simonwillison.net/2025/Oct/7/vibe-engineering</a></li>
+        <li>Birgitta B&ouml;ckeler, "Context Engineering for Coding Agents" (Feb 2026): <a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents</a></li>
+        <li>Birgitta B&ouml;ckeler, "Harness Engineering &mdash; first thoughts" memo &mdash; "everything except the model" (Feb 2026): <a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo</a></li>
+        <li>SWE-bench &mdash; leaderboard, mini-SWE-agent (65% in ~100 lines), and the 12.47% &rarr; 76.8% trajectory: <a href="https://www.swebench.com/">swebench.com</a></li>
+        <li>Simon Willison, "Designing agentic loops" (Sep 2025): <a href="https://simonwillison.net/2025/Sep/30/designing-agentic-loops/">simonwillison.net/2025/Sep/30/designing-agentic-loops</a></li>
+        <li>Anthropic, "Building Effective Agents" &mdash; evaluator-optimizer loop, stop conditions (Dec 2024): <a href="https://www.anthropic.com/engineering/building-effective-agents">anthropic.com/engineering/building-effective-agents</a></li>
+        <li>Kief Morris, "Humans and Agents in Software Engineering Loops" &mdash; outside/in/on the loop (Mar 2026): <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">martinfowler.com/articles/exploring-gen-ai/humans-and-agents</a></li>
+        <li>Stripe "Minions" &mdash; 1,300+ PRs/week, zero human-written code, $1T+ payment volume (InfoQ, Mar 2026): <a href="https://www.infoq.com/news/2026/03/stripe-autonomous-coding-agents/">infoq.com/news/2026/03/stripe-autonomous-coding-agents</a></li>
+        <li>Anthropic Dynamic Workflows &mdash; agentic laziness, self-preferential bias, goal drift (InfoQ, Jun 2026): <a href="https://www.infoq.com/news/2026/06/claude-code-harnesses/">infoq.com/news/2026/06/claude-code-harnesses</a></li>
+      </ol>
 
     </div>
   </article>

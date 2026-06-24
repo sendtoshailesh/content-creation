@@ -748,6 +748,100 @@ def harness_vs_loop(out_path: Path) -> Path:
 
 
 # ---------------------------------------------------------------------------
+# #10  p2-06 — practitioner projects ladder  (diagram-as-code, HTML/SVG)
+# ---------------------------------------------------------------------------
+def projects_ladder(out_path: Path) -> Path:
+    t = T
+    font = "'Helvetica Neue', Helvetica, Arial, sans-serif"
+    text, text2, muted = t["TEXT"], t["TEXT_2"], t["MUTED"]
+    # Difficulty ramp: teal (beginner) -> blue (intermediate) -> green (advanced).
+    rungs = [
+        {
+            "level": "Beginner", "accent": t["ACCENT_2"], "bg": t["TEAL_BG"],
+            "title": "Run your first verify&rarr;correct loop with Aider",
+            "repo": "Aider-AI/aider",
+            "signal": "pytest exits 0 on a change the model made \u2014 not you",
+            "time": "~90 min",
+        },
+        {
+            "level": "Intermediate", "accent": t["ACCENT"], "bg": t["BLUE_BG"],
+            "title": "Build the loop yourself from agent patterns + a verifier",
+            "repo": "anthropics/claude-cookbooks",
+            "signal": "seeded bug fixed within the retry budget; non-zero exit if not",
+            "time": "half a day",
+        },
+        {
+            "level": "Advanced", "accent": t["SUCCESS"], "bg": t["LIGHT_BG"],
+            "title": "Close the loop on real GitHub issues and measure it",
+            "repo": "SWE-agent/mini-swe-agent",
+            "signal": "1+ issue resolved by a passing patch, with cost-per-issue",
+            "time": "a weekend",
+        },
+    ]
+    cards = ""
+    for i, r in enumerate(rungs):
+        # Each card sits one step higher than the previous (ascending ladder).
+        bottom = 96 + i * 150
+        left = 70 + i * 506
+        cards += f"""
+        <div class="card" style="left:{left}px; bottom:{bottom}px; border-color:{r['accent']};">
+          <div class="badge" style="background:{r['accent']};">{r['level']}</div>
+          <div class="num" style="color:{r['accent']};">Project {i + 1}</div>
+          <div class="ttl">{r['title']}</div>
+          <div class="repo" style="background:{r['bg']}; border-color:{r['accent']}; color:{text};">
+            <span class="gh">&#9670;</span> github.com/{r['repo']}
+          </div>
+          <div class="meta"><span class="lab" style="color:{r['accent']};">Success signal</span> {r['signal']}</div>
+          <div class="meta"><span class="lab" style="color:{r['accent']};">Time</span> {r['time']}</div>
+        </div>"""
+
+    doc = f"""<!doctype html><html><head><meta charset="utf-8">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  html, body {{ background:{t['BG']}; }}
+  #stage {{ width:1640px; height:920px; background:{t['BG']}; font-family:{font};
+            position:relative; overflow:hidden; }}
+  .head {{ position:absolute; left:70px; top:42px; right:70px; }}
+  .eyebrow {{ font-size:19px; letter-spacing:0.26em; text-transform:uppercase;
+              font-weight:800; color:{t['ACCENT']}; }}
+  .h {{ font-size:40px; font-weight:800; color:{text}; letter-spacing:-0.01em; margin-top:8px; }}
+  .sub {{ font-size:21px; color:{text2}; font-weight:600; margin-top:8px; }}
+  .riser {{ position:absolute; background:{t['GRID']}; }}
+  .card {{ position:absolute; width:472px; background:{t['BG']};
+           border:3px solid; border-radius:18px; padding:26px 28px 24px 28px;
+           box-shadow:0 10px 30px rgba(30,41,59,0.10); }}
+  .badge {{ display:inline-block; color:#fff; font-size:16px; font-weight:800;
+            letter-spacing:0.08em; text-transform:uppercase; padding:5px 14px; border-radius:999px; }}
+  .num {{ font-size:18px; font-weight:800; margin-top:14px; }}
+  .ttl {{ font-size:26px; font-weight:800; color:{text}; line-height:1.16; margin-top:4px; }}
+  .repo {{ display:inline-block; font-size:18px; font-weight:700; border:2px solid;
+           border-radius:10px; padding:7px 14px; margin-top:16px; }}
+  .gh {{ font-size:15px; }}
+  .meta {{ font-size:18px; color:{text2}; font-weight:600; margin-top:12px; line-height:1.3; }}
+  .lab {{ display:block; font-size:14px; font-weight:800; letter-spacing:0.08em;
+          text-transform:uppercase; }}
+  .arrow {{ position:absolute; left:70px; right:70px; bottom:46px; height:2px; background:{muted}; }}
+  .arrowlab {{ position:absolute; bottom:54px; font-size:16px; font-weight:700; color:{muted}; }}
+  .src {{ position:absolute; left:70px; bottom:16px; font-size:15px; color:{muted}; }}
+</style></head>
+<body>
+  <div id="stage">
+    <div class="head">
+      <div class="eyebrow">Build it yourself</div>
+      <div class="h">Three projects to try this week</div>
+      <div class="sub">Each turns a concept from the post into something you can run &mdash; laddering from an afternoon to a weekend.</div>
+    </div>
+    <div class="riser" style="left:120px; bottom:78px; width:1400px; height:6px; border-radius:3px;"></div>
+    {cards}
+    <div class="arrowlab" style="left:120px;">start here</div>
+    <div class="arrowlab" style="right:70px;">more autonomy &rarr;</div>
+    <div class="src">Verified open-source starting points. Start with Project 1, then climb.</div>
+  </div>
+</body></html>"""
+    return render_html_to_png(doc, out_path, scale=2)
+
+
+# ---------------------------------------------------------------------------
 def main() -> None:
     written: list[tuple[str, Path]] = []
 
@@ -798,6 +892,9 @@ def main() -> None:
         source="Source: Anthropic evaluator-optimizer + stop condition; this run's own loop.",
         theme="forest",
     )))
+
+    # #10 p2-06 — practitioner projects ladder (diagram-as-code, HTML/SVG).
+    written.append(("p2-06 diagram-as-code", projects_ladder(OUT / "p2-06-projects-ladder.png")))
 
     for style, p in written:
         print(f"wrote {p.name:34s} [{style}]")

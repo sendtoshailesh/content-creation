@@ -61,6 +61,20 @@ When addressing leadership/governance audiences for AI tooling decisions:
 - Social posts: story hook opening, NOT "I wrote a blog"
 - All content ends with a clear call-to-action
 
+## Practitioner Projects & Art of the Possible (mandatory)
+
+Content must do more than synthesize sources — it must hand the reader something concrete to **build**. This is what separates thought leadership from a link roundup. Every blog post MUST include a dedicated hands-on section (e.g. "Build it yourself" / "Projects to try") that turns the post's core concept into practitioner action. The full method lives in the `practitioner-projects` skill — follow it.
+
+### Rules
+
+- **Three projects, scaling beginner → intermediate → advanced.** Each one derives directly from a concept explained earlier in the piece — never generic filler. Together they show the art of the possible: a reader should finish thinking "I could build that this week."
+- **Every project is fully structured** with: a one-line **Goal**, **Prerequisites**, numbered **Steps**, a **machine-checkable success signal** (a test passes, a metric moves, an output matches), a realistic **time estimate**, and a **Stretch goal**.
+- **Ground every project in a real, verified resource.** Link a genuine GitHub repo, starter template, or tool — and verify the URL is reachable before publishing (no fabricated or guessed links). If no suitable repo exists, provide an explicit from-scratch path instead, and say so.
+- **Serve practitioners, not only leads.** Audience guidance still applies for governance framing, but the projects section is the practitioner track — it must let an individual engineer get hands-on without manager sign-off.
+- **The call-to-action in every channel points to a concrete project.** Blog, LinkedIn, reel/short script, slide deck, Medium/Substack distill, and X/Twitter must each close by naming at least one project the reader can start now, with the canonical URL or repo link. The CTA is "go build X", not "go read my blog".
+- **Inline-link rule still applies.** Project grounding links follow the same primary-source, verified-URL standard as citations above.
+
+
 ## Tone
 
 - First-person: "sharing my learnings working with customers"

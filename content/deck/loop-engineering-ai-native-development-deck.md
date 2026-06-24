@@ -228,6 +228,20 @@ Then step **on** the loop: next time it's wrong, *fix the loop, not the output.*
 
 ---
 
+<span class="kicker">Build it yourself</span>
+
+# 3 projects to try this week
+
+- **Beginner — run your first verify→correct loop** with Aider. Success: `pytest` exits 0 on a change the model made. *(~90 min)* · `github.com/Aider-AI/aider`
+- **Intermediate — build the loop yourself** from agent patterns + a verifier. Success: seeded bug fixed within the retry budget, non-zero exit if not. *(half a day)* · `github.com/anthropics/claude-cookbooks`
+- **Advanced — close the loop on real GitHub issues** with mini-SWE-agent and measure resolve-rate + cost. *(a weekend)* · `github.com/SWE-agent/mini-swe-agent`
+
+![h:230](../visuals/p2-06-projects-ladder.png)
+
+<!-- Topic: Art of the possible — Reading about loops doesn't build the instinct; closing one does. Point the audience at three real, open-source starting points that ladder from an afternoon to a weekend, and tell them to do the first one before the next talk — once you've watched a test suite close a loop you didn't babysit, the abstraction becomes muscle memory. Repo links to read out: Aider (https://github.com/Aider-AI/aider), Claude Cookbooks patterns/agents (https://github.com/anthropics/claude-cookbooks), mini-SWE-agent (https://github.com/SWE-agent/mini-swe-agent). -->
+
+---
+
 <!-- _class: lead -->
 
 <span class="kicker">Take the next step</span>
@@ -236,9 +250,9 @@ Then step **on** the loop: next time it's wrong, *fix the loop, not the output.*
 
 Word, context, rig, or loop — the point where your effort matters keeps rising as models absorb more of the work.
 
-**Right now, that unit is the loop. Go ship one with a stop condition.**
+**Right now, that unit is the loop. Start with Project 1 this week.**
 
-Full four-era breakdown, with the Stripe + SWE-bench data and the practitioners who named the arc:
+Full four-era breakdown + the three build-it-yourself projects, with the Stripe + SWE-bench data and the practitioners who named the arc:
 [sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html](https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html)
 
 <!-- Topic: The close — I end on a verb, not a victory lap, because the durable skill was never any one era's trick — it's learning to govern whatever the next-larger unit of work turns out to be; today it's the loop, tomorrow it's whatever the model hasn't swallowed yet, and the stop condition is the one piece of homework I refuse to let anyone skip. -->
