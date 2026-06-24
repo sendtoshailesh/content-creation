@@ -120,45 +120,63 @@ Review gates use GitHub Copilot rubber-duck review. No specific model versions a
 
 List URLs below that agents should fetch, analyze, and synthesize during content creation. The pipeline will read these before writing.
 
+### Source-of-Truth Precedence (how this list is ordered)
+
+References are organized by **source tier**, highest first (see `.github/instructions/content-quality.instructions.md` and the `source-grounding` skill). Lead with first-party Microsoft/GitHub sources; use public sources for neutral benchmarks, independent validation, or when no first-party source exists. Tier 2/3 entries are seeded from `content/browsing-signals.md` (the author's real Chrome + Edge navigation, regenerated each run via `scripts/pipeline/harvest_browsing.py`).
+
 ### How to Use
 
-1. Add URLs under the appropriate section below
+1. Add URLs under the correct **tier** below (T1 → T4)
 2. Add a brief note on what to extract from each
-3. Pipeline agents will fetch and analyze these during Steps 1-3
+3. Pipeline agents fetch, verify, and analyze these during Steps 1-3, leading first-party
 
 ### Reference URLs
 
-<!-- Add your reference URLs below. Format: - [description](URL) -->
+<!-- Add reference URLs by tier. Format: - [description](URL) -->
 
-> Verified 2026-06-22 (Phase 0 trend research). Full synthesis + quantified data table in `content/trend-research.md`.
+> Tier 2/3 seeded 2026-06-24 from browsing signals; public Tier 4 verified 2026-06-22 (Phase 0 trend research). Full synthesis in `content/reference-brief.md` / `content/trend-research.md`. Re-verify every URL before direct citation.
 
-**Loop Engineering — Core (definition & the skill):**
+**Tier 1 — Author's own work + this repo's harness (lead, first-person voice):**
+- Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/content-pipeline-flow.md`, `agents-and-skills/agent-definitions.md` — the agent/skill/instruction harness + review-gate loops that run this very content pipeline (a working loop-engineering example)
+
+**Tier 2 — Microsoft first-party (AI Foundry / Learn / dev blogs):**
+- https://learn.microsoft.com/en-us/azure/foundry/agents/overview — What is Microsoft Foundry Agent Service? — first-party agent runtime: loops, tools, runs
+- https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent — Deploy your first hosted agent — the build-your-own first-party on-ramp
+- https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components?tabs=py — Agents, conversations, responses: the Foundry agent loop components
+- https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/ — Foundry IQ: unified knowledge + evaluators feeding the agent loop
+- https://techcommunity.microsoft.com/blog/appsonazureblog/how-we-build-and-use-azure-sre-agent-with-agentic-workflows — How we build/use Azure SRE Agent with agentic workflows (first-party loop case study)
+
+**Tier 3 — GitHub first-party (Copilot / coding agent / official repos):**
+- https://github.com/copilot — GitHub Copilot: the agentic coding surface (author's daily harness)
+- https://github.com/Azure/git-ape — Azure/git-ape: platform-engineering framework for the agentic age (public first-party repo the author works in)
+- https://docs.github.com/en/copilot — GitHub Copilot docs: coding agent / CLI / Agent HQ (verify exact subpages during analysis)
+
+**Tier 4 — Public / third-party (corroboration, neutral benchmarks):**
+
+_Loop Engineering — Core (definition & the skill):_
 - https://simonwillison.net/2025/Sep/30/designing-agentic-loops/ — Simon Willison "Designing agentic loops": names loop design as a discrete skill; "runs tools in a loop to achieve a goal"; the four design levers
 - https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html — Kief Morris (Thoughtworks): inner/middle/outer loops, why-loop vs how-loop, humans outside/in/on the loop, "fix the artefact vs. fix the loop"
 - https://www.anthropic.com/engineering/building-effective-agents — Anthropic: evaluator-optimizer loop, gates, stop conditions ("maximum number of iterations to maintain control")
 - https://simonwillison.net/2025/Oct/7/vibe-engineering/ — Willison "Vibe engineering" (updated to "Agentic Engineering" Feb 2026): lists "designing agentic loops" as a core senior skill
 
-**Inner-loop Validation / Self-correction:**
+_Inner-loop Validation / Self-correction:_
 - https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/ — CircleCI Chunk Sidecars: validation pulled into the agent's inner loop; "validation, not generation, is the bottleneck"
 - https://www.infoq.com/news/2026/06/claude-code-harnesses/ — Anthropic Dynamic Workflows: named self-correction failure modes (agentic laziness, self-preferential bias, goal drift) + adversarial verification loops
 - https://martinfowler.com/articles/build-own-coding-agent.html — Ben O'Mahony (Thoughtworks): buildable act->observe->verify loop with test-result-as-feedback
 
-**Harness vs. Loop distinction:**
+_Harness vs. Loop distinction:_
 - https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html — Böckeler: harness = "everything except the model"; feed-forward vs feedback; quotes OpenAI on "environments, feedback loops, and control systems"
 - https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/ — Böckeler podcast: one-year evolution narrative; harness = guides + sensors so the agent can self-correct
 - https://martinfowler.com/articles/harness-engineering.html — Böckeler considered article: harness elements as "guides and sensors" + harness templates
 
-**Eras / arc framing:**
+_Eras / arc framing:_
 - https://martinfowler.com/articles/exploring-gen-ai.html — Fowler "Exploring Generative AI" index: dated chronological map from autocomplete -> context -> harness -> loops
 - https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html — Böckeler: the context-engineering middle era (lazy-loaded skills, MCP decline)
 - https://openai.com/index/harness-engineering/ — OpenAI "Harness engineering": 1M-LOC / 5-month / no-typed-code case study (⚠ 403 to fetcher; corroborated indirectly, re-verify before direct citation)
 
-**Quantified data & case studies:**
+_Quantified data & case studies:_
 - https://www.infoq.com/news/2026/03/stripe-autonomous-coding-agents/ — Stripe "Minions": 1,300+ PRs/week, zero human-written code, "blueprints = deterministic code + flexible agent loops"; underpins $1T+ payment volume
 - https://www.swebench.com/ — SWE-bench: 12.47% (Mar 2024) -> 76.8% (Claude 4.5 Opus, Feb 2026) under the same harness; mini-SWE-agent 65% in ~100 lines; per-task cost ~$0.05-$0.96
-
-**First-Party Reference (this repo's own harness/loop):**
-- Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/content-pipeline-flow.md`, `agents-and-skills/agent-definitions.md` — the agent/skill/instruction harness + review-gate loops that run this very content pipeline (a working loop-engineering example)
 
 ---
 

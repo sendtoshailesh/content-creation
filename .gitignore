@@ -44,3 +44,6 @@ Desktop.ini
 
 # Marp deck QA rasterization temp
 content/deck/_verify/
+
+# Per-run browsing-derived grounding signal (personal navigation; not published)
+content/browsing-signals.md

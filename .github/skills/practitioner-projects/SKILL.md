@@ -59,13 +59,18 @@ from-scratch path if none fits.
 1. **Every "Start from" link is real and verified.** Fetch the URL before publishing; confirm
    the repo/tool exists and matches the description. Never fabricate or guess a link, never
    cite a repo you have not confirmed. Prefer canonical/official repos over forks.
-2. **If no suitable repo exists, say so** and give a from-scratch path ("no template needed —
+2. **Prefer Microsoft/GitHub-owned repos first (Source-of-Truth Precedence).** When picking a
+   "Start from" repo, lead with Microsoft- or GitHub-owned repos and AI Foundry samples
+   (e.g. `Azure-Samples/*`, `microsoft/*`, `github/*`, `Azure/*`, Foundry quickstart repos)
+   that fit the skill level. Reach for other public repos only when no first-party repo fits.
+   Cross-check `content/browsing-signals.md` Tier 3 for repos the author has actually used.
+3. **If no suitable repo exists, say so** and give a from-scratch path ("no template needed —
    start with an empty repo and …"). An honest from-scratch path beats a fake link.
-3. **Projects derive from the post.** Each maps to a named concept the post already taught;
+4. **Projects derive from the post.** Each maps to a named concept the post already taught;
    reference that section. No generic "build a todo app" filler.
-4. **Self-serve for an individual.** A practitioner must be able to start without manager
+5. **Self-serve for an individual.** A practitioner must be able to start without manager
    sign-off, paid infra they don't have, or proprietary data.
-5. **Success signals are objective.** "It feels better" is not a success signal; "the eval
+6. **Success signals are objective.** "It feels better" is not a success signal; "the eval
    score goes from X to Y" or "the test suite passes on the agent's PR" is.
 
 ## Call-to-action propagation (per channel)

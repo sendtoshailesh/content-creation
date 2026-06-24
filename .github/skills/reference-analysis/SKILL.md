@@ -12,16 +12,28 @@ argument-hint: 'Run to fetch and analyze all URLs listed in content/pipeline-con
 - When the user adds new URLs and wants them analyzed
 - During Steps 1-3 of the content pipeline (strategy, outline, blog writing)
 
+## Source-of-Truth Precedence
+
+This skill enforces the **Source-of-Truth Precedence** rule (see `.github/instructions/content-quality.instructions.md` and the `source-grounding` skill). Lead with first-party Microsoft/GitHub sources; use public sources for neutral benchmarks, independent validation, or when no first-party source exists. Every source in the brief is tagged with its tier so writers can lead first-party by construction.
+
 ## Procedure
+
+### 0. Harvest browsing signals (mandatory)
+
+Before reading the config, run the browsing harvester with the run's topic keywords so the author's real navigation feeds the brief:
+
+```bash
+python3 scripts/pipeline/harvest_browsing.py --days 365 --top 30 <topic keywords>
+```
+
+Read `content/browsing-signals.md`. Promote its Tier 2 (Microsoft) and Tier 3 (GitHub) entries into the reference set as lead first-party sources, and keep relevant Tier 4 entries as public corroboration. Fetch/verify any URL before citing it.
 
 ### 1. Read the Config
 
-Read `content/pipeline-config.md` and extract all URLs from the **Online References** section. URLs are organized under:
-- Industry Reports & Benchmarks
-- Competitor / Related Articles
-- Pricing Pages & Documentation
-- Case Studies & Examples
-- Research Papers
+Read `content/pipeline-config.md` and extract all URLs from the **Online References** section. URLs are organized into source tiers (first-party Microsoft/GitHub first, public fallback below) and the legacy categories:
+- Tier 2 — Microsoft first-party
+- Tier 3 — GitHub first-party
+- Tier 4 — Public (Industry Reports, Competitor Articles, Pricing/Docs, Case Studies, Research Papers)
 
 ### 2. Fetch Each URL
 
@@ -42,12 +54,14 @@ Generated: [date]
 
 ## Source Summary
 
-### [Source Title](URL)
+### [Source Title](URL) `[T1 own | T2 Microsoft | T3 GitHub | T4 public]`
+- **Tier**: [T1/T2/T3/T4 + why — e.g. "T2 Microsoft: AI Foundry docs"]
 - **Key data points**: [specific numbers, benchmarks]
 - **Pricing info**: [if applicable]
 - **Unique angle**: [what this source adds that others don't]
 - **Relevant quotes**: [key passages, attributed]
 - **Credibility**: [author expertise, publication quality]
+- **From browsing signals**: [yes/no — was this surfaced from the author's history/bookmarks?]
 
 ## Cross-Source Analysis
 
@@ -62,8 +76,12 @@ Generated: [date]
 - [pricing data to use in comparisons]
 - [case study metrics to reference]
 
+### Lead-First-Party Map
+- [for each major claim: the Tier 1-3 example that leads, and the Tier 4 source that corroborates]
+
 ### Gaps
 - [topics the references don't cover that we should address]
+- [claims with NO first-party source — flag so a Microsoft/GitHub source can be sought]
 ```
 
 ### 4. Signal Readiness

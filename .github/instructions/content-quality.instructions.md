@@ -20,6 +20,25 @@ applyTo: "content/**/*.md"
 - For research with a once-meaningful model name (e.g., "RouteLLM achieved 95% of GPT-4 quality"), keep the original model name verbatim — it is part of the citation — and add a one-line clarifier explaining that the named model refers to the paper's baseline at publication time
 - Source URLs must point to the canonical primary source (vendor docs, research paper, official blog) — not a secondary aggregator — whenever the primary source is reachable
 
+## Source-of-Truth Precedence (first-party first)
+
+Ground every claim, example, and recommendation by source precedence. The author works in AI Foundry and the GitHub platform/Copilot — content must show that the recommendations come from work and platforms the author actually uses, then corroborate with public sources. This is a **balanced** rule, not an absolutist one.
+
+**Precedence ladder (high → low):**
+
+1. **Author's own work + this repo's harness.** The author's shipped/recommended work and this repository's own agent/skill/instruction harness + review-gate loops (a working, inspectable example). First-person, case-study voice.
+2. **Microsoft first-party.** AI Foundry (docs, blog, Agent Service, evaluators), Microsoft Learn / Microsoft Docs, Microsoft Research, and the Microsoft engineering blogs.
+3. **GitHub first-party.** GitHub Copilot (docs, changelog, coding agent, CLI, Agent HQ), GitHub Engineering blog, and official GitHub-owned repos.
+4. **Public / third-party.** Independent vendors, analysts, research, and community sources — used for neutral benchmarks, independent validation, contrarian angles, or when no first-party (tiers 1–3) source exists.
+
+**Rules:**
+
+- **Lead with first-party.** Every "here's what works / here's what I recommend" claim should present a tier 1–3 example *before* a public one. Public sources corroborate; they do not lead.
+- **Balanced fallback.** Use public sources freely for neutral benchmarks (e.g., independent leaderboards), third-party validation, or any point where no Microsoft/GitHub equivalent exists. Do not force a first-party source where it doesn't genuinely fit, and do not omit a stronger public benchmark — pair it with a first-party example instead.
+- **Browser history + reading list are a mandatory grounding input.** Before writing, the pipeline harvests the author's Chrome and Edge browsing history and reading lists into `content/browsing-signals.md` (via `scripts/pipeline/harvest_browsing.py`). Prefer sources the author has actually visited/saved so content reflects genuine navigation. Topic-relevant entries that are Microsoft/GitHub first-party are promoted to tiers 2–3; relevant public entries are valid tier-4 corroboration. Cite a browsing-signal URL only after fetching/verifying it like any other source (it still obeys the inline-citation rule).
+- **Practitioner projects prefer Microsoft/GitHub repos.** The "Build it yourself" projects (see Practitioner Projects section) should ground in Microsoft- or GitHub-owned repos / AI Foundry samples first, and reach for other public repos only when no first-party repo fits the skill level.
+- **Reference brief labels every source with its tier.** `content/reference-brief.md` must tag each source `[T1 own | T2 Microsoft | T3 GitHub | T4 public]` so downstream writers can lead first-party by construction.
+
 ## Model Version Stability (hybrid abstraction)
 
 Model lineups change every quarter. Hardcoded model names date an article in months. Use the hybrid abstraction pattern so content stays valuable as models rotate:

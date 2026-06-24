@@ -69,6 +69,13 @@ from the reference brief, or it is flagged.
 3. **Flag the gaps** — a public claim with no grounded source, a number that disagrees with the source,
    or an attribution the brief does not support is an **Error** with `category: claim-citation` and
    `risk: high`. A claim that is plausible but stale-looking is a **Warning**.
+4. **Check first-party primacy (Source-of-Truth Precedence).** For each "here's what works / here's what
+   I recommend" claim, check the brief's tier labels (`[T1 own | T2 Microsoft | T3 GitHub | T4 public]`):
+   does the claim lead with a Tier 1-3 (author's work / Microsoft / GitHub) example before a public one?
+   A recommendation grounded **only** in public sources when a first-party source exists in the brief or
+   `content/browsing-signals.md` is a **Warning** with `category: source-precedence` (lead first-party,
+   cite public as corroboration). A neutral benchmark that legitimately has no first-party equivalent is
+   fine — do not flag it.
 
 ## Phase 3 — Confidence, risk, and the auto-approve decision
 
