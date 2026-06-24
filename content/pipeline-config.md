@@ -10,10 +10,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | `in-progress` |
+| **Status** | `completed` |
 | **Topic** | From Prompts to Harness Engineering to Loop Engineering — The Workflow Shift in AI-Native Development |
 | **Started** | 2026-06-22 |
-| **Current Step** | STEP 10 COMPLETE (2026-06-23) — Web publishing done. Converted `content/from-prompts-to-loop-engineering.md` to `docs/blog/loop-engineering-ai-native-development.html` (SEO title as `<title>`, 151-char meta description, slug `loop-engineering-ai-native-development`), matching existing `docs/` site structure/styling/design tokens — no new frameworks. All 9 visuals embedded as `visuals/pX-XX-*.png` relative paths (PNGs copied into `docs/blog/visuals/`; filenames unchanged). Linked the post at the top of `docs/index.html` blog list. Canonical URL recorded in `content/publishing-log.md`: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html. Next: Step 4a social distribution strategy. |
+| **Current Step** | STEP 6c COMPLETE (2026-06-24) — Slide deck built by `deck-builder` from the finalized blog + LinkedIn post. **12-slide** Marp deck at `content/deck/loop-engineering-ai-native-development-deck.md`, exported to **PDF** (`...-deck.pdf`) and **PPTX** (`...-deck.pptx`). Arc: hook → reframe → four-era staircase → eras 1–3 ceilings → what a loop is → harness vs. loop (nouns vs. verbs) → four postures → why now / validation bottleneck (Stripe 1,300+ PRs/week; SWE-bench 12.47%→76.8%; $0.05–$0.96/task) → proof at scale → first loop this week → CTA (canonical URL). All 9 visuals embedded (p1-05→s2, p1-01→s4, p1-02→s5, p2-01→s6, p1-03→s7, p2-02→s8, p2-03→s9, p2-04→s10, p2-05→s11). Per-slide humor + intellectual speaker notes (topic-tagged, single-line prose) verified in `ppt/notesSlides/`; triple-render + 12-page rasterized visual QA passed. First-person voice, no "leverage". **All user-selected outputs complete (LinkedIn + Reel/Short + Slide deck) — pipeline Status set to `completed`.** |
 | **Series** | `no (single comprehensive post)` |
 | **Current Part** | n/a — single post `content/from-prompts-to-loop-engineering.md` |
 
@@ -46,13 +46,13 @@
 - [ ] Step 3b-img: hero/illustrative imagery (optional)
 - [x] Step 3c: Quality review — `quality-reviewer` verdict PASS; 1 surgical fix (p1-02-ceilings.png repositioned to end of Eras 1–3 with setup sentence); no "leverage"; data preserved; Tier 0 preflight GATE PASS. Re-validated 2026-06-23 after migrating the p1-01 staircase HERO to D2 (re-rendered + deep-QA via image view, preflight GATE PASS).
 - [x] Step 3d: SEO optimization — in-place on `content/from-prompts-to-loop-engineering.md` (2026-06-23). Primary keyword "loop engineering" + 5 secondary; added `seo:` frontmatter (title 50 chars / meta 151 chars / slug `loop-engineering-ai-native-development`); front-loaded primary keyword in subtitle; optimized 5 H2s with secondary keywords (reader-first); verified descriptive alt text on all 9 images (paths unchanged). Tier 0 preflight deterministically validated GATE: PASS (0/0/0).
-- [ ] Step 4a: Social distribution strategy
+- [x] Step 4a: Social distribution strategy — `content/social-strategy.md` (2026-06-24). 4 angles mapped to selected platforms (LinkedIn + Reel/Short + deck); 7-day LinkedIn-led sequence; 9 visuals mapped to posts; canonical URL in first-comment CTAs; first-person voice, no "leverage".
 - [ ] Step 4a-visual: Visual-first asset pack
-- [ ] Step 4: LinkedIn post
+- [x] Step 4: LinkedIn post — `content/linkedin-post-loop-engineering.md` (2026-06-24). 3 posts (Day 0 lead / Day 4 / Day 7) per `content/social-strategy.md` sequence; plain-text + Unicode versions each; visuals mapped per post; canonical URL in first comment only; first-person voice, no "leverage".
 - [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video + Slide deck (PPTX + PDF)
 - [ ] Step 5: X/Twitter thread — skipped by user selection
-- [ ] Step 6b: Reel/Short video
-- [ ] Step 6c: Slide deck (PPTX + PDF, humor + intellectual speaker notes) — `deck-builder`
+- [x] Step 6b: Reel/Short video — `content/reel-script-loop-engineering.md` (2026-06-24). 75s vertical script per `content/social-strategy.md` Step 6b: hook → staircase → validation-bottleneck pivot → first-loop CTA; visual beats `p1-05-pull-quote.png` → `p1-01-staircase.png` → `p2-04-stripe-swebench.png` → `p2-01-loop.png` → `p2-05-first-loop-checklist.png`; canonical URL in caption + end-card; first-person voice, no "leverage".
+- [x] Step 6c: Slide deck (PPTX + PDF, humor + intellectual speaker notes) — `deck-builder`. 12-slide Marp deck `content/deck/loop-engineering-ai-native-development-deck.md` → `.pdf` + `.pptx` (2026-06-24). Blog-arc spine, all 9 visuals embedded on matching slides, per-slide topic-tagged humor + intellectual notes verified in `ppt/notesSlides/`; triple-render (HTML/PDF/PPTX) + 12-page rasterized visual QA passed; slide-count pill matches 12 slides. First-person voice, no "leverage".
 - [ ] Step 7: Brand audit
 - [ ] Step 7b: Grounded content review
 - [ ] Step 8: YouTube script — skipped by user selection
