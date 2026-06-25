@@ -137,12 +137,38 @@ section never applies to them.
 - **Sidecar present**: a `<image>.json` sidecar exists (provider/model/prompt/seed). Missing
   sidecar is **important** (reproducibility gap).
 
-## Procedure
+### 10. Reverse-Engineering Visual Review — REVR (Critical, hard gate, run LAST)
 
-0. **Gate A (pre-render):** if `content/visual-style-map.md` exists and rendering has not started, run the plan self-critique above. A FAIL blocks rendering and is reported with the status-rollback note.
+After sections 1–9 pass for an asset, run the **REVR** gate from
+[`.github/skills/visual-reverse-review/SKILL.md`](../skills/visual-reverse-review/SKILL.md). REVR is
+the last gate before publish-ready and it is **blocking**. It reads meaning back OUT of the rendered
+pixels and measures the gap to the source concept the visual was built from:
+
+- **Blind read (pixels only)**: open the PNG with `viewImage` using the latest GPT multimodal model in
+  Copilot and write the message + an inventory of every box/node/arrow/color/shape and what it encodes,
+  marking anything you cannot decode from the picture as `UNDECODABLE`. Do this **without** the source
+  intent in front of you — recover meaning as a stranger would.
+- **Back-translate & score**: diff the derived read against the source intent (blog passage + design
+  brief + renderer docstring); fill the REVR 0-100 rubric.
+- **Pass criterion (all required)**: rubric **>= 85** AND **zero unresolved legend/encoding gaps** (no
+  `UNDECODABLE` meaning-bearing element; every color/shape/position that encodes meaning is decodable
+  from the picture) AND the blind one-line message **matches** the source intent. A score >= 85 with a
+  surviving legend gap is **still a FAIL** — the legend/encoding gate is absolute.
+- **Clarify source-first**: answer each ambiguity from the source concept; if it is not derivable
+  there, that is the defect — trigger a redraw, never guess.
+- **Self-evolving repair**: hand findings to `visual-renderer` to edit the **renderer source**
+  (add a legend/inline labels/honest color), re-render, and re-run REVR. **Max 3 iterations**, then
+  **escalate with a summary**.
+- **Record**: every asset gets a REVR record at `content/visuals/revr/<asset-stem>.md`. A PASS record
+  is the gate token; no PASS record (or an ESCALATE record) means the asset is **not** publish-ready.
+
+The classic catch here is a diagram whose colors/positions carry meaning but whose labels float in a
+disconnected chip/legend row the reader must mentally re-attach — REVR fails it until labels are bound
+to elements or a real legend is added.
+
 1. **Enumerate visuals**: Read the blog post(s) and extract all `![alt](path)` image references. Also scan `content/visuals/` for any unlinked assets.
 2. **View each visual**: Use the image viewing tool to inspect each rendered PNG/SVG.
-3. **Apply checklist**: For each visual, run through all review categories (sections 1–8; add section 9 for any asset in `content/visuals/generated/`).
+3. **Apply checklist**: For each visual, run through all review categories (sections 1–8; add section 9 for any asset in `content/visuals/generated/`; then run section 10 / REVR as the final blocking gate).
 3b. **Generated-image QA (for any `content/visuals/generated/` asset):**
     - **Deterministic pre-screen first (mandatory):** run
       `python -m scripts.visuals.generated.inspect_image content/visuals/generated/<png> --theme <theme>`.
@@ -154,6 +180,10 @@ section never applies to them.
       `scripts.visuals.generated.describe` is only a non-interactive/CI fallback.
     - The deterministic HTML/SVG inspector remains the primary gate for programmatic diagrams;
       these two steps are the primary gate for generated images.
+3c. **REVR gate (mandatory, last):** for every Markdown-referenced asset, run the REVR loop from
+    `.github/skills/visual-reverse-review/SKILL.md` (blind read -> back-translate -> score -> source-first
+    clarify -> self-evolving renderer repair, max 3 iterations then escalate). Write the per-asset record
+    to `content/visuals/revr/<asset-stem>.md`. A FAIL or missing PASS record blocks publish-ready.
 4. **Produce findings report**: Output a structured report with:
    - **File**: the visual filename
    - **Severity**: `critical` (blocks publishing), `important` (should fix), `minor` (nice to fix)

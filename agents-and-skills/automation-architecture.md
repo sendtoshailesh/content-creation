@@ -268,7 +268,12 @@ methodology.
    infographics, and exhibits stay deterministic in `visual-renderer`.
 3. **Severity-categorized compliance** (`.github/instructions/shared/compliance-severity.md`) —
    `brand-guardian` and `visual-reviewer` emit Error/Warning/Info findings with a PASS/FAIL gate;
-   any Error blocks Steps 10/11 and triggers the rollback/redo protocol.
+   any Error blocks Steps 10/11 and triggers the rollback/redo protocol. As the **final** visual
+   sub-gate, `visual-reviewer` runs **REVR** (`.github/skills/visual-reverse-review/SKILL.md`): it
+   blind-reads each rendered visual (pixels only), back-translates it against source intent, scores
+   the semantic gap on a 0-100 rubric, and loops a renderer fix until the derived meaning matches
+   intent with zero legend/encoding gaps. Every Markdown-referenced asset must carry a PASS record
+   at `content/visuals/revr/<asset-stem>.md`; a FAIL or missing record blocks publish-ready.
 
 Provider selection guidance lives in `agents-and-skills/image-provider-comparison.md`; keys are
 configured in `.env` (see `.env.example`).

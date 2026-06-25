@@ -199,6 +199,27 @@ text_width = bbox[2] - bbox[0]
 5. **Standalone clarity**: Every visual understandable without reading the blog section
 6. **Gestalt grouping**: Proximity and enclosure for related elements; whitespace separates concepts
 
+## Encoding Legibility (blocking)
+
+Any meaning carried by **color, shape, or position must be decodable from the picture itself** — via
+an inline label on the element, a compact legend, or a self-evident mapping. A diagram whose labels
+float in a disconnected chip/legend row that the reader must mentally re-attach to elements is a
+**legend/encoding gap** and is blocking. If a color does not encode a real category, collapse it to
+one family so it stops implying types that do not exist; if it does encode a category, name each
+category in a legend. Prefer position/length and inline labels over color hue (Cleveland–McGill:
+position decodes more accurately than hue).
+
+## REVR — Reverse-Engineering Visual Review (hard gate)
+
+Before any visual is marked publish-ready it must pass **REVR**
+([`.github/skills/visual-reverse-review/SKILL.md`](../skills/visual-reverse-review/SKILL.md)): the
+reviewer recovers the message **blind from the pixels only**, back-translates it against the source
+concept (blog passage + design brief + renderer docstring), and scores the gap on a 0-100 rubric.
+**Pass = rubric ≥ 85 AND zero unresolved legend/encoding gaps AND the blind message matches intent.**
+Repairs edit the **renderer source** (self-evolving: add a legend helper / bind labels / fix color),
+re-render, and re-read — max 3 iterations, then escalate with a summary. A REVR FAIL blocks the
+web-publish / deck / social steps for that asset.
+
 ## Visual Review
 
 All rendered visuals must pass rubber-duck review by the `visual-reviewer` agent before publishing. The reviewer must open and inspect every Markdown-referenced image, verify it exists at 320 DPI, and fail the review for text overflow, overlap, clipping, tiny/unbold typography, excessive whitespace, or repetitive color/shape/layout patterns. See `visual-review` skill for the full checklist.

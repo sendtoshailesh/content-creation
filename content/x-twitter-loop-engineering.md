@@ -1,7 +1,7 @@
 <!-- X/Twitter single post for: content/from-prompts-to-loop-engineering.md -->
 <!-- Canonical URL: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html -->
 <!-- Voice: first-person practitioner. Avoid corporate filler verbs. One standalone post <= 280 chars + one image. -->
-<!-- Per practitioner-projects skill: CTA points to a concrete project (Project 1 + repo), not "go read my blog". -->
+<!-- Per practitioner-projects skill: CTA points to a concrete build (Project 1), with tools presented as equal options. -->
 
 # X / Twitter — Single Post
 
@@ -11,13 +11,13 @@
 
 You're not getting better at prompting — the skill moved: prompt → context → harness → loop.
 
-In 2026 the unit you own is the loop. Don't read it, build one: point Aider at your tests, watch verify→correct close.
+In 2026 the unit you own is the loop. Don't read it, build one: point an agent at a failing test and watch verify→correct close.
 
-github.com/Aider-AI/aider
+sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
 
 ── END COPY ──
 
-**Char count:** ~237 (URL counts as 23 via t.co; well under 280).
+**Char count:** ~242 (URL counts as 23 via t.co; well under 280).
 
 ---
 
@@ -26,8 +26,8 @@ github.com/Aider-AI/aider
 ── START COPY ──
 
 Two harder builds if the first clicks:
-• Build the loop yourself from agent patterns + a verifier → github.com/anthropics/claude-cookbooks
-• Run it on real GitHub issues & measure cost → github.com/SWE-agent/mini-swe-agent
+• Build the loop on a managed runtime (Foundry or Anthropic patterns) → learn.microsoft.com/azure/foundry/agents
+• Platform-engineer it with gates (git-ape / hve-core / mini-swe-agent) → github.com/Azure/git-ape
 
 Full arc: sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
 

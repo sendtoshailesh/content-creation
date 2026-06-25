@@ -49,15 +49,32 @@ engineering managers reading for economics (per-task cost, the validation invers
 
 ## Content angle & differentiator
 
+> **Source-of-Truth Precedence (this run leads first-party).** Every load-bearing "what a
+> harness/loop is" and "what I recommend" claim leads with a first-party source — Microsoft
+> (VS Code/GitHub Copilot harness blog, AI Foundry Agent Service) and GitHub (Azure/git-ape,
+> GitHub Copilot, hve-core) — with public writers (Willison, Böckeler, Morris, Stripe,
+> SWE-bench) kept as corroboration. See `content/reference-brief.md` for the tier-labeled
+> Lead-First-Party Map.
+
 - **The full four-era arc drawn as one continuous staircase** — the genuinely-missing
   synthesis. Every source covers one or two eras; none draws the "leverage keeps moving up a
   level" picture end to end.
-- **A crisp harness-vs-loop boundary** (nouns vs. verbs / equipment vs. rep-scheme) where every
-  existing source is fuzzy.
-- **Quantified loop economics in one place** — Stripe before/after + SWE-bench cost-per-task +
-  CircleCI's bottleneck data, which sit scattered across theory-forward writing elsewhere.
+- **A crisp harness-vs-loop boundary grounded in first-party engineering writing** — the VS Code
+  team's own "The Coding Harness Behind GitHub Copilot" (May 2026) defines the harness (context
+  assembly + tool exposure + tool execution) and the agent loop ("think -> act -> observe ->
+  think again"; turn/round/run; loop-control + stop hooks) more precisely than any public memo.
+  Böckeler's "everything except the model" corroborates it.
+- **The loop as a real product primitive, not a metaphor** — AI Foundry Agent Service
+  (agent + conversation + response, tool calls, background-mode polling, capped iterations,
+  memory) shows the loop shipped as a managed service. Anthropic's evaluator-optimizer
+  corroborates.
+- **Art of the possible you can actually read** — `Azure/git-ape` ("platform engineering
+  framework for the agentic age," 252★, MIT) is a public, inspectable harness+loop
+  (plan -> validate -> confirm -> deploy -> verify, with security/cost gates as sensors and
+  CI/OIDC as the bounded run). Stripe Minions is the corroborating at-scale data point.
 - **First-party proof:** this very content pipeline runs review-gate loops (plan -> draft ->
-  rubber-duck review -> fix -> re-review) — a working, inspectable loop-engineering example.
+  rubber-duck review -> fix -> re-review) — a working, inspectable loop-engineering example the
+  author runs daily.
 
 ## Tone & voice
 
@@ -171,13 +188,16 @@ loop-engineering payoff through the progression; honest about limits; no corpora
 - **Distribution tag:** LinkedIn CTA; Reel closing line; deck final/CTA slide.
 
 ### H2 11. Build it yourself: 3 projects to try this week `~450 words` (MANDATORY practitioner track)
-- Per the `practitioner-projects` skill: the post must hand readers something to **build**, not just synthesize sources. Three structured, GitHub-grounded projects laddering beginner -> intermediate -> advanced, each mapping to a concept the post already taught.
-- **Project 1 (Beginner) — Run your first verify->correct loop with Aider.** Maps to "the loop" + "validation is the gate." Use `--auto-test` so the model edits, runs your test suite as the verifier, and self-corrects. Success signal: `pytest` exits 0 on a model-made change. Start from: https://github.com/Aider-AI/aider
-- **Project 2 (Intermediate) — Build the loop yourself from agent patterns + a verifier.** Maps to "harness (nouns) vs. loop (verbs)." ~150-line plan->act->observe->verify->correct loop from the Claude Cookbooks agent patterns, test runner as the sensor, capped retries. Success signal: seeded bug fixed within retry budget, non-zero exit if not (no infinite loop). Start from: https://github.com/anthropics/claude-cookbooks
-- **Project 3 (Advanced) — Close the loop on real GitHub issues and measure it.** Maps to "on the loop" + the SWE-bench trajectory. Point mini-SWE-agent at a SWE-bench subset in a sandbox; measure resolve-rate + $/issue — your own 12.47%->76.8% / $0.05-$0.96 micro-experiment. Start from: https://github.com/SWE-agent/mini-swe-agent
-- **Each project carries:** Goal, Prerequisites, Steps, machine-checkable Success signal, Time, Stretch goal, verified "Start from" repo link.
+- Per the `practitioner-projects` skill (now first-party-first): the post must hand readers
+  something to **build**, and the "Start from" repos **lead with Microsoft/GitHub-owned
+  projects**, with public repos offered only as no-account fallbacks. Three structured projects
+  ladder beginner -> intermediate -> advanced, each mapping to a concept the post already taught.
+- **Project 1 (Beginner) — Run a verify->correct loop in GitHub Copilot agent mode (VS Code).** Maps to "the loop" + "validation is the gate." Give agent mode a failing-test task; watch it edit -> run tests -> read failures -> retry; open the **Chat Debug View** (from the VS Code harness blog) to inspect the prompts, tool calls, and results behind the run. Success signal: your test command exits 0 on an agent-made edit you didn't write. Start from: https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode . No-account fallback: https://github.com/Aider-AI/aider
+- **Project 2 (Intermediate) — Build the loop yourself on Microsoft Foundry Agent Service.** Maps to "harness (nouns) vs. loop (verbs)" + stop conditions. Create an agent + conversation + one tool; run in **background mode** and poll `status` until done with a **capped iteration count** as your stop condition; the tool result is the sensor. Success signal: seeded task resolved within the cap; bounded exit (no infinite loop) if the cap is hit. Start from: https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent . No-account fallback: https://github.com/anthropics/claude-cookbooks
+- **Project 3 (Advanced) — Platform-engineer the loop with Azure/git-ape.** Maps to "on the loop" + the flywheel. Install git-ape as a Copilot plugin, run a headless deployment loop (issue -> PR -> `git-ape-plan` what-if -> security/cost gate -> deploy -> integration test), then **tune a gate (a skill) and re-run** — fix the loop, not the output. Success signal: a run where a tightened gate changes the outcome (gate blocks -> you fix the template -> re-run passes) — you changed the producer. Start from: https://github.com/Azure/git-ape . Alternative: https://github.com/microsoft/hve-core ; no-account fallback: https://github.com/SWE-agent/mini-swe-agent
+- **Each project carries:** Goal, Prerequisites, Steps, machine-checkable Success signal, Time, Stretch goal, verified first-party "Start from" link.
 - `[VISUAL: projects ladder — three rungs beginner->advanced with repo + success-signal labels]`
-- **Distribution tag:** every channel's CTA names Project 1 as the on-ramp; LinkedIn/X close on the repo link; deck "Build it yourself" slide; reel "try the first one this week."
+- **Distribution tag:** every channel's CTA names Project 1 as the on-ramp; LinkedIn/X close on the first-party link; deck "Build it yourself" slide; reel "try the first one this week."
 
 ---
 

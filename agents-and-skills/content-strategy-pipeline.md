@@ -60,7 +60,7 @@ Build a repeatable content pipeline that takes a single technical topic and prod
 
 Every content run now includes visual opportunity mapping before blog writing. The map is saved to `content/visual-opportunity-map.md` and becomes the contract between strategy, writing, rendering, social distribution, and review.
 
-Every P0/P1 visual also requires infographic art direction before rendering. The art-direction brief chooses the infographic type, visual metaphor, state-change plan, text budget, icon/illustration plan, and visual-reviewer acceptance criteria. This prevents "text cards with icons" from passing as visual-first content.
+Every P0/P1 visual also requires infographic art direction before rendering. The art-direction brief chooses the infographic type, visual metaphor, state-change plan, text budget, icon/illustration plan, and visual-reviewer acceptance criteria. This prevents "text cards with icons" from passing as visual-first content. Acceptance is enforced last by **REVR** (`visual-reverse-review` skill, run inside `visual-reviewer` section 10): a blind pixels-only read must back-translate to the source intent, score ≥85, and carry a PASS record at `content/visuals/revr/<asset-stem>.md` before any visual is publish-ready.
 
 First-milestone visual families:
 

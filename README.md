@@ -212,7 +212,7 @@ You don't have to run the full pipeline. Use any agent directly:
 @quality-reviewer Review content/my-blog.md
 @visual-renderer Create visuals for content/my-blog.md
 @image-content-agent Create a hero/illustrative image for content/my-blog.md (programmatic by default)
-@visual-reviewer Review rendered visuals (deterministic inspector + severity findings)
+@visual-reviewer Review rendered visuals (deterministic inspector + severity findings + REVR hard gate)
 @trend-researcher Research market landscape for [topic]
 @content-researcher Build a STORM content plan (thesis, ranked arguments, outline tree) for [topic]
 @seo-optimizer Optimize content/my-blog.md for search

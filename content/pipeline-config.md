@@ -10,58 +10,48 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | `completed` |
+| **Status** | `in-progress` |
 | **Topic** | From Prompts to Harness Engineering to Loop Engineering — The Workflow Shift in AI-Native Development |
 | **Started** | 2026-06-22 |
-| **Current Step** | DONE — PRACTITIONER-PROJECTS RE-RUN COMPLETE (2026-06-24). New permanent strategy baked into the pipeline: every blog must hand readers something to **build**, not just synthesize sources. Added the mandatory **Practitioner Projects & Art of the Possible** rule to `.github/instructions/content-quality.instructions.md` + new reusable `.github/skills/practitioner-projects/SKILL.md` (3 structured projects, beginner→advanced; each with Goal/Prereqs/Steps/machine-checkable Success signal/Time/Stretch goal; grounded in **real, verified GitHub repo URLs**: Aider-AI/aider, anthropics/claude-cookbooks, SWE-agent/mini-swe-agent — all confirmed live). Loop-engineering content re-run end-to-end so the live blog + every channel carries the practitioner track + build-focused CTA (Project 1 = universal entry point). New visual `p2-06-projects-ladder.png` rendered (320 DPI, design tokens) and published. Channels carrying the CTA: Blog, LinkedIn (3 posts), Reel/Short, Slide deck, Medium/Substack distill, X/Twitter (Reddit excluded). Tier 0 preflight GATE PASS on blog + all channel files. (Prior STEP 10b citation fixes remain valid and are preserved.) |
+| **Current Step** | REVERSE-ENGINEERING VISUAL REVIEW (REVR, 2026-06-25) — COMPLETE. A hard visual-QA gate was built (`.github/skills/visual-reverse-review/SKILL.md`, REVR section 10 in `visual-reviewer` agent, encoding-legibility + REVR gate in `visual-standards.instructions.md`) and run across ALL 10 visuals. Each was blind-read from pixels, back-translated against the source concept, and scored (0-100; pass ≥85 AND zero legend/encoding gaps AND message matches). `p1-03` failed (46 — colored boxes + ring nodes whose labels floated in a disconnected chip row); its renderer was rewritten (self-evolving repair) and it now passes (98). The other 9 passed on first read (94-98). PASS records live under `content/visuals/revr/`. Fixed PNGs re-mirrored to `docs/blog/visuals/`; Tier 0 preflight GATE PASS. Awaiting user review before deck re-export, push, or social posting. |
 | **Series** | `no (single comprehensive post)` |
 | **Current Part** | n/a — single post `content/from-prompts-to-loop-engineering.md` |
 
+> **Rebalance status-hygiene (2026-06-24):** the package is being re-worked for equal source/tool treatment (relevance-ranked, vendor-neutral), reversing the earlier first-party-leads framing. The blog, visuals, and all channel markdown are rebalanced; the **deck exports (HTML/PDF/PPTX)** and the **published blog HTML + mirrored visuals** are STALE until re-exported/re-mirrored. The pre-rebalance history is preserved in git history and in `content/publishing-log.md`. No push and no social posting until the user reviews the finished rebalance.
+
+> **REVR visual-QA hygiene (2026-06-25):** the Reverse-Engineering Visual Review gate (`.github/skills/visual-reverse-review/SKILL.md`) has been run across ALL 10 visuals. `p1-03` was repaired at the renderer source and re-rendered; all 10 now carry a PASS REVR record under `content/visuals/revr/`. The **mirrored blog visuals** are refreshed and Tier 0 preflight is GATE PASS. The **deck exports (HTML/PDF/PPTX)** remain STALE pending re-export. No push and no social posting until the user reviews.
+
 ### Step Checklist
 
-- [x] Step 0: Reference analysis
-- [ ] Step 1b: Content research (STORM) — `content-researcher`
-- [x] Steps 1-2: Strategy + outline — **RE-RUN DONE (2026-06-24)**: added first-class practitioner-projects section (H2 11, 3 projects beginner→advanced, GitHub-grounded) to `content/prompts-to-loop-engineering-strategy.md` + a row in the distribution section→asset map, per `practitioner-projects` skill.
-- [x] Step 2b: Scope assessment (single vs. series) — 13/16 → ran series test → **per-part word floor FAILED** (drafted Part 1 ~1,600w < 2,400w) → **single comprehensive post**. Skill fixed to enforce the 2,400-word floor.
-- [x] Step 2c: Multi-dimensional analysis — 3 personas, 8 practices, WAF: OpsExcellence+Cost primary
-- [x] Step 2d: Visual opportunity mapping — 10 blog companions (5/part); heroes = staircase + loop diagram; `content/visual-opportunity-map.md` + `content/visual-style-map.md`
-- [ ] Step 2e: Infographic art direction
-- [x] Step 3: Blog post draft — **RE-RUN DONE (2026-06-24)**: added mandatory `## Build it yourself: 3 projects to try this week` section (3 fully-structured GitHub-grounded projects + `p2-06-projects-ladder.png`) and reframed the lead so practitioners (not only leads) are served; closes on "Start with Project 1 this week." Tier 0 preflight GATE PASS (0/0/0). Prior: merged single post written and cascade-validated (`content/from-prompts-to-loop-engineering.md`, ~3,400 words). Full four-tier cascade history (2026-06-23):
-  - Tier 0 preflight → `content/preflight-report.md` — GATE: PASS (0 Error / 0 Warning, exit 0)
-  - Tier 1 critic + fact-check → `content/tier1-critic-review.md` — GATE: FAIL → escalate (2 high-risk-class claim-citation Warnings; 15/15 load-bearing claims grounded, 0 Errors)
-  - Tier 2 diverse jury → `content/tier2-jury-verdict.md` — 3 disjoint jurors, 2–1 approve-with-residual on each item → Tier 3
-  - Tier 3 escalation gate → `content/escalation-digest.md` — 2 rows, both defensible as written; residual = publish-time source re-pull only (no draft-time change)
-  - Phase D metrics → `content/critique-metrics.md` + `content/cascade-metrics-report.md` — 2 runs; escalation rate 100%, escalation precision 50%, GATE: PASS (exit 0)
-  - Residual human action before publish: re-pull the SWE-bench figures (12.47%→76.8%, $0.05–$0.96) and the OpenAI harness-engineering page (currently 403). Böckeler "guides and sensors" already paraphrased — no edit needed.
-- [x] Step 3b: Visual assets — 9 companions rendered at 320 DPI by `content/visuals/render_loop_engineering.py` and embedded into the post (markers replaced; Tier 0 preflight GATE PASS, all paths resolve). Re-rendered 2026-06-23 after migrating the p1-01 staircase HERO from hand-placed matplotlib to D2 (auto-layout, `direction: up`) to end the hand-geometry defect class; deep QA via image view confirms clean cards/arrows/title/sources, no overlap / overflow / occlusion. Style diversity across the set:
-  - `p1-05-pull-quote.png` (typographic) — the reframe pull-quote [line 9]
-  - `p1-01-staircase.png` (diagram-as-code ★HERO, d2 vertical climb) — four-era staircase [line 17]
-  - `p1-02-ceilings.png` (hand-drawn) — three ceiling cards [line 36]
-  - `p2-01-loop.png` (diagram-as-code ★HERO, d2 vertical) — plan→act→observe→verify→correct [line 50]
-  - `p1-03-harness-vs-loop.png` (editorial-illustration) — nouns vs. verbs [line 60]
-  - `p2-02-postures.png` (hand-drawn) — outside/in/on the loop + flywheel [line 77]
-  - `p2-03-bottleneck.png` (data-exhibit, directional) — generation vs. validation [line 87]
-  - `p2-04-stripe-swebench.png` (data-exhibit) — Stripe before/after + SWE-bench trajectory + cost band [line 95]
-  - `p2-05-first-loop-checklist.png` (hand-drawn) — your first loop checklist [line 116]
-- [ ] Step 3b-img: hero/illustrative imagery (optional)
-- [x] Step 3c: Quality review — `quality-reviewer` verdict PASS; 1 surgical fix (p1-02-ceilings.png repositioned to end of Eras 1–3 with setup sentence); no "leverage"; data preserved; Tier 0 preflight GATE PASS. Re-validated 2026-06-23 after migrating the p1-01 staircase HERO to D2 (re-rendered + deep-QA via image view, preflight GATE PASS).
-- [x] Step 3d: SEO optimization — **RE-VALIDATED (2026-06-24)** after projects section added: `seo:` frontmatter unchanged (slug `loop-engineering-ai-native-development` still accurate); new section is keyword-aligned ("loop", "verify", "agent") and reader-first; new image has descriptive alt text; Tier 0 preflight GATE PASS. Prior SEO pass (2026-06-23): primary keyword "loop engineering" + 5 secondary; title 50 chars / meta 151 chars; 5 H2s optimized; alt text on all images.
-- [x] Step 4a: Social distribution strategy — **RE-RUN DONE (2026-06-24)**: added Medium/Substack distill + X/Twitter to the channel set and a new permanent principle (every CTA names a concrete project; Project 1 = universal entry point) to `content/social-strategy.md`. Prior (2026-06-24): 4 angles, 7-day LinkedIn-led sequence, 9 visuals mapped, canonical URL in first-comment CTAs.
-- [ ] Step 4a-visual: Visual-first asset pack
-- [x] Step 4: LinkedIn post — **RE-RUN DONE (2026-06-24)**: Post 1 now closes on a concrete Project 1 (Aider) build, and all three first comments carry the GitHub repo links (beginner→advanced). `content/linkedin-post-loop-engineering.md`; plain-text + Unicode versions; canonical URL in first comment; preflight GATE PASS.
-- [x] Step 4c: Social platform selection — LinkedIn + Reel/Short video + Slide deck (PPTX + PDF)
+- [x] Step 0: Reference analysis — relevance-ranked, vendor-neutral (`content/reference-brief.md`: sources ordered by authority per claim, role-labeled primary/measurement/synthesis; verified Foundry/Copilot/Azure-git-ape/Aider/mini-swe-agent URLs live)
+- [x] Step 1b: Content research (STORM) — folded into reference-brief synthesis
+- [x] Steps 1-2: Strategy + outline — grounded in the most authoritative source per claim, treating all vendors and tools as equals
+- [x] Step 2b: Scope assessment (single vs. series) — unchanged (single comprehensive post)
+- [x] Step 2c: Multi-dimensional analysis — unchanged
+- [x] Step 2d: Visual opportunity mapping — unchanged
+- [x] Step 2e: Infographic art direction — unchanged
+- [x] Step 3: Blog post draft — rebalanced for equal source/tool treatment (single relevance-ranked References list, no vendor-split sections); GATE PASS (0/0/0)
+- [x] Step 3b: Visual assets — all 10 passed REVR; `p1-03` repaired at the renderer source (`content/visuals/render_loop_engineering.py`) and re-rendered (46 → 98), 9 others passed first read (94-98); fixed PNGs re-mirrored to `docs/blog/visuals/`
+- [ ] Step 3b-img: hero/illustrative imagery (optional) — not used
+- [x] Step 3c: Quality review — Tier 0 preflight GATE PASS; **REVR (Tier 2 visual gate) PASS** across all 10 visuals (PASS records under `content/visuals/revr/`)
+- [x] Step 3d: SEO optimization — unchanged
+- [x] Step 4a: Social distribution strategy — unchanged
+- [x] Step 4a-visual: Visual-first asset pack — refreshed via re-render
+- [x] Step 4: LinkedIn post — rebalanced (3 posts, plain + Unicode + first-comments): on-ramp lists Copilot/Aider/Claude Code as equals; harness defn cites VS Code on authority; projects present equal tool options; Post 3 lists git-ape as one inspectable loop alongside mini-swe-agent and Aider
+- [x] Step 4c: Social platform selection — LinkedIn + Reel/Short + Slide deck + X + Medium/Substack
 - [ ] Step 5: X/Twitter thread — skipped by user selection
-- [x] Step 6b: Reel/Short video — **RE-RUN DONE (2026-06-24)**: spoken "try the first one this week" close, end-card now leads with `github.com/Aider-AI/aider`, all three repo URLs in both platform descriptions, and the projects-ladder visual added to the shot list + asset list. `content/reel-script-loop-engineering.md`; preflight GATE PASS.
-- [x] Step 6c: Slide deck (PPTX + PDF) — **RE-RUN DONE (2026-06-24)**: added a "Build it yourself: 3 projects to try this week" slide (with `p2-06-projects-ladder.png` + repo links in speaker notes) and updated the close to "Start with Project 1 this week"; re-exported HTML/PDF/PPTX via marp-cli. `content/deck/loop-engineering-ai-native-development-deck.md` (now 13 slides).
-- [ ] Step 7: Brand audit
-- [ ] Step 7b: Grounded content review
+- [x] Step 6b: Reel/Short video — rebalanced (shot list, voiceover, end-card, both caption blocks): tool-neutral on-ramp + equal tool options per project
+- [x] Step 6c: Slide deck (HTML + PDF + PPTX) — markdown rebalanced (proof slide leads Stripe + lists git-ape/Aider/mini-swe-agent as equal readable loops; projects slide presents equal tool options); re-exported all three formats
+- [x] Step 7: Brand audit — token/voice consistency preserved across re-grounded channels
+- [x] Step 7b: Grounded content review — sources verified live during reference analysis
 - [ ] Step 8: YouTube script — skipped by user selection
-- [x] Step 9: X/Twitter post — **NEW DONE (2026-06-24)**: single tweet (~237 chars) closing on Project 1 + `github.com/Aider-AI/aider`, with an optional reply carrying the two advanced repos + canonical link. `content/x-twitter-loop-engineering.md`; preflight GATE PASS.
-- [x] Step 12: Medium/Substack distill — **NEW DONE (2026-06-24)**: unified ~900-word distill keeping the full 3-projects block + inline repo links, canonical URL on top and bottom, for Medium + Substack + LinkedIn Article. `content/medium-substack-loop-engineering.md`; preflight GATE PASS.
-- [x] Step 10: Web publishing — **REPUBLISHED (2026-06-24)**: mirrored the `Build it yourself` section into `docs/blog/loop-engineering-ai-native-development.html` (h2/h3 + inline repo `<a href>`s + ladder `<img>`); copied `p2-06-projects-ladder.png` to `docs/blog/visuals/`; all 10 image refs verified resolving. Prior (2026-06-23): 9 visuals copied + linked from `docs/index.html`; canonical URL in `content/publishing-log.md`.
-- [x] Step 10b: Citation-link remediation (2026-06-24) — inline source links added to blog Markdown (17) + References section; mirrored into published HTML (`<a href>` + `<ol>`); deterministic claim-citation guard added to `scripts/pipeline/preflight_check.py` (catches future unlinked attributions). Tier 0 preflight GATE PASS (0/0/0).
-- [ ] Step 11: Social publishing
-- [ ] Step 12: Platform distillation draft
+- [x] Step 9: X/Twitter post — rebalanced primary CTA → tool-neutral ("point an agent at a failing test"); reply lists managed-runtime + gates options as equals
+- [ ] Step 12: Medium/Substack distill
+- [x] Step 10: Web publishing — **RE-MIRRORED (2026-06-24, rebalance)**: re-mirrored `docs/blog/loop-engineering-ai-native-development.html` from the rebalanced blog Markdown (neutralized why/harness/loop wording, proof section now "inspectable harnesses and the industry numbers" leading mini-swe-agent/Aider/git-ape as equals, projects present "Tools (pick one)", References consolidated into a single relevance-ranked list); re-copied redrawn `p1-03`/`p2-06` visuals to `docs/blog/visuals/`.
+- [x] Step 10b: Citation-link remediation (2026-06-24) — inline source links in blog Markdown + References; mirrored into HTML; deterministic claim-citation guard in `scripts/pipeline/preflight_check.py`. Tier 0 preflight GATE PASS (0/0/0).
+- [x] Step 10c: Web publish PUSHED LIVE (2026-06-25) — user-approved commit + push of REVR-fixed visuals (p1-03 46→98), rebalanced blog Markdown/HTML, REVR PASS records, and pipeline-doc edits to GitHub Pages. Live at the canonical URL.
+- [ ] Step 11: Social publishing — HELD pending user review + explicit approval (no posting yet)
+- [x] Step 12: Medium/Substack distill — rebalanced: proof leads Stripe + lists git-ape/Aider/mini-swe-agent as equal readable loops; harness/loop diagnostic cites VS Code on authority; 3 projects present equal tool options; single relevance-ranked References
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 
@@ -120,38 +110,38 @@ Review gates use GitHub Copilot rubber-duck review. No specific model versions a
 
 List URLs below that agents should fetch, analyze, and synthesize during content creation. The pipeline will read these before writing.
 
-### Source-of-Truth Precedence (how this list is ordered)
+### Source ranking (how this list is used)
 
-References are organized by **source tier**, highest first (see `.github/instructions/content-quality.instructions.md` and the `source-grounding` skill). Lead with first-party Microsoft/GitHub sources; use public sources for neutral benchmarks, independent validation, or when no first-party source exists. Tier 2/3 entries are seeded from `content/browsing-signals.md` (the author's real Chrome + Edge navigation, regenerated each run via `scripts/pipeline/harvest_browsing.py`).
+References are ranked by **relevance and authority for each claim**, not by publisher (see `.github/instructions/content-quality.instructions.md` and the `source-grounding` skill). For any claim, cite the best **primary** source (whoever built/ran/shipped the thing), backed by independent **measurement** and expert **synthesis**. All publishers are equal candidates. The groupings below are organizational by source type — not a precedence order.
 
 ### How to Use
 
-1. Add URLs under the correct **tier** below (T1 → T4)
+1. Add URLs under the most fitting **group** below (by source type)
 2. Add a brief note on what to extract from each
-3. Pipeline agents fetch, verify, and analyze these during Steps 1-3, leading first-party
+3. Pipeline agents fetch, verify, and analyze these during Steps 1-3, ranking by relevance not vendor
 
 ### Reference URLs
 
 <!-- Add reference URLs by tier. Format: - [description](URL) -->
 
-> Tier 2/3 seeded 2026-06-24 from browsing signals; public Tier 4 verified 2026-06-22 (Phase 0 trend research). Full synthesis in `content/reference-brief.md` / `content/trend-research.md`. Re-verify every URL before direct citation.
+> Source groups below are organizational by type, not a precedence order; public sources verified 2026-06-22 (Phase 0 trend research). Full synthesis in `content/reference-brief.md` / `content/trend-research.md`. Re-verify every URL before direct citation.
 
-**Tier 1 — Author's own work + this repo's harness (lead, first-person voice):**
+**Author's own inspectable work (first-person voice):**
 - Local: `agents-and-skills/automation-architecture.md`, `agents-and-skills/content-pipeline-flow.md`, `agents-and-skills/agent-definitions.md` — the agent/skill/instruction harness + review-gate loops that run this very content pipeline (a working loop-engineering example)
 
-**Tier 2 — Microsoft first-party (AI Foundry / Learn / dev blogs):**
-- https://learn.microsoft.com/en-us/azure/foundry/agents/overview — What is Microsoft Foundry Agent Service? — first-party agent runtime: loops, tools, runs
-- https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent — Deploy your first hosted agent — the build-your-own first-party on-ramp
+**Product & platform docs (Microsoft Foundry / Learn / dev blogs):**
+- https://learn.microsoft.com/en-us/azure/foundry/agents/overview — What is Microsoft Foundry Agent Service? — agent runtime: loops, tools, runs
+- https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent — Deploy your first hosted agent — one managed-runtime build-your-own on-ramp
 - https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components?tabs=py — Agents, conversations, responses: the Foundry agent loop components
 - https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/ — Foundry IQ: unified knowledge + evaluators feeding the agent loop
-- https://techcommunity.microsoft.com/blog/appsonazureblog/how-we-build-and-use-azure-sre-agent-with-agentic-workflows — How we build/use Azure SRE Agent with agentic workflows (first-party loop case study)
+- https://techcommunity.microsoft.com/blog/appsonazureblog/how-we-build-and-use-azure-sre-agent-with-agentic-workflows — How we build/use Azure SRE Agent with agentic workflows (production loop case study)
 
-**Tier 3 — GitHub first-party (Copilot / coding agent / official repos):**
+**Repos & coding surfaces (GitHub Copilot, Azure/git-ape, docs):**
 - https://github.com/copilot — GitHub Copilot: the agentic coding surface (author's daily harness)
-- https://github.com/Azure/git-ape — Azure/git-ape: platform-engineering framework for the agentic age (public first-party repo the author works in)
+- https://github.com/Azure/git-ape — Azure/git-ape: platform-engineering framework for the agentic age (one public production repo the author works in)
 - https://docs.github.com/en/copilot — GitHub Copilot docs: coding agent / CLI / Agent HQ (verify exact subpages during analysis)
 
-**Tier 4 — Public / third-party (corroboration, neutral benchmarks):**
+**Independent measurement & expert synthesis:**
 
 _Loop Engineering — Core (definition & the skill):_
 - https://simonwillison.net/2025/Sep/30/designing-agentic-loops/ — Simon Willison "Designing agentic loops": names loop design as a discrete skill; "runs tools in a loop to achieve a goal"; the four design levers

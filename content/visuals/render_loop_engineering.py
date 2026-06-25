@@ -639,14 +639,49 @@ def harness_vs_loop(out_path: Path) -> Path:
     muted = t["MUTED"]
     light = t["LIGHT_BG"]
 
-    # Left scene: gym + equipment (nouns). Right scene: rep-scheme + coach (verbs).
-    # All copy is real DOM (overlaid), never baked into the SVG.
+    # REVR-driven redraw: every element is LABELLED in place and color is honest
+    # (one accent family per panel). Left = labelled parts of the rig (nouns);
+    # right = a numbered act->observe->verify->retry cycle with a labelled stop
+    # gate (verbs). No disconnected chip row — the labels live ON the elements.
+    blue_bg = t["BLUE_BG"]
+    red_bg = t["RED_BG"]
+
+    def _card(x, y, label):
+        return (
+            f'<rect x="{x}" y="{y}" width="236" height="74" rx="14" '
+            f'fill="{blue_bg}" stroke="{accent}" stroke-width="4"/>'
+            f'<text x="{x + 118}" y="{y + 46}" text-anchor="middle" '
+            f'font-size="25" font-weight="700" fill="{text}" '
+            f'font-family="{font}">{label}</text>'
+        )
+
+    # 6 labelled parts, 2 columns x 3 rows.
+    col_x = (34, 290)
+    row_y = (30, 118, 206)
+    parts = [
+        ("skills", "tests"), ("CLIs", "linters"),
+        ("type checkers", "guardrails"),
+    ]
+    cards = ""
+    for r, (lft, rgt) in enumerate(parts):
+        cards += _card(col_x[0], row_y[r], lft)
+        cards += _card(col_x[1], row_y[r], rgt)
+
+    # Cycle node labels (clockwise from top).
+    def _node(cx, cy, n):
+        return (
+            f'<circle cx="{cx}" cy="{cy}" r="27" fill="{teal}" stroke="{teal}" '
+            f'stroke-width="4"/>'
+            f'<text x="{cx}" y="{cy + 9}" text-anchor="middle" font-size="26" '
+            f'font-weight="800" fill="#ffffff" font-family="{font}">{n}</text>'
+        )
+
     doc = f"""<!doctype html><html><head><meta charset="utf-8">
 <style>
   * {{ margin:0; padding:0; box-sizing:border-box; }}
   html, body {{ background:{t['BG']}; }}
   #stage {{
-    width:1640px; height:840px; background:{t['BG']}; font-family:{font};
+    width:1640px; height:780px; background:{t['BG']}; font-family:{font};
     position:relative; overflow:hidden;
     display:grid; grid-template-columns: 1fr 96px 1fr;
   }}
@@ -656,53 +691,25 @@ def harness_vs_loop(out_path: Path) -> Path:
   .eyebrow {{ font-size:19px; letter-spacing:0.26em; text-transform:uppercase; font-weight:800; }}
   .ttl {{ font-size:40px; font-weight:800; color:{text}; letter-spacing:-0.01em; margin-top:8px; line-height:1.08; }}
   .sub {{ font-size:21px; color:{text2}; margin-top:10px; font-weight:600; }}
-  .chips {{ position:absolute; left:50px; right:50px; bottom:120px; display:flex; flex-wrap:wrap; gap:12px; }}
-  .chip {{ font-size:18px; font-weight:600; color:{text}; background:{t['BG']};
-           border:2px solid {muted}; border-radius:999px; padding:8px 16px; }}
-  .left .chip {{ border-color:{accent}; }}
-  .right .chip {{ border-color:{teal}; }}
-  .cap {{ position:absolute; left:50px; right:50px; bottom:60px; font-size:18px; color:{text2}; font-weight:600; }}
-  .scene {{ position:absolute; left:50%; top:188px; transform:translateX(-50%); }}
+  .cap {{ position:absolute; left:50px; right:50px; bottom:54px; font-size:18px; color:{text2}; font-weight:600; }}
+  .scene {{ position:absolute; left:50%; top:196px; transform:translateX(-50%); }}
   .divider {{ display:flex; align-items:center; justify-content:center; }}
   .neq {{ width:84px; height:84px; border-radius:50%; background:{t['BG']};
           border:3px solid {warn}; display:flex; align-items:center; justify-content:center;
           font-size:46px; font-weight:800; color:{warn}; }}
-  .vline {{ position:absolute; top:0; bottom:0; width:2px; background:{t['GRID']}; left:50%; }}
-  .test {{ position:absolute; left:0; right:0; bottom:0; height:64px; }}
 </style></head>
 <body>
   <div id="stage">
     <div class="panel left">
       <div class="eyebrow" style="color:{accent};">Harness = the rig</div>
       <div class="ttl">Nouns</div>
-      <div class="sub">the gym and the equipment</div>
+      <div class="sub">the assembled parts and sensors</div>
       <div class="scene">
-        <svg width="420" height="300" viewBox="0 0 420 300">
-          <!-- dumbbell -->
-          <rect x="150" y="120" width="120" height="20" rx="6" fill="{accent}"/>
-          <circle cx="140" cy="130" r="34" fill="{t['BLUE_BG']}" stroke="{accent}" stroke-width="6"/>
-          <circle cx="280" cy="130" r="34" fill="{t['BLUE_BG']}" stroke="{accent}" stroke-width="6"/>
-          <!-- equipment rack -->
-          <rect x="40" y="200" width="150" height="70" rx="10" fill="none" stroke="{teal}" stroke-width="5"/>
-          <line x1="40" y1="235" x2="190" y2="235" stroke="{teal}" stroke-width="4"/>
-          <line x1="90" y1="200" x2="90" y2="270" stroke="{teal}" stroke-width="4"/>
-          <line x1="140" y1="200" x2="140" y2="270" stroke="{teal}" stroke-width="4"/>
-          <!-- wrench / tool -->
-          <g transform="translate(250 210) rotate(35)">
-            <rect x="0" y="14" width="120" height="16" rx="8" fill="{t['ACCENT_3']}"/>
-            <circle cx="6" cy="22" r="20" fill="none" stroke="{t['ACCENT_3']}" stroke-width="8"/>
-          </g>
-          <!-- checklist board -->
-          <rect x="300" y="40" width="90" height="120" rx="10" fill="none" stroke="{muted}" stroke-width="5"/>
-          <line x1="316" y1="74" x2="374" y2="74" stroke="{muted}" stroke-width="5"/>
-          <line x1="316" y1="100" x2="374" y2="100" stroke="{muted}" stroke-width="5"/>
-          <line x1="316" y1="126" x2="374" y2="126" stroke="{muted}" stroke-width="5"/>
+        <svg width="560" height="320" viewBox="0 0 560 320">
+          <!-- assembled rig: a static rack of LABELLED parts (no cycle) -->
+          <rect x="10" y="10" width="540" height="300" rx="22" fill="none" stroke="{accent}" stroke-width="5"/>
+          {cards}
         </svg>
-      </div>
-      <div class="chips">
-        <span class="chip">skills</span><span class="chip">CLIs</span>
-        <span class="chip">tests</span><span class="chip">linters</span>
-        <span class="chip">type checkers</span><span class="chip">guardrails</span>
       </div>
       <div class="cap">"Everything except the model." What tools and sensors does the agent have?</div>
     </div>
@@ -712,33 +719,44 @@ def harness_vs_loop(out_path: Path) -> Path:
     <div class="panel right">
       <div class="eyebrow" style="color:{teal};">Loop = the cycle</div>
       <div class="ttl">Verbs</div>
-      <div class="sub">the rep-scheme and the coach</div>
+      <div class="sub">the cycle and the stop</div>
       <div class="scene">
-        <svg width="420" height="300" viewBox="0 0 420 300">
-          <!-- cyclic arrows -->
-          <g fill="none" stroke="{teal}" stroke-width="9" stroke-linecap="round">
-            <path d="M210 70 A 90 90 0 1 1 120 160"/>
+        <svg width="560" height="360" viewBox="0 0 560 360">
+          <!-- numbered clockwise cycle: 1 act -> 2 observe -> 3 verify -> 4 retry -->
+          <circle cx="230" cy="180" r="112" fill="none" stroke="{teal}" stroke-width="9"/>
+          <g fill="{teal}">
+            <polygon points="-9,-12 -9,12 14,0" transform="translate(309,101) rotate(45)"/>
+            <polygon points="-9,-12 -9,12 14,0" transform="translate(309,259) rotate(135)"/>
+            <polygon points="-9,-12 -9,12 14,0" transform="translate(151,259) rotate(225)"/>
+            <polygon points="-9,-12 -9,12 14,0" transform="translate(151,101) rotate(315)"/>
           </g>
-          <polygon points="120,160 104,134 144,140" fill="{teal}"/>
-          <!-- inner loop marker -->
-          <circle cx="210" cy="160" r="44" fill="none" stroke="{accent}" stroke-width="6" stroke-dasharray="10 10"/>
-          <!-- whistle (coach decides when done) -->
-          <g transform="translate(286 196)">
-            <circle cx="0" cy="0" r="30" fill="{t['TEAL_BG']}" stroke="{teal}" stroke-width="6"/>
-            <rect x="22" y="-12" width="40" height="22" rx="6" fill="{teal}"/>
-            <circle cx="0" cy="0" r="9" fill="{t['BG']}"/>
-          </g>
-          <!-- stop sign (stop condition) -->
-          <g transform="translate(86 196)">
-            <polygon points="-14,-34 14,-34 34,-14 34,14 14,34 -14,34 -34,14 -34,-14"
-                     fill="{t['RED_BG']}" stroke="{warn}" stroke-width="6"/>
+          <!-- entry marker into node 1 (act) -->
+          <text x="230" y="34" text-anchor="middle" font-size="16" font-weight="700"
+                fill="{accent}" font-family="{font}">start</text>
+          {_node(230, 68, "1")}
+          {_node(342, 180, "2")}
+          {_node(230, 292, "3")}
+          {_node(118, 180, "4")}
+          <!-- verb labels, bound just outside each node -->
+          <text x="276" y="74"  text-anchor="start"  font-size="24" font-weight="700" fill="{text}" font-family="{font}">act</text>
+          <text x="384" y="186" text-anchor="start"  font-size="24" font-weight="700" fill="{text}" font-family="{font}">observe</text>
+          <text x="230" y="332" text-anchor="middle" font-size="24" font-weight="700" fill="{text}" font-family="{font}">verify</text>
+          <text x="84"  y="186" text-anchor="end"    font-size="24" font-weight="700" fill="{text}" font-family="{font}">retry</text>
+          <!-- stop gate: bounded exit after verify -->
+          <path d="M 268 300 Q 360 330 432 312" fill="none" stroke="{warn}" stroke-width="6"
+                stroke-dasharray="2 0" marker-end="url(#ah)"/>
+          <defs>
+            <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+              <polygon points="0,0 9,4.5 0,9" fill="{warn}"/>
+            </marker>
+          </defs>
+          <g transform="translate(470,300)">
+            <polygon points="-13,-31 13,-31 31,-13 31,13 13,31 -13,31 -31,13 -31,-13"
+                     fill="{red_bg}" stroke="{warn}" stroke-width="5"/>
+            <text x="0" y="7" text-anchor="middle" font-size="20" font-weight="800"
+                  fill="{warn}" font-family="{font}">stop</text>
           </g>
         </svg>
-      </div>
-      <div class="chips">
-        <span class="chip">act</span><span class="chip">observe</span>
-        <span class="chip">verify</span><span class="chip">retry</span>
-        <span class="chip">stop</span>
       </div>
       <div class="cap">The evaluator-optimizer cycle. How does it iterate, and what makes it stop?</div>
     </div>
@@ -758,23 +776,23 @@ def projects_ladder(out_path: Path) -> Path:
     rungs = [
         {
             "level": "Beginner", "accent": t["ACCENT_2"], "bg": t["TEAL_BG"],
-            "title": "Run your first verify&rarr;correct loop with Aider",
-            "repo": "Aider-AI/aider",
-            "signal": "pytest exits 0 on a change the model made \u2014 not you",
+            "title": "Run a verify&rarr;correct loop in an agent",
+            "repo": "agent mode \u00b7 Copilot, Aider, or Claude Code",
+            "signal": "your tests exit 0 on an edit the agent made, while you wrote no code",
             "time": "~90 min",
         },
         {
             "level": "Intermediate", "accent": t["ACCENT"], "bg": t["BLUE_BG"],
-            "title": "Build the loop yourself from agent patterns + a verifier",
-            "repo": "anthropics/claude-cookbooks",
-            "signal": "seeded bug fixed within the retry budget; non-zero exit if not",
+            "title": "Build the loop on a managed runtime",
+            "repo": "Foundry Agent Service \u00b7 or Anthropic agent patterns",
+            "signal": "task resolved within your iteration cap; clean exit at the cap",
             "time": "half a day",
         },
         {
             "level": "Advanced", "accent": t["SUCCESS"], "bg": t["LIGHT_BG"],
-            "title": "Close the loop on real GitHub issues and measure it",
-            "repo": "SWE-agent/mini-swe-agent",
-            "signal": "1+ issue resolved by a passing patch, with cost-per-issue",
+            "title": "Platform-engineer the loop with gates",
+            "repo": "git-ape \u00b7 hve-core \u00b7 mini-swe-agent",
+            "signal": "a tightened gate changes the outcome \u2014 you fixed the producer",
             "time": "a weekend",
         },
     ]
@@ -789,7 +807,7 @@ def projects_ladder(out_path: Path) -> Path:
           <div class="num" style="color:{r['accent']};">Project {i + 1}</div>
           <div class="ttl">{r['title']}</div>
           <div class="repo" style="background:{r['bg']}; border-color:{r['accent']}; color:{text};">
-            <span class="gh">&#9670;</span> github.com/{r['repo']}
+            <span class="gh">&#9670;</span> {r['repo']}
           </div>
           <div class="meta"><span class="lab" style="color:{r['accent']};">Success signal</span> {r['signal']}</div>
           <div class="meta"><span class="lab" style="color:{r['accent']};">Time</span> {r['time']}</div>
@@ -835,7 +853,7 @@ def projects_ladder(out_path: Path) -> Path:
     {cards}
     <div class="arrowlab" style="left:120px;">start here</div>
     <div class="arrowlab" style="right:70px;">more autonomy &rarr;</div>
-    <div class="src">Verified open-source starting points. Start with Project 1, then climb.</div>
+    <div class="src">Each project lists tools you can pick from &mdash; choose any. Start with Project 1, then climb.</div>
   </div>
 </body></html>"""
     return render_html_to_png(doc, out_path, scale=2)

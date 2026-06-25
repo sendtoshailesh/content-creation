@@ -141,11 +141,11 @@ Each step automates the craft below it and pushes you up to govern a **bigger un
 
 # What a loop actually is
 
-Governing the agent's **iteration cycle** so it self-corrects *without a human in the inner loop*. Four levers: a **goal** with a success criterion · the **tools** to iterate · one **feedback signal** · a **stop condition** *(Anthropic, Dec 2024)*.
+Governing the agent's **iteration cycle** so it self-corrects *without a human in the inner loop*. Four levers: a **goal** with a success criterion · the **tools** to iterate · one **feedback signal** · a **stop condition** *(VS Code “the agent loop”, May 2026; Anthropic, Dec 2024)*.
 
 ![h:420](../visuals/p2-01-loop.png)
 
-<!-- Topic: The loop primitive — Willison's line is that an agent "runs tools in a loop to achieve a goal", and the part everyone skips is the stop condition: a loop without one isn't autonomy, it's a very expensive way to discover your token budget had no floor. -->
+<!-- Topic: The loop primitive — The VS Code team describe the agent loop as "think -> act -> observe -> think again", bounded by a tool-call limit and stop hooks; managed runtimes like Microsoft Foundry ship the same primitive with background-mode polling and a capped iteration count. The part everyone skips is the stop condition: a loop without one isn't autonomy, it's a very expensive way to discover your token budget had no floor. -->
 
 ---
 
@@ -153,14 +153,14 @@ Governing the agent's **iteration cycle** so it self-corrects *without a human i
 
 # Harness vs. loop: nouns vs. verbs
 
-- **Harness = the rig (nouns)** — skills, CLIs, tests, type checker, guardrails. Böckeler: *"everything except the model."*
+- **Harness = the rig (nouns)** — context assembly + tool exposure + tool execution; tests, type checker, guardrails. VS Code: *"the harness is the product"*; Böckeler: *"everything except the model."*
 - **Loop = the cycle (verbs)** — act → observe → verify → decide retry or stop.
 
 **The test:** when you dislike the output, do you fix *the output* (editing) or change *the thing that produced it* (engineering)?
 
 ![h:280](../visuals/p1-03-harness-vs-loop.png)
 
-<!-- Topic: Nouns vs verbs — I lost months conflating the gym with the workout, and almost every write-up still does; the harness is the equipment and the loop is the rep-scheme, and the one-question diagnostic — fix the output or fix the producer — is the cheapest way to find out whether you're actually engineering or just editing with extra steps. -->
+<!-- Topic: Nouns vs verbs — The VS Code team define the harness as context assembly + tool exposure + tool execution and say "the model is the engine; the harness is the car" and "the harness is the product" — they even tune it per model. Böckeler's "everything except the model" corroborates. The one-question diagnostic — fix the output or fix the producer — is the cheapest way to find out whether you're engineering or just editing with extra steps. -->
 
 ---
 
@@ -197,15 +197,15 @@ The fix: pull verification **into the inner loop** — CircleCI Chunk Sidecars, 
 
 <span class="kicker">Proof at scale</span>
 
-# Stripe Minions + the SWE-bench trajectory
+# The industry numbers + loops you can read
 
-- **Stripe:** **1,300+ PRs/week** (up from ~1,000), **zero human-written code**, behind **$1T+** in annual payment volume *(InfoQ → Stripe, Mar 2026)*
-- **SWE-bench Verified, fixed harness:** **12.47% → 76.8%** (Mar 2024 → Feb 2026) — ~6x on identical infrastructure
-- Per-task cost: **$0.05–$0.96** *(snapshot, still subsidized — re-pull before budgeting)*
+- **Stripe:** **1,300+ PRs/week**, **zero human-written code**, behind **$1T+** in annual payment volume *(InfoQ → Stripe, Mar 2026)*
+- **SWE-bench Verified, fixed harness:** **12.47% → 76.8%** — illustrative; benchmark scores are harness-dependent (OpenAI stopped reporting it)
+- **Read a real one:** **mini-swe-agent**, **Aider**, or **`Azure/git-ape`** (MIT) — open harness-plus-loops you can read end to end: plan → PR → deploy, with **security/cost gates** as sensors and CI/OIDC as the bounded run
 
 ![h:280](../visuals/p2-04-stripe-swebench.png)
 
-<!-- Topic: Evidence — Two data points pulling the same direction: Stripe proves the pattern survives a trillion dollars of payment volume, and SWE-bench holds the harness constant so the six-x climb isolates the rig and the loop as real variables — though I flag the cost band as subsidized, because quoting a price that a vendor is currently eating is how forecasts get embarrassing. -->
+<!-- Topic: Evidence — The proof you can verify yourself: several open harness-plus-loops (mini-swe-agent, Aider, Azure/git-ape) are readable end to end. Stripe proves the pattern survives a trillion dollars of payment volume; SWE-bench is kept as illustration, not scoreboard, because the VS Code team note scores increasingly reflect the harness, which is why OpenAI stopped reporting it. -->
 
 ---
 
@@ -232,13 +232,13 @@ Then step **on** the loop: next time it's wrong, *fix the loop, not the output.*
 
 # 3 projects to try this week
 
-- **Beginner — run your first verify→correct loop** with Aider. Success: `pytest` exits 0 on a change the model made. *(~90 min)* · `github.com/Aider-AI/aider`
-- **Intermediate — build the loop yourself** from agent patterns + a verifier. Success: seeded bug fixed within the retry budget, non-zero exit if not. *(half a day)* · `github.com/anthropics/claude-cookbooks`
-- **Advanced — close the loop on real GitHub issues** with mini-SWE-agent and measure resolve-rate + cost. *(a weekend)* · `github.com/SWE-agent/mini-swe-agent`
+- **Beginner — run a verify→correct loop in an agent** (Copilot, Aider, or Claude Code). Success: your tests exit 0 on an agent-made edit. *(~90 min)* · `code.visualstudio.com/docs/agents`
+- **Intermediate — build the loop on a managed runtime** (Foundry or Anthropic patterns). Success: task resolved within your iteration cap; clean exit at the cap. *(half a day)* · `learn.microsoft.com · Foundry Agent Service`
+- **Advanced — platform-engineer the loop with gates** (git-ape, hve-core, or mini-swe-agent): tune a gate and re-run. Success: a tightened gate changes the outcome. *(a weekend)* · `github.com/Azure/git-ape`
 
 ![h:230](../visuals/p2-06-projects-ladder.png)
 
-<!-- Topic: Art of the possible — Reading about loops doesn't build the instinct; closing one does. Point the audience at three real, open-source starting points that ladder from an afternoon to a weekend, and tell them to do the first one before the next talk — once you've watched a test suite close a loop you didn't babysit, the abstraction becomes muscle memory. Repo links to read out: Aider (https://github.com/Aider-AI/aider), Claude Cookbooks patterns/agents (https://github.com/anthropics/claude-cookbooks), mini-SWE-agent (https://github.com/SWE-agent/mini-swe-agent). -->
+<!-- Topic: Art of the possible — Reading about loops doesn't build the instinct; closing one does. The three starting points ladder by difficulty (agent -> managed runtime -> platform-engineered loop); each lists interchangeable tools, none required. Tell them to do the first one before the next talk. Links to read out: code.visualstudio.com/docs/agents, learn.microsoft.com Foundry Agent Service quickstart, https://github.com/Azure/git-ape. -->
 
 ---
 

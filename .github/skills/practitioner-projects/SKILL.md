@@ -1,6 +1,6 @@
 ---
 name: practitioner-projects
-description: "Turn a blog post's core concept into a hands-on 'Build it yourself' section of three structured, GitHub-grounded projects (beginner → intermediate → advanced) plus a build-focused call-to-action. Use after the blog draft exists and before quality review, and when adapting the CTA for LinkedIn, reel, deck, Medium/Substack, and X. Makes content thought leadership, not a link roundup."
+description: "Turn a blog post's core concept into a hands-on 'Build it yourself' section of three structured, repo-grounded projects (beginner → intermediate → advanced) plus a build-focused call-to-action. Each project presents interchangeable tools as equals regardless of vendor. Use after the blog draft exists and before quality review, and when adapting the CTA for LinkedIn, reel, deck, Medium/Substack, and X. Makes content thought leadership, not a link roundup."
 argument-hint: "Provide the blog file path (and the concept the projects should let readers build)"
 ---
 
@@ -59,11 +59,13 @@ from-scratch path if none fits.
 1. **Every "Start from" link is real and verified.** Fetch the URL before publishing; confirm
    the repo/tool exists and matches the description. Never fabricate or guess a link, never
    cite a repo you have not confirmed. Prefer canonical/official repos over forks.
-2. **Prefer Microsoft/GitHub-owned repos first (Source-of-Truth Precedence).** When picking a
-   "Start from" repo, lead with Microsoft- or GitHub-owned repos and AI Foundry samples
-   (e.g. `Azure-Samples/*`, `microsoft/*`, `github/*`, `Azure/*`, Foundry quickstart repos)
-   that fit the skill level. Reach for other public repos only when no first-party repo fits.
-   Cross-check `content/browsing-signals.md` Tier 3 for repos the author has actually used.
+2. **Pick the best-fit repo by relevance, not vendor (Source-of-Truth Precedence).** Choose the
+   "Start from" repo that most directly fits the skill level and the concept, whoever owns it —
+   Microsoft/GitHub repos (`Azure-Samples/*`, `microsoft/*`, `github/*`, `Azure/*`, Foundry
+   quickstarts), independent maintainers (`Aider-AI/*`, `SWE-agent/*`, `anthropics/*`), and
+   research/community repos are all equal candidates. When several fit, present them as
+   interchangeable options ("Tools (pick one): A, B, or C"), never one as default and the rest
+   as fallbacks.
 3. **If no suitable repo exists, say so** and give a from-scratch path ("no template needed —
    start with an empty repo and …"). An honest from-scratch path beats a fake link.
 4. **Projects derive from the post.** Each maps to a named concept the post already taught;

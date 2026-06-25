@@ -67,7 +67,7 @@ flowchart TD
         Blog[blog-writer\n→ blog .md] --> Visuals[visual-renderer\n→ PNG / SVG / Mermaid]
         Visuals --> Hero[image-content-agent\nhero imagery optional]
         Hero --> Density[Phase 2b: visual density\n>400 words needs a visual]
-        Density --> VisQA{Phase 2c: visual QA\nrubber-duck + visual-reviewer}
+        Density --> VisQA{Phase 2c: visual QA\nrubber-duck + visual-reviewer\n→ REVR hard gate last}
     end
     Confirm --> Blog
     VisQA -->|fail ≤3 cycles| Visuals
@@ -153,7 +153,8 @@ Phase 1 ends with an explicit **user confirmation** before any content is writte
 | 3b | `visual-renderer` (`visual-rendering` skill) | Blog, opportunity map, art briefs | PNG / SVG / Mermaid at 320 DPI | Design-token compliance |
 | 3b-img | `image-content-agent` (`vision-grounding` skill) | Brief, hero slots | Hero/illustrative PNGs in `visuals/generated/` | Deterministic inspect pre-screen; optional, only if `image_generation` on |
 | 2b | Visual density pass | Blog section word counts | Added `[VISUAL:]` markers + renders | **Mandatory** — every section >400 words gets a visual |
-| 2c | Rubber-duck + `visual-reviewer` | Rendered visuals | Findings report | **Gate** — PASS required; up to 3 fix cycles |
+| 2c | Rubber-duck + `visual-reviewer` (checklist sections 1–9) | Rendered visuals | Findings report | **Gate** — PASS required; up to 3 fix cycles |
+| 2c-revr | `visual-reviewer` section 10 / `visual-reverse-review` skill (REVR) | Each Markdown-referenced visual | PASS record at `content/visuals/revr/<asset-stem>.md` | **Hard gate, runs LAST** — blind read → back-translate → score ≥85, zero legend/encoding gaps; FAIL or missing record blocks publish-ready |
 
 ### Phase 3 — Quality Gate + SEO
 

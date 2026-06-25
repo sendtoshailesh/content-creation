@@ -1,12 +1,12 @@
 ---
 name: source-grounding
-description: 'Apply Source-of-Truth Precedence (first-party Microsoft/GitHub before public) and harvest the author''s Chrome/Edge browsing signals when gathering references. Use during reference discovery and analysis, and whenever ranking or citing sources.'
-argument-hint: 'Run before reference discovery/analysis to harvest browsing signals and tier all sources'
+description: 'Rank and cite sources by relevance and authority — not by vendor. Use during reference discovery and analysis, and whenever ranking or citing sources. All publishers (Microsoft, GitHub, independent vendors, analysts, researchers, community) are treated equally.'
+argument-hint: 'Run before reference discovery/analysis to rank and label all sources by relevance'
 ---
 
 # Source Grounding Skill
 
-Encodes the **Source-of-Truth Precedence** rule (see `.github/instructions/content-quality.instructions.md`) and the browsing-signal harvest so every reference set leads with first-party Microsoft/GitHub material the author actually uses, with public sources as corroboration.
+Encodes the **relevance-first** rule (see `.github/instructions/content-quality.instructions.md`): rank every source by how central and authoritative it is for the specific claim it supports, regardless of who published it. No publisher gets a structural head start.
 
 ## When to Use
 
@@ -14,55 +14,52 @@ Encodes the **Source-of-Truth Precedence** rule (see `.github/instructions/conte
 - Whenever ranking, labeling, or selecting which sources to cite
 - When the practitioner-projects, blog, or social agents need to pick a grounding example
 
-## The Precedence Ladder
+## The Core Rule: relevance, not vendor
 
-Rank every candidate source into one of four tiers. **Lead with the highest tier that genuinely fits; use public sources for neutral benchmarks, independent validation, or when no first-party source exists.** This is balanced, not absolutist — do not force a first-party source where it does not fit, and do not omit a stronger public benchmark; pair it with a first-party example instead.
+Pick the source that most directly and authoritatively supports the claim. For a given claim, prefer in this order:
 
-| Tier | Label | Sources | Role |
-|------|-------|---------|------|
-| 1 | `[T1 own]` | The author's own shipped/recommended work; this repo's agent/skill/instruction harness + review-gate loops | Lead — first-person case-study voice ("in my work with customers") |
-| 2 | `[T2 Microsoft]` | AI Foundry (docs, blog, Agent Service, evaluators), Microsoft Learn / Docs, Microsoft Research, Microsoft engineering/dev blogs | Lead first-party example |
-| 3 | `[T3 GitHub]` | GitHub Copilot (docs, changelog, coding agent, CLI, Agent HQ), GitHub Engineering blog, official GitHub-owned repos | Lead first-party example |
-| 4 | `[T4 public]` | Independent vendors, analysts, research, community | Corroboration, neutral benchmarks, contrarian angles, gap-fillers |
+1. **Primary source** — the people who built the thing, ran the study, or shipped the product (whoever they are: a vendor's own docs/engineering blog, a research paper's authors, a maintainer's repo).
+2. **Independent measurement** — neutral benchmarks, analyst data, reproducible studies.
+3. **Expert synthesis** — practitioners and writers who name or frame the idea well.
 
-**Domain cheat-sheet for tiering:**
+Apply this evenly. Microsoft, GitHub, Anthropic, OpenAI, ThoughtWorks, independent maintainers, and academic authors are all candidates on the same footing — the winner is whichever is the best primary or most authoritative source for that specific point.
 
-- **T2 Microsoft:** `learn.microsoft.com`, `docs.microsoft.com`, `devblogs.microsoft.com`, `techcommunity.microsoft.com`, `azure.microsoft.com`, `research.microsoft.com`, `microsoft.github.io`
-- **T3 GitHub:** `github.com` (official orgs: `github`, `githubnext`, `Azure`, `microsoft`, `dotnet`, `Azure-Samples`), `github.blog`, `docs.github.com`, `githubnext.com`
-- **T4 public:** everything else (e.g. `martinfowler.com`, `thoughtworks.com`, `anthropic.com`, `openai.com`, `arxiv.org`, `infoq.com`)
+**Do not:**
+
+- Lead with, or reserve "lead" status for, any one company's sources.
+- Create vendor-segregated sections (e.g. "first-party Microsoft/GitHub" vs "others"). Order the reference list by relevance to the argument, not by publisher.
+- Frame one vendor's tools as the default and others as "fallbacks" or "alternatives." When listing tools a reader could use, present interchangeable options as equals (e.g. "Copilot, Aider, or Claude Code — pick whichever you have").
+- Force a particular source where it does not genuinely fit, or omit a stronger source because of who published it.
 
 ## Procedure
 
-### 1. Harvest browsing signals (mandatory)
+### 1. Gather candidates
 
-Run the harvester with the run's topic keywords. It reads the author's Chrome + Edge history and saved bookmarks (read-only copy), filters to topic-relevant entries, drops private/auth-gated/internal corporate URLs, and writes a tiered digest.
+Collect candidate sources from reference discovery and analysis. For each, note the publisher and what claim it would support — but do not pre-rank by publisher.
 
-```bash
-python3 scripts/pipeline/harvest_browsing.py --days 365 --top 30 <topic keyword> <kw2> <kw3> ...
-```
+### 2. Rank by relevance
 
-Output: `content/browsing-signals.md` with Tier 2 / Tier 3 / Tier 4 tables. These are sources the author has *actually visited or saved* — prefer them so content reflects genuine navigation.
+For every load-bearing claim, choose the single best source using the relevance order above. Where two sources are equally authoritative, list them together as equals.
 
-> The digest is a navigation *signal*, not a fact-check. **Fetch and verify any URL before citing it**, and it still obeys the inline-citation rule in content-quality instructions.
+### 3. Label every source by role
 
-### 2. Promote browsing signals into the reference set
+When writing `content/reference-brief.md`, tag each source with its **role** for the argument, not its vendor:
 
-- Tier 2/3 browsing entries (Microsoft/GitHub docs, blogs, repos) → promote to the lead reference list.
-- Tier 4 browsing entries that are topic-relevant → keep as public corroboration.
-- Skip product app-shell/portal URLs that aren't citable (the harvester already drops most).
+- `[primary]` — built/ran/shipped the thing being cited
+- `[measurement]` — independent benchmark or data
+- `[synthesis]` — names or frames the idea
 
-### 3. Tier-label every source
+Order the brief by how central each source is to the argument.
 
-When writing `content/reference-brief.md`, tag each source with its tier label (`[T1 own]`, `[T2 Microsoft]`, `[T3 GitHub]`, `[T4 public]`) so downstream writers can lead first-party by construction.
+### 4. Enforce equal treatment at write time
 
-### 4. Enforce lead-first-party at write time
-
-- Every "here's what works / here's what I recommend" claim shows a Tier 1–3 example *before* a public one.
-- Public benchmarks are framed as independent corroboration of the first-party position.
-- Practitioner projects prefer Microsoft/GitHub-owned repos and AI Foundry samples first.
+- Every "here's what works / here's what I recommend" claim cites the most authoritative source available, whoever published it.
+- When recommending tools or projects, present interchangeable options as equals; never designate one vendor's tool as the canonical start and the rest as fallbacks.
+- The reference list at the foot of any piece is a single relevance-ranked list — no per-vendor split sections.
 
 ## Important Rules
 
-- Never fabricate that the author used a tool — ground the "prove my work" voice in official Microsoft/GitHub capabilities the author genuinely works with (AI Foundry, GitHub Copilot), surfaced via browsing signals.
-- Never surface private, auth-gated, or internal corporate URLs in published content (the harvester denylist guards this; keep it that way).
-- If the harvester finds no first-party browsing signals for a topic, fall back to first-party web discovery (Microsoft Learn / GitHub docs search) before public search.
+- Never fabricate that the author used a tool. Ground first-person "this is what I do" claims only in tools the author genuinely works with, and name equally-valid alternatives alongside them.
+- Never surface private, auth-gated, or internal corporate URLs in published content.
+- Always fetch and verify any URL before citing it; the relevance ranking does not replace the inline-citation rule in content-quality instructions.
+- If no strong primary source exists for a claim, say so or soften the claim — do not substitute a weaker source dressed up as authoritative.

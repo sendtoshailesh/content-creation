@@ -31,7 +31,7 @@ The new framework makes art direction mandatory before rendering.
 | Visual opportunity mapping | `visual-strategist` + `visual-content-planning` | `content/visual-opportunity-map.md` |
 | Infographic art direction | `infographic-art-director` + `infographic-design-system` | Design briefs + layout diversity matrix |
 | Programmatic rendering | `visual-renderer` + `visual-rendering` | PNG/SVG/Mermaid assets |
-| Infographic QA | `visual-reviewer` | Pass/fail report with infographic-specific checks |
+| Infographic QA | `visual-reviewer` | Pass/fail report with infographic-specific checks + REVR hard gate (section 10) |
 | Social/platform refresh | social/platform agents | Copy that references redesigned assets |
 
 ## Mandatory Design Brief
@@ -70,6 +70,7 @@ The visual-reviewer must fail visuals when:
 - A one-pager is mostly text boxes.
 - Icons are decorative rather than encoding actor/action/state.
 - The package repeats the same grid/card layout.
+- **REVR (section 10, runs last):** a blind pixels-only read of the asset does not back-translate to the source intent, the rubric scores below 85, or any label floats in a disconnected chip/legend row the reader must mentally re-attach. Every asset must carry a PASS record at `content/visuals/revr/<asset-stem>.md`.
 - The hero idea is not visible in 3 seconds on mobile.
 
 ## Implementation Notes
