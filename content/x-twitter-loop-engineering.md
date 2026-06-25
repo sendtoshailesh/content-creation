@@ -1,5 +1,5 @@
 <!-- X/Twitter single post for: content/from-prompts-to-loop-engineering.md -->
-<!-- Canonical URL: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html -->
+<!-- Canonical URL: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html -->
 <!-- Voice: first-person practitioner. Avoid corporate filler verbs. One standalone post <= 280 chars + one image. -->
 <!-- Per practitioner-projects skill: CTA points to a concrete build (Project 1), with tools presented as equal options. -->
 
@@ -13,7 +13,7 @@ You're not getting better at prompting — the skill moved: prompt → context �
 
 In 2026 the unit you own is the loop. Don't read it, build one: point an agent at a failing test and watch verify→correct close.
 
-sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 ── END COPY ──
 
@@ -29,7 +29,7 @@ Two harder builds if the first clicks:
 • Build the loop on a managed runtime (Foundry or Anthropic patterns) → learn.microsoft.com/azure/foundry/agents
 • Platform-engineer it with gates (git-ape / hve-core / mini-swe-agent) → github.com/Azure/git-ape
 
-Full arc: sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+Full arc: sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 ── END COPY ──
 

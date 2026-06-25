@@ -4,9 +4,11 @@
 
 | Part | Slug | Canonical URL | Published |
 |------|------|--------------|-----------|
-| - | loop-engineering-ai-native-development | https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html | 2026-06-23 |
+| - | loop-engineering-ai-native-development | https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html | 2026-06-23 |
 
 ## Update log
+
+- **2026-06-25 — Republished to personal site as canonical + linked both index surfaces.** Moved the canonical home to the personal Pages site: rebuilt the post on the personal-site blog template (`blog-style.css`, dark theme, canonical/OG/Twitter meta, Home/Blog/Portfolio nav) at `sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`, copied all 10 visuals into `blog/visuals/`. Linked it from BOTH discovery surfaces: a new `<li class="post-card">` at the top of `blog/index.html` and a new `.blog-card` as the newest entry in the home `index.html` `<section id="insights">` `.blog-grid`. Canonical URL changed from the `/content-creation/` mirror to `https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`. **Pushed live to GitHub Pages (commit `1652cd5`, 13 files: new page + 10 visuals + both index files).**
 
 - **2026-06-25 — REVR republish (web publish pushed live).** User-approved commit + push to GitHub Pages: REVR-repaired `p1-03-harness-vs-loop.png` (rubric 46 → 98; labels bound to elements, honest single color family, numbered cycle, labeled stop octagon) plus all REVR PASS records (`content/visuals/revr/`), the rebalanced blog Markdown/HTML, and pipeline-doc edits naming the REVR hard gate across the standing flow docs. All 10 visuals carry PASS REVR records; Tier 0 preflight GATE PASS (0/0/0). Canonical URL unchanged.
 

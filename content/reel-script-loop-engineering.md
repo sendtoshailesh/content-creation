@@ -12,7 +12,7 @@ keywords:
   - short-form video
 estimated_reading_time: 4
 source_blog: content/from-prompts-to-loop-engineering.md
-canonical_url: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+canonical_url: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 status: draft
 ---
 
@@ -79,7 +79,7 @@ prompt -> context -> harness -> loop
 
 Start: point an agent at a failing test
 Full breakdown:
-sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 ```
 
 ## Captions And Hashtags
@@ -109,7 +109,7 @@ Don't overthink the start. Three projects, beginner -> advanced (each lists inte
 3. Platform-engineer the loop with gates (git-ape / hve-core / mini-swe-agent): github.com/Azure/git-ape
 
 Try the first one this week. Full four-era breakdown:
-https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 #LoopEngineering #AINativeDevelopment #HarnessEngineering #AgenticAI #SoftwareEngineering
 
@@ -146,7 +146,7 @@ Don't just nod — close one loop this week. Three projects, beginner -> advance
 3. Platform-engineer the loop with gates (git-ape / hve-core / mini-swe-agent): github.com/Azure/git-ape
 
 Try the first one. Full four-era breakdown:
-https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 #LoopEngineering #AINativeDevelopment #HarnessEngineering #AgenticAI #SoftwareEngineering
 

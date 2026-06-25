@@ -21,6 +21,10 @@
 
 > **REVR visual-QA hygiene (2026-06-25):** the Reverse-Engineering Visual Review gate (`.github/skills/visual-reverse-review/SKILL.md`) has been run across ALL 10 visuals. `p1-03` was repaired at the renderer source and re-rendered; all 10 now carry a PASS REVR record under `content/visuals/revr/`. The **mirrored blog visuals** are refreshed and Tier 0 preflight is GATE PASS. The **deck exports (HTML/PDF/PPTX)** remain STALE pending re-export. No push and no social posting until the user reviews.
 
+> **LinkedIn carousel asset — Step 6d (2026-06-25):** a self-contained, swipeable LinkedIn carousel was assembled from all 10 publish-ready visuals in blog-narrative order — cover + 10 captioned slides + CTA (12 pages, 1080×1350 / 4:5). Made a reusable pipeline step: skill `.github/skills/linkedin-carousel/SKILL.md`, generic manifest-driven renderer `scripts/visuals/build_carousel.py` (matplotlib `PdfPages`, shared design tokens, ASCII-only), curated manifest `content/visuals/loop-engineering-carousel.manifest.json`. Output: `content/visuals/loop-engineering-carousel.pdf`. Upload as a LinkedIn **document post**; put the canonical URL in the first comment. Manual-share asset; no automated social posting performed.
+
+> **Canonical-home migration + dual index-linking — Step 10d (2026-06-25):** the post's canonical home moved from the `/content-creation/` mirror to the **personal site** `sendtoshailesh.github.io`. Rebuilt the page on the personal-site blog template (`blog-style.css`, dark theme, canonical/OG/Twitter meta, Home/Blog/Portfolio nav) at `blog/loop-engineering-ai-native-development.html`, copied all 10 visuals into `blog/visuals/`. Linked it from BOTH discovery surfaces: a new `.post-card` at the top of `blog/index.html` and a new `.blog-card` as the newest entry in the home `index.html` `<section id="insights">` `.blog-grid`. Canonical updated in `content/publishing-log.md` to `https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`. The `web-publisher` agent now has an explicit **Step 3b (home #insights linking)** so future publishes update both surfaces. Personal-site repo edits require a manual `git add blog/ index.html && git commit && git push` to go live.
+
 ### Step Checklist
 
 - [x] Step 0: Reference analysis — relevance-ranked, vendor-neutral (`content/reference-brief.md`: sources ordered by authority per claim, role-labeled primary/measurement/synthesis; verified Foundry/Copilot/Azure-git-ape/Aider/mini-swe-agent URLs live)
@@ -42,6 +46,7 @@
 - [ ] Step 5: X/Twitter thread — skipped by user selection
 - [x] Step 6b: Reel/Short video — rebalanced (shot list, voiceover, end-card, both caption blocks): tool-neutral on-ramp + equal tool options per project
 - [x] Step 6c: Slide deck (HTML + PDF + PPTX) — markdown rebalanced (proof slide leads Stripe + lists git-ape/Aider/mini-swe-agent as equal readable loops; projects slide presents equal tool options); re-exported all three formats
+- [x] Step 6d: LinkedIn carousel — consolidated all 10 finalized visuals into one swipeable document PDF (`content/visuals/loop-engineering-carousel.pdf`) via skill `linkedin-carousel` + renderer `scripts/visuals/build_carousel.py` + manifest
 - [x] Step 7: Brand audit — token/voice consistency preserved across re-grounded channels
 - [x] Step 7b: Grounded content review — sources verified live during reference analysis
 - [ ] Step 8: YouTube script — skipped by user selection
@@ -50,6 +55,7 @@
 - [x] Step 10: Web publishing — **RE-MIRRORED (2026-06-24, rebalance)**: re-mirrored `docs/blog/loop-engineering-ai-native-development.html` from the rebalanced blog Markdown (neutralized why/harness/loop wording, proof section now "inspectable harnesses and the industry numbers" leading mini-swe-agent/Aider/git-ape as equals, projects present "Tools (pick one)", References consolidated into a single relevance-ranked list); re-copied redrawn `p1-03`/`p2-06` visuals to `docs/blog/visuals/`.
 - [x] Step 10b: Citation-link remediation (2026-06-24) — inline source links in blog Markdown + References; mirrored into HTML; deterministic claim-citation guard in `scripts/pipeline/preflight_check.py`. Tier 0 preflight GATE PASS (0/0/0).
 - [x] Step 10c: Web publish PUSHED LIVE (2026-06-25) — user-approved commit + push of REVR-fixed visuals (p1-03 46→98), rebalanced blog Markdown/HTML, REVR PASS records, and pipeline-doc edits to GitHub Pages. Live at the canonical URL.
+- [x] Step 10d: Canonical-home migration + dual index-linking (2026-06-25) — republished onto the personal site `sendtoshailesh.github.io/blog/` (personal-site template), copied 10 visuals to `blog/visuals/`, prepended cards to BOTH `blog/index.html` (`.post-card`) and home `index.html` `#insights` (`.blog-card`), updated canonical in `content/publishing-log.md`, and added Step 3b (home #insights linking) to the `web-publisher` agent. **PUSHED LIVE (commit `1652cd5`, 13 files).** Live at `https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`, linked from `/blog/` and `/#insights`.
 - [ ] Step 11: Social publishing — HELD pending user review + explicit approval (no posting yet)
 - [x] Step 12: Medium/Substack distill — rebalanced: proof leads Stripe + lists git-ape/Aider/mini-swe-agent as equal readable loops; harness/loop diagnostic cites VS Code on authority; 3 projects present equal tool options; single relevance-ranked References
 
@@ -315,8 +321,9 @@ _Quantified data & case studies:_
 | Step 6 | social-reddit | Manual | Reddit post generation (if selected). Output: `content/reddit-post.md` |
 | Step 6b | reel-video | Manual | Short video script (60-90 sec). Output: `content/reel-script.md` |
 | Step 6c | deck-builder | Optional | Slide deck with humor + intellectual speaker notes; exports PPTX + PDF after user finalizes. Outputs: `content/deck/<topic>-deck.{md,pptx,pdf}` |
+| Step 6d | linkedin-carousel | Optional | Consolidate the blog's finalized visuals into one LinkedIn document carousel (cover + captioned slide per visual + CTA). Runs after visuals are REVR-passed. Renderer: `scripts/visuals/build_carousel.py`. Outputs: `content/visuals/<topic>-carousel.{manifest.json,pdf}` |
 | Step 7 | brand-guardian | Manual | Brand audit across all generated content pieces |
-| Step 10 | web-publisher | Manual | Publish to GitHub Pages; establish canonical URL; update index |
+| Step 10 | web-publisher | Manual | Publish to GitHub Pages; establish canonical URL; update BOTH the blog index and the home #insights grid |
 | Step 11 | social-publisher | Manual | Publish to social platforms (per publishing mode + approved platforms) |
 | Step 12 | platform-distiller | Manual | Visual-first or text-only excerpts per platform-distiller |
 

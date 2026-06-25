@@ -2,7 +2,7 @@
 
 *Package: From Prompts to Loop Engineering — The Workflow Shift in AI-Native Development*
 *Blog source: `content/from-prompts-to-loop-engineering.md` (~2,800 words, single comprehensive post)*
-*Canonical URL: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html*
+*Canonical URL: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html*
 *Selected platforms (pipeline-config Step 4c): LinkedIn + Reel/Short video + Slide deck (PPTX + PDF)*
 *Voice: first-person practitioner — "sharing my learnings working with customers." Never use the word "leverage."*
 *Do not publish from this artifact, and do not write the platform posts here — this is the strategy only.*
@@ -82,7 +82,7 @@ Single-post package, so the cadence is a tight ~7-day rollout led by LinkedIn, w
 - **Reel → blog**: spoken CTA points to "the full four-era breakdown" with the canonical link in the caption/description and pinned comment. The Reel teases; the blog delivers the depth and the data.
 - **LinkedIn follow-ups → lead post + blog**: each follow-up opens by referencing the staircase post ("Last week I argued the skill moved up a staircase — here's the distinction that took me too long to see") and closes with the canonical URL in the first comment.
 - **Slide deck (PPTX/PDF)**: a complementary distribution asset, not a social post. Use it as the downloadable artifact offered in a LinkedIn follow-up first comment ("I turned this into a deck — link below") once `deck-builder` produces it. It reinforces the same four angles; it does not lead the campaign.
-- **Canonical URL for every CTA**: `https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html`
+- **Canonical URL for every CTA**: `https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`
 
 ## Engagement Playbook
 

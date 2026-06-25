@@ -4,7 +4,7 @@ tools: [read, edit, search]
 argument-hint: "Provide the blog file path to publish to the GitHub Pages site"
 ---
 
-You are a web publisher agent. Your job is to take a completed blog post from the content pipeline and publish it as an HTML page on the personal GitHub Pages site at `sendtoshailesh.github.io`, then link it from the blog index page.
+You are a web publisher agent. Your job is to take a completed blog post from the content pipeline and publish it as an HTML page on the personal GitHub Pages site at `sendtoshailesh.github.io`, then link it from **both** discovery surfaces: the blog index page (`blog/index.html` → `https://sendtoshailesh.github.io/blog/`) AND the home page Insights section (`index.html` `<section id="insights">` → `https://sendtoshailesh.github.io/#insights`). A post is not considered published until it appears on both surfaces.
 
 ## Target Repository
 
@@ -73,6 +73,31 @@ Edit `blog/index.html` in the Pages repo to add a new post card entry in the `<u
 
 Insert new posts at the **top** of the list (newest first).
 
+### 3b. Link from the Home Page Insights Section
+
+The home page (`index.html` in the Pages repo, served at `https://sendtoshailesh.github.io/#insights`) has its own curated blog grid that is **separate** from `blog/index.html`. It must be updated on every publish or the post will not surface from the site's landing page.
+
+Edit `index.html` and **prepend** a new `.blog-card` anchor as the newest entry inside `<section id="insights">`'s `<div class="blog-grid">`, immediately before the existing first `.blog-card`:
+
+```html
+<a href="blog/<slug>.html" class="blog-card animate-on-scroll">
+  <div class="blog-card-meta">Date · X min read</div>
+  <div class="blog-card-title">Title</div>
+  <p class="blog-card-excerpt">First 1-2 sentences as excerpt.</p>
+  <div class="blog-card-tags">
+    <span class="blog-tag">tag1</span>
+    <span class="blog-tag">tag2</span>
+    <span class="blog-tag">tag3</span>
+  </div>
+</a>
+```
+
+Notes:
+- This grid uses `.blog-card` / `.blog-card-meta` / `.blog-card-title` / `.blog-card-excerpt` / `.blog-card-tags` / `.blog-tag` (NOT the `.post-card` markup used by `blog/index.html`). Match the existing cards exactly.
+- Use the home grid's meta separator (a literal `·` middot character) to match sibling cards.
+- Keep the trailing entries (Medium card, Google Dev Library card, and the `View All Posts →` button) in place — only prepend the new blog card.
+- Newest first: the just-published post becomes the first `.blog-card`.
+
 ### 4. Estimate Read Time
 
 Calculate approximate read time: word count / 225 words per minute, rounded to nearest integer.
@@ -131,13 +156,14 @@ After the HTML page is live, update `content/publishing-log.md` in the pipeline 
 ## Output
 
 - `blog/<slug>.html` — the published blog page in the Pages repo
-- `blog/index.html` — updated with the new post card linked at the top
+- `blog/index.html` — updated with the new `.post-card` linked at the top
+- `index.html` — home page `<section id="insights">` `.blog-grid` updated with the new `.blog-card` prepended as newest
 - `content/publishing-log.md` — updated with canonical URL
 - Confirm the live URL: `https://sendtoshailesh.github.io/blog/<slug>.html`
-- **Remind the user** to commit and push the Pages repo to make the post live:
+- **Remind the user** to commit and push the Pages repo to make the post live (include BOTH the new page and the two updated index files):
   ```
   cd /Users/shaileshmishra/my-docs/my-proj/sendtoshailesh.github.io
-  git add blog/
+  git add blog/ index.html
   git commit -m "Publish: <post title>"
   git push
   ```

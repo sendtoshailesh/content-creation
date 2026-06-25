@@ -1,5 +1,5 @@
 <!-- LinkedIn posts for: content/from-prompts-to-loop-engineering.md -->
-<!-- Canonical URL (FIRST COMMENT ONLY): https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html -->
+<!-- Canonical URL (FIRST COMMENT ONLY): https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html -->
 <!-- Sequence per content/social-strategy.md: Day 0 lead (staircase) → Day 4 follow-up (nouns vs verbs) → Day 7 data/leadership follow-up -->
 <!-- Voice: first-person practitioner. Avoid corporate filler verbs. LinkedIn native formatting only. -->
 
@@ -97,7 +97,7 @@ The unit of work you own keeps rising. Right now it's 𝘁𝗵𝗲 𝗹𝗼𝗼�
 
 ── FIRST COMMENT COPY ──
 
-The full four-era breakdown — prompt → context → harness → loop, with the Stripe and SWE-bench data and the practitioners who named the arc (Willison, Böckeler, Morris, Anthropic): https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+The full four-era breakdown — prompt → context → harness → loop, with the Stripe and SWE-bench data and the practitioners who named the arc (Willison, Böckeler, Morris, Anthropic): https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 Three build-it-yourself projects from the post, beginner → advanced (each lists interchangeable tools — pick whichever you already have):
 • Run a verify→correct loop in an agent — Copilot agent mode, Aider, or Claude Code: https://code.visualstudio.com/docs/agents/overview
@@ -218,7 +218,7 @@ Mature setups are both at once: Stripe's "blueprints", Anthropic's "Dynamic Work
 
 ── FIRST COMMENT COPY ──
 
-The full breakdown — harness vs. loop, the four postures (outside/in/on the loop + flywheel), and why "in the loop" is the bottleneck: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+The full breakdown — harness vs. loop, the four postures (outside/in/on the loop + flywheel), and why "in the loop" is the bottleneck: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 Want to feel the nouns-vs-verbs distinction instead of just reading it? Build the loop on a managed runtime — an agent + conversation + one tool, run with a capped iteration count as your stop condition (half a day). Pick whichever you have: Microsoft Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent) or Anthropic's `patterns/agents` recipes (https://github.com/anthropics/claude-cookbooks) — the loop is identical either way.
 #LoopEngineering #HarnessEngineering
@@ -318,7 +318,7 @@ For two weeks I've argued the unit of work moved up a staircase — prompt → c
 
 ── FIRST COMMENT COPY ──
 
-The full data and sources — Stripe Minions, the SWE-bench trajectory (12.47% → 76.8% on a fixed harness), per-task costs, and the failure modes worth budgeting for: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+The full data and sources — Stripe Minions, the SWE-bench trajectory (12.47% → 76.8% on a fixed harness), per-task costs, and the failure modes worth budgeting for: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 
 Want your own read on the economics instead of trusting mine? Platform-engineer your own deploy loop with gates — run git-ape headless (or hve-core, or mini-swe-agent): issue → PR → plan → security/cost gate → deploy, then tune a gate and re-run to change the outcome (a weekend): https://github.com/Azure/git-ape
 #EngineeringLeadership #LoopEngineering

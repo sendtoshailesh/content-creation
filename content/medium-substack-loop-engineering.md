@@ -1,7 +1,7 @@
 ---
 title: "You're Not Getting Better at Prompting — The Skill Moved"
 subtitle: "Prompt → context → harness → loop: why the unit of work you own keeps climbing, and three projects to feel it for yourself this week."
-canonical_url: https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html
+canonical_url: https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html
 source_blog: content/from-prompts-to-loop-engineering.md
 platforms: [Medium, Substack, LinkedIn Article]
 status: draft
@@ -11,7 +11,7 @@ status: draft
 <!-- Copy the same content to all three. Every platform's canonical link points to the GitHub Pages URL above. -->
 <!-- Voice: first-person practitioner. Avoid corporate filler verbs. -->
 
-> **Originally published at [sendtoshailesh.github.io](https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html).** This is the distilled version — the full post has the data exhibits, the source links, and the worked example.
+> **Originally published at [sendtoshailesh.github.io](https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html).** This is the distilled version — the full post has the data exhibits, the source links, and the worked example.
 
 You're not getting better at prompting. I mean that as a relief, not an insult.
 
@@ -51,4 +51,4 @@ So locate your step on the staircase — word, context, rig, or loop — and tak
 ---
 
 **Read the full breakdown** — with the data exhibits, the four postures around the loop, the failure modes worth budgeting for, the full source list (from VS Code's agent-loop and harness posts, Stripe and Anthropic's production patterns, and open frameworks like Azure/git-ape, to the practitioners who named the arc — Willison, Böckeler, Morris):
-**[sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html](https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html)**
+**[sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html](https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html)**

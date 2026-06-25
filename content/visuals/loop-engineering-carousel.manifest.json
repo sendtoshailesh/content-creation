@@ -1,0 +1,64 @@
+{
+  "title_lines": ["FROM PROMPTS TO", "LOOP ENGINEERING"],
+  "subtitle": "The workflow shift in AI-native development.",
+  "tagline": "prompt  ->  context  ->  harness  ->  loop",
+  "cover_note": "Every two years the place where your effort actually matters climbs one step higher.",
+  "handle": "Shailesh Mishra",
+  "canonical": "sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html",
+  "visuals_dir": "content/visuals",
+  "output": "content/visuals/loop-engineering-carousel.pdf",
+  "cta_headline": "Which step are you standing on?",
+  "cta_body": "Word, context, rig, or loop? In 2026 the unit you own is the loop. Don't just read it -- close one this week.",
+  "slides": [
+    {
+      "image": "p1-05-pull-quote.png",
+      "kicker": "THE REFRAME",
+      "caption": "You're not getting better at prompting. The skill didn't improve -- it moved up the stack."
+    },
+    {
+      "image": "p1-01-staircase.png",
+      "kicker": "THE STAIRCASE",
+      "caption": "Prompt -> context -> harness -> loop. The unit of work you own rises one step every two years."
+    },
+    {
+      "image": "p1-02-ceilings.png",
+      "kicker": "ERAS 1-3 HIT A WALL",
+      "caption": "Rewording hits diminishing returns, a curated context window still can't act, and a 100-line rig has no cycle to run in."
+    },
+    {
+      "image": "p2-01-loop.png",
+      "kicker": "WHAT LOOP ENGINEERING IS",
+      "caption": "The loop: plan -> act -> observe -> verify -> correct -- with a verification gate and a stop condition."
+    },
+    {
+      "image": "p1-03-harness-vs-loop.png",
+      "kicker": "NOUNS vs VERBS",
+      "caption": "The harness is the nouns (the rig + its sensors). The loop is the verbs (the act -> observe -> verify -> retry cycle)."
+    },
+    {
+      "image": "p2-02-postures.png",
+      "kicker": "WHO SITS WHERE",
+      "caption": "Outside, in, on the loop, and the flywheel. 'In the loop' is the trap -- you become the bottleneck."
+    },
+    {
+      "image": "p2-03-bottleneck.png",
+      "kicker": "WHY NOW",
+      "caption": "Generation throughput rises while validation stays flat. The fix: pull verification into the inner loop."
+    },
+    {
+      "image": "p2-04-stripe-swebench.png",
+      "kicker": "PROOF AT SCALE",
+      "caption": "Stripe: ~1,000 -> 1,300+ PRs/week with zero human-written code. SWE-bench Verified: 12.47% -> 76.8% on a fixed harness."
+    },
+    {
+      "image": "p2-05-first-loop-checklist.png",
+      "kicker": "YOUR FIRST LOOP",
+      "caption": "A clear goal, the tools to iterate, one machine-checkable feedback signal, and a stop condition."
+    },
+    {
+      "image": "p2-06-projects-ladder.png",
+      "kicker": "BUILD IT YOURSELF",
+      "caption": "Run a verify->correct loop, build it on a managed runtime, then platform-engineer it with gates."
+    }
+  ]
+}

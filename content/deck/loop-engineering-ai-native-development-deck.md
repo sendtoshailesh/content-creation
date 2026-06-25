@@ -253,6 +253,6 @@ Word, context, rig, or loop — the point where your effort matters keeps rising
 **Right now, that unit is the loop. Start with Project 1 this week.**
 
 Full four-era breakdown + the three build-it-yourself projects, with the Stripe + SWE-bench data and the practitioners who named the arc:
-[sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html](https://sendtoshailesh.github.io/content-creation/blog/loop-engineering-ai-native-development.html)
+[sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html](https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html)
 
 <!-- Topic: The close — I end on a verb, not a victory lap, because the durable skill was never any one era's trick — it's learning to govern whatever the next-larger unit of work turns out to be; today it's the loop, tomorrow it's whatever the model hasn't swallowed yet, and the stop condition is the one piece of homework I refuse to let anyone skip. -->
