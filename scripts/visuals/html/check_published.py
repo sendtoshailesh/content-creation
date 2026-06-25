@@ -140,7 +140,11 @@ def _findings_for_raw_html(path: Path) -> list[Finding]:
 
     for lang in _DIAGRAM_LANGS:
         if re.search(rf'class="[^"]*language-{lang}', html):
-            has_runtime = re.search(rf'<script[^>]*{lang}', html, re.I)
+            has_runtime = re.search(
+                rf'<script[^>]+src="[^"]*(?:^|/|{lang})(?:[-./][^"]*)?\.(?:js|mjs)"',
+                html,
+                re.I,
+            )
             if not has_runtime:
                 findings.append(Finding(
                     "Error",
@@ -183,7 +187,6 @@ def _check_heading_order(levels: list[int]) -> list[Finding]:
     for prev, curr in zip(levels, levels[1:]):
         if curr > prev + 1:
             findings.append(Finding("Warning", f"heading level jumps from h{prev} to h{curr}"))
-            break
     return findings
 
 
@@ -283,7 +286,7 @@ def _compare_images(expected: Path, actual: Path, max_diff_mean: float) -> Findi
         if exp.size != act.size:
             return Finding("Error", f"snapshot size changed {exp.size} -> {act.size}")
         diff = ImageChops.difference(exp.convert("RGBA"), act.convert("RGBA"))
-        # PIL returns None here when all pixels are identical.
+        # PIL returns None here when the difference image is uniformly zero.
         if diff.getbbox() is None:
             return None
         stats = ImageStat.Stat(diff)
@@ -302,10 +305,14 @@ def check_page(path: Path, snapshot_dir: Path | None, update_snapshots: bool, ma
             for idx, (viewport_name, width, height) in enumerate(_VIEWPORTS):
                 page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
                 try:
-                    page.goto(path.resolve().as_uri(), wait_until="load")
-                    page.wait_for_load_state("networkidle")
-                    page.evaluate("async () => { if (document.fonts) await document.fonts.ready; }")
-                    data = page.evaluate(_PAGE_JS)
+                    try:
+                        page.goto(path.resolve().as_uri(), wait_until="load")
+                        page.wait_for_load_state("networkidle")
+                        page.evaluate("async () => { if (document.fonts) await document.fonts.ready; }")
+                        data = page.evaluate(_PAGE_JS)
+                    except Exception as exc:
+                        findings.append(Finding("Error", f"{viewport_name}: failed to load page: {exc}"))
+                        continue
 
                     if idx == 0:
                         findings.extend(_check_heading_order(data["headings"]))
@@ -317,7 +324,11 @@ def check_page(path: Path, snapshot_dir: Path | None, update_snapshots: bool, ma
                         snapshot_dir.mkdir(parents=True, exist_ok=True)
                         baseline = snapshot_dir / _snapshot_name(path, viewport_name)
                         current = snapshot_dir / f".current-{_snapshot_name(path, viewport_name)}"
-                        page.screenshot(path=str(current), full_page=True)
+                        try:
+                            page.screenshot(path=str(current), full_page=True)
+                        except Exception as exc:
+                            findings.append(Finding("Error", f"{viewport_name}: failed to capture snapshot: {exc}"))
+                            continue
                         if update_snapshots:
                             current.replace(baseline)
                         else:
