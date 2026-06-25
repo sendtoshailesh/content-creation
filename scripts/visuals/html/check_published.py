@@ -176,7 +176,8 @@ def _resolve_local_ref(page_path: Path, ref: str) -> Path | None:
 def _check_heading_order(levels: list[int]) -> list[Finding]:
     findings: list[Finding] = []
     if not levels:
-        return [Finding("Error", "page has no headings")]
+        findings.append(Finding("Error", "page has no headings"))
+        return findings
     if levels[0] != 1:
         findings.append(Finding("Error", f"heading sequence starts at h{levels[0]} instead of h1"))
     for prev, curr in zip(levels, levels[1:]):
@@ -282,9 +283,11 @@ def _compare_images(expected: Path, actual: Path, max_diff_mean: float) -> Findi
         if exp.size != act.size:
             return Finding("Error", f"snapshot size changed {exp.size} -> {act.size}")
         diff = ImageChops.difference(exp.convert("RGBA"), act.convert("RGBA"))
+        # PIL returns None here when all pixels are identical.
         if diff.getbbox() is None:
             return None
-        mean = sum(ImageStat.Stat(diff).mean) / len(ImageStat.Stat(diff).mean)
+        stats = ImageStat.Stat(diff)
+        mean = sum(stats.mean) / len(stats.mean)
         if mean > max_diff_mean:
             return Finding("Error", f"snapshot drift mean={mean:.3f} exceeds threshold {max_diff_mean:.3f}")
     return None
