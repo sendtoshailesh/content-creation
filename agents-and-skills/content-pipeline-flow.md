@@ -42,7 +42,7 @@ flowchart TD
     Status -->|not-started + no topic| Discovery
 
     subgraph P_1[Phase -1 — Discovery optional]
-        Discovery[feed-curator / reading-list / apple-notes\n→ idea-queue.md] --> Select[/select-idea/]
+        Discovery[feed-curator / reading-list / apple-notes / social-saves\n→ idea-queue.md] --> Select[/select-idea/]
     end
     Select --> P0
     Status -->|topic set| P0
@@ -120,8 +120,11 @@ must pass before moving on.
 |------|---------------|-------|--------|------|
 | -1 | `feed-curator` (`feed-curation` skill) | `feed-sources.md`, RSS/newsletters | `idea-queue.md` | — |
 | -1 | `reading-list-curator` / `apple-notes-curator` | Chrome list / Apple Notes | `idea-queue.md` | — |
+| -1 | `social-saves-curator` | LinkedIn Saved / X Bookmarks+Likes / Medium reading list (via Playwright, read-only) | `idea-queue.md` | One-time login per platform |
 
-Skipped when the user provides a topic directly.
+Skipped when the user provides a topic directly. All discovery curators feed the same
+`idea-queue.md` using the shared 25-point scoring scale, so ideas from every channel rank
+against each other consistently.
 
 ### Phase 0 — Reference Discovery & Research
 

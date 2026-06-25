@@ -30,6 +30,8 @@
 
 > **Note:** Chrome Reading List is handled by the dedicated `@reading-list-curator` agent (not via this feed-sources table). Run `@reading-list-curator` or `/reading-list-ideas` to generate ideas from your Chrome reading list. It uses the same subject area filters and scoring system defined below.
 
+> **Note:** Authenticated social saves — **LinkedIn Saved posts, X/Twitter Bookmarks & Likes, the Medium reading list, Reddit Saved posts, GitHub Stars, and YouTube Watch Later** — are handled by the dedicated `@social-saves-curator` agent (not via this feed-sources table). Run `@social-saves-curator` or `/social-saves-ideas`. It reads your own logged-in browser session via Playwright (read-only, isolated profile; one-time login per platform) and uses the same subject area filters and scoring system defined below.
+
 ### How to Add Sources
 
 1. Add a row to the table above with the source details

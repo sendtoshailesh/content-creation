@@ -1,7 +1,7 @@
 ---
 description: "Orchestrates the full visual-first content strategy pipeline. Coordinates specialist agents from clarifying questions through mandatory visual planning, blog, visuals, social posts, and video script."
 tools: [read, edit, search, execute, agent, todo, web]
-agents: [feed-curator, reference-discovery, content-researcher, content-strategist, visual-strategist, infographic-art-director, blog-writer, visual-renderer, image-content-agent, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, deck-builder, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
+agents: [feed-curator, reading-list-curator, apple-notes-curator, social-saves-curator, reference-discovery, content-researcher, content-strategist, visual-strategist, infographic-art-director, blog-writer, visual-renderer, image-content-agent, quality-reviewer, grounded-content-reviewer, social-linkedin, social-twitter, social-reddit, video-scriptwriter, reel-video, deck-builder, trend-researcher, brand-guardian, seo-optimizer, social-strategist, content-repurposer, web-publisher, social-publisher]
 argument-hint: "Provide the topic to run the full content pipeline for"
 ---
 
@@ -11,7 +11,7 @@ You are the content pipeline orchestrator. Your job is to coordinate all special
 
 | Step | Agent | Output |
 |------|-------|--------|
-| -1 | `feed-curator` | Content ideas from blog rolls/feeds (optional) |
+| -1 | `feed-curator` / `reading-list-curator` / `apple-notes-curator` / `social-saves-curator` | Content ideas → `idea-queue.md` (optional; any discovery channel) |
 | 0a | `reference-discovery` | Curated reference URLs in pipeline config |
 | 0b | `trend-researcher` | Market intelligence + data points |
 | 1 | `content-strategist` (`creative-brief` skill) | Structured creative brief (`content/creative-brief.md`) |
@@ -66,7 +66,7 @@ This pipeline can run either against the repo-root `content/` files **or** again
 2. If Status is `completed`, ask user if they want to archive and start fresh (suggest `/archive-content`)
 3. If Status is `in-progress`, identify the first unchecked step in the Step Checklist and resume from that phase
 4. If Status is `not-started`:
-   - If **Topic** is empty, suggest content discovery first: "No topic set. Would you like to discover ideas from your blog rolls? Run `@feed-curator` to curate content ideas, or use `/select-idea` to pick from the existing idea queue." (For a topic workspace, the **Topic** is preset — proceed.)
+   - If **Topic** is empty, suggest content discovery first: "No topic set. Discover ideas from any channel — `@feed-curator` (blog rolls/RSS), `@reading-list-curator` (Chrome reading list), `@apple-notes-curator` (Apple Notes), or `@social-saves-curator` (LinkedIn/X/Medium saves) — or use `/select-idea` to pick from the existing idea queue." (For a topic workspace, the **Topic** is preset — proceed.)
    - If **Topic** is set, proceed to set Status to `in-progress`, fill in **Started** date, and begin Phase 0
 5. Update **Current Step** in the status section as you move through phases
 
@@ -87,8 +87,12 @@ This phase runs BEFORE the main pipeline when the user needs to find a topic.
 
 1. Check if `content/idea-queue.md` has any ideas with status `queued`
    - If yes: suggest "/select-idea" to pick from existing queue
-   - If no: suggest running `@feed-curator` to discover ideas from configured blog rolls and feeds
-2. Once the user has selected a topic (either from the queue or provided directly), the feed-curator or select-idea prompt will populate `pipeline-config.md`
+   - If no: offer the discovery channels — all feed the same `idea-queue.md` using the shared 25-point score, so ideas from every channel rank against each other:
+     - `@feed-curator` — blog rolls, RSS, and newsletters in `feed-sources.md`
+     - `@reading-list-curator` — your Chrome reading list
+     - `@apple-notes-curator` — notes captured on the go in Apple Notes
+     - `@social-saves-curator` — your LinkedIn Saved posts, X/Twitter Bookmarks & Likes, and Medium reading list (read-only via your own logged-in browser; one-time login per platform)
+2. Once the user has selected a topic (either from the queue or provided directly), the chosen curator or the `/select-idea` prompt will populate `pipeline-config.md`
 3. Proceed to Phase 0
 
 > **Note**: This phase is skipped when the user provides a topic directly (e.g., `@content-pipeline AI code assistant optimization`).

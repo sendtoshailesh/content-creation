@@ -23,7 +23,9 @@ readability-lxml>=0.8.1
 # Visual rendering — infographic-style layouts with pixel-precise text placement
 Pillow>=10.0.0
 
-# HTML/CSS visuals + programmatic hero backdrops rendered via headless Chromium
+# HTML/CSS visuals + programmatic hero backdrops rendered via headless Chromium.
+# Also powers social-saves discovery (social_saves_reader.py): reads your own
+# LinkedIn / X / Medium / Reddit / GitHub / YouTube saves through a logged-in, isolated browser profile (read-only).
 # After install run: python -m playwright install chromium
 playwright>=1.40.0
 
