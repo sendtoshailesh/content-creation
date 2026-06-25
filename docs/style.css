@@ -158,6 +158,21 @@ a:hover { text-decoration: underline; }
     max-width: 100%;
     margin-left: 0;
   }
+  .post-content table {
+    /* Keeps dense pricing/comparison tables on-screen without changing semantics. */
+    font-size: 0.82rem;
+    table-layout: fixed;
+    width: 100%;
+  }
+  .post-content th,
+  .post-content td {
+    padding: 0.45rem 0.5rem;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+  .post-content pre {
+    max-width: 100%;
+  }
 }
 
 .post-content code {
@@ -180,6 +195,14 @@ a:hover { text-decoration: underline; }
 .post-content pre code {
   background: none;
   padding: 0;
+}
+
+.post-content p code,
+.post-content li code,
+.post-content td code,
+.post-content th code,
+.post-content blockquote code {
+  overflow-wrap: anywhere;
 }
 
 .post-content table {

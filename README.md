@@ -377,6 +377,28 @@ JS frameworks are used **only** as a server-side pre-render step to static image
 to GitHub Pages. JS charts must disable animation (an animated chart screenshotted mid-flight
 exports silently-wrong bars). One-time setup for the chart bridge: `cd scripts/visuals/charts_js && npm install`.
 
+### Published page QA
+
+Run the final Playwright gate against the generated site before publishing:
+
+```bash
+python -m scripts.visuals.html.check_published
+```
+
+What it checks:
+- raw diagram source that would leak into published HTML
+- key page sections render in Chromium
+- broken images, stylesheets, scripts, and local links
+- responsive overflow at desktop / tablet / mobile widths
+- lightweight accessibility checks (heading order, alt text, keyboard focus)
+
+Optional visual regression workflow:
+
+```bash
+python -m scripts.visuals.html.check_published --snapshot-dir /tmp/site-snaps --update-snapshots
+python -m scripts.visuals.html.check_published --snapshot-dir /tmp/site-snaps
+```
+
 ## Content Quality Standards
 
 Every piece of content must meet these bars:
