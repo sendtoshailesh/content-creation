@@ -1,5 +1,19 @@
 {
   "servers": {
+    "chart": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@antv/mcp-server-chart"],
+      "env": {
+        "VIS_REQUEST_SERVER": "${env:VIS_REQUEST_SERVER}",
+        "DISABLED_TOOLS": "${env:CHART_DISABLED_TOOLS}"
+      }
+    },
+    "mermaid": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-mermaid"]
+    },
     "reddit": {
       "type": "stdio",
       "command": "npx",

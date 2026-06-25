@@ -293,6 +293,15 @@ pre-render step.
 | Diagrams | Mermaid → PNG; Graphviz/DOT for dense | `scripts/visuals/html/render_mermaid.py` |
 | Hero / illustrative + text overlay | programmatic backdrop + CSS overlay | `scripts/visuals/generated/programmatic.py` |
 | Comics / storyboards | HTML/CSS + Chromium (text); SVG/CSS shapes | `scripts/visuals/html/`, `scripts/visuals/svg/` |
+| Quick chart/flow drafts (preview only) | MCP `chart` + `mermaid` servers; brand colors via self-hosted GPT-Vis-SSR | `.vscode/mcp.json`, `scripts/visuals/charts_js/ssr/` |
+
+> **MCP preview path (drafting only).** `.vscode/mcp.json` provisions a `chart`
+> (`@antv/mcp-server-chart`) and a `mermaid` (`mcp-mermaid`) server for fast layout/structure
+> exploration. Brand colors require the self-hosted **GPT-Vis-SSR** service
+> (`scripts/visuals/charts_js/ssr/`, started with `npm start`, exposed via `VIS_REQUEST_SERVER`),
+> which loads the repo tokens. MCP output is **never a published asset** — every final visual is
+> still produced by the deterministic renderers above and must clear the inspector + visual-reviewer
+> + REVR gates. Brand-grade final Mermaid stays `scripts/visuals/html/render_mermaid.py`.
 
 **Key empirical finding:** both matplotlib and a JS lib produce excellent branded static charts,
 but the JS path required `npm install` + an inlined bundle + a Playwright harness, and the first

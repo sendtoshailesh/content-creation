@@ -116,6 +116,26 @@ This is the #1 source of text overflow defects. The visual-reviewer agent will f
 | Architecture diagrams, flowcharts | **Mermaid** (.mmd) | Complex flows with many nodes and connections |
 | Comic/storyboard panels | **Pillow helpers in `scripts/visuals/`** | Programmatic panels, symbolic characters, speech bubbles, captions |
 | Infographic/one-pager assets | **Pillow helpers in `scripts/visuals/`** | Saveable summaries, metric cards, source lines, platform-sized cards |
+| Quick chart/flow drafts (preview only) | **MCP `chart` / `mermaid` servers** | Rapid layout/structure exploration before committing to a renderer — never a final asset (see below) |
+
+### MCP drafting/preview servers (never final assets)
+
+`.vscode/mcp.json` provisions two MCP servers for **fast exploration only**:
+
+- **`chart`** (`@antv/mcp-server-chart`) — draft charts/diagrams from a spec. For brand colors,
+  start the self-hosted **GPT-Vis-SSR** endpoint (loads the repo tokens) and point the server at it:
+  ```bash
+  PYTHONPATH=. python3 -m scripts.visuals.brand_theme            # tokens.py -> brand-theme.json
+  cd scripts/visuals/charts_js/ssr && npm install && npm start   # http://localhost:3000/api/gpt-vis
+  export VIS_REQUEST_SERVER="http://localhost:3000/api/gpt-vis"   # then reload the VS Code window
+  ```
+  Unset `VIS_REQUEST_SERVER` to use the public renderer (no brand theme).
+- **`mermaid`** (`mcp-mermaid`) — validate/preview Mermaid syntax while drafting flows.
+
+**Hard rule:** MCP output previews layout/structure only. Every published asset is still produced
+by the in-repo deterministic renderers in this table and must pass the inspector + `visual-reviewer`
++ REVR gates. Brand-grade final Mermaid = `python3 -m scripts.visuals.html.render_mermaid` (applies
+tokens), not the MCP preview PNG.
 
 ### Pillow (PIL) Guidelines
 

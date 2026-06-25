@@ -1,0 +1,13 @@
+{
+  "theme": "base",
+  "fontFamily": "Helvetica Neue",
+  "themeVariables": {
+    "background": "#ffffff",
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#94a3b8",
+    "primaryTextColor": "#1e293b",
+    "lineColor": "#1f6feb",
+    "edgeLabelBackground": "#ffffff",
+    "fontSize": "16px"
+  }
+}

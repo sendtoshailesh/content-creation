@@ -1,0 +1,21 @@
+{
+  "name": "how2genmodel-default",
+  "type": "light",
+  "fontFamily": "Helvetica Neue",
+  "backgroundColor": "#ffffff",
+  "textColor": "#1e293b",
+  "subTextColor": "#475569",
+  "axisLineColor": "#94a3b8",
+  "gridColor": "#e5e7eb",
+  "palette": [
+    "#1f6feb",
+    "#0d9488",
+    "#7c3aed",
+    "#16a34a",
+    "#dc2626"
+  ],
+  "semantic": {
+    "warn": "#dc2626",
+    "success": "#16a34a"
+  }
+}

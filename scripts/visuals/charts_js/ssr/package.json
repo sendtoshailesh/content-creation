@@ -1,0 +1,13 @@
+{
+  "name": "how2genmodel-gpt-vis-ssr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted GPT-Vis-SSR render endpoint for the AntV chart MCP server, themed from the repo design tokens.",
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "dependencies": {
+    "@antv/gpt-vis-ssr": "^0.3.8",
+    "express": "^4.19.2"
+  }
+}

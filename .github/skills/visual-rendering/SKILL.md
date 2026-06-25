@@ -39,6 +39,27 @@ server-side pre-render to PNG, never client JS on published pages):
 See `.github/instructions/visual-standards.instructions.md` → **Stack Selection** for the full
 matrix and hard rules.
 
+## Optional: MCP chart/mermaid servers for fast drafting (preview only)
+
+`.vscode/mcp.json` provisions two MCP servers for **rapid exploration**, never final assets:
+
+- **`chart`** (`@antv/mcp-server-chart`) — generate quick chart/diagram drafts from a spec.
+  To get brand colors/fonts, run the self-hosted **GPT-Vis-SSR** endpoint that loads the repo
+  tokens, then point the server at it:
+  ```bash
+  PYTHONPATH=. python3 -m scripts.visuals.brand_theme          # tokens.py -> brand-theme.json
+  cd scripts/visuals/charts_js/ssr && npm install && npm start # http://localhost:3000/api/gpt-vis
+  export VIS_REQUEST_SERVER="http://localhost:3000/api/gpt-vis" # then reload the VS Code window
+  ```
+  Leave `VIS_REQUEST_SERVER` unset to use the public renderer (no brand theme). See
+  `scripts/visuals/charts_js/README.md`.
+- **`mermaid`** (`mcp-mermaid`) — fast validate/preview of Mermaid syntax while drafting flows.
+
+**Hard rule:** MCP output is for previewing layout/structure only. Every published asset is still
+produced by the in-repo deterministic renderers above and must pass the inspector +
+`visual-reviewer` + REVR gates. Brand-grade final Mermaid = `render_mermaid.py` (applies tokens),
+not the MCP preview PNG.
+
 ## Prerequisites
 
 - Python 3.x with matplotlib installed
