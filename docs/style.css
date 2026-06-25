@@ -159,6 +159,7 @@ a:hover { text-decoration: underline; }
     margin-left: 0;
   }
   .post-content table {
+    /* Keeps dense pricing/comparison tables on-screen without changing semantics. */
     font-size: 0.82rem;
     table-layout: fixed;
     width: 100%;

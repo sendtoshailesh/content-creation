@@ -38,6 +38,12 @@ _VIEWPORTS: tuple[tuple[str, int, int], ...] = (
 )
 _DIAGRAM_RUNTIME_RE = re.compile(r"(mermaid|graphviz|plantuml|viz\.js)", re.I)
 _HASH_RE = re.compile(r'href="(#.*?)"')
+_RUNTIME_SRC_PATTERNS: dict[str, str] = {
+    "mermaid": r'mermaid(?:\.esm)?(?:\.min)?\.(?:js|mjs)',
+    "graphviz": r'(?:graphviz|viz(?:\.standalone)?(?:\.lite)?)\.(?:js|mjs)',
+    "dot": r'(?:graphviz|viz(?:\.standalone)?(?:\.lite)?)\.(?:js|mjs)',
+    "plantuml": r'plantuml(?:\.min)?\.(?:js|mjs)',
+}
 _PAGE_JS = r"""
 () => {
   const text = (el) => (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80);
@@ -141,7 +147,7 @@ def _findings_for_raw_html(path: Path) -> list[Finding]:
     for lang in _DIAGRAM_LANGS:
         if re.search(rf'class="[^"]*language-{lang}', html):
             has_runtime = re.search(
-                rf'<script[^>]+src="[^"]*(?:^|/|{lang})(?:[-./][^"]*)?\.(?:js|mjs)"',
+                rf'<script[^>]+src="[^"]*{_RUNTIME_SRC_PATTERNS[lang]}[^"]*"',
                 html,
                 re.I,
             )
@@ -286,8 +292,7 @@ def _compare_images(expected: Path, actual: Path, max_diff_mean: float) -> Findi
         if exp.size != act.size:
             return Finding("Error", f"snapshot size changed {exp.size} -> {act.size}")
         diff = ImageChops.difference(exp.convert("RGBA"), act.convert("RGBA"))
-        # PIL returns None here when the difference image is uniformly zero.
-        if diff.getbbox() is None:
+        if all(high == 0 for _, high in diff.getextrema()):
             return None
         stats = ImageStat.Stat(diff)
         mean = sum(stats.mean) / len(stats.mean)
@@ -360,12 +365,12 @@ def create_parser() -> argparse.ArgumentParser:
 def main(argv: list[str]) -> int:
     args = create_parser().parse_args(argv)
     if args.update_snapshots and args.snapshot_dir is None:
-        print("--update-snapshots requires --snapshot-dir", file=sys.stderr)
+        print("Error: --update-snapshots requires --snapshot-dir to be specified", file=sys.stderr)
         return 2
 
     paths = [Path(p) for p in args.paths] if args.paths else discover_pages()
     if not paths:
-        print("No published HTML pages found.", file=sys.stderr)
+        print("No published HTML pages found in docs/**/*.html", file=sys.stderr)
         return 2
 
     failed = False
