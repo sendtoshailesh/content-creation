@@ -103,8 +103,10 @@ flowchart TD
     FinalQA --> Repurpose[Phase 6 — content-repurposer optional]
     Repurpose --> Publish[Phase 7 — web-publisher\n→ GitHub Pages]
     Publish --> Distill[platform-distiller\nMedium / Substack / LI Article]
-    Distill --> SocialPub[social-publisher\npreview + approval]
+    Distill --> SocialPub[social-publisher\npreview + approval\n+ seed hypothesis-ledger]
     SocialPub --> Done([Status: completed])
+    Done -.after window.-> GoNoGo[Phase 8 — post-publish-review\ngo/no-go vs §4b hypothesis\n→ hypothesis-ledger + idea-queue]
+    GoNoGo -.Discover.-> Reflect[post-run-reflection\nharvest cut scope + open questions\n+ validated angle → idea-queue]
 ```
 
 ---
@@ -203,6 +205,39 @@ Phase 1 ends with an explicit **user confirmation** before any content is writte
 | 12 | `platform-distiller` | Blog, canonical URL | Unified Medium/Substack/LinkedIn-Article excerpt | After web-publisher |
 | 11 | `social-publisher` | All social content | Posts via MCP to LinkedIn/X/Reddit/YouTube | **Preview + explicit human approval** |
 
+### Phase 8 — Post-Publish Go/No-Go (optional, time-delayed)
+
+| Step | Agent / Skill | Reads | Writes | Gate |
+|------|---------------|-------|--------|------|
+| 6b (seed) | `social-publisher` | `creative-brief.md` §4b, hypothesis | `content/hypothesis-ledger.md` (pending row) | None — captures the prediction at publish time |
+| 13 | `post-publish-review` skill | `creative-brief.md` §4b, `publishing-log.md`, actual engagement | `content/hypothesis-ledger.md` (verdict) + `idea-queue.md` / `critique-memory.md` | None — optional, runs after the measurement window |
+| 14 (Discover) | `post-run-reflection` skill | run trail: brief, `content-research-map.md`, scope/series plan, `hypothesis-ledger.md` | `content/idea-queue.md` (ranked follow-ups) + optional `critique-memory.md` | None — optional, harvests the next ideas from this run |
+
+Closes the content-as-experiment loop: the brief's §4b Content hypothesis declared a falsifiable
+bet; after a window (~48h quick-look, ~7-day decision), `post-publish-review` scores actual
+engagement and renders **VALIDATED / PARTIALLY VALIDATED / INVALIDATED / INCONCLUSIVE**. VALIDATED
+harvests the winning angle into `idea-queue.md`; INVALIDATED reworks the angle (no blind repost); a
+confirmed recurring miss is promoted to `critique-memory.md`. Then `post-run-reflection` (the
+Discover step) mines the run's own trail — cut scope, open questions, unwritten series parts,
+perspective gaps, and the ledger verdict — and queues ranked follow-up ideas back into
+`idea-queue.md`, feeding the next run. This phase never blocks — it makes the *next* run smarter.
+
+> **Cross-cutting — Content Decision Records.** Throughout a run, the `content-decision-record`
+> skill appends ADR-style entries to `content/content-decision-log.md` whenever a consequential
+> fork is taken (thesis framing, single-post vs series split, primary audience, format/channel, a
+> scope cut, a review override). It records the **rejected alternatives and the deciding
+> trade-off**, not just the winner, so later runs answer "why did we decide that?" instead of
+> re-litigating it. `post-run-reflection` then mines those rejected options as `cut-scope` /
+> `pivot-angle` follow-ups. It is a record, never a gate.
+
+> **Cross-cutting — Run tracking & compaction handoffs.** For long runs and every multi-part
+> series, the `run-tracking` skill keeps a durable scratchpad under `content/_tracking/<run-slug>/`:
+> an append-only `phase-log.md` (what each phase decided + produced) and an overwritten
+> `handoff.md` (the current resumable state). When the agent's context compacts mid-run — or when
+> a later series part is written weeks after Part 1 — a fresh context reads the handoff to rehydrate
+> cheaply instead of replaying the whole run, and reconciles against `content-decision-log.md` so
+> locked decisions stay locked. It is process memory, not a deliverable, and never a gate.
+
 ---
 
 ## Quality gates summary
@@ -218,6 +253,13 @@ Phase 1 ends with an explicit **user confirmation** before any content is writte
 | Source freshness | Phase 3e | Distribution | `[VOLATILE]` claims verified against live sources |
 | Brand compliance | Phase 5 | Publishing | Zero Error findings |
 | Publish approval | Phase 7 | Live posting | Explicit human approval in `social-publisher` |
+
+> **Cross-cutting — One findings schema for every reviewer.** Quality, source-freshness, SEO,
+> brand, and visual reviewers all emit the **same** severity-graded findings table (Error / Warning /
+> Info) with `Confidence` and `Risk` fields, defined once in
+> [`.github/instructions/shared/compliance-severity.md`](../.github/instructions/shared/compliance-severity.md).
+> Because every gate speaks the same shape, the orchestrator folds them into one `escalation-digest.md`
+> and routes by confidence/risk — the human stays an *editor of exceptions*, not a re-reviewer of each tool's prose.
 
 ---
 
@@ -246,6 +288,10 @@ content/
 │   ├── <topic>-deck.pptx
 │   └── <topic>-deck.pdf
 ├── repurposed/                   # Phase 6 (optional)
+├── content-decision-log.md       # Cross-cutting — ADR-style record of forks + rejected alternatives
+├── hypothesis-ledger.md          # Phase 8 — go/no-go verdict per published run
+├── idea-queue.md                 # Discover — ranked follow-ups harvested from the run
+├── _tracking/<run-slug>/         # Cross-cutting — per-run phase log + compaction handoff (process memory)
 └── visuals/
     ├── *.png, *.svg, *.mmd       # blog companion visuals (320 DPI)
     ├── distilled/                # standalone social/long-form pack
@@ -274,5 +320,12 @@ A run for *"AI code assistant cost optimization"*:
    humor + intellectual speaker notes, the user finalizes it, then it exports PPTX + PDF.
 7. **Phase 5** — `brand-guardian` returns zero Errors.
 8. **Phase 7** — `web-publisher` ships the HTML page; `platform-distiller` writes the cross-platform
-   excerpt; `social-publisher` posts after the user approves the preview.
+   excerpt; `social-publisher` posts after the user approves the preview and seeds a pending
+   hypothesis-ledger row.
 9. Status set to `completed`; user asked whether to start Part 2.
+10. **Phase 8 (after the window)** — `post-publish-review` scores actual engagement against the
+    brief's §4b hypothesis, records the go/no-go verdict in `content/hypothesis-ledger.md`, and
+    harvests a validated angle (or a reworked one) into `content/idea-queue.md`.
+11. **Discover** — `post-run-reflection` mines the finished run's trail (the Part 2 it scoped but
+    deferred, open questions from the research map, the ledger verdict) and queues the ranked
+    follow-ups in `content/idea-queue.md`, so the next run starts from warm leads.

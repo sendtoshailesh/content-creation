@@ -87,6 +87,21 @@ Add the SEO frontmatter to the blog file, then provide a summary:
 - Content comprehensiveness vs. competitors: [assessment]
 ```
 
+### Shared findings schema (required)
+
+Alongside the report above, emit the **shared findings table and `GATE` verdict** from
+[`compliance-severity.md`](../instructions/shared/compliance-severity.md) so SEO output folds into
+the run's one escalation digest in the same shape as every other reviewer. As an LLM-tier reviewer,
+include the `Confidence` and `Risk` fields on every row.
+
+- One row per SEO gap. Use categories `seo`, `metadata`, `structure`, or `accessibility` (e.g.
+  missing alt text). SEO is advisory: a missing meta description or skipped heading level is a
+  **Warning**; a polish suggestion is **Info**. SEO findings should almost never be an **Error** and
+  must not block publishing for keyword density alone — set `Risk: low` unless a missing canonical or
+  metadata field would break indexing.
+- End with `GATE: PASS` (the normal SEO outcome) or `GATE: FAIL` only when a metadata defect would
+  genuinely break the published page.
+
 ## Quality Rules
 
 - NEVER sacrifice readability for keyword density

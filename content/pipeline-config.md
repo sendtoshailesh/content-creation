@@ -58,6 +58,10 @@
 - [x] Step 10d: Canonical-home migration + dual index-linking (2026-06-25) — republished onto the personal site `sendtoshailesh.github.io/blog/` (personal-site template), copied 10 visuals to `blog/visuals/`, prepended cards to BOTH `blog/index.html` (`.post-card`) and home `index.html` `#insights` (`.blog-card`), updated canonical in `content/publishing-log.md`, and added Step 3b (home #insights linking) to the `web-publisher` agent. **PUSHED LIVE (commit `1652cd5`, 13 files).** Live at `https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html`, linked from `/blog/` and `/#insights`.
 - [ ] Step 11: Social publishing — HELD pending user review + explicit approval (no posting yet)
 - [x] Step 12: Medium/Substack distill — rebalanced: proof leads Stripe + lists git-ape/Aider/mini-swe-agent as equal readable loops; harness/loop diagnostic cites VS Code on authority; 3 projects present equal tool options; single relevance-ranked References
+- [ ] Step 13: Post-publish go/no-go (`post-publish-review`) — run after social publishing + measurement window; this run is `no-baseline` (published before the §4b Content hypothesis convention), seeded in `content/hypothesis-ledger.md`
+- [ ] Step 14: Discover reflection (`post-run-reflection`) — harvest cut scope, open questions, unwritten parts, and the ledger verdict into `content/idea-queue.md` as ranked follow-ups
+- [ ] Cross-cutting: Content Decision Records (`content-decision-record`) — log consequential forks + rejected alternatives to `content/content-decision-log.md` as they happen (never a gate)
+- [ ] Cross-cutting: Run tracking (`run-tracking`) — for long runs / multi-part series, keep a per-run phase log + compaction handoff under `content/_tracking/<run-slug>/` so context survives compactions and series gaps (never a gate)
 
 **Series values:** `not-applicable` | `pending-assessment` | `yes (N parts)` | `no`
 

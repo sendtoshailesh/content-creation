@@ -13,6 +13,54 @@ argument-hint: 'Provide the strategy file path to assess for scope'
 - When estimated word count exceeds 3,500 words for proper coverage
 - When the pipeline orchestrator needs to decide: single post vs. multi-part series
 
+## Topic Vetting & Red-Flag Gate (run FIRST — can kill the topic)
+
+Before scoring scope, vet whether the topic is worth writing at all. This gate is adapted from
+`microsoft/hve-core`'s Minimum Viable Experiment (MVE) vetting + red-flag checklist: scope
+assessment answers *how big*, but this gate answers *should we even do this*. Run it before the
+0-16 scoring. A topic that fails here is killed or held — sizing a worthless topic wastes the
+whole pipeline.
+
+### Vetting questions (all four must pass)
+
+| # | Vetting question | Fail signal |
+|---|------------------|-------------|
+| 1 | **Is there a crisp thesis?** Can you state the one belief/behavior this content changes in a single falsifiable sentence (see the brief's Content hypothesis)? | The "topic" is a subject area, not a claim — nothing could prove it wrong. |
+| 2 | **Does it make audience sense?** Is there a real reader segment that loses something today by not knowing this? | No identifiable reader who would change a decision. |
+| 3 | **Is there a concrete reader next step?** Does the reader *do* something after (a build-it-yourself project, a decision, a posture change)? | No action — pure FYI / news restatement. |
+| 4 | **Can it be grounded?** Are there first-party (T1-T3) or verifiable sources, with at least one concrete number/case study? | Claims would be opinion-only or unverifiable. |
+
+### Red flags (any one = HOLD, two or more = KILL)
+
+Mirror of the MVE red-flag list, mapped to content:
+
+- **Solved problem** — the insight is already common knowledge; you would add nothing new. (MVE: "solved problems")
+- **Link roundup, not a thesis** — it summarizes others' work with no original claim or synthesis. (MVE: "demo, not experiment")
+- **No next steps** — nobody changes a belief or action after reading. (MVE: "no next steps")
+- **Low impact / nobody cares** — no audience segment has a real stake in the answer. (MVE: "low commitment or impact")
+- **Can't be grounded** — the core claims cannot be backed by a verifiable source or real number. (MVE: "production code expectations" inverse — disposable, unsupportable claims)
+- **Cliffhanger-only** — the only reason to split or publish is to tease, not to deliver standalone value. (MVE: "mini-MVP")
+
+### Gate outcome
+
+Record the outcome at the top of the Series Plan output:
+
+```markdown
+### Topic Vetting
+
+**Vetting (4/4 required):** Pass/Fail — [one line per failed question]
+**Red flags:** none | [list]
+**Gate decision:** PROCEED | HOLD (fix [X] before scope scoring) | KILL (reason)
+```
+
+- **PROCEED** — all four vetting questions pass and zero red flags → continue to scope scoring.
+- **HOLD** — one red flag, or a fixable vetting gap → return to `content-strategist` / `creative-brief`
+  to sharpen the thesis or reader next-step before scoring. Do not score scope yet.
+- **KILL** — two or more red flags, or an unfixable vetting failure → recommend dropping the topic and
+  pulling the next idea from `content/idea-queue.md`. Note the reason so the idea is not re-queued.
+
+Only run the scope scoring below after the gate decision is PROCEED.
+
 ## Scope Assessment Criteria
 
 Evaluate the strategy/outline against these signals:
@@ -121,6 +169,14 @@ Add a `## Series Plan` section to the strategy document:
 ```markdown
 ## Series Plan
 
+### Topic Vetting
+
+**Vetting (4/4 required):** Pass/Fail — [one line per failed question]
+**Red flags:** none | [list]
+**Gate decision:** PROCEED | HOLD | KILL
+
+### Scope
+
 **Assessment score**: X/16 (or X/14 if dimension analysis was omitted)
 **Per-part word floor (≥2,400)**: Pass/Fail — [smallest candidate part = N words]
 **Single-post feasibility**: Pass/Fail — [why]
@@ -161,6 +217,7 @@ When a series is recommended:
 
 ## Constraints
 
+- DO NOT score scope before the **Topic Vetting & Red-Flag Gate** returns PROCEED; a HOLD or KILL stops the assessment
 - DO NOT automatically split every topic — many fit well in a single post
 - DO NOT recommend a series unless EACH part independently clears the **2,400-word substantive floor**; word-thin parts MUST be consolidated into a single post
 - DO NOT recommend a series from score alone; apply the per-part word floor, the single-post feasibility gate, and the required series gate

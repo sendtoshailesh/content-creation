@@ -1,7 +1,11 @@
 # Compliance Severity Schema (shared)
 
-> Shared findings contract used by `brand-guardian` and `visual-reviewer` so brand and
-> visual compliance produce **machine-readable, gated** feedback instead of prose notes.
+> Shared findings contract used by **every reviewer in the pipeline** — `critic-review`
+> (Tier 1), the Tier 2 jury, `brand-guardian`, `visual-reviewer`, `visual-reverse-review`,
+> `quality-reviewer`, `grounded-content-reviewer` (freshness/fact-check), and `seo-optimizer`
+> — so brand, visual, quality, freshness, and SEO checks all produce the **same
+> machine-readable, gated** feedback instead of each emitting its own prose format. One
+> escalation digest can then fold in every reviewer's output without translation.
 >
 > Methodology adapted from `microsoft/content-generation-solution-accelerator` (Brand
 > Compliance Validation with Error / Warning / Info severities).
@@ -28,8 +32,19 @@ Every audit emits a table; one row per finding:
 
 ## Categories
 
-`voice` · `tone` · `messaging` · `claim-citation` · `design-token` · `brand-color` ·
-`typography` · `layout` · `image-no-text` · `image-fidelity` · `safety` · `accessibility`
+`voice` · `tone` · `messaging` · `claim-citation` · `data-specificity` · `structure` ·
+`freshness` · `seo` · `metadata` · `design-token` · `brand-color` · `typography` · `layout` ·
+`image-no-text` · `image-fidelity` · `safety` · `accessibility`
+
+Reviewer-to-category guidance (each reviewer stays in its lane):
+
+| Reviewer | Primary categories | Typical max severity |
+|----------|--------------------|----------------------|
+| `quality-reviewer` | `data-specificity` · `structure` · `voice` · `tone` · `layout` | Error (missing required data / banned voice) |
+| `grounded-content-reviewer` | `claim-citation` · `freshness` · `safety` | Error (false/uncited/stale load-bearing claim) |
+| `seo-optimizer` | `seo` · `metadata` · `structure` · `accessibility` | Warning (SEO is advisory; rarely blocks) |
+| `brand-guardian` | `voice` · `tone` · `messaging` · `brand-color` | Error (off-brand color / corporate voice) |
+| `visual-reviewer` | `design-token` · `typography` · `layout` · `accessibility` | Error (broken/illegible visual) |
 
 ## Confidence and risk (required for LLM-tier reviewers)
 

@@ -127,3 +127,18 @@ After each phase, provide a structured report:
 - Gaps filled: N
 - Unverified: N
 ```
+
+### Shared findings schema (required)
+
+In addition to the narrative report above, emit the **shared findings table and `GATE` verdict**
+from [`compliance-severity.md`](../instructions/shared/compliance-severity.md) so freshness/fact-check
+output folds into the run's one escalation digest alongside every other reviewer. As an LLM-tier
+reviewer, include the `Confidence` and `Risk` fields on every row.
+
+- One row per corrected, gap-filled, or unverified claim (clean verified claims need no row).
+- Use category `claim-citation` for source/attribution misses, `freshness` for stale `[VOLATILE]`
+  data, `safety` for unsafe claims. Map severity per the schema: a false or uncited load-bearing
+  claim is an **Error**; thin/aging support is a **Warning**; a polish note is **Info**.
+- A still-`[UNVERIFIED]` load-bearing claim is `Confidence: low` on an `Error` — it must `ABSTAIN`
+  and escalate, never be silently kept or removed.
+- End with `GATE: PASS` (no Error rows, every Warning fixed or justified) or `GATE: FAIL`.

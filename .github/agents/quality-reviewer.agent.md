@@ -91,6 +91,19 @@ Provide a structured review:
 - [optional improvements]
 ```
 
+### Shared findings schema (required)
+
+Alongside the narrative review above, emit the **shared findings table and `GATE` verdict**
+from [`compliance-severity.md`](../instructions/shared/compliance-severity.md) so quality output
+folds into the run's one escalation digest in the same shape as every other reviewer. As an
+LLM-tier reviewer, include the `Confidence` and `Risk` fields on every row.
+
+- One row per checklist deviation (no row for a passing item). Use categories `data-specificity`,
+  `structure`, `voice`, `tone`, or `layout`. Map severity per the schema: a missing required
+  element (no concrete number, banned corporate voice, broken visual) is an **Error**; a
+  weak-but-present element is a **Warning**; a stylistic nicety is **Info**.
+- End with `GATE: PASS` (no Error rows, every Warning fixed or justified) or `GATE: FAIL`.
+
 ## Constraints
 
 - DO NOT rewrite entire content without user approval

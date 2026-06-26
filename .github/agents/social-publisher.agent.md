@@ -106,6 +106,22 @@ After each platform posts:
 - The publishing log at `content/publishing-log.md` is auto-updated by each tool
 - Update `content/pipeline-config.md` Published URLs section if it exists
 
+### 6b. Seed the Hypothesis Ledger (post-publish go/no-go)
+
+Immediately after a successful publish, seed a **pending** row in `content/hypothesis-ledger.md`
+so the experiment can be scored later:
+
+1. Read `content/creative-brief.md` §4b Content hypothesis. Extract the predicted success
+   proxies + thresholds + windows and the riskiest assumption (per part for a series).
+2. Append a row to the ledger table with the run slug, the **predicted** primary proxy
+   (threshold + window), the riskiest assumption, verdict `pending`, and next action `measure at
+   ~7 days`. Create the ledger from the template in the `post-publish-review` skill if it is missing.
+3. If §4b is absent (run predates the convention), seed a `no-baseline` row instead and note it.
+
+Do NOT score the verdict here — that happens later in the `post-publish-review` skill after a
+measurement window elapses. This step only captures the prediction at the moment of publishing so
+it cannot be rationalized after the fact.
+
 ## Error Handling
 
 - If a platform fails, report the error and continue with remaining platforms

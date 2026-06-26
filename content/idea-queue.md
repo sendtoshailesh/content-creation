@@ -1,6 +1,8 @@
 # Content Idea Queue
 
 > **Curated content ideas** extracted from configured feed sources. Run `@feed-curator` to discover fresh ideas. Pick an idea and run `@content-pipeline` or use `/select-idea` to auto-populate the pipeline config.
+>
+> **Feeds:** `@feed-curator` (blogs/RSS) · `@reading-list-curator` / `@apple-notes-curator` / `@social-saves-curator` (saved reading) · `post-run-reflection` skill (the pipeline's own completed runs — cut scope, open questions, unwritten parts, validated angles). All write the 25-point entry format below.
 
 Last curated: 2026-06-19 (Feeds only — 92 articles from 7 live sources; 61 published since the 06-15 run. 5 new ideas queued ([23]–[27]) + 7 existing ideas reinforced with fresh articles; total now 27)
 
