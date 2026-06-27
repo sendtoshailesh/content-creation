@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Content Pipeline Agents &amp; Skills — Shailesh Mishra</title>
-  <meta name="description" content="Complete catalog of GitHub Copilot custom agents and skills powering the visual-first content strategy pipeline. 29 specialist agents, 26 skills, one orchestrator.">
+  <meta name="description" content="Complete catalog of GitHub Copilot custom agents and skills powering the visual-first content strategy pipeline. 30 specialist agents, 26 skills, one orchestrator.">
   <link rel="stylesheet" href="../style.css">
   <style>
     /* ── Page-level overrides ── */
@@ -289,7 +289,9 @@
     <h1>Content Pipeline Agents &amp; Skills</h1>
     <p class="sub">A visual-first content strategy pipeline powered by GitHub Copilot custom agents. Provide a topic — or discover one from your feeds — and get a full distribution package: long-form blog, social posts, video scripts, and designed visuals.</p>
     <div class="stats">
-      <div class="stat"><div class="num">29</div><div class="label">Specialist agents</div></div>
+      <!-- Update this number when agents are added/removed (.github/agents/ count) -->
+      <div class="stat"><div class="num">30</div><div class="label">Specialist agents</div></div>
+      <!-- Update this number when skills are added/removed (.github/skills/ count) -->
       <div class="stat"><div class="num">26</div><div class="label">Reusable skills</div></div>
       <div class="stat"><div class="num">8</div><div class="label">Pipeline phases</div></div>
       <div class="stat"><div class="num">5</div><div class="label">Distribution channels</div></div>
@@ -835,6 +837,10 @@
       <div class="skill-name">critic-review <span class="skill-invoke">skill</span></div>
       <div class="skill-desc">Tier 1 rubric critic and reference-grounded fact-check desk. Runs a G-Eval-style constitution judge and a faithfulness check anchored to the reference brief. Emits compliance-severity findings with confidence/risk fields. Auto-approves clean low-risk majority; abstains to human on high-stakes claims.</div>
     </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-review <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Review rendered visual assets (PNG, SVG, Mermaid diagrams) for layout defects, text overflow, readability, design token compliance, data accuracy, and reader comprehension. Produces a structured findings report for the visual-renderer agent to act on. Mandatory pipeline step before publishing (Phase 2c).</div>
+    </div>
   </div>
 
   <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
@@ -879,7 +885,7 @@
 
   <!-- Repo link -->
   <div style="margin: 3rem 0; text-align: center; font-size: 0.9rem; color: var(--text-2);">
-    <p>All agent and skill definitions live in <a href="https://github.com/sendtoshailesh/content-creation">.github/agents/</a> and <a href="https://github.com/sendtoshailesh/content-creation">.github/skills/</a> in the open repository. Pull requests welcome.</p>
+    <p>All agent and skill definitions live in <a href="https://github.com/sendtoshailesh/content-creation/tree/main/.github/agents">.github/agents/</a> and <a href="https://github.com/sendtoshailesh/content-creation/tree/main/.github/skills">.github/skills/</a> in the open repository. Pull requests welcome.</p>
   </div>
 
 </main>
