@@ -712,27 +712,26 @@
     <h2>Phase 8 — Measurement</h2>
     <span class="phase-badge optional">optional · time-delayed</span>
   </div>
-  <p class="section-desc">Closes the content-as-experiment loop. The creative brief declares a falsifiable hypothesis (§4b); post-publish-review scores actual engagement against it and harvests the outcome back into the idea queue. Never a publishing gate.</p>
-  <div class="card-grid">
-    <!-- No dedicated "agents" here — these are skills invoked directly -->
-    <div class="card">
-      <div class="card-name">post-publish-review <span class="invoke">post-publish-review skill</span></div>
-      <div class="card-desc">Close the content-as-experiment loop. After a piece is published, compare its actual engagement against the falsifiable Content hypothesis from the creative brief, render a go/no-go verdict (validated / partially validated / invalidated / inconclusive), and write the outcome to the hypothesis ledger.</div>
-      <div class="card-tags">
-        <span class="tag grey">hypothesis ledger</span>
-        <span class="tag grey">~48h / ~7 day window</span>
-        <span class="tag grey">optional</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-name">post-run-reflection <span class="invoke">post-run-reflection skill</span></div>
-      <div class="card-desc">Close the discovery loop. After a content run finishes, reflect on what the run itself surfaced — cut scope, open questions, unwritten series parts, reader-perspective gaps, and validated angles from the hypothesis ledger — and harvest them into the idea queue as ranked, ready-to-pick follow-ups.</div>
-      <div class="card-tags">
-        <span class="tag grey">idea harvesting</span>
-        <span class="tag grey">idea-queue.md</span>
-        <span class="tag grey">optional</span>
-      </div>
-    </div>
+  <p class="section-desc">Closes the content-as-experiment loop. The creative brief declares a falsifiable hypothesis (§4b); the measurement phase is driven by reusable skills rather than dedicated standalone agents. See <strong>Post-Publish &amp; Discovery</strong> below for the two skills that score outcomes and harvest follow-up ideas.</p>
+  <div class="invoke-box" style="margin-top: 1rem;">
+    <h3>Measurement is skill-driven</h3>
+    <table class="invoke-table">
+      <tr>
+        <th>Reusable skill</th>
+        <th>What it closes</th>
+        <th>Output artifact</th>
+      </tr>
+      <tr>
+        <td><code>post-publish-review</code></td>
+        <td>Compares actual engagement against the brief's falsifiable hypothesis after the measurement window</td>
+        <td>Hypothesis ledger verdict</td>
+      </tr>
+      <tr>
+        <td><code>post-run-reflection</code></td>
+        <td>Harvests scope cuts, open questions, and validated angles into the next idea queue</td>
+        <td>Ranked follow-up ideas</td>
+      </tr>
+    </table>
   </div>
 
   <!-- ── Skills ── -->
