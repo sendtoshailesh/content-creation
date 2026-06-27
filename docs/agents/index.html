@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Pipeline Agents &amp; Skills — Shailesh Mishra</title>
+  <meta name="description" content="Complete catalog of GitHub Copilot custom agents and skills powering the visual-first content strategy pipeline. 29 specialist agents, 26 skills, one orchestrator.">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* ── Page-level overrides ── */
+    .container { max-width: 1040px; }
+
+    /* ── Hero ── */
+    .hero { padding: 3.5rem 1rem 2.5rem; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero .sub { font-size: 1rem; color: var(--text-2); margin-top: 0.75rem; max-width: 680px; margin-left: auto; margin-right: auto; }
+    .hero .stats { display: flex; gap: 2rem; justify-content: center; margin-top: 1.75rem; flex-wrap: wrap; }
+    .hero .stat { text-align: center; }
+    .hero .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+    .hero .stat .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ── Pipeline flow bar ── */
+    .pipeline-flow {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      padding: 1rem 0 1.25rem;
+      margin: 2rem 0 0;
+      border-top: 1px solid var(--grid);
+      border-bottom: 1px solid var(--grid);
+    }
+    .phase-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-2);
+      white-space: nowrap;
+      border-right: 1px solid var(--grid);
+      flex: 1;
+      min-width: 90px;
+      text-align: center;
+    }
+    .phase-chip:last-child { border-right: none; }
+    .phase-chip .phase-num {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+    .phase-chip.optional { color: var(--muted); }
+    .phase-chip.optional .phase-num { color: var(--muted); }
+
+    /* ── Section headers ── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin: 2.75rem 0 1.25rem;
+    }
+    .section-header h2 {
+      font-size: 1.35rem;
+      color: var(--text);
+    }
+    .section-header .phase-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--blue-bg);
+      color: var(--accent);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      white-space: nowrap;
+    }
+    .section-header .phase-badge.optional {
+      background: var(--light-bg);
+      color: var(--muted);
+    }
+    .section-header .phase-badge.cross {
+      background: var(--purple-bg);
+      color: var(--accent-3);
+    }
+    .section-header .phase-badge.orch {
+      background: var(--teal-bg);
+      color: var(--accent-2);
+    }
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      margin: -0.5rem 0 1.25rem;
+      max-width: 680px;
+    }
+
+    /* ── Agent / skill card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .card {
+      border: 1px solid var(--grid);
+      border-radius: 8px;
+      padding: 1.25rem 1.4rem;
+      background: var(--bg);
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card:hover {
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+      border-color: var(--muted);
+    }
+    .card-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .card-name .invoke {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      background: var(--light-bg);
+      border: 1px solid var(--grid);
+      border-radius: 4px;
+      padding: 0.1rem 0.35rem;
+      color: var(--accent-3);
+    }
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--text-2);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.2rem;
+    }
+    .tag {
+      font-size: 0.7rem;
+      border-radius: 20px;
+      padding: 0.15rem 0.5rem;
+      font-weight: 500;
+    }
+    .tag.blue  { background: var(--blue-bg);   color: var(--accent); }
+    .tag.teal  { background: var(--teal-bg);   color: var(--accent-2); }
+    .tag.purple{ background: var(--purple-bg); color: var(--accent-3); }
+    .tag.red   { background: var(--red-bg);    color: var(--warn); }
+    .tag.grey  { background: var(--light-bg);  color: var(--muted); }
+
+    /* Wide card (orchestrator) */
+    .card.wide {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      gap: 1.5rem;
+      align-items: flex-start;
+      background: var(--teal-bg);
+      border-color: var(--accent-2);
+    }
+    .card.wide .card-body { flex: 1; }
+    .card.wide .card-name { font-size: 1.05rem; }
+    .card.wide .card-desc { font-size: 0.87rem; color: var(--text); }
+    .card.wide .orch-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Skills section ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+    .skill-card {
+      border: 1px solid var(--grid);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      background: var(--light-bg);
+    }
+    .skill-card:hover {
+      border-color: var(--muted);
+    }
+    .skill-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .skill-name .skill-invoke {
+      font-family: 'Courier New', monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      background: var(--bg);
+      border: 1px solid var(--grid);
+      border-radius: 3px;
+      padding: 0.08rem 0.3rem;
+      color: var(--accent-3);
+      margin-left: 0.3rem;
+    }
+    .skill-desc {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    /* ── How to invoke box ── */
+    .invoke-box {
+      background: var(--light-bg);
+      border: 1px solid var(--grid);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 2.5rem 0 0;
+      font-size: 0.88rem;
+    }
+    .invoke-box h3 { font-size: 1rem; margin-bottom: 0.75rem; }
+    .invoke-table { width: 100%; border-collapse: collapse; }
+    .invoke-table th {
+      text-align: left;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--grid);
+      padding-bottom: 0.4rem;
+      padding-right: 1.5rem;
+    }
+    .invoke-table td {
+      padding: 0.45rem 0;
+      padding-right: 1.5rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--light-bg);
+    }
+    .invoke-table td code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.83rem;
+      background: var(--bg);
+      border: 1px solid var(--grid);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      color: var(--accent-3);
+    }
+    .invoke-table td:last-child { color: var(--text-2); }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--grid);
+      margin: 3rem 0 0;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 0.5rem;
+    }
+    .back-link:hover { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="logo">Shailesh Mishra</a>
+  <nav>
+    <a href="../">Blog</a>
+    <a href="./" style="color: var(--accent);">Agents</a>
+    <a href="https://github.com/sendtoshailesh/content-creation">GitHub</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <div style="padding-top: 2rem;">
+    <a href="../" class="back-link">&#8592; Blog</a>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Content Pipeline Agents &amp; Skills</h1>
+    <p class="sub">A visual-first content strategy pipeline powered by GitHub Copilot custom agents. Provide a topic — or discover one from your feeds — and get a full distribution package: long-form blog, social posts, video scripts, and designed visuals.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">29</div><div class="label">Specialist agents</div></div>
+      <div class="stat"><div class="num">26</div><div class="label">Reusable skills</div></div>
+      <div class="stat"><div class="num">8</div><div class="label">Pipeline phases</div></div>
+      <div class="stat"><div class="num">5</div><div class="label">Distribution channels</div></div>
+    </div>
+  </div>
+
+  <!-- Pipeline flow bar -->
+  <div class="pipeline-flow">
+    <div class="phase-chip optional">
+      <div class="phase-num">&#8722;1</div>
+      Discovery
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">0</div>
+      Research
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">1</div>
+      Planning
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">2</div>
+      Content
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">3</div>
+      Quality
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">4–6</div>
+      Distribution
+    </div>
+    <div class="phase-chip">
+      <div class="phase-num">7</div>
+      Publishing
+    </div>
+    <div class="phase-chip optional">
+      <div class="phase-num">8</div>
+      Measurement
+    </div>
+  </div>
+
+  <!-- How to invoke -->
+  <div class="invoke-box">
+    <h3>Invoking agents</h3>
+    <table class="invoke-table">
+      <tr>
+        <th>Entry point</th>
+        <th>Example</th>
+        <th>What it does</th>
+      </tr>
+      <tr>
+        <td><code>@content-pipeline &lt;topic&gt;</code></td>
+        <td><code>@content-pipeline AI cost optimization in 2026</code></td>
+        <td>Full pipeline — topic to published post with social distribution</td>
+      </tr>
+      <tr>
+        <td><code>@&lt;agent-name&gt;</code></td>
+        <td><code>@blog-writer</code></td>
+        <td>Single stage — pick up at any step</td>
+      </tr>
+      <tr>
+        <td><code>/new-content-pipeline &lt;topic&gt;</code></td>
+        <td>Prompt shortcut</td>
+        <td>Shorthand orchestrator entry</td>
+      </tr>
+      <tr>
+        <td><code>/topic-pipeline &lt;slug&gt;</code></td>
+        <td><code>/topic-pipeline ai-cost-2026</code></td>
+        <td>Isolated workspace under <code>content/topics/&lt;slug&gt;/</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── Orchestrator ── -->
+  <div class="section-header">
+    <h2>Orchestrator</h2>
+    <span class="phase-badge orch">all phases</span>
+  </div>
+  <p class="section-desc">The single entry point that coordinates all specialist agents in sequence, reads and updates pipeline status between every phase, and enforces quality gates.</p>
+  <div class="card-grid">
+    <div class="card wide">
+      <div class="orch-icon">&#9881;</div>
+      <div class="card-body">
+        <div class="card-name">content-pipeline <span class="invoke">@content-pipeline</span></div>
+        <div class="card-desc">Orchestrates the full visual-first content strategy pipeline. Coordinates specialist agents from clarifying questions through mandatory visual planning, blog, visuals, social posts, and video script. Reads and updates <code>content/pipeline-config.md</code> between every phase. Enforces the quality gate sequence so no phase advances without the prior gate passing.</div>
+        <div class="card-tags">
+          <span class="tag teal">orchestrator</span>
+          <span class="tag blue">all phases</span>
+          <span class="tag grey">status contract</span>
+          <span class="tag grey">quality gates</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase -1: Discovery ── -->
+  <div class="section-header">
+    <h2>Phase &#8722;1 — Discovery</h2>
+    <span class="phase-badge optional">optional</span>
+  </div>
+  <p class="section-desc">Source content ideas from your personal reading and saves before the pipeline runs. All curators write to <code>content/idea-queue.md</code>; pick an idea with <code>/select-idea</code> to hand it to the orchestrator.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">feed-curator <span class="invoke">@feed-curator</span></div>
+      <div class="card-desc">Reads configured blog rolls, newsletters, and RSS feeds, extracts content matching subject area filters, synthesizes compelling content ideas, and queues them for the content pipeline. Use to discover fresh content ideas from your reading sources.</div>
+      <div class="card-tags">
+        <span class="tag blue">RSS / feeds</span>
+        <span class="tag grey">idea discovery</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">reading-list-curator <span class="invoke">@reading-list-curator</span></div>
+      <div class="card-desc">Generates content ideas from Chrome's reading list. Reads saved articles, auto-categorizes by subject area, clusters related items into themes, scores by priority, and queues ideas interactively. Use to discover content ideas from articles you've already saved for later.</div>
+      <div class="card-tags">
+        <span class="tag blue">Chrome reading list</span>
+        <span class="tag grey">idea discovery</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">apple-notes-curator <span class="invoke">@apple-notes-curator</span></div>
+      <div class="card-desc">Generates content ideas from Apple Notes. Reads your notes, auto-categorizes by subject area, clusters related notes into themes, scores by priority, and queues ideas interactively. Use to discover content ideas from notes you've captured on the go.</div>
+      <div class="card-tags">
+        <span class="tag blue">Apple Notes</span>
+        <span class="tag grey">idea discovery</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">social-saves-curator <span class="invoke">@social-saves-curator</span></div>
+      <div class="card-desc">Generates content ideas from your authenticated social saves — LinkedIn Saved posts, X/Twitter Bookmarks &amp; Likes, Medium reading list, Reddit Saved, GitHub Stars, and YouTube Watch Later. Uses your own logged-in browser session (Playwright) read-only, auto-categorizes by subject area, clusters related saves into themes, scores by priority, and queues ideas interactively.</div>
+      <div class="card-tags">
+        <span class="tag blue">LinkedIn / X / Reddit</span>
+        <span class="tag blue">GitHub Stars</span>
+        <span class="tag grey">idea discovery</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 0: Research ── -->
+  <div class="section-header">
+    <h2>Phase 0 — Reference &amp; Research</h2>
+    <span class="phase-badge">phase 0</span>
+  </div>
+  <p class="section-desc">Ground the content in current market reality and authoritative sources before any writing begins. Outputs: <code>content/reference-brief.md</code> and <code>content/trend-research.md</code>.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">reference-discovery <span class="invoke">@reference-discovery</span></div>
+      <div class="card-desc">Web reference discovery agent inspired by NotebookLM. Searches the web for relevant references across 6 content categories, presents results for interactive user curation (select/reject), and writes accepted references into <code>pipeline-config.md</code>. Use before reference analysis to populate the pipeline with high-quality sources.</div>
+      <div class="card-tags">
+        <span class="tag blue">web search</span>
+        <span class="tag grey">source curation</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">trend-researcher <span class="invoke">@trend-researcher</span></div>
+      <div class="card-desc">Market intelligence analyst for pre-writing research. Identifies emerging trends, performs competitive analysis, and provides data-backed insights to strengthen content with real numbers, benchmarks, and market context. Use before writing to ground content in current market reality.</div>
+      <div class="card-tags">
+        <span class="tag blue">market intelligence</span>
+        <span class="tag grey">benchmarks</span>
+        <span class="tag grey">competitive analysis</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 1: Planning ── -->
+  <div class="section-header">
+    <h2>Phase 1 — Planning</h2>
+    <span class="phase-badge">phase 1</span>
+  </div>
+  <p class="section-desc">Turn a topic into a research-backed creative brief, STORM content plan, scope decision (single post vs. series), dimension analysis, and a visual opportunity map. Ends with explicit user confirmation before any content is written.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">content-strategist <span class="invoke">@content-strategist</span></div>
+      <div class="card-desc">Use for content planning, audience research, and outlining. Conducts 8–12 clarifying questions, defines audience/tone/channels, and produces a structured content strategy with distribution-aware outline.</div>
+      <div class="card-tags">
+        <span class="tag blue">strategy</span>
+        <span class="tag blue">outline</span>
+        <span class="tag grey">creative brief</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">content-researcher <span class="invoke">@content-researcher</span></div>
+      <div class="card-desc">STORM-inspired content research agent. Runs the four-phase content-research pre-stage (perspective discovery, contradiction map, ranked synthesis, self peer-review, outline tree) and writes <code>content/content-research-map.md</code> before the strategy outline is written. The content-track twin of visual-strategist.</div>
+      <div class="card-tags">
+        <span class="tag blue">STORM research</span>
+        <span class="tag grey">contradiction map</span>
+        <span class="tag grey">outline tree</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">visual-strategist <span class="invoke">@visual-strategist</span></div>
+      <div class="card-desc">Mandatory visual strategy agent. Creates a visual opportunity map from strategy docs or blog drafts and plans blog, LinkedIn, Medium, Substack, and LinkedIn Article visual assets before rendering.</div>
+      <div class="card-tags">
+        <span class="tag teal">visual planning</span>
+        <span class="tag grey">opportunity map</span>
+        <span class="tag grey">mandatory</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">infographic-art-director <span class="invoke">@infographic-art-director</span></div>
+      <div class="card-desc">Infographic creative director for visual-first content. Researches design references, chooses infographic types, writes visual design briefs, and enforces infographic-first quality before rendering.</div>
+      <div class="card-tags">
+        <span class="tag teal">infographic briefs</span>
+        <span class="tag grey">art direction</span>
+        <span class="tag grey">P0/P1 visuals</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 2: Content Creation ── -->
+  <div class="section-header">
+    <h2>Phase 2 — Content Creation</h2>
+    <span class="phase-badge">phase 2</span>
+  </div>
+  <p class="section-desc">Write the long-form blog post and render all visual assets. Every section exceeding 400 words without an image reference gets a <code>[VISUAL: ...]</code> marker. All rendered visuals pass the REVR hard gate (score ≥ 85) before advancing.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">blog-writer <span class="invoke">@blog-writer</span></div>
+      <div class="card-desc">Use for writing long-form technical blog posts. Takes a strategy outline and produces publication-ready Markdown with concrete data, case studies, and visual integrations.</div>
+      <div class="card-tags">
+        <span class="tag blue">long-form blog</span>
+        <span class="tag grey">~3,000 words</span>
+        <span class="tag grey">case studies</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">visual-renderer <span class="invoke">@visual-renderer</span></div>
+      <div class="card-desc">Use for generating visual assets — PNG charts via matplotlib, SVG graphics, and Mermaid diagrams. Follows the shared design token system for consistent visuals across all content.</div>
+      <div class="card-tags">
+        <span class="tag teal">PNG / SVG / Mermaid</span>
+        <span class="tag grey">design tokens</span>
+        <span class="tag grey">320 DPI</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">image-content-agent <span class="invoke">@image-content-agent</span></div>
+      <div class="card-desc">Use for hero/backdrop/illustrative imagery. Defaults to a deterministic, free, offline programmatic backdrop; optionally calls an external image model for photoreal looks. Grounds on the creative brief + brand tokens, runs a deterministic QA pre-screen, and hands off to visual-reviewer. Does NOT make diagrams/infographics/exhibits — those stay in visual-renderer.</div>
+      <div class="card-tags">
+        <span class="tag teal">hero imagery</span>
+        <span class="tag grey">programmatic (default)</span>
+        <span class="tag grey">AI opt-in</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">visual-reviewer <span class="invoke">@visual-reviewer</span></div>
+      <div class="card-desc">Visual QA critic agent. Reviews rendered visual assets (PNG, SVG, Mermaid) for layout defects, readability, design token compliance, and reader comprehension. Produces a findings report for visual-renderer to fix. Uses GitHub Copilot rubber-duck review; no model-family switch required.</div>
+      <div class="card-tags">
+        <span class="tag teal">visual QA</span>
+        <span class="tag grey">REVR gate</span>
+        <span class="tag red">score &ge; 85 required</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 3: Quality + SEO ── -->
+  <div class="section-header">
+    <h2>Phase 3 — Quality &amp; SEO</h2>
+    <span class="phase-badge">phase 3</span>
+  </div>
+  <p class="section-desc">Multi-tier quality cascade: rubber-duck content review, live source fact-checking, and SEO optimization. All reviewers emit the same severity-graded findings schema (Error / Warning / Info) defined in <code>compliance-severity.md</code>.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">quality-reviewer <span class="invoke">@quality-reviewer</span></div>
+      <div class="card-desc">Use for reviewing and improving content quality. Audits blog posts, social posts, and visuals against quality standards. Fixes vague claims, missing data, broken visuals, and tone issues.</div>
+      <div class="card-tags">
+        <span class="tag blue">content QA</span>
+        <span class="tag grey">Error/Warning/Info</span>
+        <span class="tag grey">auto-fix</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">grounded-content-reviewer <span class="invoke">@grounded-content-reviewer</span></div>
+      <div class="card-desc">Validates created content against real-world sources via web search. Grounds blog posts, social posts, and video scripts by verifying data points, technical claims, examples, and scenarios against authoritative web sources. Fixes gaps and inaccuracies in-place.</div>
+      <div class="card-tags">
+        <span class="tag blue">fact-check</span>
+        <span class="tag blue">live web search</span>
+        <span class="tag grey">source freshness</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">seo-optimizer <span class="invoke">@seo-optimizer</span></div>
+      <div class="card-desc">SEO optimization specialist for blog content. Analyzes keyword opportunities, optimizes headings and structure, writes meta descriptions, and ensures content is search-engine friendly while remaining reader-first. Use after blog writing to optimize for organic traffic.</div>
+      <div class="card-tags">
+        <span class="tag blue">SEO</span>
+        <span class="tag grey">meta descriptions</span>
+        <span class="tag grey">keyword optimization</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">brand-guardian <span class="invoke">@brand-guardian</span></div>
+      <div class="card-desc">Brand consistency guardian for content pipelines. Audits all content pieces — blog, social posts, visuals, scripts — to ensure consistent voice, tone, design tokens, and messaging. Use after content creation to catch inconsistencies before publishing.</div>
+      <div class="card-tags">
+        <span class="tag blue">brand audit</span>
+        <span class="tag grey">voice/tone</span>
+        <span class="tag grey">design tokens</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 4–6: Distribution ── -->
+  <div class="section-header">
+    <h2>Phase 4–6 — Distribution</h2>
+    <span class="phase-badge">phases 4–6</span>
+  </div>
+  <p class="section-desc">LinkedIn is always generated first. Additional channels (X/Twitter, Reddit, Reel/Short, YouTube, deck, Medium/Substack) are user-selected after LinkedIn. Each social agent uses Unicode bold/italic for native LinkedIn/X formatting; Reddit uses standard Markdown only.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">social-strategist <span class="invoke">@social-strategist</span></div>
+      <div class="card-desc">Cross-platform social media strategist. Develops unified social distribution strategy before individual platform agents run. Defines messaging themes, posting sequence, timing, and cross-promotion plan. Use before running individual social agents.</div>
+      <div class="card-tags">
+        <span class="tag blue">distribution strategy</span>
+        <span class="tag grey">cross-platform plan</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">social-linkedin <span class="invoke">@social-linkedin</span></div>
+      <div class="card-desc">Use for creating LinkedIn posts from blog content. Produces both plain-text and Unicode-formatted versions optimized for LinkedIn's algorithm and audience. When a visual pack exists, produces visual-first posts with carousel/exhibit references in Practitioner or Executive persona mode.</div>
+      <div class="card-tags">
+        <span class="tag blue">LinkedIn</span>
+        <span class="tag grey">Unicode bold</span>
+        <span class="tag grey">always generated</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">social-twitter <span class="invoke">@social-twitter</span></div>
+      <div class="card-desc">Use for creating an X/Twitter single tweet from blog content. Produces one standalone tweet (&le;280 chars) with a single visual attachment reference. When a visual pack exists, references the most relevant x-card or x-exhibit image.</div>
+      <div class="card-tags">
+        <span class="tag blue">X / Twitter</span>
+        <span class="tag grey">&le; 280 chars</span>
+        <span class="tag grey">user-selected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">social-reddit <span class="invoke">@social-reddit</span></div>
+      <div class="card-desc">Use for creating Reddit posts from blog content. Writes technical, discussion-oriented posts with standard Markdown for subreddits like r/MachineLearning, r/ExperiencedDevs, r/artificial.</div>
+      <div class="card-tags">
+        <span class="tag blue">Reddit</span>
+        <span class="tag grey">standard Markdown</span>
+        <span class="tag grey">user-selected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">reel-video <span class="invoke">@reel-video</span></div>
+      <div class="card-desc">Use for creating short-form video (reel) scripts from blog content. Produces 60–90 second scripts with screen recording cues and voiceover narration for Instagram Reels, YouTube Shorts, and LinkedIn video.</div>
+      <div class="card-tags">
+        <span class="tag purple">short video</span>
+        <span class="tag grey">60–90 seconds</span>
+        <span class="tag grey">user-selected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">deck-builder <span class="invoke">@deck-builder</span></div>
+      <div class="card-desc">Build an optional slide deck (PPTX + PDF) from finalized blog + LinkedIn content, with per-slide speaker notes in a humor + intellectual voice, organized by topic. Runs only after the blog and LinkedIn post are finalized; exports only after the user finalizes the deck. Optional — never a publishing gate.</div>
+      <div class="card-tags">
+        <span class="tag purple">PPTX + PDF</span>
+        <span class="tag grey">Marp source</span>
+        <span class="tag grey">optional</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">video-scriptwriter <span class="invoke">@video-scriptwriter</span></div>
+      <div class="card-desc">Use for creating YouTube video scripts from blog content. Produces timed scripts with visual cues, slide maps to existing PNGs, thumbnail concepts, and YouTube descriptions.</div>
+      <div class="card-tags">
+        <span class="tag purple">YouTube script</span>
+        <span class="tag grey">timed cues</span>
+        <span class="tag grey">user-selected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">content-repurposer <span class="invoke">@content-repurposer</span></div>
+      <div class="card-desc">Content repurposer that transforms a published blog post into additional formats — email newsletters, slide deck outlines, podcast talking points, one-page summaries, and infographic briefs. Use after the blog is published to maximize distribution reach.</div>
+      <div class="card-tags">
+        <span class="tag purple">newsletter</span>
+        <span class="tag purple">podcast</span>
+        <span class="tag purple">one-pager</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">platform-distiller <span class="invoke">@platform-distiller</span></div>
+      <div class="card-desc">Generates one unified excerpt for Medium, Substack, and LinkedIn Article from a completed blog post. User copies the same content to all three platforms. All output points to the GitHub Pages canonical URL. Use after web-publisher and social-publisher.</div>
+      <div class="card-tags">
+        <span class="tag purple">Medium / Substack</span>
+        <span class="tag purple">LinkedIn Article</span>
+        <span class="tag grey">step 12</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 7: Publishing ── -->
+  <div class="section-header">
+    <h2>Phase 7 — Publishing</h2>
+    <span class="phase-badge">phase 7</span>
+  </div>
+  <p class="section-desc">Ship the HTML page to GitHub Pages and post to social platforms. Social publishing requires explicit human approval before anything goes live.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">web-publisher <span class="invoke">@web-publisher</span></div>
+      <div class="card-desc">Publishes blog content to the GitHub Pages site as an HTML subpage and links it from the main page. Use after blog writing and quality review are complete.</div>
+      <div class="card-tags">
+        <span class="tag blue">GitHub Pages</span>
+        <span class="tag grey">HTML subpage</span>
+        <span class="tag grey">canonical URL</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">social-publisher <span class="invoke">@social-publisher</span></div>
+      <div class="card-desc">Publishes generated social content to LinkedIn, X/Twitter, Reddit, and YouTube using MCP server tools. Previews all content and requires explicit human approval before posting anything. Use after content generation and quality review are complete.</div>
+      <div class="card-tags">
+        <span class="tag blue">MCP posting</span>
+        <span class="tag red">requires approval</span>
+        <span class="tag grey">preview first</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 8: Measurement ── -->
+  <div class="section-header">
+    <h2>Phase 8 — Measurement</h2>
+    <span class="phase-badge optional">optional · time-delayed</span>
+  </div>
+  <p class="section-desc">Closes the content-as-experiment loop. The creative brief declares a falsifiable hypothesis (§4b); post-publish-review scores actual engagement against it and harvests the outcome back into the idea queue. Never a publishing gate.</p>
+  <div class="card-grid">
+    <!-- No dedicated "agents" here — these are skills invoked directly -->
+    <div class="card">
+      <div class="card-name">post-publish-review <span class="invoke">post-publish-review skill</span></div>
+      <div class="card-desc">Close the content-as-experiment loop. After a piece is published, compare its actual engagement against the falsifiable Content hypothesis from the creative brief, render a go/no-go verdict (validated / partially validated / invalidated / inconclusive), and write the outcome to the hypothesis ledger.</div>
+      <div class="card-tags">
+        <span class="tag grey">hypothesis ledger</span>
+        <span class="tag grey">~48h / ~7 day window</span>
+        <span class="tag grey">optional</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-name">post-run-reflection <span class="invoke">post-run-reflection skill</span></div>
+      <div class="card-desc">Close the discovery loop. After a content run finishes, reflect on what the run itself surfaced — cut scope, open questions, unwritten series parts, reader-perspective gaps, and validated angles from the hypothesis ledger — and harvest them into the idea queue as ranked, ready-to-pick follow-ups.</div>
+      <div class="card-tags">
+        <span class="tag grey">idea harvesting</span>
+        <span class="tag grey">idea-queue.md</span>
+        <span class="tag grey">optional</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Skills ── -->
+  <hr class="divider">
+  <div class="section-header" style="margin-top: 2.75rem;">
+    <h2>Skills</h2>
+    <span class="phase-badge cross">cross-cutting</span>
+  </div>
+  <p class="section-desc">Reusable procedures invoked by agents throughout the pipeline. Skills are never gates; they are tools. Each writes a well-defined output artifact.</p>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Planning &amp; Tracking</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">creative-brief <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Turn a topic and clarifying-question answers into a structured Creative Brief — including a mandatory falsifiable Content hypothesis — that grounds every downstream agent.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">content-scope-assessment <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Assess whether a topic is too comprehensive for a single post and recommend a multi-part series. Scores 8 signals (0–16); enforces per-part 2,400-word floor before recommending a split.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">multi-dimensional-analysis <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Analyze a topic across three dimension types — persona, best practice, and Azure Well-Architected Framework pillars — to inform series planning, content depth, and social distribution angles.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">content-decision-record <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Record consequential, hard-to-reverse content decisions ADR-style with the alternatives that were rejected and why. Writes to <code>content/content-decision-log.md</code>. Optional, lightweight, never a gate.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">run-tracking <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Give a content run a durable scratchpad that survives context loss and series gaps. Maintains a per-run phase log and a compaction handoff under <code>content/_tracking/&lt;run-slug&gt;/</code>.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Research &amp; Sources</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">content-research <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">STORM-inspired pre-stage that builds a contradiction-aware, self-reviewed content plan. Discovers reader-perspectives, maps where sources and personas disagree, ranks thesis and key arguments by confidence, self-critiques the plan for bias.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">reference-analysis <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Fetch and synthesize online reference URLs for content creation. Analyzes pipeline-config reference URLs and writes <code>content/reference-brief.md</code> before writing begins.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">source-grounding <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Rank and cite sources by relevance and authority — not by vendor. All publishers (Microsoft, GitHub, independent vendors, analysts, researchers, community) are treated equally.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Visual Pipeline</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">visual-content-planning <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Create a mandatory visual opportunity map from a strategy document or blog draft. Use before writing or rendering visuals to plan diagrams, infographics, comic/storyboard explainers, LinkedIn card packs, and executive exhibits.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-research <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">STORM-inspired four-phase visual planning pre-stage. Discovers reader-perspectives, maps conflicts, ranks visual decisions by confidence, self-critiques the plan, and writes a hierarchical mind map to <code>content/visual-style-map.md</code>.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-style-router <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Deterministically pick a visual STYLE/MEDIUM (data-exhibit, typographic, hand-drawn, blueprint, editorial-illustration, diagram-as-code) per asset. Enforces package-level style diversity so no two adjacent visuals share a look.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">style-rendering <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Drive the six style adapters (data-exhibit, typographic, hand-drawn via Rough.js/xkcd, blueprint, editorial-illustration, diagram-as-code via D2/Mermaid/Graphviz) with shared design tokens and the existing inspector/reviewer gates.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-rendering <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Generate visual assets for content — PNGs via matplotlib, SVGs via Python, and Mermaid diagrams. Follows the shared design token system for consistent visuals across all content.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-pack-generator <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Generate platform-optimized visual asset packs from blog content for visual-first distilled posts. Supports Practitioner (carousel) and Executive (exhibit) persona modes.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">visual-reverse-review <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Reverse-Engineering Visual Review (REVR) — hard quality gate. Reads meaning back out of a rendered visual blind (pixels only), back-translates against the source concept, scores the semantic gap on a 0–100 rubric. Score &ge; 85 + zero legend gaps required to pass.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">infographic-design-system <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Create research-backed infographic design briefs before rendering visual assets. Use for infographics, one-pagers, comic/storyboards, social card packs, executive exhibits, and visual-first blog/social content.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">vision-grounding <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Build grounded, consolidated prompts for AI image generation. Describe reference images with a vision model and assemble a single prompt from subject + creative brief + brand guidelines + constraints.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Quality Review</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">critic-review <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Tier 1 rubric critic and reference-grounded fact-check desk. Runs a G-Eval-style constitution judge and a faithfulness check anchored to the reference brief. Emits compliance-severity findings with confidence/risk fields. Auto-approves clean low-risk majority; abstains to human on high-stakes claims.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Distribution &amp; Formatting</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">practitioner-projects <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Turn a blog post's core concept into a hands-on "Build it yourself" section of three structured, repo-grounded projects (beginner &rarr; intermediate &rarr; advanced). Each project presents interchangeable tools as equals regardless of vendor.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">deck-builder <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Build an optional presentation deck from finalized blog + LinkedIn content. Generates a Marp Markdown deck with per-slide speaker notes written in a humor + intellectual voice. Exports PPTX and PDF after user finalizes.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">linkedin-carousel <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Build one consolidated LinkedIn document carousel (PDF) that stitches a blog's publish-ready visuals into a single swipeable story — cover + one captioned slide per visual + CTA.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">unicode-formatting <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Format text with Unicode Mathematical Bold and Italic characters for LinkedIn and X/Twitter posts. Use when creating social media content that needs native bold/italic rendering without Markdown support.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 1.75rem; margin-bottom: 0.75rem;">
+    <h2 style="font-size: 1rem; color: var(--text-2);">Post-Publish &amp; Discovery</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">post-publish-review <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Close the content-as-experiment loop. Compare actual engagement against the brief's §4b hypothesis after the measurement window, render a verdict, and write the outcome to the hypothesis ledger. Optional, time-delayed, never a gate.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">post-run-reflection <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">After a content run finishes, reflect on what was surfaced — cut scope, open questions, unwritten series parts, perspective gaps — and harvest ranked follow-up ideas into the idea queue. Optional, never a gate.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">feed-curation <span class="skill-invoke">skill</span></div>
+      <div class="skill-desc">Read configured blog rolls, newsletters, and RSS feeds, classify articles by subject area, extract key insights, synthesize content ideas, and rank them for the idea queue.</div>
+    </div>
+  </div>
+
+  <!-- Repo link -->
+  <div style="margin: 3rem 0; text-align: center; font-size: 0.9rem; color: var(--text-2);">
+    <p>All agent and skill definitions live in <a href="https://github.com/sendtoshailesh/content-creation">.github/agents/</a> and <a href="https://github.com/sendtoshailesh/content-creation">.github/skills/</a> in the open repository. Pull requests welcome.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  &copy; 2026 Shailesh Mishra. Built with GitHub Pages.
+</footer>
+
+</body>
+</html>
