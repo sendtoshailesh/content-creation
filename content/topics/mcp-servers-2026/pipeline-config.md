@@ -12,7 +12,7 @@
 | **Topic slug** | `mcp-servers-2026` |
 | **Output path** | `content/topics/mcp-servers-2026/` |
 | **Started** | 2026-06-28 |
-| **Current Step** | Step 3b complete (2026-06-29) — all 7 visual assets rendered and QA-passed |
+| **Current Step** | Step 3c complete (2026-06-29) — Tier 0 PASS (0 Errors, 3 Warnings), Tier 1 PASS after mechanical fixes |
 | **Series** | `no` |
 
 ### Step Checklist
@@ -22,7 +22,7 @@
 - [x] Step 1b: Content research map
 - [x] Step 3: Blog post
 - [x] Step 3b: Visual assets
-- [ ] Step 3c: Quality review
+- [x] Step 3c: Quality review
 - [ ] Step 3d: SEO optimization
 - [ ] Step 4: LinkedIn post
 - [x] Step 6b: Reel/Short video

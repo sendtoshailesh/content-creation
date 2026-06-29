@@ -42,7 +42,7 @@ No server I've listed scores perfectly on all five. I'll say so when they don't.
 
 **First-party from GitHub · [github.com/github/github-mcp-server](https://github.com/github/github-mcp-server) · Current release: v1.1.0**
 
-If you spend more than two hours a day in GitHub — and most developers do — this is the highest-ROI install on this list. The GitHub MCP Server connects your agentic IDE to repos, pull requests, issues, code search, Actions runs, and notifications. The practical upshot: you can ask your agent to summarize open PRs against a milestone, find the last issue mentioning a specific error string, or trigger a workflow run without switching tabs.
+If you spend more than two hours a day in GitHub, this is the highest-ROI install on this list. The GitHub MCP Server connects your agentic IDE to repos, pull requests, issues, code search, Actions runs, and notifications. The practical upshot: you can ask your agent to summarize open PRs against a milestone, find the last issue mentioning a specific error string, or trigger a workflow run without switching tabs.
 
 What changed in 2026 is the setup story. The v1.1.0 remote endpoint supports OAuth-based onboarding, which means VS Code 1.101+ can connect with no PAT in any config file. That's a meaningfully different trust boundary from the local mode where your token lived in a JSON file a typo away from a `git commit`.
 
@@ -90,7 +90,7 @@ Full-stack developers often spend significant time context-switching between the
 
 The remote OAuth onboarding is the cleanest on this list. You connect once via OAuth, the server handles token refresh, and nothing lives in your config file. Read-only mode is a first-class configuration option, and the Supabase MCP README explicitly discusses prompt injection as a risk — naming specific attack patterns where malicious table data could attempt to redirect agent actions.
 
-**Free-tier reality:** Supabase's free tier covers 2 projects with 500MB storage and 50,000 monthly active users. For development workflows, that's plenty.
+**Free-tier reality (verified 2026-06-28):** Supabase's free tier covers 2 projects with 500MB storage and 50,000 monthly active users. For development workflows, that's plenty.
 
 **One caveat:** Even in read-only mode, your database schema is exposed to the model's context window. If your schema contains sensitive information in column names or comments, be aware that it will be visible in the conversation.
 
@@ -118,7 +118,7 @@ If you deploy to Cloudflare's edge platform, this suite is unusually complete. T
 
 Cloudflare has leaned into remote MCP hard: their endpoint supports the [Streamable HTTP transport from the 2025-03-26 spec](https://modelcontextprotocol.io/specification/2025-03-26/server/tools#toolannotations), and the onboarding flow works with VS Code 1.101+'s native remote MCP connection UI.
 
-**Free-tier reality:** The MCP server itself is open source and free. Cloudflare's free tier includes 100,000 Workers requests/day, 1GB KV storage, and a usable D1 database — plenty for development.
+**Free-tier reality (verified 2026-06-28):** The MCP server itself is open source and free. Cloudflare's free tier includes 100,000 Workers requests/day, 1GB KV storage, and a usable D1 database — plenty for development.
 
 **One caveat:** Thirteen services is a wide surface area. I'd encourage using the Cloudflare MCP server with explicit tool allowlists in your client config rather than granting blanket access to the full suite. If you only need D1 queries for a project, configure accordingly.
 

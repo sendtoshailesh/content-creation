@@ -17,7 +17,7 @@
 | 0:04–0:10 | **Screen recording** — VS Code 1.101+ Settings panel, zoomed to MCP Servers section; cursor clicks "Add Server", types a remote URL; browser OAuth popup appears and user clicks "Authorize" | *"Here's why: in 2026, remote MCP finally got real. VS Code 1.101 connects to any remote server with one OAuth click — no config files, no tokens living in plaintext JSON."* | `2026: One click. No config files.`   |
 | 0:10–0:15 | **Split-screen graphic** — left: old four-step flow (JSON block → PAT copy → gitignore → repeat × 3 machines); right: new single OAuth popup. Annotate "Before: 4 steps" and "After: 1 click" | *"Old setup? Four manual steps per service. Secrets you hoped weren't in a git commit. Now? One browser popup."*                | `Before: 4 steps → After: 1 click`   |
 | 0:15–0:24 | **Screen recording** — GitHub MCP connected in VS Code; agent chat visible; user types "summarise open PRs against the v2 milestone"; agent returns a real PR list with authors and status | *"GitHub MCP — first-party from GitHub, version 1.1.0, OAuth-ready. Summarise PRs, search issues, trigger Actions runs — without leaving your IDE."* | `GitHub MCP → PRs, issues, Actions`   |
-| 0:24–0:36 | **Screen recording** — Playwright MCP terminal startup (`npx @playwright/mcp@latest`), then agent navigating to a broken checkout page, taking a screenshot, and generating a `test.spec.ts` file | *"Playwright MCP — describe a UI bug, the agent navigates to it, screenshots the failure, and writes the Playwright test. That loop used to take forty minutes. Now it's under five."* | `Playwright MCP → 40 min → under 5`  |
+| 0:24–0:36 | **Screen recording** — Playwright MCP terminal startup (`npx @playwright/mcp@latest`), then agent navigating to a broken checkout page, taking a screenshot, and generating a `test.spec.ts` file | *"Playwright MCP — describe a UI bug, the agent navigates to it, screenshots the failure, and writes the Playwright test. That loop used to take twenty to forty minutes. Now it's under five."* | `Playwright MCP → 20–40 min → under 5`  |
 | 0:36–0:45 | **Screen recording** — agent chat; user asks about a library method; Context7 tool call fires and returns versioned docs inline in the conversation; hallucination-free answer rendered | *"Context7 — live doc grounding. No more agents hallucinating stale API signatures. It fetches real, version-specific docs on every call."* | `Context7 → live docs. No guessing.` |
 | 0:45–0:53 | **Screen recording** — GitHub MCP OAuth scope selection screen; cursor deliberately unchecks write permissions; only read-only repo and issues boxes remain checked | *"One security caveat: be ruthless about OAuth scopes. Start read-only on everything. Write access comes later — after you've actually tested the agent's judgment."* | `Security: start read-only. Always.`  |
 | 0:53–1:00 | **Motion graphic** — same dark bg as opener; text reads "Full guide — 10 servers + threat model" with arrow pointing down; follow / subscribe icon pulses | *"Full breakdown of all ten servers plus the security threat model — link in bio."*                                              | `Full guide → link in bio 🔗`         |
@@ -73,7 +73,7 @@
 "GitHub MCP — first-party from GitHub, version 1.1.0, OAuth-ready. Summarise PRs, search issues, trigger Actions runs — without leaving your IDE."
 
 **[0:24–0:36]**
-"Playwright MCP — describe a UI bug, the agent navigates to it, screenshots the failure, and writes the Playwright test. That loop used to take forty minutes. Now it's under five."
+"Playwright MCP — describe a UI bug, the agent navigates to it, screenshots the failure, and writes the Playwright test. That loop used to take twenty to forty minutes. Now it's under five."
 
 **[0:36–0:45]**
 "Context7 — live doc grounding. No more agents hallucinating stale API signatures. It fetches real, version-specific docs on every call."
@@ -125,7 +125,8 @@
 
 ### Instagram Reels / YouTube Shorts
 
-```
+```text
+START
 You don't need 50 MCP servers. You need 3 that remove one daily bottleneck.
 
 In 2026, remote MCP changed how developers set this up — VS Code 1.101+ connects via OAuth in one click. No config files. No plaintext tokens.
@@ -140,11 +141,13 @@ Security caveat: start read-only on every OAuth scope. Always.
 Full breakdown of all 10 servers + the threat model most lists bury → link in bio.
 
 #MCPServers #AIDevTools #ClaudeCode #CursorAI #DeveloperTools #AgenticIDE #GitHubMCP #PlaywrightMCP #RemoteMCP #DevProductivity #SoftwareDevelopment #AITools2026
+END
 ```
 
 ### LinkedIn Video
 
-```
+```text
+START
 Most MCP server lists are already stale.
 
 Here's what changed in 2026: remote MCP went from experiment to vendor-backed developer infrastructure. VS Code 1.101+ connects to remote endpoints with a single OAuth flow — no personal access tokens in plaintext JSON config files, no .gitignore workarounds.
@@ -154,7 +157,7 @@ For a team of 5 using 3 MCP-connected services, that shift goes from 60 individu
 The three servers worth your attention first:
 
 1. GitHub MCP (v1.1.0, first-party) — summarise PRs, search issues, trigger workflow runs from your agentic IDE
-2. Playwright MCP (Microsoft, first-party) — describe a UI bug, get a screenshot + Playwright test in under 5 minutes instead of 40
+2. Playwright MCP (Microsoft, first-party) — describe a UI bug, get a screenshot + Playwright test in under 5 minutes instead of 20–40
 3. Context7 — live doc grounding so your agent stops hallucinating outdated API signatures
 
 One non-negotiable: start every remote server on read-only OAuth scopes. Prompt injection is real — an attacker can embed tool instructions in a GitHub issue or database row your agent reads. Approval flows before any write action are mandatory, not optional.
@@ -164,6 +167,7 @@ Full guide — 10 servers ranked on a defensible rubric (not GitHub stars), thre
 What's the daily developer loop you'd most want to hand off to an agent? Let me know below.
 
 #MCPServers #DeveloperTools #AIEngineering #AgenticIDE #RemoteMCP #GitHubMCP #PlaywrightMCP #Context7 #DevProductivity #SoftwareDevelopment #AITools #ClaudeCode #CursorAI
+END
 ```
 
 ---
