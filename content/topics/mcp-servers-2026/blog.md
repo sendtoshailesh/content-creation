@@ -273,6 +273,8 @@ Context7 keeps your library docs current. Supabase MCP makes your database query
 
 ## Build It Yourself: 3 Projects to Try This Week
 
+[VISUAL: Project ladder infographic — three-rung build path (Beginner: repo-aware assistant -> Intermediate: browser bug reproduction loop -> Advanced: remote OAuth least-privilege stack), each rung showing goal, success signal, and time estimate.]
+
 ### Project 1 (Beginner): Repo-Aware Assistant
 
 **Goal:** Give your AI assistant read access to your local project files and git history so it can answer context-specific questions without you pasting code into chat.

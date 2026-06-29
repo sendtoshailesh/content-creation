@@ -12,7 +12,7 @@
 | **Topic slug** | `mcp-servers-2026` |
 | **Output path** | `content/topics/mcp-servers-2026/` |
 | **Started** | 2026-06-28 |
-| **Current Step** | Step 3c (2026-06-28) — blog + reel drafted in topic workspace; optional review/publishing steps remain |
+| **Current Step** | Step 3b (2026-06-29) — visual opportunity map created for topic workspace (`visual-opportunity-map.md`); blog markers refreshed; visual rendering handoff ready |
 | **Series** | `no` |
 
 ### Step Checklist
