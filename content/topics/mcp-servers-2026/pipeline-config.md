@@ -12,7 +12,7 @@
 | **Topic slug** | `mcp-servers-2026` |
 | **Output path** | `content/topics/mcp-servers-2026/` |
 | **Started** | 2026-06-28 |
-| **Current Step** | Step 3b (2026-06-29) — visual opportunity map created for topic workspace (`visual-opportunity-map.md`); blog markers refreshed; visual rendering handoff ready |
+| **Current Step** | Step 3b complete (2026-06-29) — all 7 visual assets rendered and QA-passed |
 | **Series** | `no` |
 
 ### Step Checklist
@@ -21,7 +21,7 @@
 - [x] Steps 1-2: Creative brief + strategy + outline
 - [x] Step 1b: Content research map
 - [x] Step 3: Blog post
-- [ ] Step 3b: Visual assets
+- [x] Step 3b: Visual assets
 - [ ] Step 3c: Quality review
 - [ ] Step 3d: SEO optimization
 - [ ] Step 4: LinkedIn post

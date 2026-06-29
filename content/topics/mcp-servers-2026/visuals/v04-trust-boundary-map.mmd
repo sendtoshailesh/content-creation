@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph LOCAL["LOCAL SERVERS — Filesystem / Git / Memory"]
+        direction TB
+        AG1[Agent] -->|tool call| LS[Local Process]
+        LS -->|file read/write| FS2["Filesystem<br/>roots: project dir only"]
+        LS -->|git ops| GIT2["Git Repo<br/>approval before commit"]
+        PI1(["THREAT: Prompt Injection<br/>in files/code comments"]) -.->|mitigate: approval flow| LS
+        FO(["THREAT: File Overreach<br/>broad roots"]) -.->|mitigate: narrow roots| FS2
+    end
+    subgraph REMOTE["REMOTE SERVERS — GitHub / Supabase / Cloudflare"]
+        direction TB
+        AG2[Agent] -->|tool call| NET[Network Hop]
+        NET -->|OAuth token| VENDOR[Vendor API]
+        PI2(["THREAT: Prompt Injection<br/>via fetched content"]) -.->|mitigate: approval flow| NET
+        SSRF(["THREAT: SSRF<br/>Fetch to internal IPs"]) -.->|mitigate: network-level controls| NET
+        TL(["THREAT: Token Leakage<br/>shared chat logs"]) -.->|mitigate: scope minimum| VENDOR
+    end
+    SHIELD1(["CONTROL: Least-privilege scopes<br/>read-only defaults"]) --> LOCAL
+    SHIELD2(["CONTROL: ToolAnnotations<br/>destructive flag review"]) --> REMOTE

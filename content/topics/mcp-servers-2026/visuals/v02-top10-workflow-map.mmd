@@ -1,0 +1,23 @@
+flowchart LR
+    subgraph Repo["Repo Work"]
+        FS["MCP Filesystem<br/>local"]
+        GIT["MCP Git<br/>local"]
+        GH["GitHub MCP<br/>remote OAuth"]
+        FS --> GIT --> GH
+    end
+    subgraph Browser["Browser and Debug"]
+        PW["Playwright MCP<br/>local"]
+        FT["MCP Fetch<br/>local"]
+        PW --> FT
+    end
+    subgraph Docs["Docs and Database"]
+        C7["Context7<br/>remote"]
+        SB["Supabase MCP<br/>remote OAuth"]
+        MEM["MCP Memory<br/>local"]
+        C7 --> SB --> MEM
+    end
+    DEV(["Developer<br/>Daily Loop"]) --> Repo
+    DEV --> Browser
+    DEV --> Docs
+    CF["Cloudflare Suite<br/>remote OAuth"] -. "If on CF platform" .-> Repo
+    SEQ["Sequential Thinking<br/>local"] -. "Pipeline workflows" .-> Docs
