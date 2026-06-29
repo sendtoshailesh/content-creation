@@ -1,88 +1,99 @@
 ---
-title: Reference Brief — From Prompts to Loop Engineering (re-grounded, relevance-ranked)
-description: Relevance-ranked source brief for the loop-engineering run. Sources are ordered by how authoritative they are for each claim, regardless of publisher; all vendors and independent writers are treated equally.
+title: Reference Brief — Postgres Ate the Database Market ("Just Use Postgres" thesis)
+description: Relevance-ranked, fetch-verified source brief for the DB-1 run. Sources are ranked by how authoritatively each one supports the specific claim it grounds — not by publisher. All vendors and independent writers are treated equally.
 author: Shailesh Mishra
-ms.date: 2026-06-24
+ms.date: 2026-06-26
 ms.topic: reference
 ---
 
-# Reference Brief — re-grounded under relevance-first source ranking
+# Reference Brief — "Just Use Postgres" (consolidation case + four breakpoints)
 
-> **Why this brief was rebuilt (2026-06-24).** Sources are ranked by how directly and
-> authoritatively each one supports the specific claim it grounds — **not** by who published it.
-> For any load-bearing "here's what a harness/loop is" or "here's what I recommend" claim, the
-> first citation is the best **primary** source available (whoever built/ran/shipped the thing),
-> backed by independent **measurement** and expert **synthesis**. Microsoft, GitHub, Anthropic,
-> OpenAI, ThoughtWorks, independent maintainers, and researchers are all candidates on the same
-> footing. Every URL is verified by fetch before citing.
+> **Source ranking rule.** Every load-bearing number is cited to the best **primary** source
+> (whoever built/ran/shipped the thing), backed by independent **measurement** and expert
+> **synthesis**. PostgreSQL.org, GitHub project repos, AWS, ScyllaDB, ClickHouse, Vitess,
+> Stack Overflow, and DB-Engines are all candidates on the same footing. Every URL below was
+> fetched and verified on **2026-06-26**. Numbers tagged `[VOLATILE]` (GitHub stars, version
+> numbers, survey percentages, vendor benchmark claims) must be re-pulled by
+> `grounded-content-reviewer` before the blog is finalized.
+
+## A. The consolidation case — Postgres core + popularity (the STAR of the post)
+
+| Claim it grounds | Source (primary) | Verified detail | Tag |
+|---|---|---|---|
+| Postgres is the default database developers reach for | Stack Overflow 2024 Developer Survey — Databases | **PostgreSQL is the most-used database for the 2nd year running at 48.7%** (ahead of MySQL 40.3%, SQLite 33.1%, SQL Server 25.3%, MongoDB 24.8%, Redis 20%). Adoption climbed from **33% (2018) → 48.7% (2024)**. Also **most-admired DB at 47.1%** and **most-desired at 74.5%**. https://survey.stackoverflow.co/2024/technology | T1 measurement `[VOLATILE]` |
+| Postgres popularity is still rising, not plateauing | DB-Engines Ranking — Trend of PostgreSQL Popularity (June 2026 snapshot) | The trend chart shows a steady multi-year climb (2014→2026) on a logarithmic score scale; Postgres is the only top-tier conventional RDBMS still trending up. Cite qualitatively (the page is a chart, not a table). https://db-engines.com/en/ranking_trend/system/PostgreSQL | T2 measurement |
+| Postgres keeps absorbing serious engineering, fast | PostgreSQL 18 release announcement (2025-09-25) | **Async I/O (AIO) subsystem → up to 3× read throughput**; B-tree **skip scan**; **virtual generated columns**; **UUIDv7** (`uuidv7()`); **OAuth 2.0** auth; temporal constraints (`WITHOUT OVERLAPS`/`PERIOD`); checksums on by default. https://www.postgresql.org/about/news/postgresql-18-released-3142/ | T1 primary |
+| The project ships on a predictable cadence | PostgreSQL 19 Beta 1 announcement | **PostgreSQL 19 Beta 1 released 2026-06-04** — annual major-release cadence holds; 19 is in beta as of this run. (linked from the PG18 news page) | T1 primary `[VOLATILE]` |
+
+## B. The five extensions to feature (consolidation surface area)
+
+| Extension (workload it absorbs) | Source (primary repo/docs) | Verified detail | Tag |
+|---|---|---|---|
+| **pgvector** — vector / similarity search | github.com/pgvector/pgvector | **v0.8.3**, **~21.9k stars**; HNSW + IVFFlat indexes; exact + approximate ANN; half/binary/sparse vectors; up to **2,000 dims** indexed (16,000 via halfvec/binary quantization); **ACID + PITR + JOINs** (the whole point — vectors live next to your relational data); 32 TB non-partitioned table limit. https://github.com/pgvector/pgvector | T1 primary `[VOLATILE]` |
+| **TimescaleDB** — time-series / real-time analytics | github.com/timescale/timescaledb | **v2.28.1 (2026-06-23)**, **~23k stars**; hypertables (automatic time partitioning); **columnstore with 90%+ typical compression**; continuous aggregates (incremental materialized views); `time_bucket()`. https://github.com/timescale/timescaledb | T1 primary `[VOLATILE]` |
+| **pgmq** — message queue | github.com/pgmq/pgmq | **v1.11.1**, **~5k stars**; "like AWS SQS/RSMQ but on Postgres"; **exactly-once delivery within a visibility timeout**; FIFO + topic routing; no background worker/external deps; **used in production by Supabase and Tembo**; supported on PG 14–18. https://github.com/pgmq/pgmq | T1 primary `[VOLATILE]` |
+| **Full-text search** — search engine | PostgreSQL core docs (`tsvector`/`tsquery`, GIN) | Native FTS via `tsvector`/`tsquery` + GIN indexes; PG18 changed FTS to use the cluster default collation provider. Pairs with pgvector for **hybrid search** (BM25-style lexical + semantic, combined via Reciprocal Rank Fusion) — documented in the pgvector README. https://www.postgresql.org/docs/current/textsearch.html | T1 primary |
+| **JSONB** — document store | PostgreSQL core (built-in, not an extension) | `jsonb` binary document type with GIN indexing and rich operators — covers the "I need a document DB" case without leaving Postgres. (Core feature; cite core docs.) https://www.postgresql.org/docs/current/datatype-json.html | T1 primary |
+
+> **Framing note for the writer:** the load-bearing fact is not any single star count — it's that
+> **one ACID engine now has credible, production-grade answers for vectors, time-series, queues,
+> search, and documents simultaneously**, with one backup/replication/permissions story. That
+> consolidation (5 systems → 1) is the star of the post. Star counts are color, not the argument.
+
+## C. The four breakpoints — specialist ceilings (the honest caveat)
+
+> These are the credibility-building limits, NOT the focus. Each row is the concrete ceiling that
+> makes reaching for a specialist the right call. Vendor benchmark numbers are self-reported —
+> cite them as the vendor's own published claim, with the comparison named.
 >
-> The groupings below are organizational only (own work / docs / repos / writers) — they are not
-> a precedence order, and no publisher gets a structural head start.
+> **Azure-native managed options (equal footing).** Because the author works hands-on with Azure,
+> each breakpoint also names the Azure managed service a reader on Azure would reach for — presented
+> as *one cloud's option among equals* (AWS/GCP/self-hosted are equally valid), never as the default.
+> All Azure pages below were fetched and verified **2026-06-26**.
 
-## Author's own inspectable work (first-person "this is what I do")
+| Breakpoint | Specialist target(s) | Azure-native managed option (equal footing) | Source-verified ceiling that justifies leaving Postgres | Tag |
+|---|---|---|---|---|
+| **1. Extreme write throughput** | Cassandra / ScyllaDB | **Azure Managed Instance for Apache Cassandra** (fully managed pure open-source Cassandra on VM scale sets; supports Cassandra up to 5.0; hybrid on-prem/cloud rings) · **Azure Cosmos DB** (elastic high-throughput writes) | ScyllaDB's own published benchmark: **sustained 7.5 million inserts/sec at 4 ms P99** (vs Aerospike); claims **2×–5× better throughput than Apache Cassandra**. A single Postgres primary takes all writes through one node — this is the wall. https://www.scylladb.com/product/benchmarks/ · Azure: https://learn.microsoft.com/en-us/azure/managed-instance-apache-cassandra/introduction | T1 vendor-primary `[VOLATILE]` |
+| **2. Planet-scale horizontal sharding** | Spanner / CockroachDB / Vitess | **Azure Cosmos DB for NoSQL** (turnkey global distribution, horizontal partitioning, **multi-region writes with automatic failover, 99.999% SLA**) · **Azure Database for PostgreSQL — Elastic Clusters** (Citus-powered transparent horizontal scale-out that *stays Postgres*) | **Vitess served ALL of YouTube's database traffic for 5+ years** and runs in production at **Slack, Square, JD.com**; it exists specifically because **MySQL/Postgres lack native transparent sharding** — you bolt it on. Spanner/CockroachDB are built shard-native with global consistency. https://vitess.io/docs/overview/whatisvitess/ · Azure: https://learn.microsoft.com/en-us/azure/cosmos-db/introduction | T1 primary |
+| **3. Sub-millisecond key-value** | Redis / DynamoDB | **Azure Managed Redis** (in-memory, low-latency; the current successor to Azure Cache for Redis, which is on a retirement path) · **Azure Cosmos DB** (**single-digit-millisecond** response times at any scale) | DynamoDB: **single-digit-millisecond performance at any scale**, **½ million+ requests/sec for hundreds of customers**, **200 TB+ tables**, **99.999%** global-table availability. Redis serves from memory in the microsecond–low-ms band. Postgres + connection/transaction overhead can't reach that floor reliably. https://aws.amazon.com/dynamodb/ · Azure: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview | T1 vendor-primary `[VOLATILE]` |
+| **4. True OLAP at petabyte scale** | ClickHouse / Snowflake | **Azure Data Explorer (Kusto)** (fully managed big-data analytics: **ingest terabytes in minutes, query petabytes with results in ms–seconds, millions of events/sec**) · **Microsoft Fabric / Synapse Analytics** (lakehouse + warehouse) | ClickHouse (column-oriented OLAP): a documented query **processed 100 million rows in 92 ms ≈ 1 billion rows/sec, ~7 GB/sec per query**; analytics queries "routinely process billions and trillions of rows." Postgres is row-oriented OLTP — it can do analytics, but not at this scan rate/scale. https://clickhouse.com/docs/en/intro · Azure: https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview | T1 primary `[VOLATILE]` |
 
-| Source | What it proves | Tag |
-|---|---|---|
-| This content pipeline's review-gate loop (`agents-and-skills/`, this repo) — plan → draft → rubber-duck review → fix → re-review, with a deterministic preflight + tiered critic as sensors and an iteration cap as the stop condition | A working, inspectable loop the author runs daily; the post is itself a loop-engineering artifact | T1 own |
-| `github.com/sendtoshailesh` repos + contributions to `Azure/git-ape` (PRs, issues) | First-hand harness/loop building, not theory | T1 own |
+> **Azure verified details (fetched 2026-06-26):**
+> - **Azure Cosmos DB** — fully managed NoSQL + vector DB; *single-digit-millisecond* response times; turnkey global distribution & **multi-region writes (99.999% SLA) with automatic failover**; instant/elastic autoscale. Microsoft's own example: *"OpenAI relies on Cosmos DB to dynamically scale their ChatGPT service."* Microsoft explicitly positions it as a **poor fit for OLAP** (directs you to Microsoft Fabric) — useful supporting evidence for breakpoint 4. https://learn.microsoft.com/en-us/azure/cosmos-db/introduction
+> - **Azure Managed Instance for Apache Cassandra** — managed pure OSS Cassandra (up to 5.0) on VM scale sets; hybrid rings via ExpressRoute. https://learn.microsoft.com/en-us/azure/managed-instance-apache-cassandra/introduction
+> - **Azure Data Explorer (Kusto)** — ingest TB in minutes, query **petabytes** in ms–seconds, **millions of events/sec**, linear scale; a cluster holds up to 10,000 DBs. https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview
+> - **Azure Managed Redis / Azure Cache for Redis** — in-memory low-latency store; Microsoft now steers new work to **Azure Managed Redis** (Azure Cache for Redis is on a published retirement path). Cite the successor for any forward-looking recommendation. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview
+> - **Sharded Postgres on Azure** — **Azure Database for PostgreSQL Elastic Clusters** is the current Citus-powered horizontal-scale-out option; **Azure Cosmos DB for PostgreSQL is retiring** and should not be cited for new work. https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/introduction
 
-## Product & platform primary sources (docs/engineering blogs) — VERIFIED
-
-| Source | URL | What it grounds (verified) | Tag |
-|---|---|---|---|
-| **The Coding Harness Behind GitHub Copilot in VS Code** — Julia Kasper, Megan Rogge, Aaron Munger, May 15 2026 | https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode | **The spine.** Defines the **coding harness** = the bridge that turns model text into action (3 jobs: context assembly, tool exposure, tool execution). Defines the **agent loop** = "think → act → observe → think again." Vocabulary: **turn / round / run**. **Loop-control**: tool-call limit, cancellation checks, **stop hooks**. "**The harness is the product**" / "**the model is the engine, the harness is the car**." Per-model harness tuning (Claude → `replace_string_in_file`; GPT → `apply_patch`; Gemini needs tool-call reminders). **Evaluation**: VSC-Bench (40 runs, 8 model-effort configs; resolution rate vs token usage; xhigh past the effort sweet spot). Notes OpenAI **stopped reporting SWE-bench Verified**. | T2 Microsoft |
-| **Build with agents, conversations, and responses in Foundry Agent Service** (runtime components) — ms.date 2026-04-10 | https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components | The managed-service agent loop in production: **agent + conversation + response**; the model processes input + instructions, **calls tools**, appends items, you check status and retrieve. **Background mode** = poll `status` (queued/in_progress) until done = an explicit, bounded run loop. **Memory stores** carry state across turns. Tool-call item types (web_search_call, function_call, file_search_call). First-party proof that "the loop" is a real product primitive, not a metaphor. | T2 Microsoft |
-| **What is Microsoft Foundry Agent Service?** (overview) | https://learn.microsoft.com/en-us/azure/foundry/agents/overview | Defines agents as model + instructions + tools as a governed, versioned asset; the platform framing for "engineer the loop, not the prompt." | T2 Microsoft |
-| **Quickstart: Deploy your first hosted agent** | https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/quickstart-hosted-agent | The "Start from" for Project 2 (build a loop on Foundry). | T2 Microsoft |
-| **Foundry IQ: Build smarter agents faster with unified knowledge** — devblogs/foundry | https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/ | First-party signal that the platform is investing in the harness layer (knowledge/grounding around the model). | T2 Microsoft |
-
-> The two load-bearing T2 URLs (VS Code harness blog, Foundry runtime-components) were
-> fetched and verified on 2026-06-24 — quotes above are confirmed against the live pages.
-
-## Repos you can build from — VERIFIED
-
-| Source | URL | What it grounds (verified) | Tag |
-|---|---|---|---|
-| **Azure/git-ape** — "platform engineering framework for the agentic age," built on GitHub Copilot | https://github.com/Azure/git-ape | A real, public harness+loop: multi-agent **plan → generate → confirm/PR-review → deploy → post-deploy validation**, with **security + cost gates as sensors** and **CI/CD (git-ape-plan/deploy/destroy) via OIDC** as the bounded run. Headless mode = Copilot Coding Agent picks up an issue → branch → PR → validated deploy. 252 stars, MIT, v0.3.0. **Project 3 "Start from."** Author is a listed contributor. | T3 GitHub |
-| **microsoft/hve-core** — "Hypervelocity Engineering prompt library for GitHub Copilot" | https://github.com/microsoft/hve-core | RPI (Research → Plan → Implement) workflow with **validated artifacts + quality gates + a CI validation pipeline** = harness/loop discipline as a shipped library. 1.2k stars, MIT. This workspace runs on it. Advanced "Start from" alternative. | T3 GitHub |
-| **GitHub Copilot** (agent mode) | https://github.com/copilot | The everyday first-party loop the author uses (38 visits): the harness blog's loop, live in the editor. **Project 1 "Start from."** | T3 GitHub |
-| **github/awesome-copilot** | https://github.com/github/awesome-copilot | Community-curated Copilot instructions/agents/skills — corroborates the harness-as-library pattern. | T3 GitHub |
-
-## Independent measurement & expert synthesis
-
-| Source | URL | Role (supporting evidence) | Tag |
-|---|---|---|---|
-| Simon Willison — "Designing agentic loops" (Sep 2025) | https://simonwillison.net/2025/Sep/30/designing-agentic-loops/ | Corroborates the loop-design framing + "distinct new skill"; four levers. Echoes the VS Code harness blog's loop. | T4 public |
-| Simon Willison — "vibe engineering" (Oct 2025) | https://simonwillison.net/2025/Oct/7/vibe-engineering/ | Names the climb (vibe coding → engineering). | T4 public |
-| Birgitta Böckeler — "Harness Engineering — first thoughts" (Feb 2026) | https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html | Corroborates "harness = everything except the model" / "guides and sensors." The VS Code blog is the first-party version of the same idea. | T4 public |
-| Böckeler — "Context Engineering for Coding Agents" (Feb 2026) | https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html | Corroborates the context era. | T4 public |
-| Kief Morris — "Humans and Agents in Software Engineering Loops" (Mar 2026) | https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html | Corroborates outside/in/on the loop + "fix the artefact vs. fix the loop." | T4 public |
-| Anthropic — "Building Effective Agents" (Dec 2024) | https://www.anthropic.com/engineering/building-effective-agents | Corroborates evaluator-optimizer + stop condition. The Foundry runtime-components doc is the first-party managed equivalent. | T4 public |
-| Stripe autonomous coding agents (via InfoQ, Mar 2026) | https://www.infoq.com/news/2026/03/stripe-autonomous-coding-agents/ | Corroborating production-scale data point (1,300+ PRs/week, $1T+). Third-party — cite with date, re-pull before budget use. | T4 public |
-| SWE-bench Verified leaderboard | https://www.swebench.com/ | Corroborating benchmark trajectory (12.47% → 76.8%; $0.05–$0.96/task). **Note:** the VS Code harness blog itself flags benchmark limits and that OpenAI stopped reporting SWE-bench Verified — cite SWE-bench as a starting point, not proof. | T4 public |
-| CircleCI Chunk Sidecars (via InfoQ, Jun 2026) | https://www.infoq.com/news/2026/06/circleci-chunk-sidecars/ | Corroborates "validation is the bottleneck" + inner-loop validation. | T4 public |
-| InfoQ/Thoughtworks podcast — "From MCP and Vibe Coding to Harness Engineering" (Jun 2026) | https://www.infoq.com/podcasts/mcp-vibe-coding-harness-engineering/ | Corroborates the one-year arc; subsidy caveat. | T4 public |
-
-## Source Map (best source per load-bearing claim)
+## D. Source Map (best source per load-bearing claim)
 
 | Claim in the post | Best source | Backed by |
 |---|---|---|
-| What a **harness** is (everything around the model; context + tools + execution) | T2 VS Code harness blog ("the coding harness… 3 responsibilities") | Böckeler "everything except the model" (T4) |
-| What the **loop** is (think→act→observe→think again; turn/round/run) | T2 VS Code harness blog ("the agent loop") | Willison "runs tools in a loop" (T4) |
-| **Stop conditions / loop-control** (you must bound the run) | T2 VS Code harness blog (tool-call limit, cancellation, stop hooks) + T2 Foundry runtime-components (background-mode polling, capped iterations) | Anthropic "maximum number of iterations" (T4) |
-| **The harness — not the model — is the product** | T2 VS Code harness blog ("the harness is the product" / "engine vs. car"; per-model tuning) | — (this is the first-party thesis) |
-| **Validation/evaluation is the constraint** | T2 VS Code harness blog (VSC-Bench; "evaluation keeps the harness honest"; OpenAI dropped SWE-bench) | CircleCI inner-loop validation (T4); SWE-bench trajectory (T4) |
-| **The loop is a real product primitive** (not a metaphor) | T2 Foundry runtime-components (agent+conversation+response, tool calls, background runs, memory) | Anthropic evaluator-optimizer (T4) |
-| **Art of the possible at scale** (a production harness+loop you can read) | T3 Azure/git-ape (plan→validate→deploy with gates + CI/OIDC) | Stripe Minions (T4) |
-| **Build it yourself** (3 projects, equal tool options) | run a verify→correct loop in an agent (Copilot / Aider / Claude Code) → build the loop on a managed runtime (Foundry / Anthropic patterns) → platform-engineer with gates (git-ape / hve-core / mini-swe-agent) | — |
+| "Just use Postgres" is the default, and rising | SO 2024 survey (48.7%, 33%→48.7%) | DB-Engines rising trend |
+| Postgres keeps absorbing real engineering | PG18 release (async I/O 3×, skip scan, UUIDv7) | PG19 Beta cadence |
+| 5 systems → 1 (vectors/TS/queues/search/docs) | pgvector + TimescaleDB + pgmq repos + core FTS/JSONB docs | "who uses pgmq" (Supabase/Tembo) |
+| Breakpoint 1: write throughput wall | ScyllaDB benchmark (7.5M inserts/s) | single-primary write model of Postgres; Azure: Managed Instance for Apache Cassandra / Cosmos DB |
+| Breakpoint 2: sharding wall | Vitess (YouTube 5+ yrs) | Spanner/CockroachDB shard-native design; Azure: Cosmos DB for NoSQL / Azure Database for PostgreSQL Elastic Clusters (Citus) |
+| Breakpoint 3: sub-ms KV floor | DynamoDB (single-digit ms, ½M+ rps) | Redis in-memory latency; Azure: Azure Managed Redis / Cosmos DB (single-digit ms) |
+| Breakpoint 4: petabyte OLAP scan rate | ClickHouse (1B rows/s) | column vs row storage model; Azure: Azure Data Explorer (Kusto) / Microsoft Fabric |
 
-## Gaps / flags
+## E. Gaps / flags for grounded review
 
-- The VS Code harness blog is **April–May 2026** and is the best primary source for the harness +
-  loop definitions because its authors built that harness — cite it first for those points on
-  authority, not vendor. The independent writers (Willison, Böckeler, Morris) stay as synthesis.
-- SWE-bench numbers: the harness blog itself cautions against over-trusting SWE-bench
-  (contamination; OpenAI dropped it). Keep the trajectory as *illustration*, and ground the
-  "evaluation matters" point with VSC-Bench (and CircleCI's inner-loop validation) instead.
-- All "Tools (pick one)" repos for the practitioner projects are **verified live** (Azure/git-ape
-  252★, microsoft/hve-core 1.2k★, github.com/copilot, Aider, mini-swe-agent, Claude Cookbooks).
+- **Re-pull before finalizing:** all `[VOLATILE]` rows — GitHub stars (pgvector ~21.9k, Timescale
+  ~23k, pgmq ~5k), versions (pgvector 0.8.3, Timescale 2.28.1, pgmq 1.11.1, PG19 beta), SO survey
+  %, and the ScyllaDB/DynamoDB vendor benchmark claims. Vendor benchmarks are self-reported; cite
+  as "ScyllaDB's published benchmark" / "AWS's stated figures," never as neutral fact.
+- **DB-Engines** is a chart page — cite the *trend direction* qualitatively, do not invent a score.
+- **Spanner / CockroachDB / Snowflake / Redis / Cassandra**: covered qualitatively via the named
+  anchors (Vitess, DynamoDB, ClickHouse, ScyllaDB). If the draft makes a hard numeric claim about
+  Spanner, CockroachDB, Snowflake, or Redis specifically, add a first-party citation first.
+- **Azure-native options**: cited from official Microsoft Learn product pages (fetched 2026-06-26),
+  framed as one cloud's equal-footing option per breakpoint — never the default. Two retirement
+  caveats matter for forward-looking wording: **Azure Cache for Redis → Azure Managed Redis**, and
+  **Azure Cosmos DB for PostgreSQL → Azure Database for PostgreSQL Elastic Clusters (Citus)**. Cite
+  the successor service for any recommendation. Azure latency/throughput phrases ("single-digit
+  millisecond," "petabytes in ms–seconds," "millions of events/sec") are Microsoft's own stated
+  figures — attribute them as such, not as neutral fact, and re-pull before finalizing.
+- **The anecdote** (`[[ANECDOTE: Postgres-consolidation-win]]`) is the author's own first-person
+  evidence and is the strongest "primary source" for the consolidation thesis — but it is **not yet
+  provided**. It must be filled (sanitized) before the draft is finalized; do not fabricate it.

@@ -417,6 +417,87 @@ Last curated: 2026-06-19 (Feeds only — 92 articles from 7 live sources; 61 pub
 - **Scope hypothesis**: `single-post candidate`
 - **Status**: `queued`
 
+<!-- ───────── Database topic brainstorm (manual, 2026-06-26) — distinct from feed-sourced ideas above ───────── -->
+
+## Database Topic Ideas (manual brainstorm — 2026-06-26)
+
+> A focused, topical batch on databases. IDs are prefixed `DB-` to avoid colliding with the ranked feed queue. These are seed ideas — most need a research pass (`@trend-researcher` / `@reference-discovery`) to harden the data points before pipeline.
+> **Dedup note:** complements existing queued ideas [6] (pgvector vs pgvectorscale vs pgai), [14] (10 RAG mistakes), and [20] (PDF parsing for RAG). Those stay vector/RAG-scoped; this batch covers the broader database surface.
+
+### [DB-1] Postgres Ate the Database Market — The "Just Use Postgres" Thesis and Where It Breaks
+- **Score**: 22/25 (R:5 D:4 T:5 G:4 V:4)
+- **Subject areas**: Databases, Architecture, Solution Architecture
+- **Content angle**: "'Just use Postgres' went from a meme to a default. With extensions covering vectors (pgvector), time-series (Timescale), queues (pgmq), full-text, and JSON, Postgres now absorbs workloads that used to need 5 separate systems. Here's the consolidation case — and the four places where reaching for a specialist database is still the right call (extreme write throughput, planet-scale sharding, sub-ms KV, true OLAP at petabyte scale)."
+- **Key data points**: _(needs research — collect: Postgres extension ecosystem count, DB-Engines ranking trend, Postgres 18/19 feature deltas, concrete throughput ceilings vs Cassandra/ClickHouse/DynamoDB)_
+- **Timeliness**: Postgres 19 Beta 1 already noted in this queue (graph queries, faster inserts, pg_plan_advice); the "one database" consolidation narrative is peaking
+- **Scope hypothesis**: `single-post candidate` — strong opinion/architecture thesis
+- **Status**: `selected` — picked 2026-06-26; pipeline run started (`content/pipeline-config.md` Topic = DB-1). Previous run (Loop Engineering) archived to `archive/run-20260626-194922/`.
+
+### [DB-2] Vector Database vs Postgres+pgvector — A Build-vs-Buy Decision Framework for AI Retrieval
+- **Score**: 21/25 (R:5 D:4 T:5 G:4 V:3)
+- **Subject areas**: Databases, AI & LLM, Architecture
+- **Note**: ⚠️ Adjacent to [6] (which compares the three pg extensions). This idea is the **dedicated vector DB (Pinecone/Weaviate/Qdrant/Milvus) vs pg** decision, not an intra-Postgres comparison.
+- **Content angle**: "Every RAG project hits the same fork: bolt vectors onto the Postgres you already run, or adopt a purpose-built vector database. A practitioner's decision framework across the dimensions that actually decide it — recall@k at your scale, index build time, filtered search, hybrid (keyword+vector) quality, operational surface area, and cost per million vectors — with the crossover point where pgvector stops being enough."
+- **Key data points**: _(needs research — collect: HNSW vs IVFFlat vs DiskANN tradeoffs, pgvector recall/latency at 1M/10M/100M vectors, dedicated-DB filtered-search benchmarks, $/M vectors cloud pricing)_
+- **Timeliness**: RAG is the #1 production-LLM workload; this is the most-asked database question in AI teams right now
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [DB-3] Text-to-SQL in Production — Why the Demo Works and the Deployment Doesn't (Semantic Layers & Guardrails)
+- **Score**: 21/25 (R:5 D:4 T:5 G:4 V:3)
+- **Subject areas**: Databases, AI & LLM, Developer Productivity
+- **Content angle**: "Text-to-SQL demos nail 'top 10 customers by revenue' and then fall apart on a real warehouse with 400 tables, ambiguous column names, and business logic that lives in nobody's schema. The production fix isn't a bigger model — it's a semantic layer, retrieval over schema + example queries, read-only execution sandboxes, result validation, and a human gate on anything that writes. Here's the architecture that takes text-to-SQL from 60% to shippable."
+- **Key data points**: _(needs research — collect: Spider/BIRD benchmark accuracy vs real-schema accuracy gap, semantic-layer tools, schema-RAG patterns, cost of a wrong-but-confident query)_
+- **Timeliness**: Every BI/analytics vendor is shipping NL-query; the accuracy-in-the-wild gap is under-covered
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [DB-4] Database Branching & Ephemeral Environments — Copy-on-Write Postgres for CI, Previews, and Agents
+- **Score**: 20/25 (R:4 D:4 T:4 G:5 V:3)
+- **Subject areas**: Databases, DevOps & Platform Engineering, Developer Productivity
+- **Content angle**: "Branching your code is instant; branching your database has always meant a slow restore or a shared staging DB everyone steps on. Copy-on-write storage (Neon-style) flips that — a full production-shaped database in seconds, one per PR, one per CI run, one per AI agent. Here's how branchable databases change preview environments, migration testing, and how you give an autonomous agent a safe place to actually run its SQL."
+- **Key data points**: _(needs research — collect: CoW branch creation time vs pg_dump/restore, storage cost model, per-PR/per-CI patterns, agent-sandbox angle tie-in to this repo's eval work)_
+- **Timeliness**: Branchable Postgres is mainstreaming; the agent-sandbox angle connects to the queue's eval/containment themes
+- **Scope hypothesis**: `single-post candidate` — first-party hook: an agent eval harness needs disposable databases
+- **Status**: `queued`
+
+### [DB-5] The Lakehouse Table-Format Wars — Apache Iceberg, Delta, and the Open Catalog Endgame
+- **Score**: 19/25 (R:4 D:4 T:4 G:4 V:3)
+- **Subject areas**: Databases, Cloud & Infrastructure, Architecture
+- **Content angle**: "Object storage + an open table format quietly became the default analytics substrate. Iceberg won the format debate, every major vendor now reads it, and the real fight moved to the catalog (who owns the metadata). A practitioner's map of the lakehouse stack — table formats vs catalogs vs engines — and how to avoid locking your data into the one layer that's supposed to be open."
+- **Key data points**: _(needs research — collect: Iceberg vs Delta vs Hudi adoption, REST catalog spec, vendor Iceberg support matrix, cost vs cloud-DW comparison)_
+- **Timeliness**: Catalog interoperability and Iceberg-everywhere announcements are landing across vendors
+- **Scope hypothesis**: `possible series` — formats vs catalogs vs engines are natural parts
+- **Status**: `queued`
+
+### [DB-6] The SQLite Renaissance — When the Embedded Database Is the Right Server-Side Choice
+- **Score**: 18/25 (R:4 D:3 T:4 G:5 V:2)
+- **Subject areas**: Databases, Architecture, Developer Productivity
+- **Content angle**: "SQLite stopped being 'the database for tests.' Edge replicas, single-file app formats, per-tenant databases, and read-heavy services are running it in production — and the operational simplicity (no server, no connection pool, one file to back up) is the feature. Here's where server-side SQLite genuinely wins, where it absolutely doesn't (write concurrency, multi-writer), and the patterns (litestream/replicas/per-tenant) that make it safe."
+- **Key data points**: _(needs research — collect: WAL concurrency limits, edge-replica latency numbers, per-tenant DB patterns, durability/replication tooling)_
+- **Timeliness**: Edge + local-first momentum keeps SQLite-on-the-server in the conversation
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [DB-7] Zero-Downtime Schema Migrations at Scale — Online DDL, Expand/Contract, and Backfills That Don't Page You
+- **Score**: 18/25 (R:4 D:4 T:3 G:4 V:3)
+- **Subject areas**: Databases, DevOps & Platform Engineering, Architecture
+- **Content angle**: "A migration that locks a hot table for 30 seconds is an outage. The discipline that prevents it — expand/contract, lock-free index builds, batched backfills, dual-writes, and feature-flagged cutovers — is well understood and still routinely skipped. A practitioner's runbook for evolving a schema under live traffic, including the Postgres-specific lock traps (and why `ALTER TABLE ... ADD COLUMN ... DEFAULT` finally stopped being scary)."
+- **Key data points**: _(needs research — collect: lock levels per DDL operation, online-schema-change tooling, backfill batch-size math, real incident examples)_
+- **Timeliness**: Evergreen reliability topic; pairs with the queue's broader reliability/agent-safety themes
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [DB-8] AI-Assisted Database Operations — Index Advisors, Slow-Query Triage, and the Self-Tuning Database
+- **Score**: 18/25 (R:4 D:3 T:4 G:4 V:3)
+- **Subject areas**: Databases, AI & LLM, DevOps & Platform Engineering
+- **Note**: ⚠️ Postgres 19's `pg_plan_advice` (already cited in this queue) is a concrete hook for this idea.
+- **Content angle**: "Database tuning has always been expert-and-intuition work. Now plan-advice features, LLM-driven slow-query explainers, and automated index recommendations are moving it toward assisted (and partly autonomous) operations. Here's what's real today — where AI genuinely speeds up query diagnosis and index selection — and where 'self-tuning' is still marketing, plus the guardrails before you let anything touch production indexes."
+- **Key data points**: _(needs research — collect: pg_plan_advice capabilities, index-advisor accuracy, LLM EXPLAIN-analysis patterns, autonomous-tuning risk cases)_
+- **Timeliness**: Postgres 19 plan-advice + the broader "agents reach into infra" theme (queue idea [21]) make this current
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
 <!-- ───────── Fresh-article reinforcements (2026-06-15) — strengthen existing ideas, not new ───────── -->
 
 ### Reinforcements to Existing Ideas (2026-06-15 feeds)

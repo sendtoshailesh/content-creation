@@ -15,9 +15,14 @@
 | Towards Data Science (Medium) | https://towardsdatascience.com/feed | rss | daily | AI, ML, Data Science |
 | PostgreSQL weekly | https://postgresweekly.com/latest | newsletter-archive | weekly | Databases |
 | Simon Willison's Weblog | https://simonwillison.net/atom/everything/ | rss | daily | AI, LLM, DevTools |
-| The Pragmatic Engineer | https://newsletter.pragmaticengineer.com/ | newsletter-archive | weekly | Architecture, Engineering, Career |
 | TLDR AI | https://tldr.tech/ai | newsletter-archive | daily | AI, ML, LLM |
 | InfoQ | https://feed.infoq.com/ | rss | daily | Architecture, Cloud, DevOps |
+| Ahead of AI (Sebastian Raschka) | https://magazine.sebastianraschka.com/feed | rss | weekly | AI, LLM, Machine Learning |
+| Lilian Weng | https://lilianweng.github.io/index.xml | rss | monthly | AI, LLM, Machine Learning |
+| Latent Space | https://www.latent.space/feed | rss | weekly | AI, LLM, Engineering |
+| Martin Fowler | https://martinfowler.com/feed.atom | rss | weekly | Architecture, Engineering |
+| ByteByteGo (Alex Xu) | https://blog.bytebytego.com/feed | rss | weekly | Architecture, Solution Architecture |
+| Jepsen (Kyle Kingsbury) | https://aphyr.com/posts.atom | rss | monthly | Databases, Distributed Systems |
 
 ### Source Types
 
@@ -57,6 +62,7 @@
 | AI & LLM | artificial intelligence, large language model, LLM, GPT, Claude, Gemini, foundation model, prompt engineering, RAG, agentic AI, AI agent | 1 |
 | Machine Learning | machine learning, deep learning, neural network, training, fine-tuning, MLOps, model serving, inference | 2 |
 | Architecture | software architecture, system design, microservices, event-driven, distributed systems, scalability, design patterns | 1 |
+| Distributed Systems | distributed systems, consensus, consistency, CAP theorem, replication, partitioning, Raft, Paxos, fault tolerance, linearizability, Jepsen | 2 |
 | Solution Architecture | cloud architecture, reference architecture, well-architected, landing zone, migration, modernization | 1 |
 | Databases | PostgreSQL, database, SQL, NoSQL, Cosmos DB, query optimization, indexing, data modeling, replication | 2 |
 | Cloud & Infrastructure | Azure, AWS, GCP, Kubernetes, containers, serverless, IaC, Terraform, Bicep | 2 |
@@ -99,6 +105,5 @@
 | Towards Data Science (Medium) | 2026-06-19 | 20 | ok |
 | PostgreSQL weekly | 2026-06-19 | 6 | ok |
 | Simon Willison's Weblog | 2026-06-19 | 23 | ok |
-| The Pragmatic Engineer | 2026-06-19 | 0 | warn — empty (paywall/login required, persistent) |
 | TLDR AI | 2026-06-19 | 2 | ok |
 | InfoQ | 2026-06-19 | 15 | ok |
