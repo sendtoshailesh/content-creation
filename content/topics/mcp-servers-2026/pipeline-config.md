@@ -12,7 +12,7 @@
 | **Topic slug** | `mcp-servers-2026` |
 | **Output path** | `content/topics/mcp-servers-2026/` |
 | **Started** | 2026-06-28 |
-| **Current Step** | Step 3c complete (2026-06-29) — Tier 0 PASS (0 Errors, 3 Warnings), Tier 1 PASS after mechanical fixes |
+| **Current Step** | Step 3d complete (2026-06-29) — SEO PASS (0 Errors, 2 Warnings, 5 Info), frontmatter added, seo-report.md written |
 | **Series** | `no` |
 
 ### Step Checklist
@@ -23,7 +23,7 @@
 - [x] Step 3: Blog post
 - [x] Step 3b: Visual assets
 - [x] Step 3c: Quality review
-- [ ] Step 3d: SEO optimization
+- [x] Step 3d: SEO optimization
 - [ ] Step 4: LinkedIn post
 - [x] Step 6b: Reel/Short video
 - [ ] Step 7: Brand audit

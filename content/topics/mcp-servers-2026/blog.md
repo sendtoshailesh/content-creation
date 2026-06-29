@@ -1,3 +1,18 @@
+---
+seo:
+  title: "10 Best Free MCP Servers for Developers (2026)"
+  description: "Best free MCP servers ranked by workflow value, security posture, and real free-tier utility. Covers GitHub, Playwright, Filesystem, Supabase, and 6 more."
+  slug: "best-free-mcp-servers"
+  keywords:
+    primary: "best free MCP servers"
+    secondary:
+      - "MCP server list 2026"
+      - "remote MCP server setup"
+      - "model context protocol servers"
+      - "MCP server security"
+      - "free MCP servers for developers"
+---
+
 # 10 Best Free MCP Servers for Developers in 2026
 
 *Published: 2026-06-28 · ~3,000 words · First-person practitioner field guide*
