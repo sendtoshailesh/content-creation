@@ -100,10 +100,19 @@
 
 | Source | Last Fetched | Articles Found | Status |
 |--------|-------------|----------------|--------|
-| GitHub Blog | 2026-06-19 | 6 | ok |
-| Deeplearning AI Batch | 2026-06-19 | 20 | ok |
-| Towards Data Science (Medium) | 2026-06-19 | 20 | ok |
-| PostgreSQL weekly | 2026-06-19 | 6 | ok |
-| Simon Willison's Weblog | 2026-06-19 | 23 | ok |
-| TLDR AI | 2026-06-19 | 2 | ok |
-| InfoQ | 2026-06-19 | 15 | ok |
+| GitHub Blog | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Deeplearning AI Batch | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Towards Data Science (Medium) | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| PostgreSQL weekly | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Simon Willison's Weblog | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| TLDR AI | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| InfoQ | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Ahead of AI (Sebastian Raschka) | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Lilian Weng | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Latent Space | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Martin Fowler | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| ByteByteGo (Alex Xu) | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+| Jepsen (Kyle Kingsbury) | 2026-06-29 | 0 | error: DNS blocked in sandbox (web_search fallback used) |
+
+> **2026-06-29 note:** `python scripts/pipeline/feed_reader.py` could not resolve any source host (`No address associated with hostname`) — the execution sandbox blocks outbound DNS, so the script-based fetch path returned 0 articles for every source. This is an environment restriction, not a feed outage; the feeds themselves are presumed healthy. Curation for this run was completed via the skill's documented `web` fallback (web_search over the same sources/subject areas), producing ideas [28]–[32] in `content/idea-queue.md` with verifiable article URLs. Re-run the script path in a network-enabled environment to refresh true per-source article counts.
+

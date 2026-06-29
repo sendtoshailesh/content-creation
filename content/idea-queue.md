@@ -4,8 +4,10 @@
 >
 > **Feeds:** `@feed-curator` (blogs/RSS) · `@reading-list-curator` / `@apple-notes-curator` / `@social-saves-curator` (saved reading) · `post-run-reflection` skill (the pipeline's own completed runs — cut scope, open questions, unwritten parts, validated angles). All write the 25-point entry format below.
 
-Last curated: 2026-06-19 (Feeds only — 92 articles from 7 live sources; 61 published since the 06-15 run. 5 new ideas queued ([23]–[27]) + 7 existing ideas reinforced with fresh articles; total now 27)
+Last curated: 2026-06-29 (Feeds — ran via web_search fallback because the `feed_reader.py` script could not resolve any source host in the sandbox (DNS blocked). 5 new ideas queued ([28]–[32]) from real, recently-published articles across GitHub Blog, InfoQ, PostgreSQL Weekly, and Simon Willison; deduped against the existing 35. Total now 40.)
 
+> **Source health (2026-06-29 run):** ⚠️ `feed_reader.py` returned 0 articles — every source failed with `No address associated with hostname` (sandbox network restriction, not a feed outage). Curation was completed using the skill's documented `web` fallback (web_search), which surfaced dated June-2026 articles with verifiable URLs. Two ideas ([31], [32]) carry `verify-url` flags where search returned index pages rather than exact article slugs — resolve those during reference discovery before pipeline.
+>
 > **Source health (2026-06-19 run):** GitHub Blog ✅ 6 · DeepLearning.AI Batch ✅ 20 · Towards Data Science ✅ 20 · Simon Willison ✅ 23 · InfoQ ✅ 15 · PostgreSQL Weekly ✅ 6 · TLDR AI ✅ 2 · The Pragmatic Engineer ⚠️ empty (paywall/login — persistent). 7 of 8 sources live.
 >
 > **Previous (2026-06-15 run):** GitHub Blog ✅ 8 · DeepLearning.AI Batch ✅ 20 · Towards Data Science ✅ 20 · Simon Willison ✅ 30 · InfoQ ✅ 15 (14 dated) · PostgreSQL Weekly ✅ 6 (recovered — issue #652 now parses; was nav-only on 06-09) · TLDR AI ✅ 2 · The Pragmatic Engineer ⚠️ empty (paywall/login — persistent). 7 of 8 sources live.
@@ -413,8 +415,77 @@ Last curated: 2026-06-19 (Feeds only — 92 articles from 7 live sources; 61 pub
   - [LLM Fallbacks Break Agent Pipelines](https://towardsdatascience.com/llm-fallbacks-break-agent-pipelines-i-built-the-missing-recovery-layer/) — concrete failure mode when structured output is not re-validated across a model swap (schema integrity → 0%)
 - **Content angle**: "JSON Mode, Function Calling, and Structured Outputs get used interchangeably and they shouldn't be. A practitioner's decision guide to the three structured-output mechanisms — what each actually guarantees, how schema enforcement differs, and why your fallback model can quietly hand you 'valid' output that breaks the next stage."
 - **Key data points**: 3 structured-output mechanisms compared (JSON Mode / Function Calling / Structured Outputs), schema-enforcement differences, fallback schema-integrity failure
-- **Timeliness**: Published 06-18; foundational/evergreen rather than breaking
+- **Status**: `queued`
+
+<!-- ───────── 2026-06-29 feed curation run (web_search fallback — script DNS-blocked) ───────── -->
+
+### [28] Harness Engineering Economics — Why the Orchestrator, Not the Model, Decides Your AI Coding Bill
+- **Score**: 22/25 (R:5 D:5 T:5 G:4 V:3)
+- **Subject areas**: AI & LLM, Developer Productivity, DevOps & Platform Engineering
+- **Source articles**:
+  - [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/) — isolates the *harness* contribution (same model, same task, same context) across 20+ LLM backends on SWE-bench, SWE-bench Pro, TerminalBench 2.0 and SkillsBench; the orchestrator, not the model, drives much of the cost/resolution delta
+  - [Getting more from each token: How Copilot improves context handling and model routing](https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/) — prompt caching (~94% cache-hit on Anthropic models, 24h retention on OpenAI), deferred "tool search" loading (10–18% token savings/session), and the HyDRA "Auto" router matching top resolution rate at ~1/3 the cost by only switching models at cache-stable boundaries
+- **Content angle**: "Everyone argues about which model is smartest. The bigger lever is the harness wrapped around it. Here's how prompt caching, deferred tool loading, and cache-aware model routing — not parameter count — actually move your token bill, with the benchmark methodology to prove harness impact in isolation."
+- **Key data points**: 20+ model backends benchmarked; ~94% cache-hit rate; 10–18% token savings from deferred tool loading; HyDRA router ≈3.3x cost reduction at parity SWE-bench resolution; output tokens billed at premium → concise-output prompting as a direct credit lever
+- **Timeliness**: Both posts are June 2026; lands squarely against usage-based billing changes that took effect June 2026 — high practitioner urgency
+- **Dedup note**: ⚠️ Complements [9] (FinOps for token-burning agents) and [11] (prompts → harness engineering). Distinct angle: *benchmark-backed harness vs. model economics + routing internals*, not workflow shift or general FinOps. Merge candidate with [9] if going broad.
+- **Scope hypothesis**: `single-post candidate` (possible 2-part if benchmark methodology + routing internals each get full treatment)
+- **Status**: `queued`
+
+### [29] Governing Shadow AI — Policy-as-Code and Declarative Guardrails for the AI Stack
+- **Score**: 20/25 (R:5 D:3 T:4 G:4 V:4)
+- **Subject areas**: Solution Architecture, AI & LLM, DevOps & Platform Engineering
+- **Source articles**:
+  - [Governing AI in the Cloud: a Practical Guide for Architects](https://www.infoq.com/articles/governing-ai-cloud-guide/) — shadow AI as a growing attack surface; a discovery → classification → IAM → automated-enforcement framework using CASBs/telemetry and Open Policy Agent (OPA) policy-as-code; part of InfoQ's "Securing the AI Stack" series
+  - [Architectural Governance at AI Speed](https://www.infoq.com/articles/architectural-governance-ai-speed/) — centralized human architecture review can't keep pace with GenAI velocity; encode *declarative architectural intent* via ADRs, OpenAPI and event modeling so compliance is machine-checkable
+  - [AI Is Moving up the Software Lifecycle: From Code Review to PRD](https://www.infoq.com/news/2026/06/ai-prd-code-review-governance/) — multi-agent segregation of duties (security / performance / correctness) to raise auditability and shrink blast radius
+- **Content angle**: "You can't review AI-generated architecture by hand anymore — there's too much of it, too fast. The answer isn't more gatekeepers; it's declarative, machine-checkable guardrails. A practitioner's blueprint for governing shadow AI with policy-as-code, ADR-as-contract, and segregation-of-duties across agents."
+- **Key data points**: discovery/classification/IAM/enforcement framework stages; OPA policy-as-code enforcement; ADRs + OpenAPI + event modeling as machine-enforceable intent; multi-agent role segregation for auditability
+- **Timeliness**: Lead article published 2026-06-15; rides the active "Securing the AI Stack" series and QCon AI 2026 Zero-Trust-agent programming
+- **Dedup note**: Distinct from [16] (Foundry runtime/governance — product-scoped) and [10] (sandboxing/prompt-injection — runtime defense). This is *architectural governance + policy-as-code*, vendor-neutral.
 - **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [30] Postgres 18 → 19 — The Performance Features That Change How You Tune (Skip Scan, Self-Join Elimination, REPACK)
+- **Score**: 18/25 (R:5 D:4 T:4 G:3 V:2)
+- **Subject areas**: Databases, Cloud & Infrastructure
+- **Source articles**:
+  - [Postgres Weekly (June 2026 issues)](https://postgresweekly.com/latest) — Postgres 18 performance work: **skip scan**, **self-join elimination**, smarter autovacuum defaults; Postgres 19 preview: **REPACK**, partitioning improvements, **logical replication of sequences**, `GROUP BY ALL`; plus how `pg_stats` shapes planner decisions and query-hint support landing in 19
+- **Content angle**: "Two Postgres releases quietly rewrote the tuning playbook. Skip scan kills a whole class of composite-index workarounds, self-join elimination changes how you write views, and REPACK finally makes bloat reclamation safe online. A version-by-version field guide to what to stop doing and what to adopt."
+- **Key data points**: skip scan, self-join elimination, autovacuum default changes (PG18); REPACK, logical replication of sequences, `GROUP BY ALL`, query hints (PG19); planner behavior driven by `pg_stats`
+- **Timeliness**: Tied to the PG19 preview cycle now circulating in June 2026; evergreen-leaning once GA
+- **Dedup note**: Complements DB-1 ("Just Use Postgres" thesis) and DB-7 (zero-downtime migrations) without overlapping — this is *release-feature + planner-tuning* scoped.
+- **Caveat**: ⚠️ Single aggregator source (Postgres Weekly); harden each feature claim against the official PG18/19 release notes during reference discovery before pipeline.
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [31] Human-Agent-in-the-Loop — Redesigning Oversight When the Agent Is Driving
+- **Score**: 18/25 (R:4 D:2 T:5 G:4 V:3)
+- **Subject areas**: AI & LLM, Developer Productivity, Architecture
+- **Source articles**:
+  - Simon Willison — "Human Agent in the Loop" (2026-06-28), [simonwillison.net](https://simonwillison.net/) `verify-url` — reframes the tired "human in the loop" toward human-*driven* agentic software development: the human sets direction and reviews, the agent does the volume
+  - [AI Is Moving up the Software Lifecycle: From Code Review to PRD](https://www.infoq.com/news/2026/06/ai-prd-code-review-governance/) — segregation of duties across agents to keep humans able to audit and control blast radius
+  - [QCon AI Boston program — engineering of trustworthy agents](https://www.infoq.com/news/2026/03/qconai-boston-2026-talks/) — Zero-Trust agent systems, explainability, and audit trails as first-class oversight mechanisms
+- **Content angle**: "'Human in the loop' has quietly inverted. When agents generate most of the work, oversight isn't a checkbox between steps — it's an interface-design problem. How to build review surfaces, audit trails, and trust boundaries for a workflow where the human steers and the agent drives."
+- **Key data points**: human-driven vs. human-gated framing; multi-agent segregation of duties; Zero-Trust agent oversight, explainability and audit-trail patterns
+- **Timeliness**: Anchor post published 2026-06-28 — very fresh
+- **Caveat**: ⚠️ Resolve the exact Simon Willison post slug (`verify-url`) — search surfaced the homepage, not the permalink.
+- **Scope hypothesis**: `single-post candidate`
+- **Status**: `queued`
+
+### [32] How Hyperscalers Re-Architected for Scale in 2026 — Five Production Case Studies
+- **Score**: 18/25 (R:4 D:4 T:3 G:3 V:4)
+- **Subject areas**: Architecture, Distributed Systems
+- **Source articles** (all InfoQ engineering case studies, June 2026):
+  - "How Netflix Maps Thousands of Microservices in Real-Time" — [infoq.com/microservices](https://www.infoq.com/microservices/articles/) `verify-url` — real-time service-graph mapping at scale
+  - "30+ Updates per Second per Account: Uber Scales Ledger Processing with Batching" — [infoq.com/news](https://www.infoq.com/news/) `verify-url` — batching for high-write financial ledgers
+  - "Shopify Reports 15X Faster GraphQL Execution with Breadth-First Engine" — [infoq.com/news](https://www.infoq.com/news/) `verify-url` — query-execution engine redesign
+  - "Pinterest Uses Content Fingerprints for URL Deduplication across Millions of Domains" — [infoq.com/news](https://www.infoq.com/news/) `verify-url` — dedup at web scale
+- **Content angle**: "Four hyperscalers, four very different scaling walls, one pattern: in 2026 the wins came from re-architecting the execution layer, not adding hardware. A teardown of Netflix's real-time service graph, Uber's batched ledger, Shopify's breadth-first GraphQL engine, and Pinterest's content fingerprints — and the transferable lesson in each."
+- **Key data points**: 30+ ledger updates/sec/account (Uber); 15X GraphQL execution speedup (Shopify); real-time microservice mapping (Netflix); content-fingerprint dedup across millions of domains (Pinterest)
+- **Timeliness**: All surfaced in the June 2026 InfoQ cycle; case-study format is fairly evergreen
+- **Caveat**: ⚠️ All four need exact permalinks resolved (`verify-url`) — search returned InfoQ index pages, not article slugs. Confirm each metric against the source article before pipeline; drop any that don't verify.
+- **Scope hypothesis**: `possible series` (each case study is a natural part; let formal scope assessment decide)
 - **Status**: `queued`
 
 <!-- ───────── Database topic brainstorm (manual, 2026-06-26) — distinct from feed-sourced ideas above ───────── -->
