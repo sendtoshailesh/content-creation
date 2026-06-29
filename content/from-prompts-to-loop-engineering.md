@@ -1,8 +1,9 @@
 ---
 seo:
-  title: "Loop Engineering: The AI-Native Development Shift"
-  description: "Prompt, context, harness, loop engineering: the four-era arc of AI-native development, and why in 2026 the unit of work you own is the iteration loop."
+  title: "Loop Engineering: The AI-Native Development Workflow"
+  description: "Prompt, context, harness, loop engineering: the four-era arc of AI-native development, and why in 2026 the unit of work you own has moved to the iteration loop."
   slug: "loop-engineering-ai-native-development"
+  canonical: "https://sendtoshailesh.github.io/blog/loop-engineering-ai-native-development.html"
   keywords:
     primary: "loop engineering"
     secondary:
@@ -11,6 +12,7 @@ seo:
       - "agentic loops"
       - "context engineering"
       - "prompt engineering"
+      - "AI development workflow"
 ---
 
 # From Prompts to Loop Engineering: The Workflow Shift in AI-Native Development
