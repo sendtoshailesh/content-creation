@@ -215,32 +215,3 @@ fewer backups, fewer failovers, fewer invoices, a diagram you no longer need a m
 Adopt the rule and the burden of proof inverts in your favor: **default to Postgres, and make every
 exit justify itself with a number.** Tell me the consolidation call you made — and which wall, if
 any, actually forced your hand.
-
-## References
-
-| # | Claim | Source |
-|---|-------|--------|
-| 1 | Postgres most-used DB 48.7% (2nd yr); 33%→48.7% since 2018; 47.1% admired; 74.5% desired | [Stack Overflow 2024 Developer Survey](https://survey.stackoverflow.co/2024/technology) |
-| 2 | Postgres popularity trending up over a multi-year window | [DB-Engines trend](https://db-engines.com/en/ranking_trend/system/PostgreSQL) |
-| 3 | PG18 async I/O up to 3× read throughput; skip scan; UUIDv7; OAuth 2.0 | [PostgreSQL 18 release](https://www.postgresql.org/about/news/postgresql-18-released-3142/) |
-| 4 | pgvector — HNSW/IVFFlat ANN, ACID, JOINs, PITR | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
-| 5 | TimescaleDB — hypertables, 90%+ columnstore compression, continuous aggregates | [github.com/timescale/timescaledb](https://github.com/timescale/timescaledb) |
-| 6 | pgmq — exactly-once within visibility timeout; used by Supabase/Tembo | [github.com/pgmq/pgmq](https://github.com/pgmq/pgmq) |
-| 7 | Postgres full-text search (`tsvector` + GIN) | [PostgreSQL FTS docs](https://www.postgresql.org/docs/current/textsearch.html) |
-| 8 | Postgres `jsonb` document type + GIN indexing | [PostgreSQL JSON docs](https://www.postgresql.org/docs/current/datatype-json.html) |
-| 9 | pg_cron — in-database job scheduling | [github.com/citusdata/pg_cron](https://github.com/citusdata/pg_cron) |
-| 10 | ScyllaDB 7.5M inserts/s @ 4 ms P99; 2–5× Cassandra (vendor figures) | [ScyllaDB benchmarks](https://www.scylladb.com/product/benchmarks/) |
-| 11 | Vitess ran all of YouTube's DB traffic 5+ yrs; Slack/Square/JD.com | [vitess.io](https://vitess.io/docs/overview/whatisvitess/) |
-| 12 | DynamoDB single-digit ms, 500k+ req/s, 200 TB+, 99.999% (AWS figures) | [aws.amazon.com/dynamodb](https://aws.amazon.com/dynamodb/) |
-| 13 | ClickHouse ~1B rows/s (100M rows in 92 ms), ~7 GB/s | [clickhouse.com/docs](https://clickhouse.com/docs/en/intro) |
-| 14 | Azure Managed Instance for Apache Cassandra — Wall 1 managed option (one cloud among equals) | [Microsoft Learn](https://learn.microsoft.com/en-us/azure/managed-instance-apache-cassandra/introduction) |
-| 15 | Google Cloud Spanner — Wall 2 shard-native distributed SQL, global consistency | [cloud.google.com/spanner](https://cloud.google.com/spanner) |
-| 16 | Azure Database for PostgreSQL Elastic Clusters (Citus sharding) — Wall 2 stay-Postgres path | [Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/elastic-clusters/concepts-elastic-clusters) |
-| 17 | Azure Managed Redis (successor to Azure Cache for Redis) — Wall 3 managed option | [Microsoft Learn](https://learn.microsoft.com/en-us/azure/redis/overview) |
-| 18 | ClickHouse Cloud — Wall 4 managed column store | [clickhouse.com/cloud](https://clickhouse.com/cloud) |
-| 19 | Google BigQuery — Wall 4 serverless data warehouse | [cloud.google.com/bigquery](https://cloud.google.com/bigquery) |
-| 20 | Azure Data Explorer (Kusto) / Microsoft Fabric — Wall 4 petabyte OLAP | [Microsoft Learn](https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview) |
-
-> Figures marked vendor/self-reported (Stack Overflow survey %, GitHub stars, ScyllaDB and DynamoDB
-> benchmarks, ClickHouse throughput, and version numbers) are time-sensitive and were
-> re-verified against primary sources on 2026-06-28. Re-check before redistributing.
