@@ -52,9 +52,9 @@
       <p>Elasticsearch split into Postgres full-text search (<code>tsvector</code>) for lexical queries and
       <a href="https://github.com/pgvector/pgvector">pgvector</a> for semantic search. The message queue moved into
       a Postgres-native queue. The cron service became <code>pg_cron</code>. Redis's hot path folded back into the
-      database it was caching in the first place. Five systems became one. The cloud bill went down,
-      because we stopped paying for four managed services — and, quietly, the architecture diagram
-      stopped being something you needed a meeting to explain.</p>
+      database it was caching in the first place. Five systems became one. Four managed-service bills
+      disappeared, the datastore line on the cloud invoice fell with them, and — quietly — the
+      architecture diagram stopped being something you needed a meeting to explain.</p>
       <p>That pattern — repeated across enough customers that I now expect it — is what made me a believer.
       It also taught me exactly where the belief stops.</p>
       <h2>"Just use Postgres" stopped being a meme</h2>
@@ -115,6 +115,15 @@
       a category of incident you will never have, a sync pipeline you will never debug, and a vendor
       invoice you will never receive. That is the consolidation dividend, and after watching it pay off
       across team after team, it is why I tell customers to default to Postgres.</p>
+      <p><strong>"But isn't one Postgres just one big blast radius?"</strong> It is the first objection a good
+      architect raises, and the honest answer cuts the other way. Five systems are five failure domains — five
+      patch cadences, five security surfaces, five things that can page you at 2 a.m. Collapsing them shrinks the
+      <em>aggregate</em> surface where an incident can start; it does not enlarge it. And one <em>engine</em> is not
+      one <em>node</em>: a consolidated Postgres still runs a primary with streaming (or synchronous, for a low RPO)
+      replicas, automated failover, and isolation by schema and role — and you stand up a second instance the day a
+      workload genuinely earns one. The real cost is honest: consolidation concentrates the upgrade-and-maintenance
+      event. So you spend the dividend on doing high availability properly and rehearsing failover — the difference
+      being you now rehearse it <strong>once</strong>, not five times.</p>
       <h2>Where the belief stops: the four breakpoints</h2>
       <p>Believer, not zealot. There are four walls where I reach for a specialist on purpose — not because
       Postgres "failed," but because the workload genuinely lives outside what one ACID engine on one
@@ -126,34 +135,35 @@
       through one node. When sustained ingest is the whole game, that is the wall.
       <a href="https://www.scylladb.com/product/benchmarks/">ScyllaDB's published benchmark</a> claims a sustained
       <strong>7.5 million inserts/sec at 4 ms P99</strong> and <strong>2×–5× the throughput of Apache Cassandra</strong> (ScyllaDB's
-      own figures, against Aerospike). <em>If you are on Azure</em>, the equal-footing managed option is
+      own figures, against Aerospike). Every major cloud has a managed equivalent — ScyllaDB Cloud,
+      Amazon Keyspaces, Google Cloud Bigtable, or
       <a href="https://learn.microsoft.com/en-us/azure/managed-instance-apache-cassandra/introduction">Azure Managed Instance for Apache Cassandra</a>
-      or <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/introduction">Azure Cosmos DB</a> — one cloud's
-      options among equals alongside the open-source and AWS/GCP paths.</p>
+      — so this is a platform choice, not a winner.</p>
       <p><strong>2. Planet-scale horizontal sharding → Spanner / CockroachDB / Vitess.</strong> Postgres has no
       transparent native sharding; you bolt it on. <a href="https://vitess.io/docs/overview/whatisvitess/">Vitess</a>
       exists precisely because MySQL and Postgres lack it — and it served <strong>all of YouTube's database
       traffic for more than five years</strong>, and runs at Slack, Square, and JD.com. Spanner and CockroachDB
-      are built shard-native with global consistency from the ground up. <em>On Azure</em>, the equal options are
-      <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/introduction">Azure Cosmos DB for NoSQL</a>
-      (turnkey global distribution, multi-region writes, 99.999% SLA) or
-      <a href="https://learn.microsoft.com/en-us/azure/postgresql/elastic-clusters/concepts-elastic-clusters">Azure Database for PostgreSQL Elastic Clusters</a>,
-      the Citus-powered horizontal scale-out that lets you <em>stay</em> Postgres.</p>
+      are built shard-native with global consistency from the ground up. Managed paths exist on every
+      cloud — <a href="https://cloud.google.com/spanner">Google Cloud Spanner</a>, CockroachDB Cloud, PlanetScale
+      (managed Vitess), or, if you want to <em>stay</em> Postgres, the Citus-powered
+      <a href="https://learn.microsoft.com/en-us/azure/postgresql/elastic-clusters/concepts-elastic-clusters">Azure Database for PostgreSQL Elastic Clusters</a>.</p>
       <p><strong>3. Sub-millisecond key-value → Redis / DynamoDB.</strong> When you need a single-digit-millisecond floor
       under heavy concurrency, connection and transaction overhead make Postgres the wrong tool.
       <a href="https://aws.amazon.com/dynamodb/">DynamoDB</a> advertises single-digit-millisecond performance at any
       scale, 500,000+ requests/sec, 200 TB+ tables, and 99.999% availability (AWS's stated figures); Redis
-      serves from memory in the microsecond-to-low-millisecond band. <em>On Azure</em>, the equal options are
+      serves from memory in the microsecond-to-low-millisecond band. Managed equivalents exist on every
+      cloud — Amazon DynamoDB or ElastiCache, Google Cloud Memorystore, Redis Cloud, or
       <a href="https://learn.microsoft.com/en-us/azure/redis/overview">Azure Managed Redis</a>
-      (the current successor to Azure Cache for Redis) or Cosmos DB.</p>
+      (the successor to Azure Cache for Redis).</p>
       <p><strong>4. True OLAP at petabyte scale → ClickHouse / Snowflake.</strong> Postgres is a row-oriented OLTP engine.
       It can run analytics, but it cannot match a column store's scan rate.
       <a href="https://clickhouse.com/docs/en/intro">ClickHouse</a> documents a query processing <strong>100 million rows
       in 92 ms — roughly a billion rows/sec at about 7 GB/sec</strong> — and routinely scans billions to
-      trillions of rows. <em>On Azure</em>, the equal options are
-      <a href="https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview">Azure Data Explorer (Kusto)</a>
-      or Microsoft Fabric. (Tellingly, Microsoft's own Cosmos DB docs point you <em>away</em> from OLTP engines
-      and toward Fabric for petabyte analytics — the breakpoint is real across vendors.)</p>
+      trillions of rows. Managed column stores sit on every platform — <a href="https://clickhouse.com/cloud">ClickHouse Cloud</a>,
+      Snowflake, <a href="https://cloud.google.com/bigquery">Google BigQuery</a>, Amazon Redshift, or
+      <a href="https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview">Azure Data Explorer / Microsoft Fabric</a>.
+      Tellingly, even one vendor's own OLTP docs point you <em>away</em> from the transactional engine and toward
+      a column store for petabyte analytics — the breakpoint is real across vendors.</p>
       <p>These are legitimate, correct choices for their case. Knowing exactly where the wall is — with a
       number attached — is what makes "just use Postgres" a real engineering position instead of a slogan.</p>
       <h2>The decision rule</h2>
@@ -297,34 +307,44 @@
       </tr>
       <tr>
       <td>14</td>
-      <td>Azure Managed Instance for Apache Cassandra (managed OSS Cassandra)</td>
+      <td>Azure Managed Instance for Apache Cassandra — Wall 1 managed option (one cloud among equals)</td>
       <td><a href="https://learn.microsoft.com/en-us/azure/managed-instance-apache-cassandra/introduction">Microsoft Learn</a></td>
       </tr>
       <tr>
       <td>15</td>
-      <td>Azure Cosmos DB (global distribution, single-digit ms, 99.999%)</td>
-      <td><a href="https://learn.microsoft.com/en-us/azure/cosmos-db/introduction">Microsoft Learn</a></td>
+      <td>Google Cloud Spanner — Wall 2 shard-native distributed SQL, global consistency</td>
+      <td><a href="https://cloud.google.com/spanner">cloud.google.com/spanner</a></td>
       </tr>
       <tr>
       <td>16</td>
-      <td>Azure Database for PostgreSQL Elastic Clusters (Citus sharding)</td>
+      <td>Azure Database for PostgreSQL Elastic Clusters (Citus sharding) — Wall 2 stay-Postgres path</td>
       <td><a href="https://learn.microsoft.com/en-us/azure/postgresql/elastic-clusters/concepts-elastic-clusters">Microsoft Learn</a></td>
       </tr>
       <tr>
       <td>17</td>
-      <td>Azure Managed Redis (successor to Azure Cache for Redis)</td>
+      <td>Azure Managed Redis (successor to Azure Cache for Redis) — Wall 3 managed option</td>
       <td><a href="https://learn.microsoft.com/en-us/azure/redis/overview">Microsoft Learn</a></td>
       </tr>
       <tr>
       <td>18</td>
-      <td>Azure Data Explorer (Kusto) — petabyte OLAP, ms–sec queries</td>
+      <td>ClickHouse Cloud — Wall 4 managed column store</td>
+      <td><a href="https://clickhouse.com/cloud">clickhouse.com/cloud</a></td>
+      </tr>
+      <tr>
+      <td>19</td>
+      <td>Google BigQuery — Wall 4 serverless data warehouse</td>
+      <td><a href="https://cloud.google.com/bigquery">cloud.google.com/bigquery</a></td>
+      </tr>
+      <tr>
+      <td>20</td>
+      <td>Azure Data Explorer (Kusto) / Microsoft Fabric — Wall 4 petabyte OLAP</td>
       <td><a href="https://learn.microsoft.com/en-us/azure/data-explorer/data-explorer-overview">Microsoft Learn</a></td>
       </tr>
       </tbody>
       </table>
       <blockquote>
       <p>Figures marked vendor/self-reported (Stack Overflow survey %, GitHub stars, ScyllaDB and DynamoDB
-      benchmarks, version numbers, and Azure latency/throughput claims) are time-sensitive and were
+      benchmarks, ClickHouse throughput, and version numbers) are time-sensitive and were
       re-verified against primary sources on 2026-06-28. Re-check before redistributing.</p>
       </blockquote>
 
