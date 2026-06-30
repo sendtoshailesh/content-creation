@@ -11,9 +11,10 @@
 | Field | Value |
 |-------|-------|
 | **Status** | `in-progress` |
+| **Autonomous** | `auto` (off = never; on = always unattended; auto = unattended only on an `auto/*`, `autorun/*`, or `unattended/*` branch or when the prompt asks for it) |
 | **Topic** | Postgres Ate the Database Market — The "Just Use Postgres" Thesis and Where It Breaks (idea DB-1) |
 | **Started** | 2026-06-26 |
-| **Current Step** | Steps 1-3b complete: brief locked, anecdote provided, scope assessment = single post, blog draft written (`content/just-use-postgres.md`), four visuals rendered + visual-QA PASS (4/4). NEXT: quality review (Tier 0/REVR) then distribution (LinkedIn + Reel + Slide deck). |
+| **Current Step** | Blog **retitled** to "When Not to Use Postgres: A Decision Framework for the Four Walls Where One Engine Isn't Enough" (decision-maker hook; "engine" reinforces the consolidation thesis) — propagated to blog md, `docs/blog/just-use-postgres.html` (title/og/H1s), `docs/index.html` link, LinkedIn + Reel labels, strategy title-options, **deck title slide** (re-exported HTML/PDF/PPTX), and **carousel cover** (rebuilt PDF, "THE DECISION FRAMEWORK / When not to use Postgres"). Blog published locally to GitHub Pages (`docs/blog/just-use-postgres.html`, 4 visuals copied); canonical URL wired into LinkedIn first comment + Reel caption. LinkedIn carousel PDF built (`content/visuals/just-use-postgres-carousel.pdf`, 6pp). NEXT: social publishing (LinkedIn post + manual carousel document upload + Reel) — requires explicit human approval before posting. |
 | **Series** | `no` (single post — punchy ~1,800-word opinion piece per brief; formal scope assessment still pending at Step 2b) |
 | **Current Part** | n/a — single post |
 
@@ -33,17 +34,17 @@
 - [ ] Step 3d: SEO optimization
 - [ ] Step 4a: Social distribution strategy
 - [ ] Step 4a-visual: Visual-first asset pack
-- [ ] Step 4: LinkedIn post
+- [x] Step 4: LinkedIn post (`content/linkedin-post-just-use-postgres.md` — plain + Unicode, CTA = decision framework)
 - [ ] Step 4c: Social platform selection
 - [ ] Step 5: X/Twitter thread
-- [ ] Step 6b: Reel/Short video
-- [ ] Step 6c: Slide deck (HTML + PDF + PPTX)
-- [ ] Step 6d: LinkedIn carousel
+- [x] Step 6b: Reel/Short video (`content/reel-script-just-use-postgres.md` — 85s, CTA = decision audit)
+- [x] Step 6c: Slide deck (HTML + PDF + PPTX) (`content/deck/just-use-postgres-deck.*` — 10 slides, speaker notes embedded, CTA = decision framework)
+- [x] Step 6d: LinkedIn carousel (`content/visuals/just-use-postgres-carousel.pdf` — 6pp: cover + 4 visuals + CTA; manifest `just-use-postgres-carousel.manifest.json`; 2 SVGs rasterized to PNG; renderer `scripts/visuals/build_carousel.py`)
 - [ ] Step 7: Brand audit
 - [x] Step 7b: Grounded content review (PASS 2026-06-28 — ~20 data points verified; 2 citation links repointed to live Azure successor pages)
 - [ ] Step 8: YouTube script
 - [ ] Step 9: X/Twitter post
-- [ ] Step 10: Web publishing
+- [x] Step 10: Web publishing (`docs/blog/just-use-postgres.html` — canonical: https://sendtoshailesh.github.io/content-creation/blog/just-use-postgres.html)
 - [ ] Step 10b: Citation-link remediation
 - [ ] Step 11: Social publishing
 - [ ] Step 12: Medium/Substack distill

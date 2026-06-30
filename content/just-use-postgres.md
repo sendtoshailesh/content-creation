@@ -1,17 +1,18 @@
 ---
-title: 'Just Use Postgres — Until You Hit One of These Four Walls'
+title: 'When Not to Use Postgres: A Decision Framework for the Four Walls Where One Engine Isn''t Enough'
 description: One ACID engine now absorbs vectors, time-series, queues, search, and documents. Here is the consolidation case for defaulting to Postgres — and the four specific walls where I still reach for a specialist.
 author: Shailesh Mishra
 ms.date: 2026-06-26
 ms.topic: conceptual
 ---
 
-# Just Use Postgres — Until You Hit One of These Four Walls
+# When Not to Use Postgres: A Decision Framework for the Four Walls Where One Engine Isn't Enough
 
-A team I worked with was running five moving parts to serve one product: Postgres for the
-relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate message
-queue for background jobs, and a cron service to fire the scheduled work. Five datastores. Five
-backup stories. Five things to monitor, patch, secure, and get paged about at 2 a.m.
+Across years of working with customers, I've lost count of how many teams I've helped untangle the
+same knot. One sticks with me: a team running five moving parts to serve one product — Postgres for
+the relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate
+message queue for background jobs, and a cron service to fire the scheduled work. Five datastores.
+Five backup stories. Five things to monitor, patch, secure, and get paged about at 2 a.m.
 
 We collapsed all of it into one Postgres.
 
@@ -22,7 +23,8 @@ database it was caching in the first place. Five systems became one. The cloud b
 because we stopped paying for four managed services — and, quietly, the architecture diagram
 stopped being something you needed a meeting to explain.
 
-That experience made me a believer. It also taught me exactly where the belief stops.
+That pattern — repeated across enough customers that I now expect it — is what made me a believer.
+It also taught me exactly where the belief stops.
 
 ## "Just use Postgres" stopped being a meme
 
@@ -96,8 +98,8 @@ Now the part that actually matters to whoever owns the budget and the pager. Fiv
 not a tidiness win. It is **one backup to test, one failover to rehearse, one security model to
 audit, one on-call rotation, and one set of skills to hire for.** Every datastore you *don't* add is
 a category of incident you will never have, a sync pipeline you will never debug, and a vendor
-invoice you will never receive. That is the consolidation dividend, and it is why I default to
-Postgres.
+invoice you will never receive. That is the consolidation dividend, and after watching it pay off
+across team after team, it is why I tell customers to default to Postgres.
 
 ## Where the belief stops: the four breakpoints
 
@@ -160,72 +162,48 @@ hitting and put a number on it: the write rate, the shard count, the latency flo
 If you cannot name the wall with a number, you have not hit one — you have an itch to add a system.
 And every system you do not add is a backup, a failover, and an on-call rotation you do not run.
 
-## Build it yourself
+## A framework for deciding: default-to-Postgres, justify the exit
 
-The fastest way to internalize the consolidation thesis is to collapse one system yourself. Three
-projects, scaling up — each one grounded in a real, open-source extension you can run today.
+You do not need to run benchmarks to make this call — you need a decision rule your team applies
+every time someone proposes a new datastore. Here is the one I give the leaders I work with.
 
-### Project 1 (beginner) — Semantic search over your own docs with pgvector
+**Step 1 — Make Postgres the default of record.** Write it down: new workloads land on Postgres
+unless a named wall is proven. This flips the burden of proof. The question stops being "can Postgres
+do this?" and becomes "have we shown it *can't*?" That single policy kills most résumé-driven sprawl
+before it reaches your invoice.
 
-- **Goal:** Add semantic search to an existing Postgres table without standing up a vector database.
-- **Prerequisites:** Postgres 14+, the [pgvector](https://github.com/pgvector/pgvector) extension, and
-  any embedding model you can call (a local model or a hosted embeddings API).
-- **Steps:**
-  1. `CREATE EXTENSION vector;` and add an `embedding vector(N)` column to a table of text rows.
-  2. Backfill embeddings for each row with your model of choice.
-  3. Build an HNSW index: `CREATE INDEX ON docs USING hnsw (embedding vector_cosine_ops);`
-  4. Query the nearest neighbors of a new embedding with the `<=>` cosine-distance operator.
-- **Success signal:** A top-k similarity query returns ranked rows in **under 50 ms** on a
-  10k-row table, and the results are obviously more relevant than a `LIKE '%term%'` scan.
-- **Time:** ~1–2 hours.
-- **Stretch goal:** Add `tsvector` full-text search to the same table and fuse the two result sets
-  with Reciprocal Rank Fusion for true hybrid search — all in one query.
+**Step 2 — Demand a number, not a vibe.** Any proposal to add a specialist must name which wall it
+clears and the threshold that forces it:
 
-### Project 2 (intermediate) — Replace a Redis-backed job queue with pgmq + pg_cron
+| Wall | Specialist class | The number that justifies leaving Postgres |
+|------|------------------|--------------------------------------------|
+| Write throughput | Cassandra / ScyllaDB | Sustained ingest near **millions of inserts/sec**, single primary saturated |
+| Horizontal sharding | Spanner / Vitess / Citus | Data + write volume past one node, **transparent sharding** is the product |
+| Sub-ms key-value | Redis / DynamoDB | Hard **single-digit-ms** floor at **100k+ req/s** sustained |
+| OLAP scan | ClickHouse / Snowflake | **Billion-row** scans, column-store rates a row engine cannot match |
 
-- **Goal:** Run background jobs transactionally inside Postgres, with no broker and no cron service.
-- **Prerequisites:** Postgres 14+, the [pgmq](https://github.com/pgmq/pgmq) extension, and
-  [pg_cron](https://github.com/citusdata/pg_cron).
-- **Steps:**
-  1. `CREATE EXTENSION pgmq;` then `SELECT pgmq.create('jobs');`
-  2. In your application, enqueue work with `pgmq.send()` **inside the same transaction** that writes
-     the business row, so the job and the data commit or roll back together.
-  3. Write a consumer that reads with `pgmq.read()` (visibility timeout) and deletes on success.
-  4. Schedule the consumer with `pg_cron` so it runs on a fixed interval — no external scheduler.
-- **Success signal:** Force a failure between the data write and the enqueue; confirm that **neither**
-  is committed (the "saved-but-never-fired" bug is now structurally impossible).
-- **Time:** ~half a day.
-- **Stretch goal:** Add a dead-letter queue and a retry counter, and chart queue depth over time.
+If no one can fill in the right-hand column with a measured figure, the wall is hypothetical and the
+default holds.
 
-### Project 3 (advanced) — Collapse a three-service stack into one Postgres
+**Step 3 — Price the operational tax.** Every datastore you add is *one more* backup to test,
+failover to rehearse, security model to audit, on-call rotation to staff, and skill to hire for.
+Make that cost explicit in the decision: a specialist must beat Postgres by enough to pay for its own
+ops overhead, not just win on a benchmark slide.
 
-- **Goal:** Take a service that uses Postgres + a search engine + a time-series store and reduce it
-  to a single Postgres instance — the consolidation capstone.
-- **Prerequisites:** Postgres 14+, [pgvector](https://github.com/pgvector/pgvector),
-  [TimescaleDB](https://github.com/timescale/timescaledb), and a representative slice of real data.
-- **Steps:**
-  1. Move lexical + semantic search into Postgres (Project 1's hybrid query) and retire the search
-     engine.
-  2. Convert your metrics/events table into a TimescaleDB hypertable, enable the columnstore, and
-     define a continuous aggregate to replace the time-series store.
-  3. Point the application at one connection string. Delete the other two services from your infra
-     code.
-  4. Run your existing integration test suite against the consolidated stack.
-- **Success signal:** The full test suite passes against **one** datastore, search relevance is at
-  or above the old engine on a held-out query set, and your infra diff shows **two services removed**.
-- **Time:** ~2–4 days depending on data volume.
-- **Stretch goal:** Write a one-page before/after that quantifies the win — services removed, monthly
-  cost delta, and the number of backup/failover/on-call procedures eliminated.
+**Step 4 — Prove it cheaply before you buy.** Before greenlighting a new system, have the team spend
+a week consolidating one workload back into Postgres (vectors via pgvector, queues via pgmq,
+time-series via TimescaleDB) and measure the result. It is a small, low-risk spike that almost always
+shifts the conversation — and it is far cheaper than a migration you regret.
 
-## Before you add the sixth datastore
+## Your move before the sixth datastore appears
 
-Pick the smallest version of the consolidation and do it this week: add pgvector to a table you
-already own (Project 1) and feel how much simpler "next to the data" is than "synced from the data."
+Run a one-line audit on your current architecture: for every datastore beyond Postgres, can your team
+name the wall it clears and the number behind it? The ones that can't are consolidation candidates —
+fewer backups, fewer failovers, fewer invoices, a diagram you no longer need a meeting to explain.
 
-Then ask the only question that matters before adding any new system: **which of the four walls am I
-actually hitting, and what is the number?** If you can name it, specialize with confidence. If you
-cannot — just use Postgres. Tell me the consolidation (or specialization) call you made, and which
-wall forced your hand.
+Adopt the rule and the burden of proof inverts in your favor: **default to Postgres, and make every
+exit justify itself with a number.** Tell me the consolidation call you made — and which wall, if
+any, actually forced your hand.
 
 ## References
 

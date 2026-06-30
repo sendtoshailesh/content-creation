@@ -1,4 +1,4 @@
-## Reel Script: Just Use Postgres — Until You Hit One of These Four Walls
+## Reel Script: When Not to Use Postgres — A Decision Framework for the Four Walls
 
 **Duration**: 85 seconds
 **Format**: D (Hot Take) + consolidation demo
@@ -13,7 +13,7 @@
 | Time | Visual + Screen-Recording Cue | Voiceover | Text Overlay |
 |------|-------------------------------|-----------|--------------|
 | 0:00-0:04 | **Cold open** on a live `psql` prompt, cursor blinking. Type fast: `CREATE EXTENSION vector;` and hit enter -> `CREATE EXTENSION`. | "You probably don't need a vector database." | "You don't need a vector DB." |
-| 0:04-0:09 | Hard cut to full-screen title card: `content/visuals/db1-five-to-one-consolidation-hero.svg` (five boxes collapsing into one elephant). | "A team I worked with ran five datastores to serve one product. We collapsed it into one Postgres." | "5 datastores -> 1" |
+| 0:04-0:09 | Hard cut to full-screen title card: `content/visuals/db1-five-to-one-consolidation-hero.svg` (five boxes collapsing into one elephant). | "I've watched team after team run five datastores to serve one product — then collapse them into one Postgres." | "5 datastores -> 1" |
 | 0:09-0:20 | Stay on the hero card; light-up each tag as named: vector / queue / time-series / search / document. | "Vectors? pgvector. Queues? pgmq. Time-series? TimescaleDB. Search? Full-text. Documents? JSONB. One engine — one backup, one failover, one on-call." | "pgvector · pgmq · Timescale · FTS · JSONB" |
 | 0:20-0:30 | Back to `psql`. Run a similarity query: `SELECT id FROM docs ORDER BY embedding <=> $1 LIMIT 5;` -> results land instantly. Zoom on the `<=>` operator and the row times. | "Semantic search lives right next to your relational data. ACID, JOINs, point-in-time recovery — no second system to keep in sync." | "Similarity search, in your DB" |
 | 0:30-0:40 | `psql` again. Show an enqueue inside a transaction: `BEGIN;` -> `INSERT INTO orders ...;` -> `SELECT pgmq.send('jobs', ...);` -> `COMMIT;`. Zoom on `BEGIN`/`COMMIT` wrapping both. | "Your job and the data it touches commit in the same transaction. The 'row saved but the job never fired' bug? Structurally gone." | "Job + data, one transaction" |
@@ -24,7 +24,7 @@
 | 0:58-1:02 | Highlight card 4. | "Wall four: petabyte OLAP scans. ClickHouse-class — about a billion rows a second." | "~1B rows/sec scans" |
 | 1:02-1:08 | Quick note slate, neutral palette: logos/names side by side, none larger. | "These specialists are equals. Any one cloud's managed option is just one option among them — not the default." | "Specialists are equals" |
 | 1:08-1:18 | Closing card: `content/visuals/db1-decision-rule-strip.svg` full-screen. | "So here's the rule. Default to Postgres. When you hit a wall, name it with a number. If you can't name the number — you don't have the wall yet." | "Name the wall with a number." |
-| 1:18-1:25 | Split frame: decision strip shrinks, `psql` returns showing `CREATE EXTENSION vector;`. End card with handle + "full write-up linked." | "Want to feel it? Start with the pgvector semantic-search build — it's project one in the write-up, linked below. Follow for more." | "Build it: pgvector first. Link below." |
+| 1:18-1:25 | Split frame: decision strip holds, then end card with handle + "full decision framework linked." | "So run the audit on your own stack — for every datastore beyond Postgres, can your team name the wall and the number? Full framework's linked below. Follow for more." | "Name the wall, or consolidate. Link below." |
 
 ---
 
@@ -42,11 +42,11 @@
 
 ### Voiceover Script (Full)
 
-> You probably don't need a vector database. A team I worked with ran five datastores to serve one product — we collapsed it into one Postgres. Vectors? pgvector. Queues? pgmq. Time-series? TimescaleDB. Search? Full-text. Documents? JSONB. One engine — one backup, one failover, one on-call. Semantic search lives right next to your relational data: ACID, JOINs, point-in-time recovery — no second system to keep in sync. Your job and the data it touches commit in the same transaction. The "row saved but the job never fired" bug? Structurally gone.
+> You probably don't need a vector database. I've watched team after team run five datastores to serve one product — then collapse them into one Postgres. Vectors? pgvector. Queues? pgmq. Time-series? TimescaleDB. Search? Full-text. Documents? JSONB. One engine — one backup, one failover, one on-call. Semantic search lives right next to your relational data: ACID, JOINs, point-in-time recovery — no second system to keep in sync. Your job and the data it touches commit in the same transaction. The "row saved but the job never fired" bug? Structurally gone.
 >
 > So is Postgres always the answer? No. There are four walls — and each one has a number. Wall one: extreme writes. ScyllaDB-class — 7.5 million inserts a second at 4-millisecond P99. Wall two: planet-scale sharding. Vitess ran all of YouTube's database traffic for years. Wall three: single-digit-millisecond key-value. DynamoDB-class — 500k-plus requests a second, five nines. Wall four: petabyte OLAP scans. ClickHouse-class — about a billion rows a second. These specialists are equals. Any one cloud's managed option is just one option among them — not the default.
 >
-> So here's the rule. Default to Postgres. When you hit a wall, name it with a number. If you can't name the number — you don't have the wall yet. Want to feel it? Start with the pgvector semantic-search build — it's project one in the write-up, linked below. Follow for more.
+> So here's the rule. Default to Postgres. When you hit a wall, name it with a number. If you can't name the number — you don't have the wall yet. So run the audit on your own stack: for every datastore beyond Postgres, can your team name the wall and the number? Full framework's linked below. Follow for more.
 
 *Read length: ~83 seconds at a natural conversational pace. Trim the "five nines" aside if you run long.*
 
@@ -82,13 +82,13 @@ The honest caveat: 4 walls where you genuinely need a specialist — and each on
 → 500k+ req/s single-digit-ms KV (DynamoDB-class)
 → ~1B rows/sec scans (ClickHouse-class)
 
-The rule: name the wall with a number, or you don't have the wall yet. Build it yourself — start with pgvector. Full write-up linked. 🐘
+The rule: name the wall with a number, or you don't have the wall yet. Run the audit on your own stack — full decision framework linked. 🐘
 
 #PostgreSQL #Postgres #pgvector #DatabaseEngineering #BackendDevelopment #SoftwareArchitecture #DevOps #DataEngineering #VectorDatabase #BuildInPublic
 
 **LinkedIn Video:**
 
-A team I worked with ran five datastores to serve one product. We collapsed all of it into one Postgres — and the architecture diagram stopped needing a meeting to explain.
+Team after team I've worked with ran five datastores to serve one product — then collapsed them into one Postgres, and the architecture diagram stopped needing a meeting to explain.
 
 The consolidation case: default to Postgres for vectors (pgvector), queues (pgmq), time-series (TimescaleDB), search (full-text/tsvector), and documents (JSONB). One backup to test, one failover to rehearse, one on-call rotation.
 
@@ -102,6 +102,6 @@ These specialists are equals; any one cloud's managed option is one option among
 
 The decision rule: default to Postgres, and when you hit a wall, name it with a number. If you can't name the number, you don't have the wall yet.
 
-Start with the pgvector semantic-search build (Project 1 in the write-up). Full write-up linked in the comments. What consolidation — or specialization — call did you make, and which wall forced your hand?
+Run the audit: for every datastore beyond Postgres, can your team name the wall and the number? Full decision framework linked in the comments — https://sendtoshailesh.github.io/content-creation/blog/just-use-postgres.html. What consolidation — or specialization — call did you make, and which wall forced your hand?
 
 #PostgreSQL #DatabaseArchitecture #SoftwareEngineering #pgvector #DataEngineering #BackendDevelopment

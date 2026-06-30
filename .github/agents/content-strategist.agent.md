@@ -30,6 +30,12 @@ Before asking questions, check for reference material:
 
 ### Phase 1: Clarifying Questions (8-12 questions)
 
+> **Autonomous mode:** if the orchestrator's delegation says to skip the clarifying questions
+> (unattended / non-default-branch run), do **not** call the ask-questions tool. Infer every
+> answer below from the idea-queue entry, the topic, the reference brief, and the
+> `creative-brief` skill defaults, record the assumed answers in the brief, and go straight to
+> Phase 2.
+
 Ask targeted questions covering:
 1. **Topic scope**: What specific technical area? What's the angle/hook?
 2. **Audience**: IC engineers, tech leads, engineering managers, or executives?
@@ -138,7 +144,7 @@ Save strategy to `content/<topic>-strategy.md` with the brief, outline, scope as
 ## Constraints
 
 - DO NOT write the actual blog — only plan and outline
-- DO NOT skip the clarifying questions phase
+- DO NOT skip the clarifying questions phase _(exception: autonomous/unattended runs — infer answers from defaults instead of asking)_
 - DO NOT generate separate content per persona or per WAF pillar — dimensions inform structure only
 - ONLY produce strategy and outline artifacts
 - DO NOT change strategy/part count/title after downstream work exists without rolling pipeline status back first

@@ -16,17 +16,21 @@ social-ready carousel from the existing visual assets, with no new claims.
 
 ## When to use
 
+- **Auto-built with every LinkedIn post.** Whenever the pipeline generates a LinkedIn
+  post and the blog's visuals are finalized (REVR-passed), build the carousel as that
+  post's document-post attachment — it is the asset the post exists to carry. This is a
+  standing step (orchestrator Step 4b-carousel), not a user-opt-in.
 - **Only after** the blog (`content/<topic>.md`) and its visuals are finalized and
   every visual carries a PASS REVR record under `content/visuals/revr/`.
-- When the user asks for a single deck-like file / carousel to share on LinkedIn
-  (e.g. "consolidate all visuals as one story I can post").
+- Also runnable on demand when the user asks for a single deck-like file / carousel to
+  share on LinkedIn (e.g. "consolidate all visuals as one story I can post").
 
 ## Inputs (read, do not modify)
 
 | Input | Path | Use |
 |-------|------|-----|
 | Finalized blog | `content/<topic>.md` | Narrative order of visuals + alt text → captions |
-| Visuals | `content/visuals/*.png` | The slides; reuse as-is, never re-render here |
+| Visuals | `content/visuals/*.png` | The slides; reuse as-is, never re-render here. SVG visuals must be rasterized to PNG first (see Phase A0) — the renderer composites raster images via PIL. |
 | Canonical URL | `content/publishing-log.md` | CTA slide + first-comment link |
 | Creative brief | `content/creative-brief.md` | Title, subtitle, voice for cover + CTA |
 | Design tokens | `.github/copilot-instructions.md` | Palette + Helvetica Neue |
@@ -39,6 +43,19 @@ social-ready carousel from the existing visual assets, with no new claims.
 | `content/visuals/<topic>-carousel.pdf` | The carousel PDF for LinkedIn document upload |
 
 ## Procedure
+
+### Phase A0 — Rasterize any SVG visuals to PNG (only if needed)
+
+0. The renderer opens each slide image with PIL, so **SVG visuals cannot be used directly**.
+   Walk the finalized blog's image embeds; for every `![alt](visuals/<name>.svg)`, produce a
+   PNG sibling before curating the manifest:
+
+   ```bash
+   rsvg-convert -w 3200 --background-color=white content/visuals/<name>.svg -o content/visuals/<name>.png
+   ```
+
+   (`rsvg-convert` is preferred; `magick`/`inkscape`/`cairosvg` also work.) Reference the
+   `.png` name in the manifest. Blogs whose visuals are already all PNG skip this phase.
 
 ### Phase A — Curate the manifest (gate before render)
 

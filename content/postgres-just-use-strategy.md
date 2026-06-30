@@ -40,7 +40,8 @@ None. Single post. (If Step 2b scope assessment scores into series territory, re
 ## Outline (section-by-section, with target word budget)
 
 ### 0. Title / hook options (pick one in draft)
-- "Just Use Postgres — Until You Hit One of These Four Walls"
+- **"When Not to Use Postgres: A Decision Framework for the Four Walls Where One Engine Isn't Enough"** ← SELECTED (decision-maker hook; contrarian open, decision-framework spine)
+- "Just Use Postgres — Until You Hit One of These Four Walls" (original; conversational)
 - "Postgres Ate the Database Market. Here's the 10% It Can't Digest."
 - "I Stopped Adding Databases. You Probably Can Too."
 

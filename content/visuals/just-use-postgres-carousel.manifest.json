@@ -1,0 +1,34 @@
+{
+  "visuals_dir": "content/visuals",
+  "output": "content/visuals/just-use-postgres-carousel.pdf",
+  "handle": "Shailesh Mishra",
+  "title_lines": ["THE DECISION FRAMEWORK", "When not to use Postgres"],
+  "subtitle": "Default to Postgres, until you hit one of these four walls. Each one has a number.",
+  "tagline": "5 datastores -> 1 engine",
+  "cover_note": "A field-tested rule for architects and the leaders who choose the stack: default to Postgres, and make every exit justify itself with a number.",
+  "canonical": "https://sendtoshailesh.github.io/content-creation/blog/just-use-postgres.html",
+  "cta_headline": "Run the audit this week",
+  "cta_body": "For every datastore beyond Postgres, can your team name the wall it clears and the number? The ones that can't are consolidation candidates.",
+  "slides": [
+    {
+      "image": "db1-five-to-one-consolidation-hero.png",
+      "kicker": "5 -> 1",
+      "caption": "One team ran five datastores to serve one product. pgvector, pgmq, TimescaleDB, full-text, JSONB: it all collapses into one Postgres engine."
+    },
+    {
+      "image": "db1-one-engine-one-story-ops.png",
+      "kicker": "THE OPS DIVIDEND",
+      "caption": "Five backup stories and five things to patch and get paged about become one backup, one failover, one on-call. The cloud bill drops with them."
+    },
+    {
+      "image": "db1-four-breakpoints-panel.png",
+      "kicker": "THE FOUR WALLS",
+      "caption": "Postgres isn't always the answer. Four breakpoints justify a specialist, each named with a number, not a vibe."
+    },
+    {
+      "image": "db1-decision-rule-strip.png",
+      "kicker": "THE DECISION RULE",
+      "caption": "Default to Postgres. Hit a wall? Name it with a number. If you can't name the number, you don't have the wall yet."
+    }
+  ]
+}

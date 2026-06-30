@@ -70,11 +70,11 @@ section.lead::after { color: #b9c7e6; }
 
 <!-- _class: lead -->
 
-<span class="kicker">Database Architecture · 2026</span>
+<span class="kicker">Database Architecture · A decision framework · 2026</span>
 
-# Just Use Postgres
+# When Not to Use Postgres
 
-## Until you hit one of these four walls
+## A decision framework for the four walls where one engine isn't enough
 
 One ACID engine now absorbs vectors, time-series, queues, search, and documents. Here is the consolidation case for defaulting to Postgres — and the four specific walls where I still reach for a specialist.
 
@@ -88,7 +88,7 @@ One ACID engine now absorbs vectors, time-series, queues, search, and documents.
 
 # Five datastores, one product
 
-A team I worked with ran **five moving parts** to serve one product:
+Across years with customers, I've watched **team after team** hit the same knot. One ran **five moving parts** to serve a single product:
 
 - **Postgres** — the relational core
 - **Redis** — the hot path
@@ -183,17 +183,18 @@ One backup to test. One failover to rehearse. One security model to audit. One o
 
 ---
 
-<span class="kicker">Build it yourself · feel it, don't debate it</span>
+<span class="kicker">A framework for deciding · for the people who choose</span>
 
-# Three projects, scaling up
+# Default to Postgres, justify the exit
 
-- **Beginner — Semantic search with pgvector** *(~1–2 hrs)* — add an `embedding` column, build an HNSW index, query with `<=>`. Success: top-k in **under 50 ms** on 10k rows, obviously better than `LIKE`.
-- **Intermediate — pgmq + pg_cron job queue** *(~half a day)* — enqueue inside the business transaction; schedule the consumer in-database. Success: force a failure and confirm **neither the data nor the job commits**.
-- **Advanced — Collapse three services into one Postgres** *(~2–4 days)* — move search + time-series into Postgres, delete two services from your infra code. Success: full test suite passes on **one** datastore.
+- **Make Postgres the default of record** — new workloads land there unless a named wall is proven. The burden of proof flips to whoever wants a new system.
+- **Demand a number, not a vibe** — every proposal must name its wall and the threshold: write rate, shard count, latency floor, scan size.
+- **Price the operational tax** — a specialist must beat Postgres by enough to pay for its own backup, failover, security, and on-call overhead.
+- **Prove it cheaply** — spend a week consolidating one workload (pgvector / pgmq / TimescaleDB) and measure *before* you buy.
 
-<span class="muted">Pick the smallest one and do it this week — add pgvector to a table you already own.</span>
+<span class="muted">If no one can fill in the number, the wall is hypothetical — the default holds.</span>
 
-<!-- Topic: Art of the possible — Reading about consolidation builds zero instinct; deleting a service from your infra diff builds all of it, which is why the projects ladder from a one-afternoon pgvector index to the capstone where two services vanish from your Terraform; the tools are interchangeable on purpose — any embedding model, any Postgres host, AWS or GCP or Azure or your laptop — and the only homework I refuse to let anyone skip is starting project one before the next sprint planning. -->
+<!-- Topic: The decision framework — This is the slide the decision-makers actually take back to their next architecture review, because it converts a believer's war story into a policy they can enforce: default of record, a number or it doesn't ship, and an ops-tax line item so nobody adds a datastore on vibes; I keep the cheap one-week spike in because the fastest way to settle a "but we might need it" argument is to consolidate one workload and let the infra diff make the case for me. -->
 
 ---
 
@@ -205,8 +206,8 @@ One backup to test. One failover to rehearse. One security model to audit. One o
 
 Ask the only question that matters: **which of the four walls am I actually hitting, and what is the number?** If you can name it, specialize with confidence. If you can't — just use Postgres.
 
-**Start with Project 1 this week.** Then tell me the consolidation — or specialization — call you made, and which wall forced your hand.
+**Run the audit this week:** for every datastore beyond Postgres, can your team name the wall it clears and the number? The ones that can't are consolidation candidates. Then tell me the call you made — and which wall, if any, forced your hand.
 
-<span class="muted">Full consolidation case, the four breakpoints with their numbers, and all three build-it-yourself projects in the write-up.</span>
+<span class="muted">Full consolidation case, the four breakpoints with their numbers, and the default-to-Postgres decision framework in the write-up.</span>
 
 <!-- Topic: The close — I end on a question rather than a victory lap because the durable skill was never "love Postgres," it's "make every database a deliberate decision with a number attached"; the believer's case and the four walls are the same discipline pointed in opposite directions, and the stop condition for the whole talk is identical to the stop condition for the architecture — if you can't name the wall, you're done, just ship it on Postgres. -->

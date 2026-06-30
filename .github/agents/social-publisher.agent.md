@@ -133,6 +133,7 @@ it cannot be rationalized after the fact.
 ### LinkedIn (mcp-linkedin)
 - `dry_run` defaults to `true` — always previews first
 - For social posts (not Articles): text-only — do NOT attach images or media
+- **Carousel handoff:** if a consolidated carousel exists at `content/visuals/<topic>-carousel.pdf`, the MCP API cannot upload it as a document post. Surface it to the user as a **manual** step: New post → Add a document → upload the carousel PDF → put the hook in the body and the canonical URL in the FIRST comment within 60 seconds. Do not auto-post the carousel.
 - **Link suppression protection:** The canonical URL must appear at the END of the post body (after all substantive content). Never embed the URL mid-body or in the opening section. Alternative: post the URL as the FIRST comment immediately after publishing instead of in the body. Confirm with user which approach to use.
 - Auto-likes posts after publishing
 - Post URL format: `https://www.linkedin.com/feed/update/urn:li:activity:{post_id}/`

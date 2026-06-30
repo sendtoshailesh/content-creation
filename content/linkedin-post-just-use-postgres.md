@@ -1,4 +1,4 @@
-# LinkedIn Post — "Just Use Postgres — Until You Hit One of These Four Walls"
+# LinkedIn Post — "When Not to Use Postgres: A Decision Framework for the Four Walls Where One Engine Isn't Enough"
 
 **Source blog:** [content/just-use-postgres.md](just-use-postgres.md)
 **Canonical URL:** _(placeholder — replace with the GitHub Pages URL once published, then move it into the FIRST COMMENT)_
@@ -18,9 +18,9 @@
 
 That diagram shows five datastores becoming one. That actually happened.
 
-A team I worked with was running Postgres for the relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate message queue for background jobs, and a cron service for scheduled work. Five backup stories. Five things to monitor, patch, and get paged about at 2 a.m. We collapsed all of it into one Postgres — and the cloud bill went down, because we stopped paying for four managed services.
+Across years of working with customers, I've watched team after team hit the same knot. One sticks with me: Postgres for the relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate message queue for background jobs, and a cron service for scheduled work. Five backup stories. Five things to monitor, patch, and get paged about at 2 a.m. We collapsed all of it into one Postgres — and the cloud bill went down, because we stopped paying for four managed services.
 
-That experience made me a believer. It also taught me exactly where the belief stops.
+That pattern — repeated across enough customers that I now expect it — made me a believer. It also taught me exactly where the belief stops.
 
 "Just use Postgres" stopped being a meme and became the measured default:
 
@@ -48,9 +48,11 @@ Default to Postgres. When you hit a wall, name it with a number — write rate, 
 
 This default keeps getting stronger, not weaker. Postgres 18 shipped async I/O for up to 3× read throughput; 19 is already in beta. The engine is improving at exactly the workloads that used to push you off it.
 
-Want to feel it instead of debate it? The blog has three "build it yourself" projects, scaling up: semantic search with pgvector (1-2 hrs), a pgmq + pg_cron job queue with no broker (half a day), and the capstone — collapse a three-service stack into one Postgres. Start with project one this week.
+If you lead one of these teams, here's the rule I hand you. Make Postgres the default of record — new workloads land there unless a named wall is proven. Force every proposal for a new datastore to name its wall AND the number behind it. Price the operational tax — a specialist has to beat Postgres by enough to pay for its own backup, failover, and on-call overhead. And before you greenlight, spend a week proving the consolidation cheaply.
 
-Which of the four walls have you actually hit — and what was the number? Link to the full write-up and all three projects in the first comment.
+Run the one-line audit this week: for every datastore beyond Postgres, can your team name the wall it clears and the number? The ones that can't are consolidation candidates.
+
+Which of the four walls have you actually hit — and what was the number? Full write-up and the decision framework in the first comment.
 
 #PostgreSQL #Databases #SoftwareArchitecture #PlatformEngineering #DataEngineering
 
@@ -69,14 +71,12 @@ Which of the four walls have you actually hit — and what was the number? Link 
 
 𝗧𝗵𝗮𝘁 𝗱𝗶𝗮𝗴𝗿𝗮𝗺 𝘀𝗵𝗼𝘄𝘀 𝗳𝗶𝘃𝗲 𝗱𝗮𝘁𝗮𝘀𝘁𝗼𝗿𝗲𝘀 𝗯𝗲𝗰𝗼𝗺𝗶𝗻𝗴 𝗼𝗻𝗲. That actually happened.
 
-A team I worked with was running Postgres for the relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate message queue for background jobs, and a cron service for scheduled work. Five backup stories. Five things to monitor, patch, and get paged about at 2 a.m. We collapsed all of it into one Postgres — and the cloud bill went down, because we stopped paying for four managed services.
+Across years of working with customers, I've watched team after team hit the same knot. One sticks with me: Postgres for the relational core, a standalone Redis for the hot path, Elasticsearch for search, a separate message queue for background jobs, and a cron service for scheduled work. Five backup stories. Five things to monitor, patch, and get paged about at 2 a.m. We collapsed all of it into one Postgres — and the cloud bill went down, because we stopped paying for four managed services.
 
-That experience made me a 𝘣𝘦𝘭𝘪𝘦𝘷𝘦𝘳. It also taught me exactly where the belief stops.
+That pattern — repeated across enough customers that I now expect it — made me a 𝘣𝘦𝘭𝘪𝘦𝘷𝘦𝘳. It also taught me exactly where the belief stops.
 
 ▸ 𝗪𝗵𝘆 "𝗷𝘂𝘀𝘁 𝘂𝘀𝗲 𝗣𝗼𝘀𝘁𝗴𝗿𝗲𝘀" 𝗶𝘀 𝘁𝗵𝗲 𝗺𝗲𝗮𝘀𝘂𝗿𝗲𝗱 𝗱𝗲𝗳𝗮𝘂𝗹𝘁 📊
 
- • Most-used database two years running — 𝟰𝟴.𝟳%, up from 33% in 2018 (Stack Overflow 2024)
- • Most-admired (47.1%) 𝘢𝘯𝘥 most-desired (74.5%) — the one people use and want to use next
  • 𝗽𝗴𝘃𝗲𝗰𝘁𝗼𝗿 puts similarity search 𝘯𝘦𝘹𝘵 𝘵𝘰 your relational rows — ACID, JOINs, PITR, no second system to sync
  • 𝗽𝗴𝗺𝗾 commits the job and the data in the 𝘴𝘢𝘮𝘦 transaction — "row saved but the job never fired" becomes impossible
  • 𝗧𝗶𝗺𝗲𝘀𝗰𝗮𝗹𝗲𝗗𝗕 hypertables hit 90%+ compression for metrics and events
@@ -105,11 +105,17 @@ These are legitimate, correct choices — open-source, AWS, GCP, Azure, or self-
 
 Postgres 18 shipped async I/O for up to 3× read throughput; 19 is already in beta. The engine is improving at exactly the workloads that used to push you off it.
 
-▸ 𝗕𝘂𝗶𝗹𝗱 𝗶𝘁 𝘆𝗼𝘂𝗿𝘀𝗲𝗹𝗳 🔧
+▸ �𝗵𝗲 𝗳𝗿𝗮𝗺𝗲𝘄𝗼𝗿𝗸 𝗳𝗼𝗿 𝗱𝗲𝗰𝗶𝗱𝗶𝗻𝗴 🧭
 
-The blog has three 𝘣𝘶𝘪𝘭𝘥-𝘪𝘵-𝘺𝘰𝘶𝘳𝘴𝘦𝘭𝘧 projects, scaling up: semantic search with pgvector (1–2 hrs), a pgmq + pg_cron job queue with no broker (half a day), and the capstone — collapse a three-service stack into one Postgres. Start with project one this week.
+If you lead one of these teams, here's the rule I hand you:
+ • 𝗠𝗮𝗸𝗲 𝗣𝗼𝘀𝘁𝗴𝗿𝗲𝘀 𝘁𝗵𝗲 𝗱𝗲𝗳𝗮𝘂𝗹𝘁 𝗼𝗳 𝗿𝗲𝗰𝗼𝗿𝗱 — new workloads land there unless a named wall is proven.
+ • 𝗗𝗲𝗺𝗮𝗻𝗱 𝗮 𝗻𝘂𝗺𝗯𝗲𝗿 — every proposal for a new datastore must name its wall and the threshold behind it.
+ • 𝗣𝗿𝗶𝗰𝗲 𝘁𝗵𝗲 𝗼𝗽𝗲𝗿𝗮𝘁𝗶𝗼𝗻𝗮𝗹 𝘁𝗮𝘅 — a specialist must beat Postgres by enough to pay for its own backup, failover, and on-call overhead.
+ • 𝗣𝗿𝗼𝘃𝗲 𝗶𝘁 𝗰𝗵𝗲𝗮𝗽𝗹𝘆 — spend a week consolidating one workload before you buy.
 
-Which of the four walls have you actually hit — and what was the number? Full write-up and all three projects in the first comment. 👇
+Run the one-line audit this week: for every datastore beyond Postgres, can your team name the wall and the number? The ones that can't are consolidation candidates.
+
+Which of the four walls have you actually hit — and what was the number? Full write-up and the decision framework in the first comment. 👇
 
 #PostgreSQL #Databases #SoftwareArchitecture #PlatformEngineering #DataEngineering
 
@@ -122,7 +128,7 @@ Which of the four walls have you actually hit — and what was the number? Full 
 **FIRST COMMENT COPY**
 ═══════════════════════════════
 
-Full breakdown — the consolidation case, the four breakpoints with their numbers, and three build-it-yourself projects: [CANONICAL_URL_PLACEHOLDER]
+Full breakdown — the consolidation case, the four breakpoints with their numbers, and the default-to-Postgres decision framework: https://sendtoshailesh.github.io/content-creation/blog/just-use-postgres.html
 
 #PostgreSQL #PlatformEngineering
 
