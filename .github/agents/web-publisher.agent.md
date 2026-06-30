@@ -95,8 +95,21 @@ Edit `index.html` and **prepend** a new `.blog-card` anchor as the newest entry 
 Notes:
 - This grid uses `.blog-card` / `.blog-card-meta` / `.blog-card-title` / `.blog-card-excerpt` / `.blog-card-tags` / `.blog-tag` (NOT the `.post-card` markup used by `blog/index.html`). Match the existing cards exactly.
 - Use the home grid's meta separator (a literal `·` middot character) to match sibling cards.
-- Keep the trailing entries (Medium card, Google Dev Library card, and the `View All Posts →` button) in place — only prepend the new blog card.
-- Newest first: the just-published post becomes the first `.blog-card`.
+- Keep the trailing entries (Medium card, Google Dev Library card, and the `View All Posts →` button) in place.
+- Newest first: the just-published post becomes the first `.blog-card`. This grid is curated to the **two newest blog posts** plus the Medium/Google cards — when prepending the new post, drop the now-third blog card so exactly two blog posts show.
+
+### 3c. Add to the Sitemap
+
+Edit `sitemap.xml` in the Pages repo root and add a `<url>` entry for the new post (and bump the `blog/` entry's `<lastmod>` to the publish date):
+
+```xml
+  <url>
+    <loc>https://sendtoshailesh.github.io/blog/<slug>.html</loc>
+    <lastmod>YYYY-MM-DD</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+```
 
 ### 4. Estimate Read Time
 
@@ -158,12 +171,13 @@ After the HTML page is live, update `content/publishing-log.md` in the pipeline 
 - `blog/<slug>.html` — the published blog page in the Pages repo
 - `blog/index.html` — updated with the new `.post-card` linked at the top
 - `index.html` — home page `<section id="insights">` `.blog-grid` updated with the new `.blog-card` prepended as newest
+- `sitemap.xml` — updated with the new post `<url>` entry
 - `content/publishing-log.md` — updated with canonical URL
 - Confirm the live URL: `https://sendtoshailesh.github.io/blog/<slug>.html`
-- **Remind the user** to commit and push the Pages repo to make the post live (include BOTH the new page and the two updated index files):
+- **Remind the user** to commit and push the Pages repo to make the post live (include the new page and ALL updated index/sitemap files):
   ```
   cd /Users/shaileshmishra/my-docs/my-proj/sendtoshailesh.github.io
-  git add blog/ index.html
+  git add blog/ index.html sitemap.xml
   git commit -m "Publish: <post title>"
   git push
   ```
